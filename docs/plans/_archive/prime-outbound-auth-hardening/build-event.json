@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "02435507f2",
+  "feature_slug": "prime-outbound-auth-hardening",
+  "emitted_at": "2026-03-14T14:52:51.506Z",
+  "why": "Staff identity is caller-controlled at the Prime API layer — any gateway-token holder can attribute actions to any staff UID, including audit records, broadcast sends, and message attributions. For broadcast this is a direct-harm risk (messages to all active guests attributed to wrong person).",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "After this change, the actor UID recorded at the Prime layer is cryptographically bound to a short-lived signed claims header verified with a separate signing secret. A caller with only the gateway token cannot forge a different UID. The broadcast send path additionally requires owner or admin role (exact allowlist, not hierarchical).",
+    "source": "auto"
+  }
+}

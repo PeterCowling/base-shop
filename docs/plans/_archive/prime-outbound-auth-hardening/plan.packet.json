@@ -1,0 +1,332 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "prime-outbound-auth-hardening",
+  "source_artifact_path": "docs/plans/prime-outbound-auth-hardening/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-outbound-auth-hardening/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff identity is caller-controlled at the Prime API layer — any gateway-token holder can attribute actions to any staff UID, including audit records, broadcast sends, and message attributions. For broadcast this is a direct-harm risk (messages to all active guests attributed to wrong person).",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "After this change, the actor UID recorded at the Prime layer is cryptographically bound to a short-lived signed claims header verified with a separate signing secret. A caller with only the gateway token cannot forge a different UID. The broadcast send path additionally requires `owner` or `admin` role (exact allowlist, not hierarchical).",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — server-side only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No user-facing rendering changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — server-side only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Error responses (401/403) are machine-readable API errors",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Primary concern: closes UID forgery across 8 endpoints; broadcast role gate immediately enforced; HMAC-SHA256 with separate secret; timestamp replay window ±5 min",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03, TASK-04, TASK-06",
+      "gap_or_implication": "Scope of protection: gateway-token leakage only (not full Reception env compromise)",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Structured log entries for HMAC rejection (reason: missing, invalid-sig, expired, insufficient-role); broadcast D1 actorUid values cryptographically bound from TASK-04 deploy; non-broadcast actorUid values cryptographically bound only after TASK-07 removes compat window",
+      "current_or_option_state": "TASK-03, TASK-04, TASK-07",
+      "gap_or_implication": "Pre-fix historical records remain as-is",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Extend `review-threads.test.ts` + `staff-initiate-thread.test.ts`; add `review-campaign` POST/PUT tests; fix reception header assertion in `initiate-prime-outbound-thread.test.ts`",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Must cover: missing sig → 401, invalid sig → 401, expired → 401, insufficient role → 403, valid → 200",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "New `x-prime-actor-claims` header replaces `x-prime-actor-uid`; D1 schema unchanged; new `PRIME_ACTOR_CLAIMS_SECRET` env var in both envs; `StaffOwnerGateEnv` interface unchanged (gateway gate unmodified); `PRIME_ACTOR_CLAIMS_SECRET` belongs to `actor-claims-resolver.ts` Env only",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03, TASK-06",
+      "gap_or_implication": "Backward-compat: non-broadcast accepts both headers during compat window",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One `crypto.subtle.verify` call per request (~0.1ms); negligible overhead",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "KV rate-limit key on `review-campaign-send` updated to use verified actorUid after extraction",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Deploy order: Prime (TASK-01/03/04/06) first → Reception (TASK-02) → Verify → TASK-07 (remove compat fallback within 1 sprint); rollback collapses attribution to `prime-owner`",
+      "current_or_option_state": "TASK-03, TASK-04, TASK-07",
+      "gap_or_implication": "Broadcast unavailable between Prime deploy and Reception deploy — window should be minimized",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Eight Prime mutation endpoints trust caller-supplied `x-prime-actor-uid` to identify the acting staff member — any gateway-token holder can forge a different UID. This plan hardens all 8 endpoints by replacing the plain header with an HMAC-SHA256 signed claims payload, using a new `PRIME_ACTOR_CLAIMS_SECRET` env var that is independent of the gateway token. Additionally, 2 pure-broadcast endpoints (`staff-initiate-thread`, `review-campaign-send`) gain an immediate blanket role gate requiring `owner` or `admin` (no compat window). `review-thread-send` handles both broadcast and direct-message t",
+    "goals": [
+      "Actor UID stored in Prime D1 is cryptographically bound to a short-lived signed claims payload.",
+      "Broadcast send requires the `owner` or `admin` role (exact flat allowlist); gate active from first deployment.",
+      "All 8 mutation endpoints covered; no endpoint left unhardened.",
+      "No new infrastructure, no Firebase Admin SDK on Prime."
+    ],
+    "non_goals": [
+      "Per-request Firebase ID token verification on Prime (JWKS network dependency).",
+      "Rebuilding multi-staff auth for Prime.",
+      "Guest-facing auth flow changes.",
+      "Retroactive correction of pre-fix audit records."
+    ],
+    "constraints": [
+      "Prime runs as Cloudflare Pages Functions; only WebCrypto available (`crypto.subtle`)."
+    ],
+    "assumptions": [
+      "HMAC-SHA256 via `crypto.subtle` is performant on CF Workers (~0.1ms per call)."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "HMAC-SHA256 signed claims in a new `x-prime-actor-claims` header, signed by Reception with `PRIME_ACTOR_CLAIMS_SECRET`.",
+      "Prime verifies the HMAC, checks timestamp, extracts `{uid, roles}` via `resolveActorClaims()`.",
+      "Broadcast endpoints: require signed claims immediately (no fallback).",
+      "Non-broadcast endpoints: accept signed claims OR plain `x-prime-actor-uid` during compat window.",
+      "Why planning is not reopening option selection:",
+      "Analysis is decisive; all 4 options compared; only Option A is viable; critique round passed."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Implement `signActorClaims` / `verifyActorClaims` WebCrypto HMAC-SHA256 utilities",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Two pure WebCrypto functions: `signActorClaims({uid, roles, iat?})` → `string` (b64url-payload.b64url-sig) and `verifyActorClaims(header, secret)` → `{uid: string, roles: string[]} | null`. Location: `apps/prime/functions/lib/actor-claims.ts` (consumed by both reception — via a shared re-export path — and Prime; see notes on placement).",
+        "affects": "`apps/prime/functions/lib/actor-claims.ts` (new)"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Update `buildPrimeActorHeaders` to sign claims; extend all 5 reception prime-proxy call sites to pass `roles`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "(a) New `apps/reception/src/lib/inbox/actor-claims.ts` with `signActorClaims`; (b) Modified `buildPrimeActorHeaders` at `apps/reception/src/lib/inbox/prime-review.server.ts:258–260` — now async, accepts `roles: string[]`, produces `x-prime-actor-claims` header; (c) Updated function signatures for `savePrimeInboxDraft`, `resolvePrimeInboxThread`, `dismissPrimeInboxThread`, `sendPrimeInboxThread`, `initiatePrimeOutboundThread` to accept and forward `roles`; (d) Updated all 5 reception API route call sites to pass `auth.roles`.",
+        "affects": "`apps/reception/src/lib/inbox/actor-claims.ts` (new), `apps/reception/src/lib/inbox/prime-review.server.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/resolve/route.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/dismiss/route.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts`, `apps/reception/src/app/api/mcp/inbox/prime-compose/route.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add `resolveActorClaims` helper to Prime and update all 8 mutation endpoints",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `apps/prime/functions/lib/actor-claims-resolver.ts` exporting `resolveActorClaims(request, env)` → `{uid: string, roles: string[]} | Response`; updated `Env` interfaces in all 8 mutation endpoint files to include `PRIME_ACTOR_CLAIMS_SECRET`; `x-prime-actor-uid` fallback replaced by `resolveActorClaims` call (with compat fallback for non-broadcast; no fallback for broadcast — handled in TASK-04).",
+        "affects": "`apps/prime/functions/lib/actor-claims-resolver.ts` (new), `apps/prime/functions/api/review-thread-draft.ts`, `apps/prime/functions/api/review-thread-resolve.ts`, `apps/prime/functions/api/review-thread-dismiss.ts`, `apps/prime/functions/api/review-thread-send.ts`, `apps/prime/functions/api/staff-initiate-thread.ts`, `apps/prime/functions/api/review-campaign-send.ts`, `apps/prime/functions/api/review-campaign.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Broadcast role gate — blanket on 2 pure-broadcast endpoints; conditional in `review-thread-send`",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03",
+          "TASK-04"
+        ],
+        "blocks": [
+          "TASK-05",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "(a) Blanket role-gate check after `resolveActorClaims` in `staff-initiate-thread.ts` and `review-campaign-send.ts` (no compat fallback); (b) Conditional role-gate in `review-thread-send.ts` — fires only when `isWholeHostelBroadcastThread(record.thread)` is true (direct-message sends bypass the gate); new `apps/prime/functions/lib/broadcast-role-gate.ts` helper shared by all 3 files.",
+        "affects": "`apps/prime/functions/api/staff-initiate-thread.ts`, `apps/prime/functions/api/review-campaign-send.ts`, `apps/prime/functions/api/review-thread-send.ts`, `apps/prime/functions/lib/broadcast-role-gate.ts` (new); `[readonly import] apps/prime/functions/lib/prime-whole-hostel-campaigns.ts` (imports `isWholeHostelBroadcastThread` — no change to this file; double DB read accepted)"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Tests — extend suites, fix all breaking assertions, add `review-campaign` POST/PUT + DM-send regression",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Extended test files: `apps/prime/functions/__tests__/review-threads.test.ts` (auth rejection + role-gate cases); new `apps/prime/functions/__tests__/review-campaign-auth.test.ts` (POST/PUT auth); updated `apps/reception/src/lib/inbox/__tests__/initiate-prime-outbound-thread.test.ts` (line 85); updated `apps/prime/functions/__tests__/staff-initiate-thread.test.ts` (role-gate cases); updated `apps/reception/src/app/api/mcp/inbox/prime-compose/route.test.ts:105-112` (new function signature); updated `apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts:523-530` (new function signa",
+        "affects": "`apps/prime/functions/__tests__/review-threads.test.ts`, `apps/prime/functions/__tests__/review-campaign-auth.test.ts` (new), `apps/reception/src/lib/inbox/__tests__/initiate-prime-outbound-thread.test.ts`, `apps/prime/functions/__tests__/staff-initiate-thread.test.ts`, `apps/reception/src/app/api/mcp/inbox/prime-compose/route.test.ts`, `apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts`, `apps/prime/functions/__tests__/review-campaign-send-rate-limit.test.ts`, `apps/reception/src/app/api/mcp/__tests__/inbox-draft.route.test.ts`, `apps/prime/functions/__tests__/helpers.ts`"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Env validation at startup, wrangler and `.env.example` documentation",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Startup validation in Prime rejecting misconfigured secrets (missing, too short, identical to gateway token); `PRIME_ACTOR_CLAIMS_SECRET` added to `apps/prime/wrangler.toml` (as required-env comment), `apps/prime/.env.example`, and `apps/reception/.env.example`; optionally a startup check in reception.",
+        "affects": "`apps/prime/wrangler.toml`, `apps/prime/.env.example` (or equivalent), `apps/reception/.env.example`, `apps/reception/wrangler.toml`, `apps/prime/functions/lib/actor-claims-resolver.ts` (startup guard addition)"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Hard-gate removal of non-broadcast compat fallback",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [
+          "TASK-05",
+          "TASK-06"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Compat fallback removed from `resolveActorClaims` (or `resolveActorClaimsWithCompat`); all 8 endpoints now require signed `x-prime-actor-claims`; plain `x-prime-actor-uid` returns 401.",
+        "affects": "`apps/prime/functions/lib/actor-claims-resolver.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Broadcast initiation (staff-initiate-thread)",
+          "trigger": "Staff POSTs to reception `/api/mcp/inbox/prime-compose`",
+          "flow": "1. Reception: `requireStaffAuth` verifies Firebase ID token, extracts `uid` and `roles`. 2. Reception: `buildPrimeActorHeaders` signs `{uid, roles, iat}` with HMAC-SHA256 using `PRIME_ACTOR_CLAIMS_SECRET` → produces `x-prime-actor-claims: <b64payload>.<b64sig>`. 3. Reception calls Prime `/api/staff-initiate-thread` with gateway token + signed claims header. 4. Prime: `enforceStaffOwnerApiGate` validates gateway token (unchanged). 5. Prime: `resolveActorClaims(request, env)` verifies HMAC, checks timestamp, returns `{uid, roles}` or 401. 6. Prime: role check — if `!roles.includes('owner') && !r",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Broadcast unavailable between Prime Step-1 deploy and Reception deploy; no compat window. Rollback from mid-rollout: Prime falls back to `prime-owner` attribution."
+        },
+        {
+          "id": null,
+          "label": "Campaign-send broadcast (review-campaign-send)",
+          "trigger": "Reception sends POST to Prime `/api/review-campaign-send` with campaign ID",
+          "flow": "Same steps 1–6 above; additionally KV rate-limit keyed on verified `actorUid` (not forged).",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Same rollback seam as above."
+        },
+        {
+          "id": null,
+          "label": "Thread-send — broadcast path (review-thread-send, whole-hostel thread)",
+          "trigger": "Reception sends POST to Prime `/api/review-thread-send` with whole-hostel broadcast threadId",
+          "flow": "Steps 1–5 above. Prime: `sendPrimeReviewThread` detects `isWholeHostelBroadcastThread(record.thread)` → role check fires: if `!roles.includes('owner') && !roles.includes('admin')` → 403. Otherwise proceeds to broadcast send.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Role gate is conditional on thread type inside `review-thread-send.ts` — direct-message sends on non-broadcast threads skip the role check."
+        },
+        {
+          "id": null,
+          "label": "Thread-send — direct message path (review-thread-send, individual guest thread)",
+          "trigger": "Reception sends POST to Prime `/api/review-thread-send` with a guest thread ID",
+          "flow": "Steps 1–5 above. Prime: `sendPrimeReviewThread` finds `!isWholeHostelBroadcastThread(record.thread)` → no role gate; proceeds to guest DM send as before. Any staff role may send.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "No role restriction on direct messages. Confirmed: critique C-01 autofix."
+        },
+        {
+          "id": null,
+          "label": "Non-broadcast mutations (5 endpoints: review-thread-draft, review-thread-resolve, review-thread-dismiss, review-campaign POST, review-campaign PUT)",
+          "trigger": "Any staff mutation action from reception",
+          "flow": "Steps 1–5 above. During compat window: `resolveActorClaims` accepts signed claims OR falls back to plain `x-prime-actor-uid`. No role check for non-broadcast.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Compat fallback is a temporary state; TASK-07 must remove it within 1 sprint."
+        },
+        {
+          "id": null,
+          "label": "Compat fallback removal",
+          "trigger": "TASK-07 execution (within 1 sprint)",
+          "flow": "Prime re-deployed with compat fallback removed from `resolveActorClaims`; plain `x-prime-actor-uid` rejected with 401.",
+          "task_ids": [
+            "TASK-07"
+          ],
+          "dependency_note": null,
+          "seams": "No rollout risk if Reception is already deploying signed claims."
+        }
+      ]
+    }
+  }
+}

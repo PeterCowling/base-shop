@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: API
 Workstream: Engineering
 Created: 2026-03-14

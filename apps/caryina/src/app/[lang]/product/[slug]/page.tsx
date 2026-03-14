@@ -21,6 +21,8 @@ import {
 import {
   buildCatalogCardMedia,
   buildProductGalleryItems,
+  classifySkuFamily,
+  getFamilySpec,
   getSkuFamilyLabel,
 } from "@/lib/launchMerchandising";
 import {
@@ -81,6 +83,8 @@ export default async function ProductDetailPage({
   const galleryItems = buildProductGalleryItems(product);
   const productIndex = allProducts.findIndex((s) => s.id === product.id);
   const familyLabel = getSkuFamilyLabel(product, Math.max(0, productIndex), familyCopy);
+  const familyKey = classifySkuFamily(product, Math.max(0, productIndex));
+  const familySpec = getFamilySpec(familyKey);
   const relatedProducts = allProducts
     .filter((sku) => sku.id !== product.id)
     .slice(0, 8);
@@ -159,6 +163,25 @@ export default async function ProductDetailPage({
                   </li>
                 ))}
               </ul>
+            </section>
+
+            <section
+              className="space-y-3 border-t pt-5"
+              aria-label="Product specifications"
+            >
+              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
+                Specifications
+              </h2>
+              <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+                <dt className="shrink-0 font-medium text-foreground">Dimensions</dt>
+                <dd className="text-muted-foreground">{familySpec.dimensions}</dd>
+                <dt className="shrink-0 font-medium text-foreground">Material</dt>
+                <dd className="text-muted-foreground">{familySpec.bodyMaterial}</dd>
+                <dt className="shrink-0 font-medium text-foreground">Hardware</dt>
+                <dd className="text-muted-foreground">{familySpec.hardwareMetal}</dd>
+                <dt className="shrink-0 font-medium text-foreground">Attachment</dt>
+                <dd className="text-muted-foreground">{familySpec.attachment}</dd>
+              </dl>
             </section>
 
             {product.materials && product.dimensions && product.weight ? (

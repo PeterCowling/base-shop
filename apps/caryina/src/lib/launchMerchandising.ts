@@ -45,6 +45,52 @@ export const LAUNCH_FAMILY_ANCHORS = [
 
 export type LaunchFamilyKey = (typeof LAUNCH_FAMILY_ANCHORS)[number]["key"];
 
+/**
+ * Physical specification data per charm family.
+ * All values are PLACEHOLDER — the operator must supply actual measurements
+ * and material details before deploying to production.
+ *
+ * PLACEHOLDER_DIMENSIONS    e.g. "H 8 cm × W 6 cm × D 3 cm"
+ * PLACEHOLDER_BODY_MATERIAL e.g. "PU leather / vegan leather"
+ * PLACEHOLDER_HARDWARE_METAL e.g. "zinc alloy, polished gold-tone"
+ * PLACEHOLDER_ATTACHMENT    e.g. "lobster clasp, fits bag strap or D-ring"
+ */
+export interface FamilySpec {
+  dimensions: string;
+  bodyMaterial: string;
+  hardwareMetal: string;
+  attachment: string;
+}
+
+export const FAMILY_SPEC: Record<LaunchFamilyKey, FamilySpec> = {
+  "top-handle": {
+    dimensions: "PLACEHOLDER_DIMENSIONS", // e.g. "H 8 cm × W 6 cm × D 3 cm"
+    bodyMaterial: "PLACEHOLDER_BODY_MATERIAL", // e.g. "PU leather / vegan leather"
+    hardwareMetal: "PLACEHOLDER_HARDWARE_METAL", // e.g. "zinc alloy, polished gold-tone"
+    attachment: "PLACEHOLDER_ATTACHMENT", // e.g. "lobster clasp, fits bag strap or D-ring"
+  },
+  shoulder: {
+    dimensions: "PLACEHOLDER_DIMENSIONS", // e.g. "H 7 cm × W 5 cm × D 2.5 cm"
+    bodyMaterial: "PLACEHOLDER_BODY_MATERIAL", // e.g. "PU leather / vegan leather"
+    hardwareMetal: "PLACEHOLDER_HARDWARE_METAL", // e.g. "zinc alloy, polished gold-tone"
+    attachment: "PLACEHOLDER_ATTACHMENT", // e.g. "lobster clasp, fits bag strap or D-ring"
+  },
+  mini: {
+    dimensions: "PLACEHOLDER_DIMENSIONS", // e.g. "H 5 cm × W 4 cm × D 2 cm"
+    bodyMaterial: "PLACEHOLDER_BODY_MATERIAL", // e.g. "PU leather / vegan leather"
+    hardwareMetal: "PLACEHOLDER_HARDWARE_METAL", // e.g. "zinc alloy, polished gold-tone"
+    attachment: "PLACEHOLDER_ATTACHMENT", // e.g. "lobster clasp, fits bag strap or D-ring"
+  },
+};
+
+/**
+ * Returns the physical spec for a given charm family key.
+ * Values are PLACEHOLDER until the operator supplies actual physical data.
+ */
+export function getFamilySpec(family: LaunchFamilyKey): FamilySpec {
+  return FAMILY_SPEC[family];
+}
+
 export interface CatalogCardMediaModel {
   primarySrc: string;
   primaryAlt: string;

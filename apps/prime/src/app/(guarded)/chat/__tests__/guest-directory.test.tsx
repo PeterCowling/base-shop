@@ -12,6 +12,7 @@ import GuestDirectory from '../GuestDirectory';
 
 // Mock profiles data
 let mockProfiles: Record<string, GuestProfile> = {};
+let mockProfilesLoading = false;
 const mockCurrentUuid = 'guest-1';
 const mockPush = jest.fn();
 const mockReadGuestSession = jest.fn(() => ({
@@ -20,6 +21,15 @@ const mockReadGuestSession = jest.fn(() => ({
   uuid: mockCurrentUuid,
   firstName: 'Test',
   verifiedAt: null,
+}));
+
+jest.mock('next/link', () => ({
+  __esModule: true,
+  default: ({ children, href, ...props }: any) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
 }));
 
 jest.mock('next/navigation', () => ({
@@ -36,7 +46,7 @@ jest.mock('../../../../lib/auth/guestSessionGuard', () => ({
 }));
 
 jest.mock('../../../../hooks/data/useGuestProfiles', () => ({
-  useGuestProfiles: () => ({ profiles: mockProfiles, isLoading: false }),
+  useGuestProfiles: () => ({ profiles: mockProfiles, isLoading: mockProfilesLoading }),
 }));
 
 jest.mock('react-i18next', () => ({
@@ -80,6 +90,7 @@ describe('GuestDirectory', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockProfiles = {};
+    mockProfilesLoading = false;
   });
 
   describe('TC-02: Mutual opt-in filtering', () => {
@@ -202,6 +213,77 @@ describe('GuestDirectory', () => {
     it('shows loading state when profiles are loading', () => {
       // This would require mocking the hook to return isLoading: true
       // For now, we'll skip this test
+    });
+  });
+
+  describe('TASK-05: Staff messages link visibility', () => {
+    // Helper: finds the staff messages anchor element by its i18n key text
+    function getStaffLink() {
+      // The mock useTranslation returns the key directly, so the rendered text is the key
+      const textEl = screen.getByText('chat.directory.staffMessages');
+      return textEl.closest('a');
+    }
+
+    it('TC-01: shows staff messages link in opt-in-required state', () => {
+      mockProfiles = {
+        'guest-1': createProfile('guest-1', { chatOptIn: false }),
+        'guest-2': createProfile('guest-2', { chatOptIn: true }),
+      };
+
+      render(<GuestDirectory />);
+
+      // Should show opt-in prompt AND staff messages link
+      expect(screen.getByText(/chat.directory.optInRequired/i)).toBeDefined();
+      expect(getStaffLink()).not.toBeNull();
+    });
+
+    it('TC-02: shows staff messages link in loading state', () => {
+      mockProfilesLoading = true;
+      mockProfiles = {};
+
+      render(<GuestDirectory />);
+
+      expect(screen.getByText(/chat.directory.loading/i)).toBeDefined();
+      expect(getStaffLink()).not.toBeNull();
+    });
+
+    it('TC-03: shows staff messages link in empty state', () => {
+      mockProfiles = {
+        'guest-1': createProfile('guest-1', { chatOptIn: true }),
+        'guest-2': createProfile('guest-2', { chatOptIn: false }),
+      };
+
+      render(<GuestDirectory />);
+
+      expect(screen.queryAllByText('chat.directory.noGuests').length).toBeGreaterThan(0);
+      expect(getStaffLink()).not.toBeNull();
+    });
+
+    it('TC-04: shows staff messages link in populated directory state', () => {
+      mockProfiles = {
+        'guest-1': createProfile('guest-1', { chatOptIn: true }),
+        'guest-2': createProfile('guest-2', { chatOptIn: true }),
+      };
+
+      render(<GuestDirectory />);
+
+      expect(getStaffLink()).not.toBeNull();
+    });
+
+    it('TC-05: staff messages link href equals correct broadcast channel URL', () => {
+      mockProfiles = {
+        'guest-1': createProfile('guest-1', { chatOptIn: true }),
+        'guest-2': createProfile('guest-2', { chatOptIn: true }),
+      };
+
+      render(<GuestDirectory />);
+
+      const staffLink = getStaffLink();
+      expect(staffLink).not.toBeNull();
+      expect(staffLink).toHaveAttribute(
+        'href',
+        '/chat/channel?id=broadcast_whole_hostel&mode=broadcast',
+      );
     });
   });
 

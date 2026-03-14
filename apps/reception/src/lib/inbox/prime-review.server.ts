@@ -9,7 +9,7 @@ import { resolveInboxChannelAdapter } from "./channel-adapters.server";
 
 export type PrimeReviewThreadSummary = {
   id: string;
-  channel: "prime_direct" | "prime_broadcast";
+  channel: "prime_direct" | "prime_broadcast" | "prime_activity";
   lane: "support" | "promotion";
   reviewStatus: "pending" | "review_later" | "auto_archived" | "resolved" | "sent";
   subject: string | null;
@@ -310,7 +310,7 @@ function mapPrimeSummaryToInboxThread(
     latestAdmissionDecision: summary.latestAdmissionDecision,
     latestAdmissionReason: summary.latestAdmissionReason,
     currentDraft: null,
-    guestBookingRef: summary.bookingId,
+    guestBookingRef: summary.channel === "prime_activity" ? null : summary.bookingId,
     guestFirstName: null,
     guestLastName: null,
   };
@@ -576,6 +576,35 @@ export async function sendPrimeInboxThread(
     draft: mapPrimeCurrentDraft(buildPrimeInboxThreadId(threadId), payload.draft),
     sentMessageId: payload.sentMessageId,
   };
+}
+
+/**
+ * Initiate a whole-hostel outbound broadcast thread on Prime.
+ *
+ * Calls POST /api/staff-initiate-thread with the provided text, creating the
+ * broadcast thread and an initial draft ready for sending.
+ *
+ * Returns null when Prime is not configured (graceful degrade — caller should 503).
+ * Propagates throws from primeRequest for Prime 4xx/5xx errors (caller should 502).
+ */
+export async function initiatePrimeOutboundThread(input: {
+  text: string;
+  actorUid?: string;
+}): Promise<{ detail: PrimeReviewThreadDetail } | null> {
+  if (!readPrimeReviewConfig()) {
+    return null;
+  }
+
+  const payload = await primeRequest<{ detail: PrimeReviewThreadDetail }>(
+    "/api/staff-initiate-thread",
+    {
+      method: "POST",
+      body: JSON.stringify({ plainText: input.text }),
+      headers: buildPrimeActorHeaders(input.actorUid),
+    },
+  );
+
+  return { detail: payload.detail };
 }
 
 export async function replayPrimeInboxCampaignDelivery(

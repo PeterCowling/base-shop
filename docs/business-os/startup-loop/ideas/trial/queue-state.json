@@ -1,19 +1,19 @@
 {
-  "last_updated": "2026-03-14T09:05:09.151Z",
+  "last_updated": "2026-03-14T10:12:45.513Z",
   "counts": {
-    "enqueued": 36,
+    "enqueued": 50,
     "processed": 25,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 376,
-    "fact_find_ready": 32,
+    "completed": 378,
+    "fact_find_ready": 36,
     "plan_ready": 0,
-    "micro_build_ready": 2,
-    "briefing_ready": 0,
-    "total": 647
+    "micro_build_ready": 11,
+    "briefing_ready": 1,
+    "total": 663
   },
   "dispatches": [
     {
@@ -31927,13 +31927,23 @@
       ],
       "recommended_route": "lp-do-fact-find",
       "status": "fact_find_ready",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "feature_slug": "reception-prime-activity-inbox",
       "created_at": "2026-03-14T14:00:00.000Z",
       "processed_by": {
-        "target_path": "docs/plans/reception-prime-activity-inbox/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-prime-activity-inbox",
+        "target_path": "docs/plans/_archive/reception-prime-activity-inbox/plan.md",
+        "fact_find_slug": "reception-prime-activity-inbox",
+        "fact_find_path": "docs/plans/_archive/reception-prime-activity-inbox/fact-find.md",
+        "processed_at": "2026-03-14T15:30:00.000Z",
+        "route": "dispatch-routed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-prime-activity-inbox/plan.md",
+        "completed_at": "2026-03-14T09:18:45.365Z",
+        "outcome": "Completed via reception-prime-activity-inbox."
       }
     },
     {
@@ -31983,7 +31993,637 @@
       "status": "fact_find_ready",
       "queue_state": "enqueued",
       "feature_slug": "reception-prime-outbound-messaging",
-      "created_at": "2026-03-14T14:00:01.000Z"
+      "created_at": "2026-03-14T14:00:01.000Z",
+      "processed_by": {
+        "target_path": "docs/plans/reception-prime-outbound-messaging/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314160000-PLAT-010",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314160000-PLAT-010",
+      "anchor_key": "caryina-cart-cookie-secret-env-docs",
+      "cluster_key": "caryina-checkout-blockers",
+      "cluster_fingerprint": "caryina-checkout-not-working",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — a required checkout setting is missing from the developer setup guide",
+      "domain": "PRODUCTS",
+      "provisional_deliverable_family": "code-change",
+      "why": "A required secret needed to secure the shopping cart is not listed in the developer setup instructions. Any developer setting up the app from scratch in production will hit a server crash with no explanation of what is missing. Adding it to the setup guide prevents this silent failure.",
+      "intended_outcome": "CART_COOKIE_SECRET documented in apps/caryina/.env.example so fresh deployments don't crash silently.",
+      "priority": "P1",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "operator-stated: CART_COOKIE_SECRET missing from apps/caryina/.env.example",
+        "apps/caryina/.env.example — does not list CART_COOKIE_SECRET",
+        "packages/config/src/env/core/schema.base.ts — CART_COOKIE_SECRET required in production",
+        "coverage-hint: config, env-vars"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "completed",
+      "queue_state": "completed",
+      "feature_slug": "caryina-cart-cookie-secret-env-docs",
+      "created_at": "2026-03-14T16:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-cart-cookie-secret-env-docs",
+        "micro_build_path": "docs/plans/caryina-cart-cookie-secret-env-docs/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/caryina-cart-cookie-secret-env-docs/micro-build.md",
+        "completed_at": "2026-03-14T09:55:32.941Z",
+        "outcome": "Completed via caryina-cart-cookie-secret-env-docs."
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314160001-PLAT-011",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314160001-PLAT-011",
+      "anchor_key": "caryina-site-content-build-resilience",
+      "cluster_key": "caryina-checkout-blockers",
+      "cluster_fingerprint": "caryina-checkout-not-working",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — the shop, product, and checkout pages crash if product data hasn't been prepared",
+      "domain": "PRODUCTS",
+      "provisional_deliverable_family": "code-change",
+      "why": "Every page of the Caryina shop depends on a product data file that must be generated before the app can start. If that file is missing — which happens on any fresh checkout or CI deployment that skips the generation step — every page throws a hard error and the shop is completely offline. Fixing this means the shop either generates the data automatically or shows a helpful error instead of crashing.",
+      "intended_outcome": "Caryina pages never throw a hard 500 due to missing product data — either the data is auto-generated as part of the build, or a safe fallback exists.",
+      "priority": "P1",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: site-content.generated.json must exist before app starts or all pages 500",
+        "apps/caryina/src/lib/contentPacket.ts — throws hard error if generated payload file is missing",
+        "data/shops/caryina/site-content.generated.json — file exists in repo but generation pipeline unclear",
+        "coverage-hint: build-pipeline, error-handling"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "queue_state": "enqueued",
+      "feature_slug": "caryina-site-content-build-resilience",
+      "created_at": "2026-03-14T16:00:01.000Z",
+      "processed_by": {
+        "target_path": "docs/plans/caryina-site-content-build-resilience/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314160002-PLAT-012",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314160002-PLAT-012",
+      "anchor_key": "caryina-runtime-state-workers-compat",
+      "cluster_key": "caryina-checkout-blockers",
+      "cluster_fingerprint": "caryina-checkout-not-working",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — shopping cart and checkout history are lost between requests when deployed to Cloudflare",
+      "domain": "PRODUCTS",
+      "provisional_deliverable_family": "multi",
+      "why": "The shopping cart and the record of in-progress checkouts are both stored in temporary files on disk. On Cloudflare, the app runs in isolated sandboxes that don't share disk storage — so a customer who adds items to their cart and proceeds to checkout may find their cart empty, and duplicate checkout attempts can slip through. Both pieces of state need to move to a proper database or shared store that works on Cloudflare.",
+      "intended_outcome": "Cart contents and checkout attempt records persist correctly across all requests on a Cloudflare deployment — no lost carts and no duplicate orders.",
+      "priority": "P1",
+      "confidence": 0.78,
+      "evidence_refs": [
+        "operator-stated: in-memory cart store is ephemeral per Cloudflare isolate — cart appears full in UI but server returns empty",
+        "operator-stated: checkout idempotency store uses fs.readFile/writeFile/open with file locks — incompatible with Cloudflare Workers",
+        "apps/caryina/src/lib/checkoutIdempotency.server.ts — full fs-based store with file locking (withStoreLock, acquireLock, readStore, writeStore)",
+        "apps/caryina/src/lib/checkoutSession.server.ts — calls beginCheckoutAttempt which uses the fs store",
+        "coverage-hint: data-contracts, security, testing, rollout-rollback"
+      ],
+      "work_package_reason": "Cart persistence (Fix 4) and checkout idempotency store (Fix 7) both fail for the same reason — file system not available on Cloudflare Workers — and both need to migrate to a shared durable store (Cloudflare KV, D1, or Upstash Redis). Solving them together avoids two separate architectural decisions for the same backend.",
+      "dispatch_ids": [
+        "IDEA-DISPATCH-20260314160002-PLAT-012"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "queue_state": "enqueued",
+      "feature_slug": "caryina-runtime-state-workers-compat",
+      "created_at": "2026-03-14T16:00:02.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314160003-PLAT-013",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314160003-PLAT-013",
+      "anchor_key": "caryina-payment-provider-setup-remaining-blockers",
+      "cluster_key": "caryina-checkout-blockers",
+      "cluster_fingerprint": "caryina-checkout-not-working",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — four payment setup steps still needed before real transactions can work",
+      "domain": "PRODUCTS",
+      "provisional_deliverable_family": "multi",
+      "why": "A payment audit identified four issues that are intentionally deferred until the Stripe and Axerve accounts are properly configured: (1) Stripe and Axerve credentials need real keys — the current defaults will reject every payment attempt; (2) the Stripe webhook secret is a placeholder — all post-payment confirmations that arrive via webhook are silently rejected; (3) Axerve has no 3DS security challenge — EU banks will decline most card payments under PSD2 rules; (4) order confirmation emails are silently not sent — the merchant has no record of purchases. These are noted here so they are picked up as part of the payment provider go-live work.",
+      "intended_outcome": "All four items captured and actioned as part of the Stripe/Axerve payment provider setup plan, before Caryina accepts real money.",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: fix issues 1, 5, 6, 8 as part of finishing Stripe and Axerve setup",
+        "HB-1: missing Axerve credentials (AXERVE_SHOP_LOGIN, AXERVE_API_KEY) crash startup",
+        "HB-2: STRIPE_SECRET_KEY defaults to 'sk_test' — Stripe rejects with 401",
+        "SB-2: STRIPE_WEBHOOK_SECRET defaults to 'whsec_test' — all webhooks rejected",
+        "SB-3: Axerve path has no 3DS/SCA support — EU card declines under PSD2",
+        "SB-6: email credentials absent — merchant order notifications silently no-op",
+        "docs/briefs/caryina-payment-provider-briefing.md — payment provider briefing exists"
+      ],
+      "recommended_route": "lp-do-briefing",
+      "status": "briefing_ready",
+      "queue_state": "enqueued",
+      "feature_slug": "caryina-payment-provider-setup-remaining-blockers",
+      "created_at": "2026-03-14T16:00:03.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180000-HBAG-001",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180000-HBAG-001",
+      "anchor_key": "hbag-product-spec-missing",
+      "cluster_key": "hbag-product-page-completeness",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — shoppers can't tell how big the charm is, what it's made of, or how it attaches to a bag",
+      "domain": "PRODUCTS",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Product pages contain only a 5-bullet proof section with design and policy claims. No dimensions, no materials breakdown, no attachment mechanism described anywhere on the site.",
+      "next_scope_now": "Add product spec fields (dimensions per SKU, body material, hardware metal type, attachment method) to the product content layer and display them in a spec section on the PDP. Use operator-supplied PLACEHOLDER values for physical data not available in the codebase.",
+      "why": "A customer deciding whether to buy a bag charm needs to know three things before they commit: how big it is, what it's made from, and how it clips onto their bag. None of this appears anywhere on the product page right now. A shopper who can't answer 'will this look right on my bag?' or 'is this real leather?' will not buy — and no amount of good photography fixes a missing spec.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Product pages for all three charm families show physical dimensions (H×W×D in cm), body material, hardware metal type, and attachment method in a clearly labelled spec section visible without scrolling.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/data/shops/caryina/site-content.generated.json",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx",
+        "apps/caryina/src/lib/launchMerchandising.ts"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.92,
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-product-spec-content",
+        "target_path": "docs/plans/caryina-product-spec-content/micro-build.md",
+        "processed_at": "2026-03-14T18:30:00.000Z",
+        "route": "dispatch-routed"
+      },
+      "evidence_refs": [
+        "operator-stated: no dimensions, materials, or attachment info present anywhere on product pages or policies",
+        "apps/caryina/data/shops/caryina/site-content.generated.json — proof bullets cover design and policy claims only, no physical spec",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx — PDP renders proof bullets with no spec block",
+        "coverage-hint: UI, data-contracts"
+      ],
+      "created_at": "2026-03-14T18:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180001-HBAG-002",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180001-HBAG-002",
+      "anchor_key": "hbag-faq-does-not-answer-real-questions",
+      "cluster_key": "hbag-product-page-completeness",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — the FAQ doesn't answer the questions customers actually ask before buying",
+      "domain": "PRODUCTS",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The home page FAQ has 2 entries: 'What is this store?' and 'What makes these different from other bag charms?' Neither answers sizing, fit on specific bag types, attachment mechanism, materials, care, or restock timelines.",
+      "next_scope_now": "Expand FAQ with at minimum: How big is it? Which bags does it fit? How does it attach? What is it made from? How do I care for it? When will out-of-stock items return? Use PLACEHOLDER answers for physical facts the operator must supply.",
+      "why": "The FAQ is the first place a hesitant customer looks to resolve their doubts before buying. Right now it only covers what the brand is — not the practical questions that actually prevent a sale. A customer wondering 'will this fit my bag?' or 'how do I clean it?' finds nothing and leaves.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Home page and PDP FAQ contain at least 6 entries covering size, fit, attachment, materials, care, and restock — fully localised across en/de/it.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/data/shops/caryina/site-content.generated.json (faqItems section)",
+        "apps/caryina/src/app/[lang]/page.tsx"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: FAQ contains only 2 generic entries, missing all practical pre-purchase questions",
+        "apps/caryina/data/shops/caryina/site-content.generated.json — faqItems array has 2 entries only",
+        "coverage-hint: UI"
+      ],
+      "created_at": "2026-03-14T18:00:01.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180002-HBAG-003",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180002-HBAG-003",
+      "anchor_key": "hbag-uk-customs-surprise-not-warned",
+      "cluster_key": "hbag-trust-and-compliance",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — UK buyers get an unexpected customs bill after ordering with no prior warning",
+      "domain": "LOGISTICS",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The shipping policy mentions UK import VAT and brokerage fees in passing. There is no visible warning on the product page or cart for UK buyers before they pay. UK customers can complete checkout unaware they may owe additional import charges on delivery.",
+      "next_scope_now": "Add a locale-conditional notice for UK visitors on the PDP and/or cart, explaining that import VAT and customs fees may apply on delivery. This is a compliance and trust issue — EU consumer law requires material cost information before purchase.",
+      "why": "A UK customer who orders and then receives a customs demand from DHL feels misled, even if the information was buried in a policy page. This kind of surprise destroys trust and generates chargebacks. Showing a clear notice before checkout — 'UK orders may incur import VAT on delivery' — prevents the surprise and keeps the customer informed.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "UK-locale visitors see a clear import cost notice on the PDP and cart before reaching checkout. Notice is absent for EU locales where no import charges apply.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx",
+        "apps/caryina/src/app/[lang]/cart/page.tsx",
+        "apps/caryina/src/lib/legalContent.ts (shipping section)"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.93,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: UK import VAT mention buried in shipping policy only, no pre-checkout warning",
+        "apps/caryina/src/lib/legalContent.ts — shipping section mentions UK customs passingly but no UI hook exists",
+        "risk_vector: legal-compliance — EU consumer law requires material cost disclosure before purchase",
+        "coverage-hint: UI, UX"
+      ],
+      "created_at": "2026-03-14T18:00:02.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180003-HBAG-004",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180003-HBAG-004",
+      "anchor_key": "hbag-payment-methods-undisclosed",
+      "cluster_key": "hbag-product-page-completeness",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — customers don't know which payment methods are accepted before reaching checkout",
+      "domain": "SELL",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "No page on the site lists accepted payment methods. The checkout uses Stripe (and optionally Axerve) but customers have no indication of whether card, Apple Pay, PayPal, or other methods are available until they are already in the checkout flow.",
+      "next_scope_now": "Add an accepted payment methods statement to the support page and as a trust signal on the PDP. Show payment method icons or a plain-text list. Exact methods depend on live Stripe/Axerve configuration — use PLACEHOLDER badge set matched to what is actually enabled.",
+      "why": "Shoppers — particularly first-time buyers — often check whether their preferred payment method is accepted before they start a checkout. If the site gives no signal, some will assume it won't work and leave. A simple 'We accept Visa, Mastercard, Apple Pay' line on the product page removes this doubt before it causes drop-off.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Accepted payment methods are listed visibly on the support page and as a trust element on the PDP, matching the methods actually enabled in the live Stripe/Axerve configuration.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/support/page.tsx",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx (trust strip area)"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.88,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: no payment methods listed anywhere on the site",
+        "apps/caryina/src/app/[lang]/support/page.tsx — support page has no payment method section",
+        "apps/caryina/src/app/[lang]/product/[slug]/ — trust strip covers delivery, exchange, origin, secure — not payment methods",
+        "coverage-hint: UI"
+      ],
+      "created_at": "2026-03-14T18:00:03.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180004-HBAG-005",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180004-HBAG-005",
+      "anchor_key": "hbag-order-tracking-undisclosed",
+      "cluster_key": "hbag-post-purchase-experience",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — customers have no information about how to track their order after buying",
+      "domain": "LOGISTICS",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The success page and support page give no information about tracking. DHL is the carrier but this is not disclosed to customers anywhere. There is no mention of whether a tracking number is sent, how to use it, or what to do if it doesn't arrive.",
+      "next_scope_now": "Add tracking guidance to the order success page and support page: state that DHL is the carrier, that a tracking number will be provided by email, and how to contact support if the tracking email doesn't arrive. If DHL tracking link format is known, add a direct-link pattern.",
+      "why": "After placing an order, the next thing every customer thinks about is 'where is it?' A site that doesn't mention tracking at all leaves customers anxious and more likely to contact support unnecessarily — or to assume the order was lost. A simple tracking section on the success page and support page answers this proactively.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Order success page and support page both explain that DHL is used, that a tracking number arrives by email, and what to do if it is missing. Support page links to DHL tracking.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/success/page.tsx",
+        "apps/caryina/src/app/[lang]/support/page.tsx",
+        "apps/caryina/src/lib/legalContent.ts (shipping section)"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: no tracking info disclosed anywhere — DHL used but not mentioned to customers",
+        "apps/caryina/src/app/[lang]/success/page.tsx — success page has no tracking guidance",
+        "apps/caryina/src/app/[lang]/support/page.tsx — support page lists channels and policy links but no tracking section",
+        "coverage-hint: UI"
+      ],
+      "created_at": "2026-03-14T18:00:04.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180005-HBAG-006",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180005-HBAG-006",
+      "anchor_key": "hbag-returns-policy-gaps",
+      "cluster_key": "hbag-trust-and-compliance",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — returns and exchange policy leaves key practical questions unanswered",
+      "domain": "LOGISTICS",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The returns policy covers the 14-day cancellation right and 30-day voluntary exchange, but omits: (1) how long refunds take to process after receipt, (2) the returns address (provided only on request), (3) what happens if the desired exchange item is out of stock, (4) how to cancel before dispatch. These gaps leave customers uncertain about what they can actually expect.",
+      "next_scope_now": "Update legalContent.ts returns section to add: refund processing timeline (EU statutory 14 days from receipt of goods), the physical returns address, an explicit out-of-stock exchange fallback (refund offered if no equivalent in stock), and a pre-dispatch cancellation contact path.",
+      "why": "When a customer decides to return something, the first thing they want to know is 'how long until I get my money back?' and 'where do I send it?'. Right now neither answer appears in the policy. Customers who can't find this information either don't buy (if checking before purchase) or are frustrated when they actually try to return. Clear, complete returns information builds purchase confidence.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Returns policy explicitly states refund processing timeline, includes the returns address, clarifies the out-of-stock exchange fallback, and explains how to cancel an order before it is dispatched.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/lib/legalContent.ts (returns section)",
+        "apps/caryina/src/app/[lang]/returns/page.tsx"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.91,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: refund timeline missing, returns address not public, exchange fallback unspecified, pre-dispatch cancellation path absent",
+        "apps/caryina/src/lib/legalContent.ts — returns policy has 7 sections but omits all four items listed above",
+        "risk_vector: legal-compliance — EU consumer law requires refund timeline disclosure",
+        "coverage-hint: UI"
+      ],
+      "created_at": "2026-03-14T18:00:05.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180006-HBAG-007",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180006-HBAG-007",
+      "anchor_key": "hbag-vat-inclusion-undisclosed",
+      "cluster_key": "hbag-trust-and-compliance",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — EU shoppers can't tell whether the displayed price includes tax",
+      "domain": "SELL",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Prices are displayed in EUR with no indication of whether VAT is included. EU consumer law requires that retail prices shown to consumers include VAT. Italian and German customers in particular will expect the displayed price to be the final all-inclusive price.",
+      "next_scope_now": "Add 'Prices include VAT' (localised: 'Prezzi IVA inclusa' / 'Preise inkl. MwSt.') to the product page price display and shop listing. This is a one-line addition near the price component in each locale.",
+      "why": "In Italy and Germany, shoppers expect the price shown to be the final price — if it's not, they feel misled. EU consumer law actually requires that VAT be included in displayed retail prices. Right now nothing confirms this, which can make customers hesitate or feel uncertain about what they'll actually pay.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "PDP and shop listing prices are accompanied by a locale-appropriate VAT-inclusive label in all three supported languages, satisfying EU retail pricing disclosure requirements.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx (price display area)",
+        "apps/caryina/src/app/[lang]/shop/page.tsx",
+        "apps/caryina/src/lib/contentPacket.ts"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.93,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: no VAT inclusion statement on PDP or shop listing",
+        "risk_vector: legal-compliance — EU consumer law (Directive 2011/83/EU) requires VAT-inclusive pricing for retail consumers",
+        "apps/caryina/src/lib/contentPacket.ts — chrome content has no VAT label entry",
+        "coverage-hint: UI"
+      ],
+      "created_at": "2026-03-14T18:00:06.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180007-HBAG-008",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180007-HBAG-008",
+      "anchor_key": "hbag-brand-email-credibility",
+      "cluster_key": "hbag-trust-and-compliance",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — brand credibility damaged by a hostel email address as the customer contact",
+      "domain": "SELL",
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The customer-facing contact email is hostelpositano@gmail.com. This is the email of the parent hospitality business (Brikette hostel), not a Caryina brand email. Customers who see this will question whether Caryina is a real, independent brand — potentially abandoning purchase or disputing charges.",
+      "next_scope_now": "Investigate: what brand email address should Caryina use (e.g. hello@caryina.com, support@caryina.com)? This requires a domain decision, DNS/email setup, and then updating all references in contentPacket.ts and legalContent.ts. Fact-find to confirm the intended email and set-up path.",
+      "why": "When a fashion brand's only contact email is a hostel address, it looks like a dropshipping side project rather than a real brand. A customer with a problem who sees 'hostelpositano@gmail.com' may not trust the business enough to contact it — or may report the site as suspicious. A brand email address (like hello@caryina.com) costs almost nothing and has an outsized effect on perceived legitimacy.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Caryina uses a dedicated brand email address on its own domain for all customer-facing contact. The hostel email is no longer referenced on any customer-facing page or policy document.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/lib/contentPacket.ts (support email field)",
+        "apps/caryina/src/app/[lang]/support/page.tsx",
+        "apps/caryina/src/lib/legalContent.ts (controller email in privacy policy)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: hostelpositano@gmail.com is the brand support email — belongs to Brikette hostel not Caryina",
+        "apps/caryina/src/lib/contentPacket.ts — support channel email hardcoded as hostelpositano@gmail.com",
+        "apps/caryina/src/lib/legalContent.ts — privacy policy controller email is the same hostel address"
+      ],
+      "created_at": "2026-03-14T18:00:07.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180008-HBAG-009",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180008-HBAG-009",
+      "anchor_key": "hbag-about-page-missing",
+      "cluster_key": "hbag-product-page-completeness",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — 'Designed in Positano' positioning has no brand story page to back it up",
+      "domain": "SELL",
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The site uses 'Designed in Positano, Italy' as its primary differentiation claim on every page, but there is no About page telling the brand story. The company identity (Skylar SRL, Positano) only appears in legal documents. A customer who wants to understand who made this and why cannot find that story.",
+      "next_scope_now": "Fact-find to determine: what brand story should the About page tell? What connection to Positano exists and can be described authentically? What visual and copy direction should the page take, consistent with the existing brand dossier? Outputs: About page content brief + a new localised route at /[lang]/about.",
+      "why": "The 'Designed in Positano' claim is the heart of Caryina's brand. Customers who are drawn to that provenance story — and that's exactly who the brand is targeting — want to know more. With no About page, the claim feels thin. A short, genuine brand story gives shoppers confidence they're buying from a real brand with real origins, not a generic product with Italian branding applied.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A new /about route exists in all three locales, telling the Caryina brand story in a way that is consistent with the brand dossier and reinforces the Positano design provenance claim.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/ (new route to add)",
+        "apps/caryina/src/lib/contentPacket.ts (nav chrome)",
+        "docs/business-os/strategy/HBAG/ (brand dossier reference)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: no About page despite 'Designed in Positano' being the primary brand claim",
+        "apps/caryina/src/app/[lang]/ — no /about route exists",
+        "apps/caryina/src/lib/contentPacket.ts — footer nav has no About link"
+      ],
+      "created_at": "2026-03-14T18:00:08.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180009-HBAG-010",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180009-HBAG-010",
+      "anchor_key": "hbag-social-proof-absent",
+      "cluster_key": "hbag-product-page-completeness",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — no customer reviews or social proof to help shoppers trust a new brand",
+      "domain": "SELL",
+      "provisional_deliverable_family": "multi",
+      "current_truth": "There are no customer reviews, ratings, testimonials, or social media signals anywhere on the site. For a new brand selling a novel product at a fashion price point, this is a significant conversion barrier. All credibility rests on brand copy alone.",
+      "next_scope_now": "Fact-find to determine the right social proof approach for this stage: (a) lightweight options — curated testimonials or press quotes embedded in static content; (b) full review integration — third-party review tool (Trustpilot, Judge.me, etc.) with product-level ratings. Assess what is feasible given the brand is in early launch, what the operator already has (any real customer feedback?), and what integration complexity is acceptable.",
+      "why": "Shoppers on a brand they've never heard of rely heavily on reviews and social signals to decide whether to trust it with their money. When there are none, a significant share of visitors who were nearly ready to buy will hesitate. Even a handful of real testimonials — or a link to a social account with real posts — meaningfully improves conversion for a new brand.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A social proof strategy is chosen (testimonials, third-party reviews, or social integration), implemented on the PDP and/or shop page, with a clear plan for seeding initial content.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx (PDP)",
+        "apps/caryina/src/app/[lang]/shop/page.tsx",
+        "apps/caryina/src/components/"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.83,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: no reviews, ratings, testimonials, or social proof on any page",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx — no review component or rating display",
+        "apps/caryina/src/components/ — no review or testimonial component exists"
+      ],
+      "created_at": "2026-03-14T18:00:09.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180010-HBAG-011",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180010-HBAG-011",
+      "anchor_key": "hbag-social-media-links-absent",
+      "cluster_key": "hbag-product-page-completeness",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — footer has no links to social accounts for customers to verify the brand",
+      "domain": "SELL",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The site footer links to Terms, Privacy, Cookies, Returns, Shipping, and Support — but no social media accounts. Fashion accessory shoppers routinely check a brand's Instagram or TikTok before buying to see real-world product shots and verify it is a legitimate active brand.",
+      "next_scope_now": "Add social media links (Instagram, TikTok) to the SiteFooter component and contentPacket chrome. Use PLACEHOLDER URLs — operator must supply the actual account handles/URLs before build output is deployed.",
+      "why": "A shopper who isn't quite sure about a new brand will often click to the Instagram to see real photos, recent posts, and follower count. It's a quick trust check. If there are no links, they can't do this check — and some will choose not to buy rather than take the risk. Even an early Instagram with just product shots is better than nothing. Adding the links costs almost nothing to implement.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Site footer includes Instagram and TikTok links (PLACEHOLDER URLs to be replaced by operator with real account handles), consistently across all locales.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/components/SiteFooter.tsx",
+        "apps/caryina/src/lib/contentPacket.ts"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.88,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: no social media links in footer",
+        "apps/caryina/src/components/SiteFooter.tsx — footer renders nav links from contentPacket, no social section",
+        "coverage-hint: UI"
+      ],
+      "created_at": "2026-03-14T18:00:10.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180011-HBAG-012",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314180011-HBAG-012",
+      "anchor_key": "hbag-minor-trust-copy-gaps",
+      "cluster_key": "hbag-product-page-completeness",
+      "cluster_fingerprint": "hbag-customer-qa-gaps-2026-03-14",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — scattered small gaps in trust copy, shipping disclosure, and consent transparency",
+      "domain": "PRODUCTS",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Six minor gaps across multiple surfaces: (1) support SLA '48 hours' only visible on the support page, not on PDP or cart; (2) DHL not mentioned to customers anywhere; (3) returns policy link not adjacent to the statutory rights bullet on PDP; (4) no guest checkout / account-not-required statement; (5) order confirmation email not mentioned on the success page; (6) cookie consent banner does not summarise what GA4 collects.",
+      "next_scope_now": "Patch each surface with a one-line addition: (1) add response SLA to PDP trust strip; (2) name DHL in shipping policy and/or shipping PDP text; (3) add returns policy link to proof bullets; (4) add 'no account needed' note to checkout entry; (5) add 'confirmation email sent' message to success page; (6) add one-line GA4 data summary to consent banner copy.",
+      "why": "Each of these gaps is small on its own, but together they add up to a checkout experience where a cautious customer encounters several small moments of uncertainty. Addressing them together in one tidy pass removes all six friction points at once without requiring significant design or architecture work.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All six minor trust and disclosure gaps are patched: SLA on PDP, DHL named, returns link from PDP, no-account note, success page confirmation message, and cookie banner data summary.",
+        "source": "auto"
+      },
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx (trust strip)",
+        "apps/caryina/src/lib/legalContent.ts (shipping + cookie sections)",
+        "apps/caryina/src/components/ConsentBanner.client.tsx",
+        "apps/caryina/src/app/[lang]/success/page.tsx",
+        "apps/caryina/src/app/[lang]/checkout/CheckoutClient.tsx"
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.86,
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: SLA only on support page; DHL undisclosed; no returns link on PDP; no guest checkout note; no confirmation email mention; cookie banner lacks data summary",
+        "apps/caryina/src/components/ConsentBanner.client.tsx — banner has accept/reject only, no data description",
+        "apps/caryina/src/app/[lang]/success/page.tsx — success page has no confirmation email message",
+        "coverage-hint: UI, UX"
+      ],
+      "created_at": "2026-03-14T18:00:11.000Z"
     }
   ]
 }

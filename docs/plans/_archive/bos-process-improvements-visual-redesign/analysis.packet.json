@@ -1,0 +1,198 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "bos-process-improvements-visual-redesign",
+  "source_artifact_path": "docs/plans/bos-process-improvements-visual-redesign/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-ui-contrast-sweep",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/bos-process-improvements-visual-redesign/fact-find.md",
+    "plan": "docs/plans/bos-process-improvements-visual-redesign/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The process-improvements screens use flat, heavily coloured cards that feel visually dense. There is no proper light mode — the operator always works in a forced dark theme. A lighter glassmorphism treatment combined with full light and dark mode support would make the tool noticeably more comfortable to use during the working day, particularly when reviewing and actioning a long list of plans.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Process-improvements pages have glassmorphism-style cards, a restrained/less heavy colour palette, and a polished light/dark mode experience that switches correctly based on system preference.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Glassmorphism via `@utility glass-panel`; light/dark via `@media` guard on `.cmd-centre`; restrained `bg-cmd-hero`",
+      "current_or_option_state": "Same visual outcome but via token indirection",
+      "gap_or_implication": "Option A: direct CSS change; same visual result, fewer abstraction layers",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "All states (empty, collapsed, loading) inherit from `.cmd-centre` token overrides — no per-state code needed",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Option A: tokens propagate automatically to all states",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A (no auth or data change)",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Jest unit tests unaffected; contrast sweep + lp-design-qa post-build are the validation gates",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Contrast sweep required for both",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Blur limited to hero/panel sections — not per-row. GPU load acceptable.",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Blur placement is the critical control; both options apply blur the same way",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "CSS-only; rollback = revert `global.css` + class-name edits in 2 page files + 2 inbox component files. No migration.",
+      "current_or_option_state": "CSS + token file; rollback surface is same or larger.",
+      "gap_or_implication": "Option A rollback: 5 files, class-name only — clean and fast",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "Should the light-mode hero gradient be near-white/neutral or a subtle tinted color?"
+  ],
+  "stage_payload": {
+    "decision_summary": "The `.cmd-centre` CSS class forces a dark theme regardless of system preference and uses heavily saturated blue-navy surfaces with a strong pink-purple hero gradient. The decision is: which architectural approach correctly makes the section light/dark-responsive and adds the glassmorphism depth the operator wants, with minimum blast radius?",
+    "goals": [
+      "`prefers-color-scheme` auto-switches the section correctly — no manual toggle needed",
+      "Hero sections get glassmorphism (backdrop-blur + semi-transparent surface)",
+      "Palette saturation is reduced; coloring is restrained",
+      "Light mode is polished and legible (including correct hero foreground text)",
+      "Dark mode retains its character but with less visual weight"
+    ],
+    "non_goals": [
+      "Full design system token overhaul",
+      "Adding a theme toggle UI control to business-os",
+      "Changing data logic, API routes, or projection code"
+    ],
+    "constraints": [
+      "DS lint rules must pass (`ds/no-raw-tailwind-color`, `ds/enforce-layout-primitives`, `ds/no-physical-direction-classes-in-rtl`)",
+      "`backdrop-filter` is confirmed working in this app"
+    ],
+    "assumptions": [
+      "`prefers-color-scheme` media query in the base `tokens.css` is the existing mechanism; this approach mirrors and extends it",
+      "No user-facing toggle is needed — system preference is the right default for an internal operator tool"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Blast radius",
+        "Why it matters": "Fewer files changed = lower regression risk for an internal tool",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Correctness (light/dark)",
+        "Why it matters": "The fundamental goal is proper mode switching",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "DS lint compliance",
+        "Why it matters": "Violations block CI",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Glassmorphism fidelity",
+        "Why it matters": "Visual quality of the result",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Future-proofing",
+        "Why it matters": "How easy to extend if BOS gets more sections",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Media-guard `.cmd-centre` + `@utility` glassmorphism",
+        "Description": "Wrap existing `.cmd-centre` dark values in `@media prefers-color-scheme: dark` + `html.theme-dark .cmd-centre`; add a clean light-mode `.cmd-centre` block; add `@utility glass-panel` and `@utility bg-cmd-hero-dark`/`bg-cmd-hero-light`; apply semi-transparent backgrounds to cards",
+        "Upside": "Bounded blast radius (5 files); mirrors existing base token pattern exactly",
+        "Downside": "Slightly more CSS rules to maintain; page files need hero glass layer additions",
+        "Key risks": "None — pattern is identical to how `tokens.css` handles dark mode",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Dedicated `--cmd-*` semantic token layer",
+        "Description": "Add `--cmd-surface-glass`, `--cmd-hero-from`, `--cmd-hero-to`, `--cmd-hero-fg` tokens inside `.cmd-centre`, with explicit light/dark value pairs, then use those tokens in all utilities and components",
+        "Upside": "Clean semantic abstraction; easy to tune per-value",
+        "Downside": "More files changed; token layer grows; over-engineered for BOS-internal tooling at this stage",
+        "Key risks": "Token name collisions with future design system expansion",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C — Remove `.cmd-centre`, use Tailwind `dark:` modifiers throughout",
+        "Description": "Delete `.cmd-centre`; apply `dark:bg-...` + `dark:text-...` on every component and page element",
+        "Upside": "Standard Tailwind v4 pattern",
+        "Downside": "Massive edit surface (both inbox components — hundreds of class edits); DS lint rules may conflict; loses the useful isolation that `.cmd-centre` provides; high regression risk",
+        "Key risks": "High test/review burden; easy to miss a `dark:` pair",
+        "Viable?": "No — disproportionate cost"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "**Option A — Media-guard `.cmd-centre` + `@utility` glassmorphism**",
+      "**Why this wins": "**",
+      "**What it depends on": "**",
+      "**Option B (token layer)** — Token indirection adds abstraction without fixing any specific gap. The base token system already handles light/dark correctly; adding another `--cmd-*` layer duplicates the concern without benefit for an internal tool. Deferred": "revisit if BOS grows to multiple themed sections.",
+      "**Option C (Tailwind `dark": "` modifiers throughout)** — Disproportionate edit surface and high regression risk. Loses the clean isolation that `.cmd-centre` provides. Not viable at this scope.",
+      "Q": "Should the light-mode hero gradient be near-white/neutral or a subtle tinted color?",
+      "Why operator input is required": "Preference between two equally correct options — neutral gray vs soft indigo-tinted.",
+      "Planning impact": "Determines specific HSL values for `bg-cmd-hero` light variant. Safe default documented below.",
+      "Safe default": "`linear-gradient(135deg, hsl(240 15% 96%) 0%, hsl(260 20% 92%) 100%)` with `--hero-fg` set to `var(--color-fg)` (dark text). Planning uses this default if no operator preference is provided before build begins."
+    },
+    "rejected_approaches": [
+      "**Option B (token layer)** — Token indirection adds abstraction without fixing any specific gap. The base token system already handles light/dark correctly; adding another `--cmd-*` layer duplicates the concern without benefit for an internal tool. Deferred: revisit if BOS grows to multiple themed sections.",
+      "**Option C (Tailwind `dark:` modifiers throughout)** — Disproportionate edit surface and high regression risk. Loses the clean isolation that `.cmd-centre` provides. Not viable at this scope."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "No Jest test changes expected — unit tests cover behaviour, not class names",
+        "Contrast sweep is mandatory in both modes before the build is complete",
+        "`validate-engineering-coverage.sh` must pass on the plan"
+      ],
+      "sequencing_constraints": [
+        "TASK-01 before TASK-02 (`.cmd-centre` light/dark must exist before hero background can correctly rely on context)",
+        "TASK-03 and TASK-04 after TASK-01 + TASK-02 (glass surfaces only make sense once the underlying background tokens are correct)",
+        "TASK-05 final, post all changes"
+      ],
+      "risks_to_carry_forward": [
+        "`overflow-hidden` on hero section may clip backdrop-blur on inner children — use a background-layer element (absolute-positioned, behind overflow, outside the clip) or accept blur on the section wrapper itself which sits outside its own overflow"
+      ]
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. This is a pure CSS/class-name change. No workflow, CI lane, API route, approval path, or operator runbook is affected.",
+      "areas": []
+    }
+  }
+}

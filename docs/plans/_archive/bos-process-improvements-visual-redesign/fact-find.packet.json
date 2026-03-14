@@ -1,0 +1,170 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "bos-process-improvements-visual-redesign",
+  "source_artifact_path": "docs/plans/bos-process-improvements-visual-redesign/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-ui-contrast-sweep",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/bos-process-improvements-visual-redesign/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The process-improvements screens use flat, heavily coloured cards that feel visually dense. There is no proper light mode — the operator always works in a forced dark theme. A lighter glassmorphism treatment combined with full light and dark mode support would make the tool noticeably more comfortable to use during the working day, particularly when reviewing and actioning a long list of plans.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Process-improvements pages have glassmorphism-style cards, a restrained/less heavy colour palette, and a polished light/dark mode experience that switches correctly based on system preference.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "Flat opaque `bg-surface-1` cards; strong `hsl(320 80% 62%)` hero gradient; `.cmd-centre` forces dark always",
+      "gap_or_implication": "Glass surfaces and restrained palette are absent; light mode renders using dark tokens",
+      "carry_forward_or_notes": "Yes — this is the core deliverable"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Both pages have empty-state cards, loading states, and collapsed sections (just built in TASK-07b)",
+      "gap_or_implication": "Ensure glass effect works at all states including empty-state `border-dashed` cards",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Pure CSS/styling change; no auth, data, or input handling involved",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No log or metric changes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Jest tests cover behaviour, not visuals; `backdrop-blur-sm` already works in this app",
+      "gap_or_implication": "No visual regression coverage; contrast sweep is the gate",
+      "carry_forward_or_notes": "Yes — contrast sweep + lp-design-qa post-build"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "No schema, API, or type changes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`backdrop-filter: blur` has GPU cost; applied to many cards in the inbox (potentially 20+ cards visible)",
+      "gap_or_implication": "Blur on many elements simultaneously may hurt scroll perf on lower-end hardware",
+      "carry_forward_or_notes": "Yes — recommend limiting blur to card-hover or hero section, not every card"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "CSS-only change; no migration needed. Rollback = revert `.cmd-centre` and `bg-cmd-hero` edits",
+      "gap_or_implication": "Low risk; instant rollback by reverting one CSS file + page files",
+      "carry_forward_or_notes": "Yes — note the simple rollback path"
+    }
+  ],
+  "open_operator_questions": [
+    "Should the hero header background in light mode be a very subtle gradient (nearly white) or a soft tinted panel?",
+    "How should hero foreground text (currently `text-hero-foreground`, using `--hero-fg` which is white in both modes) be handled in light mode?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The Business OS process-improvements section (Operator Inbox and In Progress) uses a forced dark theme with flat opaque cards and a strong pink-purple hero gradient. The operator has requested: (1) a glassmorphism treatment with semi-transparent surfaces and backdrop blur applied at the hero/section level (not per row-card), (2) lighter and more restrained colouring, and (3) proper light and dark mode support that switches automatically with system preference (`prefers-color-scheme`). No user-visible theme toggle is in scope — automatic switching is sufficient.",
+    "goals": [
+      "Hero section and page-level panels get `backdrop-filter: blur` and semi-transparent backgrounds — glassmorphism applied at section level, not per list-card row",
+      "Hero header gradient is restrained — lower saturation, works in both light and dark",
+      "`.cmd-centre` scoped theme becomes light/dark responsive, automatically following `prefers-color-scheme` — no toggle needed, no toggle in scope",
+      "Light mode is fully usable and visually polished, not just a grey blob",
+      "Dark mode preserves the existing character but with less visual weight"
+    ],
+    "non_goals": [
+      "Full design system overhaul — changes are scoped to `apps/business-os/src/styles/global.css`, `layout.tsx`, `new-ideas/page.tsx`, `in-progress/page.tsx`, and the two inbox components",
+      "Adding a theme toggle UI control to business-os (the base token system already handles `prefers-color-scheme` automatically)",
+      "Changing any data logic, API routes, or projection code"
+    ],
+    "constraints": [
+      "Must comply with DS lint rules (`ds/no-raw-tailwind-color`, `ds/enforce-layout-primitives`, `ds/no-physical-direction-classes-in-rtl`)"
+    ],
+    "assumptions": [
+      "No explicit theme toggle is needed — `prefers-color-scheme` media query in `tokens.css` handles automatic mode switching once `.cmd-centre` stops overriding it",
+      "The Tailwind v4 `backdrop-blur-*` utilities are available globally without extra config"
+    ],
+    "key_entry_points": [
+      "`apps/business-os/src/app/process-improvements/layout.tsx` — applies `.cmd-centre` class, wrapping all process-improvements routes",
+      "`apps/business-os/src/app/process-improvements/new-ideas/page.tsx:16` — applies `bg-cmd-hero` on hero section",
+      "`apps/business-os/src/app/process-improvements/in-progress/page.tsx:22` — applies `bg-cmd-hero` on hero section"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None. One open question (light-mode hero colour) has a safe documented default.",
+      "Recommended next step": "`/lp-do-analysis bos-process-improvements-visual-redesign`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "`.cmd-centre` token override",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — single usage, safe to change",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`bg-cmd-hero` gradient",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — only on 2 page files",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Glassmorphism on hero section",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`overflow-hidden` on hero section: blur must be on background layer not on contained child",
+        "Resolution Required": "No — structurally workable; note in plan"
+      },
+      {
+        "Scope Area": "Per-card blur (list items)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Performance] [Advisory]: GPU cost of blur on 20+ cards",
+        "Resolution Required": "No — resolved: blur on hero/panels only, not per-row cards"
+      },
+      {
+        "Scope Area": "Light mode rendering",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Token system handles it automatically once `.cmd-centre` stops overriding",
+        "Resolution Required": "No — confirmed fix path"
+      },
+      {
+        "Scope Area": "DS lint compliance",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Confirmed: must use `hsl(var(--...) / alpha)` pattern; `ds/no-raw-tailwind-color` enforced",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test impact",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Existing Jest tests cover behaviour only; visual tests need contrast sweep",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only. This work changes CSS styling and class token overrides only — no multi-step workflow, CI lane, approval path, or lifecycle state is affected.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

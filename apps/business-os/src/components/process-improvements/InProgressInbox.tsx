@@ -212,7 +212,7 @@ export function ActivePlanCard({
   return (
     <div
       className={cn(
-        "group rounded-xl border bg-surface-1 shadow-elevation-1 transition-all duration-200 hover:shadow-elevation-2",
+        "group rounded-xl border bg-surface-1/85 shadow-elevation-1 transition-all duration-200 hover:shadow-elevation-2",
         hasBlocked ? "border-warning-soft" : "border-border"
       )}
     >

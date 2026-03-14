@@ -1026,7 +1026,7 @@ function WorkItemCard({
   return (
     <div
       className={cn(
-        "group relative rounded-xl border bg-surface-1 shadow-elevation-1 transition-all duration-200 hover:shadow-elevation-3",
+        "group relative rounded-xl border bg-surface-1/85 shadow-elevation-1 transition-all duration-200 hover:shadow-elevation-3",
         item.isOverdue
           ? "border-danger-soft"
           : isSelected

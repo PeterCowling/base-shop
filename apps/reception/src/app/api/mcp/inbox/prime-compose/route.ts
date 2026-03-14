@@ -2,8 +2,7 @@ import { NextResponse } from "next/server";
 
 import {
   buildPrimeInboxThreadId,
-  initiatePrimeOutboundThread,
-  sendPrimeInboxThread,
+  staffBroadcastSend,
 } from "@/lib/inbox/prime-review.server";
 import { recordInboxEvent } from "@/lib/inbox/telemetry.server";
 
@@ -37,11 +36,12 @@ export async function POST(request: Request) {
     );
   }
 
-  let initiateResult: Awaited<ReturnType<typeof initiatePrimeOutboundThread>>;
+  let broadcastResult: Awaited<ReturnType<typeof staffBroadcastSend>>;
   try {
-    initiateResult = await initiatePrimeOutboundThread({
+    broadcastResult = await staffBroadcastSend({
       text,
       actorUid: auth.uid,
+      roles: auth.roles,
     });
   } catch {
     return NextResponse.json(
@@ -50,25 +50,17 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!initiateResult) {
+  if (!broadcastResult) {
     return NextResponse.json(
       { success: false, error: "Prime messaging not configured" }, // i18n-exempt -- INBOX-101 machine-readable API error [ttl=2026-12-31]
       { status: 503 },
     );
   }
 
-  const broadcastPrefixedId = buildPrimeInboxThreadId(
-    initiateResult.detail.thread.id,
-  );
-
-  try {
-    await sendPrimeInboxThread(broadcastPrefixedId, auth.uid);
-  } catch {
-    return NextResponse.json(
-      { success: false, error: "Failed to send broadcast" }, // i18n-exempt -- INBOX-101 machine-readable API error [ttl=2026-12-31]
-      { status: 502 },
-    );
-  }
+  // WHOLE_HOSTEL_BROADCAST_CHANNEL_ID lives in the Prime app and is not importable here.
+  // The literal 'broadcast_whole_hostel' is stable by definition:
+  // buildBroadcastChannelId('whole_hostel') = BROADCAST_CHANNEL_PREFIX + '_' + 'whole_hostel'
+  const broadcastPrefixedId = buildPrimeInboxThreadId("broadcast_whole_hostel");
 
   // Fire-and-forget: intentional. The broadcast was already sent successfully above.
   // prime_broadcast_initiated is a CRITICAL_EVENT_TYPE so recordInboxEvent will

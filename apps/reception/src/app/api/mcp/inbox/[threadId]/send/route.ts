@@ -66,7 +66,7 @@ export async function POST(
       const detailBeforeSend = await getPrimeInboxThreadDetail(params.threadId);
       const draftBeforeSend = detailBeforeSend?.currentDraft ?? null;
 
-      const result = await sendPrimeInboxThread(params.threadId, auth.uid);
+      const result = await sendPrimeInboxThread(params.threadId, auth.uid, auth.roles);
 
       // Log prime_manual_reply when a Prime draft is sent without a template
       if (!draftBeforeSend?.templateUsed) {

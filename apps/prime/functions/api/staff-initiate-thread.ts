@@ -1,6 +1,10 @@
 import type { D1Database } from '@acme/platform-core/d1';
 
 import { WHOLE_HOSTEL_BROADCAST_CHANNEL_ID } from '../../src/lib/chat/directMessageChannel';
+import {
+  isActorClaimsResponse,
+  resolveActorClaims,
+} from '../lib/actor-claims-resolver';
 import { errorResponse, type FirebaseEnv, jsonResponse } from '../lib/firebase-rest';
 import { getPrimeMessagingDb, hasPrimeMessagingDb } from '../lib/prime-messaging-db';
 import { upsertPrimeMessageThread } from '../lib/prime-messaging-repositories';
@@ -12,6 +16,7 @@ interface Env extends FirebaseEnv {
   PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;
   PRIME_STAFF_OWNER_GATE_TOKEN?: string;
   PRIME_MESSAGING_DB?: D1Database;
+  PRIME_ACTOR_CLAIMS_SECRET?: string;
 }
 
 interface StaffInitiateThreadRequestBody {
@@ -23,6 +28,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (gateResponse) {
     return gateResponse;
   }
+
+  const claimsResult = await resolveActorClaims(request, env);
+  if (isActorClaimsResponse(claimsResult)) {
+    return claimsResult;
+  }
+  const { uid: actorUid } = claimsResult;
 
   if (!hasPrimeMessagingDb(env)) {
     return errorResponse('PRIME_MESSAGING_DB binding is required for Prime review writes', 503); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
@@ -40,7 +51,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return errorResponse('plainText is required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
-  const actorUid = request.headers.get('x-prime-actor-uid')?.trim() || 'prime-owner';
   const db = getPrimeMessagingDb(env);
 
   try {

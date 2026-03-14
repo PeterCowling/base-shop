@@ -118,6 +118,7 @@ export async function PUT(
           templateUsed: parsedPrimePayload.data.templateUsed,
         },
         auth.uid,
+        auth.roles,
       );
 
       return NextResponse.json({

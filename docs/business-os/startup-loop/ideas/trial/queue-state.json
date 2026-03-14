@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-14T20:00:00.000Z",
+  "last_updated": "2026-03-14T11:04:14.501Z",
   "counts": {
-    "enqueued": 66,
-    "processed": 25,
+    "enqueued": 56,
+    "processed": 34,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 378,
+    "completed": 379,
     "fact_find_ready": 43,
     "plan_ready": 0,
-    "micro_build_ready": 20,
+    "micro_build_ready": 10,
     "briefing_ready": 1,
     "total": 679
   },
@@ -33172,10 +33172,10 @@
         "/rooms-grid"
       ],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.92,
-      "queue_state": "processed",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: 8+ status colours with no legend; colour meaning requires tribal knowledge",
         "apps/reception/src/components/roomgrid/constants/statusColors.ts — complete colour map already exists as source of truth",
@@ -33190,6 +33190,11 @@
         "target_path": "docs/plans/reception-roomgrid-legend/micro-build.md",
         "processed_at": "2026-03-14T19:05:00.000Z",
         "route": "dispatch-routed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-roomgrid-legend/micro-build.md",
+        "completed_at": "2026-03-14T11:04:14.497Z",
+        "outcome": "Colour legend added to rooms-grid page with 6 labelled swatches"
       }
     },
     {

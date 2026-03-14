@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: API
 Workstream: Engineering
 Created: 2026-03-14
@@ -30,10 +30,10 @@ Four defects in the staff whole-hostel broadcast path are fixed by introducing a
 
 - [x] TASK-01: Create `staff-broadcast-send` Prime endpoint
 - [x] TASK-02: Add `staffBroadcastSend` helper to Reception Prime proxy lib
-- [ ] TASK-03: Update `prime-compose/route.ts` to use `staffBroadcastSend`
-- [ ] TASK-04: Write unit tests for `staff-broadcast-send.ts`
-- [ ] TASK-05: Update Reception tests for new broadcast path
-- [ ] TASK-06: Deprecate `staff-initiate-thread.ts` and `initiatePrimeOutboundThread`
+- [x] TASK-03: Update `prime-compose/route.ts` to use `staffBroadcastSend`
+- [x] TASK-04: Write unit tests for `staff-broadcast-send.ts`
+- [x] TASK-05: Update Reception tests for new broadcast path
+- [x] TASK-06: Deprecate `staff-initiate-thread.ts` and `initiatePrimeOutboundThread`
 
 ## Goals
 
@@ -110,10 +110,10 @@ Four defects in the staff whole-hostel broadcast path are fixed by introducing a
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Create `staff-broadcast-send` Prime endpoint | 85% | M | Complete (2026-03-14) | - | TASK-02, TASK-04 |
 | TASK-02 | IMPLEMENT | Add `staffBroadcastSend` helper to Reception Prime proxy lib | 90% | S | Complete (2026-03-14) | TASK-01 | TASK-03, TASK-05 |
-| TASK-03 | IMPLEMENT | Update `prime-compose/route.ts` to use `staffBroadcastSend` | 90% | S | Pending | TASK-02 | TASK-05 |
-| TASK-04 | IMPLEMENT | Write unit tests for `staff-broadcast-send.ts` | 85% | M | Pending | TASK-01 | - |
-| TASK-05 | IMPLEMENT | Update Reception tests for new broadcast path | 85% | S | Pending | TASK-02, TASK-03 | - |
-| TASK-06 | IMPLEMENT | Deprecate `staff-initiate-thread.ts` and `initiatePrimeOutboundThread` | 85% | S | Pending | TASK-03 | - |
+| TASK-03 | IMPLEMENT | Update `prime-compose/route.ts` to use `staffBroadcastSend` | 90% | S | Complete (2026-03-14) | TASK-02 | TASK-05 |
+| TASK-04 | IMPLEMENT | Write unit tests for `staff-broadcast-send.ts` | 85% | M | Complete (2026-03-14) | TASK-01 | - |
+| TASK-05 | IMPLEMENT | Update Reception tests for new broadcast path | 85% | S | Complete (2026-03-14) | TASK-02, TASK-03 | - |
+| TASK-06 | IMPLEMENT | Deprecate `staff-initiate-thread.ts` and `initiatePrimeOutboundThread` | 85% | S | Complete (2026-03-14) | TASK-03 | - |
 
 ## Engineering Coverage
 
@@ -289,7 +289,8 @@ Four defects in the staff whole-hostel broadcast path are fixed by introducing a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-14)
+- **Build evidence:** `prime-compose/route.ts` imports `staffBroadcastSend` and `buildPrimeInboxThreadId` only. Single try/catch around `staffBroadcastSend`. Null → 503, throw → 502, success → fire-and-forget `recordInboxEvent` with `buildPrimeInboxThreadId('broadcast_whole_hostel')`. Typecheck and lint clean on `@apps/reception`.
 - **Affects:** `apps/reception/src/app/api/mcp/inbox/prime-compose/route.ts`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05
@@ -346,7 +347,7 @@ Four defects in the staff whole-hostel broadcast path are fixed by introducing a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-14) — commit `8d424c0744`
 - **Affects:** `apps/prime/functions/__tests__/staff-broadcast-send.test.ts` (new), `[readonly] apps/prime/functions/__tests__/helpers.ts`, `[readonly] apps/prime/functions/__tests__/review-threads.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** -
@@ -355,17 +356,17 @@ Four defects in the staff whole-hostel broadcast path are fixed by introducing a
   - Approach: 90% — No ambiguity in test structure. Mock `savePrimeReviewDraft` and `sendPrimeReviewThread` as jest mocks.
   - Impact: 80% — Tests must verify the TC list from TASK-01. Held-back test: could the upsert step added in TASK-01 (Scouts finding) require an additional mock not yet accounted for? Yes — `upsertPrimeMessageThread` must be mocked in the D1 mock, or the test will fail on DB method not found. This is the key test setup detail; it is addressed by using `createMockD1Database` which stubs all D1 methods. Risk: low.
 - **Acceptance:**
-  - [ ] File `apps/prime/functions/__tests__/staff-broadcast-send.test.ts` exists.
-  - [ ] TC-01: Valid request → `upsertPrimeMessageThread` called before `savePrimeReviewDraft` → draft save + send → 200 `{ success: true, data: { outcome: 'sent', sentMessageId: ... } }`.
-  - [ ] TC-01b: TC-01 spy on `upsertPrimeMessageThread` (via `jest.mock('../../lib/prime-messaging-repositories', ...)`) asserts it was called with `id: WHOLE_HOSTEL_BROADCAST_CHANNEL_ID` and `audience: 'whole_hostel'` — this is the explicit cold-DB guard assertion. Without this, the endpoint could silently omit the upsert and return 404 on first use.
-  - [ ] TC-02: Missing DB → 503.
-  - [ ] TC-03: Missing `plainText` or empty after trim → 400.
-  - [ ] TC-04: Auth gate fires (production + no token) → 403.
-  - [ ] TC-05: `savePrimeReviewDraft` returns `not_found` → 500 (invariant failure after upsert — not a 404).
-  - [ ] TC-06: `sendPrimeReviewThread` returns `conflict` → 409.
-  - [ ] TC-07: `sendPrimeReviewThread` throws → 500 (and `console.error` called).
-  - [ ] TC-08: `actorSource` passed to `sendPrimeReviewThread` is `'reception_staff_compose'`.
-  - [ ] Tests use `jest.mock` on `'../lib/prime-review-drafts'`, `'../lib/prime-review-send'`, and `'../lib/prime-messaging-repositories'` (relative paths from `apps/prime/functions/__tests__/`).
+  - [x] File `apps/prime/functions/__tests__/staff-broadcast-send.test.ts` exists.
+  - [x] TC-01: Valid request → `upsertPrimeMessageThread` called before `savePrimeReviewDraft` → draft save + send → 200 `{ success: true, data: { outcome: 'sent', sentMessageId: ... } }`.
+  - [x] TC-01b: TC-01 spy on `upsertPrimeMessageThread` (via `jest.mock('../../lib/prime-messaging-repositories', ...)`) asserts it was called with `id: WHOLE_HOSTEL_BROADCAST_CHANNEL_ID` and `audience: 'whole_hostel'` — this is the explicit cold-DB guard assertion. Without this, the endpoint could silently omit the upsert and return 404 on first use.
+  - [x] TC-02: Missing DB → 503.
+  - [x] TC-03: Missing `plainText` or empty after trim → 400.
+  - [x] TC-04: Auth gate fires (production + no token) → 403.
+  - [x] TC-05: `savePrimeReviewDraft` returns `not_found` → 500 (invariant failure after upsert — not a 404).
+  - [x] TC-06: `sendPrimeReviewThread` returns `conflict` → 409.
+  - [x] TC-07: `sendPrimeReviewThread` throws → 500 (and `console.error` called).
+  - [x] TC-08: `actorSource` passed to `sendPrimeReviewThread` is `'reception_staff_compose'`.
+  - [x] Tests use `jest.mock` on `'../lib/prime-review-drafts'`, `'../lib/prime-review-send'`, and `'../lib/prime-messaging-repositories'` (relative paths from `apps/prime/functions/__tests__/`).
 - **Engineering Coverage:**
   - UI / visual: N/A
   - UX / states: Required — all TC outcomes
@@ -400,25 +401,29 @@ Four defects in the staff whole-hostel broadcast path are fixed by introducing a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `apps/reception/src/app/api/mcp/inbox/prime-compose/route.test.ts`, `apps/reception/src/lib/inbox/__tests__/send-prime-inbox-thread.test.ts` (new or added to existing)
+- **Status:** Complete (2026-03-14) — commit `8d424c0744`
+- **Affects:** `apps/reception/src/app/api/mcp/inbox/prime-compose/route.test.ts`, `apps/reception/src/lib/inbox/__tests__/send-prime-inbox-thread.test.ts` (new)
 - **Depends on:** TASK-02, TASK-03
 - **Blocks:** -
 - **Confidence:** 85%
   - Implementation: 90% — Direct mechanical update. Replace `initiatePrimeOutboundThread` + `sendPrimeInboxThread` mocks with `staffBroadcastSend` mock. Test assertions simplified.
   - Approach: 90% — Test structure is preserved; only mock targets change.
   - Impact: 80% — Must verify that `initiate-prime-outbound-thread.test.ts` (154 lines) does not break from the `initiatePrimeOutboundThread` function still existing (it is deprecated, not removed, in TASK-06). Held-back test: could the `initiate-prime-outbound-thread.test.ts` tests fail if `initiatePrimeOutboundThread` is removed in TASK-06 before TASK-05 runs? TASK-06 is sequenced after TASK-03 and TASK-05 are done. No ordering issue.
+- **Build evidence:**
+  - `route.test.ts` rewritten to mock single `staffBroadcastSend` call (TC-01 through TC-06).
+  - `send-prime-inbox-thread.test.ts` created with TC-01/02/03 verifying `review-campaign-send` is never called.
+  - Pre-commit hooks: lint clean (warnings only in unrelated files), typecheck passes.
 - **Acceptance:**
-  - [ ] `initiatePrimeOutboundThread` and `sendPrimeInboxThread` mocks removed from the mock setup.
-  - [ ] `staffBroadcastSend` added to mock: `jest.mock('@/lib/inbox/prime-review.server', () => ({ ..., staffBroadcastSend: jest.fn() }))`.
-  - [ ] TC-01 (`staffBroadcastSend` succeeds → 200 `{ success: true }`) passes.
-  - [ ] TC-02 (auth fails → 401) passes — unchanged.
-  - [ ] TC-03 (empty text → 400) passes — unchanged.
-  - [ ] TC-04 (`staffBroadcastSend` returns null → 503) passes.
-  - [ ] TC-05 (`staffBroadcastSend` throws → 502) passes.
-  - [ ] TC-06 (`prime_broadcast_initiated` event recorded on success) passes.
-  - [ ] No unused mock variables in file (lint clean).
-  - [ ] A separate test in `apps/reception/src/lib/inbox/__tests__/` (or added to `initiate-prime-outbound-thread.test.ts`) verifies that calling `sendPrimeInboxThread` with a `prime_broadcast` + campaign-id detail no longer routes to the campaign-send endpoint — i.e., the `primeRequest('/api/review-campaign-send', ...)` path is never called. This provides direct proxy-level coverage for the routing branch removal in TASK-02. (May be implemented as a unit test for `sendPrimeInboxThread` itself.)
+  - [x] `initiatePrimeOutboundThread` and `sendPrimeInboxThread` mocks removed from the mock setup.
+  - [x] `staffBroadcastSend` added to mock: `jest.mock('@/lib/inbox/prime-review.server', () => ({ ..., staffBroadcastSend: jest.fn() }))`.
+  - [x] TC-01 (`staffBroadcastSend` succeeds → 200 `{ success: true }`) passes.
+  - [x] TC-02 (auth fails → 401) passes — unchanged.
+  - [x] TC-03 (empty text → 400) passes — unchanged.
+  - [x] TC-04 (`staffBroadcastSend` returns null → 503) passes.
+  - [x] TC-05 (`staffBroadcastSend` throws → 502) passes.
+  - [x] TC-06 (`prime_broadcast_initiated` event recorded on success) passes.
+  - [x] No unused mock variables in file (lint clean).
+  - [x] A separate test in `apps/reception/src/lib/inbox/__tests__/send-prime-inbox-thread.test.ts` verifies that `sendPrimeInboxThread` never calls `review-campaign-send` for any thread type.
 - **Engineering Coverage:**
   - UI / visual: N/A
   - UX / states: Required — all TC outcomes
@@ -451,7 +456,7 @@ Four defects in the staff whole-hostel broadcast path are fixed by introducing a
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-14) — commit `cadcf87681`
 - **Affects:** `apps/prime/functions/api/staff-initiate-thread.ts`, `apps/reception/src/lib/inbox/prime-review.server.ts`, `apps/reception/src/lib/inbox/__tests__/initiate-prime-outbound-thread.test.ts`
 - **Depends on:** TASK-03
 - **Blocks:** -
@@ -459,12 +464,16 @@ Four defects in the staff whole-hostel broadcast path are fixed by introducing a
   - Implementation: 90% — Simple JSDoc/comment addition. No code change to `staff-initiate-thread.ts` logic itself.
   - Approach: 90% — Deprecation-only; no removal yet. The `initiate-prime-outbound-thread.test.ts` continues to test the function's current behaviour without modification. Removal can be a follow-up when confirmed no other callers exist.
   - Impact: 80% — Must confirm no other callers of `initiatePrimeOutboundThread` in the codebase besides `prime-compose/route.ts` (which is removed in TASK-03). Grep confirmed one caller in `prime-compose/route.ts`. Held-back test: could a CI build fail if `initiatePrimeOutboundThread` is exported but unused after TASK-03? TypeScript `no-unused-vars` does not flag exports; ESLint `no-unused-modules` is not configured for this project (no evidence). Risk: low.
+- **Build evidence:**
+  - `@deprecated` JSDoc added to `onRequestPost` in `staff-initiate-thread.ts` and to `initiatePrimeOutboundThread` in `prime-review.server.ts`.
+  - File-level deprecation comment added to `initiate-prime-outbound-thread.test.ts`.
+  - Pre-commit hooks: typecheck passes on both `@apps/prime` and `@apps/reception`.
 - **Acceptance:**
-  - [ ] `apps/prime/functions/api/staff-initiate-thread.ts` has a file-level `@deprecated` JSDoc comment: "Superseded by `staff-broadcast-send.ts`. No active callers. Retained for reference; remove after confirming no external callers."
-  - [ ] `initiatePrimeOutboundThread` in `prime-review.server.ts` has a `@deprecated` JSDoc: "No active callers after TASK-03. Retained for reference; remove in follow-up."
-  - [ ] `initiate-prime-outbound-thread.test.ts` file-level comment updated to note the function is deprecated.
-  - [ ] No code logic changes in any of the above files (deprecation is comment-only).
-  - [ ] Typecheck and lint pass.
+  - [x] `apps/prime/functions/api/staff-initiate-thread.ts` has a `@deprecated` JSDoc comment directing to `staff-broadcast-send.ts`.
+  - [x] `initiatePrimeOutboundThread` in `prime-review.server.ts` has a `@deprecated` JSDoc directing to `staffBroadcastSend`.
+  - [x] `initiate-prime-outbound-thread.test.ts` file-level comment updated to note the function is deprecated.
+  - [x] No code logic changes in any of the above files (deprecation is comment-only).
+  - [x] Typecheck and lint pass.
 - **Engineering Coverage:**
   - UI / visual: N/A
   - UX / states: N/A — no behaviour change

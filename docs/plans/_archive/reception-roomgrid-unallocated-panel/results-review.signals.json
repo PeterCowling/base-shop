@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-14T12:55:01.368Z",
+  "plan_slug": "reception-roomgrid-unallocated-panel",
+  "review_cycle_key": "reception-roomgrid-unallocated-panel",
+  "source_path": "docs/plans/reception-roomgrid-unallocated-panel/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

@@ -1,0 +1,257 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-roomgrid-unallocated-panel",
+  "source_artifact_path": "docs/plans/reception-roomgrid-unallocated-panel/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-roomgrid-unallocated-panel/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Guests with confirmed bookings arrive at the hostel with no bed assigned because staff cannot see unallocated occupants anywhere on the rooms grid. The data exists but is hidden from the staff view.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can identify all unallocated occupants directly from the rooms-grid page before guests arrive, eliminating the failure mode where guests arrive with no room assignment.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "`UnallocatedPanel` built with DS `Stack`/`Inline` primitives; uses `border-border-2`, `bg-surface`, `text-foreground` tokens matching existing panels; hidden when empty",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "Post-build design QA required",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Empty: panel hidden entirely. Loading: rendered only inside `!loading` block (existing gate). Error: parent error message covers page. Read-only list.",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "No separate loading spinner needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — internal tool, read-only, no new auth surface, data already subscribed",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Observability delivered by the panel itself (staff see unallocated count visually). No `console.warn` on recompute — normal operational state.",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No hook-level logging added",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "4 unit test cases for hook computation; `UnallocatedPanel` render tests; `RoomsGrid.test.tsx` mock update (required, not optional) + conditional panel assertions",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Tests run in CI only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`IGuestByRoomData.allocated?: string` type fix; new `UnallocatedOccupant` type; `useGridData` return type update; `BookingDetailsModal` TypeScript verified after type change",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "`bookedRoom` fallback pattern documented in TASK-02",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "O(N) second pass acceptable at hostel booking volumes; no extra Firebase reads; memo recomputes at same frequency as `allRoomData`",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Purely additive; rollback = revert TASK-01–05; no feature flag needed; no data migration",
+      "current_or_option_state": "All tasks",
+      "gap_or_implication": "Internal tool — no staged rollout",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "`useGridData.ts` line 241 silently drops occupants whose `guestByRoomData` entry has no valid allocated room, making them invisible on the rooms-grid page. This plan adds a second `useMemo` to `useGridData` that captures these occupants into a typed `UnallocatedOccupant[]`, then renders them in a new read-only `UnallocatedPanel` component wired into `RoomsGrid.tsx`. v1 is read-only (no allocation action); the changes are purely additive and leave existing room panels untouched. Four test tasks cover the new hook computation, component rendering, and the required `RoomsGrid.test.tsx` mock updat",
+    "goals": [
+      "Surface all unallocated occupants within the selected date window on the rooms-grid page.",
+      "Show enough context per occupant (name, booking ref, check-in/check-out, booked room, status) for staff to act.",
+      "Keep the change purely additive — no changes to existing room panel filter logic.",
+      "Integrate with the existing Firebase subscription pipeline (no new `onValue` reads)."
+    ],
+    "non_goals": [
+      "Allocation action from the unallocated panel in v1. `BookingDetailsModal` is NOT safe to reuse (it moves all occupants under the booking ref). A future occupant-scoped action is deferred.",
+      "New Firebase paths or data model changes.",
+      "Server-side notifications for unallocated bookings.",
+      "i18n — English-only internal tool."
+    ],
+    "constraints": [
+      "DS primitives (`Stack`, `Inline`, `Cluster`) required for layout.",
+      "No new Firebase subscriptions — must reuse existing `useGridData` data.",
+      "`BookingDetailsModal` is unsafe for single-occupant allocation use.",
+      "Tests run in CI only (`docs/testing-policy.md`). Use `pnpm --filter reception typecheck` and `pnpm --filter reception lint` locally."
+    ],
+    "assumptions": [
+      "\"Unallocated\" = `guestByRoomData[occId]?.allocated` absent, `undefined`, `null`, empty string, OR not in `knownRooms`.",
+      "Date-window filter (checkInDate/checkOutDate vs page startDate/endDate) applies to the unallocated panel.",
+      "v1 is read-only.",
+      "`bookedRoom` prefers `guestByRoomData[occId]?.booked`; falls back to `bookingsData[ref]?.[occId]?.roomNumbers[0]`; displays \"—\" when both absent."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Second `useMemo` added to `useGridData.ts` that scans `bookingsData` and `guestByRoomData` to collect occupants where `allocated` is absent/empty/not-in-knownRooms and booking overlaps the selected date window.",
+      "New `UnallocatedOccupant` type exported from `useGridData.ts`.",
+      "`IGuestByRoomData.allocated` corrected to `allocated?: string`.",
+      "`UnallocatedPanel` component rendered above the room list in `RoomsGrid.tsx`, hidden when empty.",
+      "Why planning is not reopening option selection:",
+      "Analysis settled the option comparison with a decisive recommendation. No operator-only forks remain for v1."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Fix `allocated` type to optional and define `UnallocatedOccupant` type",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/hooks/data/roomgrid/useGuestByRoomData.ts`, `apps/reception/src/hooks/data/roomgrid/useGridData.ts`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add `unallocatedOccupants` computation to `useGridData`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03",
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/hooks/data/roomgrid/useGridData.ts`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Create `UnallocatedPanel` component",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — new file `apps/reception/src/components/roomgrid/UnallocatedPanel.tsx`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Wire `UnallocatedPanel` into `RoomsGrid.tsx`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/components/roomgrid/RoomsGrid.tsx`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Write tests (hook computation, component render, RoomsGrid integration)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/hooks/data/roomgrid/__tests__/useGridData.test.ts`, `apps/reception/src/components/roomgrid/__tests__/UnallocatedPanel.test.tsx` (new), `apps/reception/src/components/roomgrid/__tests__/RoomsGrid.test.tsx`",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Staff rooms-grid view",
+          "trigger": "Staff opens `/rooms-grid` page",
+          "flow": "(1) Page mounts → `useGridData` subscribes to four Firebase nodes (unchanged); (2) `allRoomData` memo computes room panels (unchanged); (3) NEW: second `useMemo` scans `bookingsData`+`guestByRoomData`, collects occupants where `allocated` absent/empty/not-in-knownRooms AND booking overlaps date window → `unallocatedOccupants`; (4) `RoomsGrid.tsx` renders `UnallocatedPanel` above room list when `unallocatedOccupants.length > 0`, hidden otherwise; (5) Staff sees name, booking ref, check-in/check-out, booked room, status per unallocated occupant",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": "02 03 04",
+          "seams": "Rollback: revert TASK-01–04 commits; no DB change"
+        },
+        {
+          "id": null,
+          "label": "Data contract",
+          "trigger": "Build",
+          "flow": "`IGuestByRoomData.allocated` becomes optional; `UnallocatedOccupant` type exported; `useGridData` return includes `unallocatedOccupants`; `BookingDetailsModal` TypeScript verified (uses optional chaining already — no change expected)",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "If `BookingDetailsModal` TypeScript fails after type change, fix is contained to that file"
+        },
+        {
+          "id": null,
+          "label": "Test coverage",
+          "trigger": "CI push",
+          "flow": "`useGridData.test.ts` gains 4 unallocated cases; `RoomsGrid.test.tsx` mock updated to include `unallocatedOccupants: []`; `UnallocatedPanel` render tests added",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Tests run in CI only — push and watch"
+        }
+      ]
+    }
+  }
+}

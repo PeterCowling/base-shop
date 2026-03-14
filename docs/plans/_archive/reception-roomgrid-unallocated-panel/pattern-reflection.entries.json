@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-14T12:55:17.683Z",
+  "plan_slug": "reception-roomgrid-unallocated-panel",
+  "review_cycle_key": "reception-roomgrid-unallocated-panel",
+  "source_path": "docs/plans/reception-roomgrid-unallocated-panel/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

@@ -1,0 +1,30 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-unallocated-panel/fact-find.md",
+      "line": "122",
+      "message": "The dependency map still says `BookingDetailsModal` \"can reuse for unallocated occupant drill-down\", but the live modal is not safely reusable for that path: it always exposes the move UI when `bookingRef` exists and `handleConfirmMoveBooking` reassigns every occupant under the booking, not just the selected occupant. This conflicts with the later read-only-v1 scoping and can mislead analysis back toward the unsafe reuse path."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-unallocated-panel/fact-find.md",
+      "line": "132",
+      "message": "The test-infrastructure section still lists `pnpm --filter reception test`, but `docs/testing-policy.md:14-17` and `docs/testing-policy.md:28-45` explicitly ban local Jest runs and require CI-only execution. That is stale guidance for the implementer."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-unallocated-panel/fact-find.md",
+      "line": "336",
+      "message": "The analysis handoff still tells analysis to focus on \"modal date semantics for `BookingDetailsModal` reuse\", even though this same fact-find now concludes that reuse is blocked and v1 defaults to a read-only panel. Carrying that forward reopens a path the document itself has already ruled unsafe."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "durationMs": 130757,
+  "round3_lp_score": 4.0,
+  "post_loop_gate": "credible"
+}

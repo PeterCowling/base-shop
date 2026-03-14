@@ -1,0 +1,238 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-roomgrid-unallocated-panel",
+  "source_artifact_path": "docs/plans/reception-roomgrid-unallocated-panel/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-roomgrid-unallocated-panel/fact-find.md",
+    "plan": "docs/plans/reception-roomgrid-unallocated-panel/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Guests with confirmed bookings arrive at the hostel with no bed assigned because staff cannot see unallocated occupants anywhere on the rooms grid. The data exists but is hidden from the staff view.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can identify all unallocated occupants directly from the rooms-grid page before guests arrive, eliminating the failure mode where guests arrive with no room assignment.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Panel rendered by `UnallocatedPanel` using DS primitives — identical for both",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "`UnallocatedPanel` renders above room list, using `Stack`/`Inline`, `border-border-2`, `bg-surface` tokens to match existing panel style. Badge with count in `RoomsGrid` header. Hides when `unallocatedOccupants.length === 0`.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Read-only list for both; empty-state hides panel; loading/error propagate from shared hook state",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Empty state: panel hidden entirely (not an empty card). Loading: no separate loading state — panel rendered only after `!loading`. Error: parent error message covers both room panels and unallocated panel.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — internal tool, no new auth surface, no writes in v1",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Option A: observability seam is the panel itself — staff can see unallocated count visually",
+      "current_or_option_state": "Option B: same",
+      "gap_or_implication": "No `console.warn` on every recompute — the existence of unallocated occupants is normal operational state, not an error; the hook recomputes on every live Firebase update. Observability is provided by the panel UI itself. No additional logging in the hook.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Each memo independently testable — mock `useGuestByRoomData` to return absent `allocated`; assert `unallocatedOccupants` shape",
+      "current_or_option_state": "Combined memo: same mock inputs but assertions on both outputs simultaneously — slightly harder to isolate",
+      "gap_or_implication": "Unit tests cover **4 cases**: absent `allocated`, blank `allocated`, non-knownRooms `allocated`, and **occupant outside date window must be excluded**. `RoomsGrid.test.tsx` gets conditional panel assertion. `RoomsGrid.test.tsx` existing mocks must be updated to include `unallocatedOccupants: []`. Pattern established in `useGridData.test.ts`.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "New `UnallocatedOccupant` type exported from `useGridData.ts`. `IGuestByRoomData.allocated` corrected to `allocated?: string`. `useGridData` return type updated with `unallocatedOccupants: UnallocatedOccupant[]`. Both options require same type changes.",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "`UnallocatedOccupant` must carry: `bookingRef`, `occupantId`, `firstName`, `lastName`, `checkInDate`, `checkOutDate`, `bookedRoom?: string` (prefer `guestByRoomData[occId]?.booked`, fallback to `bookingsData[ref]?.[occId]?.roomNumbers[0]` for missing-record case), `status: MyLocalStatus`. `BookingDetailsModal` also consumes `useGuestByRoomData` — verify its TypeScript remains valid after `allocated` optionality change.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "O(N) second pass over `bookingsData` per render cycle. With 10 rooms × typical N bookings, cost is negligible. Memo only recomputes when any dep changes — same frequency as `allRoomData`.",
+      "current_or_option_state": "Marginally fewer iterations (single pass) but difference is not measurable at expected data sizes",
+      "gap_or_implication": "O(N) additional scan acceptable. No extra Firebase reads. Memo cache shared deps ensure synchronized recompute.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive for both. Rollback = revert hook change + component deletion. No feature flag needed. No data migration.",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Purely additive. No migration. Internal tool — no staged rollout needed.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "Should staff be able to click an occupant row in the unallocated panel to trigger an allocation action (assign to room) in a future iteration?"
+  ],
+  "stage_payload": {
+    "decision_summary": "`useGridData.ts` line 241 silently drops every occupant whose `guestByRoomData[occId]?.allocated` does not match any known room. Staff have no visibility of these unallocated occupants on the rooms-grid page, creating a failure mode where guests arrive with no room assignment. The decision here is how to expose `unallocatedOccupants` from the existing `useGridData` hook, what shape the surface takes, and how the `UnallocatedPanel` component integrates into `RoomsGrid.tsx`. v1 scope is read-only (no allocation action); the `BookingDetailsModal` reuse path is explicitly ruled out due to its book",
+    "goals": [
+      "Surface all unallocated occupants within the selected date window on the rooms-grid page.",
+      "Show enough context per occupant (name, booking ref, check-in/check-out, booked room, status) for staff to identify and act on missing allocations.",
+      "Keep the implementation purely additive — no changes to the existing room panel filter logic.",
+      "Integrate with the existing Firebase subscription pipeline (no new `onValue` reads)."
+    ],
+    "non_goals": [
+      "Allocation action from the unallocated panel in v1. `BookingDetailsModal` is NOT safe to reuse for single-occupant allocation (it moves all occupants under the booking ref). A future occupant-scoped action is deferred.",
+      "New Firebase paths or data model changes.",
+      "Server-side notifications for unallocated bookings."
+    ],
+    "constraints": [
+      "English-only internal tool; no i18n.",
+      "DS primitives (`Stack`, `Inline`, `Cluster`) required for layout — codebase pattern from `RoomsGrid.tsx`.",
+      "No new Firebase subscriptions; must reuse existing hook data.",
+      "`BookingDetailsModal` is unsafe for occupant-level allocation — moves all occupants under bookingRef, not just selected occupant."
+    ],
+    "assumptions": [
+      "\"Unallocated\" = `guestByRoomData[occId]?.allocated` is absent, `undefined`, `null`, empty string, OR a value not in `knownRooms`.",
+      "Date-window filter (checkInDate/checkOutDate vs page startDate/endDate) applies to the unallocated panel.",
+      "v1 is read-only — no click-through action needed in this phase."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Correctness of the unallocated definition",
+        "Why it matters": "Must capture absent, empty, and non-knownRooms `allocated` values",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "No duplicate Firebase subscriptions",
+        "Why it matters": "A separate hook re-subscribing to the same nodes would be wasteful and could create stale-data divergence",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Type safety",
+        "Why it matters": "`IGuestByRoomData.allocated` is typed non-optional but absent at runtime — type must be corrected",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Separation of computed concerns",
+        "Why it matters": "`allRoomData` and `unallocatedOccupants` have different shapes and consumers — cleaner if each has its own memo",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Testability",
+        "Why it matters": "Each computed value should be independently mockable and testable",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Build burden",
+        "Why it matters": "Fewer new files, smaller diff, lower review risk",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "UI integration simplicity",
+        "Why it matters": "How easily does `RoomsGrid.tsx` wire up the new panel",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Second `useMemo` in `useGridData`",
+        "Description": "Add a new `useMemo` with deps `[knownRooms, bookingsData, guestsDetailsData, guestByRoomData, activitiesData, startDate, endDate]` (same as `allRoomData` minus `getBedCount`) that scans `bookingsData` + `guestByRoomData` and produces `UnallocatedOccupant[]`. Return it alongside `getReservationDataForRoom` from the hook.",
+        "Upside": "Clean separation of concerns — each memo has one job. `allRoomData` logic untouched. Independent testability. Clear TypeScript return type.",
+        "Downside": "Two passes over `bookingsData` instead of one — marginal O(N) cost.",
+        "Key risks": "Dep array drift if `allRoomData` deps change but the new memo's deps are not updated in sync (mitigated by explicit dep list in planning task).",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Single combined `useMemo`",
+        "Description": "Expand the existing `allRoomData` `useMemo` to simultaneously collect `unallocatedOccupants` as it iterates. Return both from a single `useMemo` result object.",
+        "Upside": "One pass over data — marginally more efficient. Single dep array to maintain.",
+        "Downside": "`allRoomData` memo becomes multi-purpose and harder to reason about. Mixing two different output shapes in one block increases cognitive load and test complexity. Any future change to either shape requires reasoning about both.",
+        "Key risks": "The combined memo return requires destructuring at the call site; adds coupling between unrelated concerns.",
+        "Viable?": "Yes"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — second `useMemo` inside `useGridData`, returning `unallocatedOccupants: UnallocatedOccupant[]` alongside the existing `getReservationDataForRoom`.",
+      "**Why this wins": "**",
+      "**What it depends on": "**",
+      "`IGuestByRoomData.allocated` must be corrected to `allocated?": "string` — required regardless of option.",
+      "Operator confirmation that v1 is read-only (no allocation action wired). Default assumption": "yes. If operator wants the allocation action, a new occupant-scoped modal is required in a subsequent feature — not this one.",
+      "**Separate `useUnallocatedOccupants` hook** — rejected at fact-find stage": "would duplicate the four Firebase `onValue` subscriptions, creating two independent live listeners for the same data and introducing stale-data divergence risk.",
+      "**`BookingDetailsModal` reuse for allocation action in v1** — rejected": "`handleConfirmMoveBooking` loops ALL occupants under the booking ref, not just the selected occupant. From an occupant-level unallocated panel, this would silently reassign allocated roommates. The panel is read-only in v1.",
+      "Q": "Should staff be able to click an occupant row in the unallocated panel to trigger an allocation action (assign to room) in a future iteration?",
+      "Why operator input is required": "The correct UX for a v2 allocation action depends on whether a simple \"pick room\" interaction is sufficient or a richer flow (e.g., see bed availability before assigning) is needed. This is undocumented preference.",
+      "Planning impact": "Does not affect v1 build. If yes for v2, a new occupant-scoped modal must be planned separately — it cannot reuse `BookingDetailsModal`."
+    },
+    "rejected_approaches": [
+      "**Option B (combined `useMemo`)** — rejected because mixing two distinct output shapes in a single memo increases cognitive load and couples unrelated concerns. The marginal performance gain (one fewer array scan) is not measurable at production data sizes and does not justify the structural trade-off.",
+      "**Separate `useUnallocatedOccupants` hook** — rejected at fact-find stage: would duplicate the four Firebase `onValue` subscriptions, creating two independent live listeners for the same data and introducing stale-data divergence risk.",
+      "**`BookingDetailsModal` reuse for allocation action in v1** — rejected: `handleConfirmMoveBooking` loops ALL occupants under the booking ref, not just the selected occupant. From an occupant-level unallocated panel, this would silently reassign allocated roommates. The panel is read-only in v1."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Define `UnallocatedOccupant` type in `useGridData.ts` and export it."
+      ],
+      "validation_implications": [
+        "`validate-analysis.sh` and `validate-engineering-coverage.sh` passed for this analysis artifact.",
+        "`validate-fact-find.sh` already passed at fact-find stage (not a build gate).",
+        "Tests run in CI only — push after build and monitor with `gh run watch`.",
+        "Type correctness validated by `pnpm --filter reception typecheck` locally before push.",
+        "Lint validated by `pnpm --filter reception lint` locally before push."
+      ],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Data pipeline",
+          "current": "`useGridData` computes `allRoomData` only; occupants without `allocated` are dropped silently at line 241",
+          "trigger": "Page mounts / date window changes / Firebase data updates",
+          "future": "(1) `useGridData` second `useMemo` scans same `bookingsData` + `guestByRoomData`; (2) collects occupants where `allocated` is absent/empty/not-in-knownRooms AND booking overlaps date window; (3) returns `unallocatedOccupants: UnallocatedOccupant[]` alongside existing API",
+          "steady": "`allRoomData` computation unchanged; existing room panels unaffected; Firebase subscription unchanged",
+          "seams": "Dep array must match `allRoomData` memo exactly; any future dep addition must update both memos"
+        },
+        {
+          "id": null,
+          "label": "Staff view",
+          "current": "Room panels only; unallocated occupants invisible",
+          "trigger": "Page loads",
+          "future": "`RoomsGrid.tsx` renders `UnallocatedPanel` above the room list when `unallocatedOccupants.length > 0`; panel shows each occupant's name, booking ref, check-in/check-out, booked room, status badge; panel hidden entirely when count is zero",
+          "steady": "Room panels, date pickers, StatusLegend, error/loading states unchanged",
+          "seams": "Panel must use DS tokens and `Stack`/`Inline` — visual consistency check needed in review"
+        },
+        {
+          "id": null,
+          "label": "Type correctness",
+          "current": "`IGuestByRoomData.allocated: string` — non-optional, inconsistent with Firebase runtime (key may be absent)",
+          "trigger": "Build",
+          "future": "`allocated?: string` — corrected to optional; optional chaining at line 241 already handles runtime absence",
+          "steady": "Rest of `IGuestByRoomData` unchanged",
+          "seams": "`useGuestByRoomData` is also consumed by `BookingDetailsModal.tsx` (line 50: `const { guestByRoomData } = useGuestByRoomData()`). The modal already accesses `guestByRoomData[occupantId]?.allocated` with optional chaining at line 77 — no behavioural change. Blast radius is contained but must verify `BookingDetailsModal` TypeScript after the type change."
+        },
+        {
+          "id": null,
+          "label": "Test coverage",
+          "current": "`useGridData.test.ts` tests allocation-match path only; no unallocated path test; `RoomsGrid.test.tsx` mocks `useGridData()` returning `{ getReservationDataForRoom, loading, error }` — does not include `unallocatedOccupants`",
+          "trigger": "Build",
+          "future": "New: 3 unit test cases for unallocated computation; `RoomsGrid.test.tsx` **must be updated** — existing mock must add `unallocatedOccupants: []` to the `useGridData` return value or the component will fail to render; extend with conditional panel assertions; `UnallocatedPanel` RTL render tests",
+          "steady": "`RoomGrid.test.tsx` and `useGridData.test.ts` allocation-match tests unaffected",
+          "seams": "Tests run in CI only (`docs/testing-policy.md`) — push and watch CI. Planning must treat `RoomsGrid.test.tsx` update as required fix, not optional extension."
+        }
+      ]
+    }
+  }
+}

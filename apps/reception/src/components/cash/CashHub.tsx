@@ -31,7 +31,7 @@ const CashHub = memo(function CashHub() {
             onClick={() => setActiveTab(tab.id)}
             className={`px-6 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
               activeTab === tab.id
-                ? "border-primary text-primary"
+                ? "border-primary text-primary bg-primary/10"
                 : "border-transparent text-foreground/60 hover:text-foreground"
             }`}
           >

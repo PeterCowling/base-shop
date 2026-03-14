@@ -6,6 +6,10 @@
       "@/*": [
         "./src/*"
       ],
+      "@acme/platform-core": [
+        "../../packages/platform-core/src/index.ts",
+        "../../packages/platform-core/dist/index.d.ts"
+      ],
       "@acme/platform-core/d1": [
         "../../packages/platform-core/src/d1/index.server.ts",
         "../../packages/platform-core/dist/d1/index.server.d.ts"
@@ -43,8 +47,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules",

@@ -23,6 +23,7 @@ import { QuickCaptureModal } from "../capture/QuickCaptureModal";
 import { UserSwitcher } from "../user/UserSwitcher";
 
 import { BusinessSelector } from "./BusinessSelector";
+import { ThemeModeToggle } from "./ThemeModeToggle";
 
 export interface NavigationHeaderProps {
   businesses: Business[];
@@ -186,6 +187,9 @@ export function NavigationHeader({
             + Capture
           </Button>
 
+          {/* Theme toggle */}
+          <ThemeModeToggle />
+
           {/* User Switcher (dev mode only) */}
           <UserSwitcher currentUser={currentUser} />
 
@@ -259,12 +263,13 @@ export function NavigationHeader({
             </nav>
           </Stack>
 
-          {/* Mobile Business Selector */}
-          <div className="px-4 pb-4">
+          {/* Mobile Business Selector + Theme toggle */}
+          <div className="flex items-center gap-2 px-4 pb-4">
             <BusinessSelector
               businesses={businesses}
               currentBusiness={currentBusiness}
             />
+            <ThemeModeToggle />
           </div>
         </div>
       )}

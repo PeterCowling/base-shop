@@ -61,16 +61,10 @@ function writeStoredMode(mode: ThemeMode): void {
 }
 
 export function ThemeModeProvider({ children }: { children: ReactNode }) {
-  const [mode, setMode] = useState<ThemeMode>("system");
-  const [systemPrefersDark, setSystemPrefersDark] = useState<boolean>(false);
-
-  useEffect(() => {
-    const storedMode = readStoredMode();
-    if (storedMode) {
-      setMode(storedMode);
-    }
-    setSystemPrefersDark(getSystemMode() === "dark");
-  }, []);
+  const [mode, setMode] = useState<ThemeMode>(() => readStoredMode() ?? "system");
+  const [systemPrefersDark, setSystemPrefersDark] = useState<boolean>(
+    () => typeof window !== "undefined" && getSystemMode() === "dark",
+  );
 
   useLayoutEffect(() => {
     const root = document.documentElement;

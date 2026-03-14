@@ -56,7 +56,7 @@ export const tokens: TokenMap = {
 
   // Interaction depth tokens
   "--color-table-row-hover": { light: "150 8% 96%", dark: "160 12% 12%" },
-  "--color-table-row-alt": { light: "150 5% 98%", dark: "160 8% 10%" },
+  "--color-table-row-alt": { light: "150 6% 91%", dark: "160 10% 14%" },
   "--color-surface-elevated": { light: "150 10% 94%", dark: "160 10% 14%" },
 
   // Category shade families (bar/POS product grid)

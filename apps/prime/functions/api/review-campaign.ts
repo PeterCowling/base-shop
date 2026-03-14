@@ -1,5 +1,9 @@
 import type { D1Database } from '@acme/platform-core/d1';
 
+import {
+  isActorClaimsResponse,
+  resolveActorClaimsWithCompat,
+} from '../lib/actor-claims-resolver';
 import { errorResponse, jsonResponse } from '../lib/firebase-rest';
 import { getPrimeMessagingDb, hasPrimeMessagingDb } from '../lib/prime-messaging-db';
 import {
@@ -14,6 +18,7 @@ interface Env {
   PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;
   PRIME_STAFF_OWNER_GATE_TOKEN?: string;
   PRIME_MESSAGING_DB?: D1Database;
+  PRIME_ACTOR_CLAIMS_SECRET?: string;
 }
 
 type ReviewCampaignPayload = {
@@ -61,6 +66,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return gateResponse;
   }
 
+  const claimsResult = await resolveActorClaimsWithCompat(request, env);
+  if (isActorClaimsResponse(claimsResult)) {
+    return claimsResult;
+  }
+  const { uid: actorUid } = claimsResult;
+
   if (!hasPrimeMessagingDb(env)) {
     return errorResponse('PRIME_MESSAGING_DB binding is required for Prime review writes', 503);
   }
@@ -74,7 +85,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   try {
     const result = await createPrimeReviewCampaign(getPrimeMessagingDb(env), {
       threadId,
-      actorUid: request.headers.get('x-prime-actor-uid')?.trim() || 'prime-owner',
+      actorUid,
       title: body.title ?? null,
       metadata: body.metadata ?? null,
       latestDraftId: body.latestDraftId ?? null,
@@ -105,6 +116,12 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env }) => {
     return gateResponse;
   }
 
+  const claimsResult = await resolveActorClaimsWithCompat(request, env);
+  if (isActorClaimsResponse(claimsResult)) {
+    return claimsResult;
+  }
+  const { uid: actorUid } = claimsResult;
+
   const campaignId = new URL(request.url).searchParams.get('campaignId')?.trim() ?? '';
   if (!campaignId) {
     return errorResponse('campaignId is required', 400);
@@ -119,7 +136,7 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env }) => {
   try {
     const result = await updatePrimeReviewCampaign(getPrimeMessagingDb(env), {
       campaignId,
-      actorUid: request.headers.get('x-prime-actor-uid')?.trim() || 'prime-owner',
+      actorUid,
       status: body.status,
       title: body.title,
       metadata: body.metadata,

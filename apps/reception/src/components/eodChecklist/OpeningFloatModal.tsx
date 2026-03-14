@@ -5,6 +5,7 @@ import { z } from "zod";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import { settings } from "../../constants/settings";
 import { withModalBackground } from "../../hoc/withModalBackground";
@@ -75,7 +76,7 @@ function OpeningFloatModalBase({ onConfirm, onClose }: OpeningFloatModalProps) {
         </div>
 
         {/* Confirm */}
-        <div className="mt-6 flex flex-col items-center gap-4">
+        <Stack align="center" gap={4} className="mt-6">
           <Button
             onClick={() => void handleConfirm()}
             disabled={submitting}
@@ -83,7 +84,7 @@ function OpeningFloatModalBase({ onConfirm, onClose }: OpeningFloatModalProps) {
           >
             {submitting ? "Saving…" : "Confirm float"}
           </Button>
-        </div>
+        </Stack>
       </div>
     </ModalContainer>
   );

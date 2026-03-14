@@ -1,0 +1,220 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-checkout-fridge-tracking",
+  "source_artifact_path": "docs/plans/reception-checkout-fridge-tracking/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-checkout-fridge-tracking/fact-find.md",
+    "plan": "docs/plans/reception-checkout-fridge-tracking/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Staff need to record at checkout whether a guest used the fridge, and see that flag on the checkout screen so nothing is missed before the guest leaves.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can toggle a fridge-used flag per guest on the checkout screen; the FRIDGE column shows a fridge icon when the flag is set, so staff know to retrieve fridge items before the guest departs.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "`Refrigerator` icon, toggle button disabled during write. Standard `Button` component with `disabled` prop — already supported by design system.",
+      "current_or_option_state": "`Refrigerator` icon, instant visual flip. No disabled state needed.",
+      "gap_or_implication": "Icon + `Button` with `disabled` prop during async write. Simple, no extra state machine.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Empty: blank cell. Loaded/false: icon not shown, toggle button shown. Loaded/true: icon shown + toggle button shown. Pending: button disabled. Error: toast + button re-enabled.",
+      "current_or_option_state": "Same states minus pending/disabled. Adds: optimistic state + rollback state.",
+      "gap_or_implication": "Pending state managed via `isPending` per occupant in `Checkout.tsx` (a `Set<string>` of occupantIds currently writing). Passed to `CheckoutTable` alongside `onToggleFridge`.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Explicit `fridgeStorage` Firebase rule with role-gated write. Same for both options.",
+      "current_or_option_state": "Same.",
+      "gap_or_implication": "Add `fridgeStorage` rule to `database.rules.json`.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`console.error` + `showToast` on mutation failure. Same for both.",
+      "current_or_option_state": "Same.",
+      "gap_or_implication": "Follow existing pattern.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "`isPending` logic is trivial to test — mock the mutation hook to not resolve and assert button is disabled.",
+      "current_or_option_state": "Rollback logic requires additional test cases for failure path.",
+      "gap_or_implication": "Fewer test paths to cover under Option A.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`Guest.fridgeUsed?: boolean` replaces `Guest.fridge?: string`. `CheckoutTableProps` gains `onToggleFridge` and `pendingFridgeOccupantIds?: Set<string>`. New schema, types, data hook, mutation hook. Same for both options (type contract is identical).",
+      "current_or_option_state": "Same.",
+      "gap_or_implication": "Breaking type change on `Guest` interface — all callsites updated.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Identical Firebase write in both cases. Disabled button prevents double-fire without needing a debounce guard.",
+      "current_or_option_state": "Same Firebase write. Requires rollback on error, which is a second async state update.",
+      "gap_or_implication": "Option A is marginally more reliable (no rollback race condition).",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No feature flag. Revert 4–5 files. Firebase node persists harmlessly. Same for both.",
+      "current_or_option_state": "Same.",
+      "gap_or_implication": "No flag needed.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The checkout screen already has a FRIDGE column that always shows blank. All operator decisions are confirmed: data model is `{ used: boolean }` at `fridgeStorage/<occupantId>`, write path is an inline toggle per row, display is an icon. The implementation follows the bag-storage pattern exactly, extended with a direct-write mutation hook (bag storage is set via Prime; fridge is set directly from the checkout screen). The one design decision not fixed by the operator is how the toggle handles the async write window — this analysis resolves it.",
+    "goals": [
+      "Staff toggle fridge-used per guest on the checkout screen.",
+      "FRIDGE column shows `Refrigerator` icon when `used === true`, blank otherwise.",
+      "Fridge flag is archived alongside the guest."
+    ],
+    "non_goals": [
+      "No free-text, no item list, no POS transaction.",
+      "No fridge UI on any other screen."
+    ],
+    "constraints": [
+      "Must follow bag-storage read pattern (Firebase node, Zod schema, data hook, `Checkout.tsx` integration).",
+      "Write path via new mutation hook using Firebase `update()`.",
+      "`Refrigerator` icon confirmed available in lucide-react installed in reception app.",
+      "Tests CI-only."
+    ],
+    "assumptions": [
+      "Toggle is per-occupant (not per-booking).",
+      "All authenticated staff roles may write (same as all other guest-facing mutations)."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Pattern consistency",
+        "Why it matters": "Codebase coherence; reduces future maintenance cost",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "UX correctness",
+        "Why it matters": "Staff must not be able to double-fire the toggle or get stuck in a broken state",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test coverage completeness",
+        "Why it matters": "CI gate; CI-only test runs",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation simplicity",
+        "Why it matters": "Small internal tool; minimal code surface",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "No migration, no feature flag needed",
+        "Weight/priority": "Low (already guaranteed)"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Disabled-during-write",
+        "Description": "Disable the toggle button while the Firebase `update()` is in flight. Local state: `isPending` boolean per row (lifted into `CheckoutTable` or managed in `Checkout.tsx` via a `Set` of pending occupantIds). On success: Firebase subscription delivers updated value → button re-enables with new state. On error: toast + re-enable.",
+        "Upside": "Simple. No optimistic-state rollback logic. Consistent with how the Complete button works (it already invokes async and implicitly blocks re-click via its callback). Matches existing patterns in the codebase.",
+        "Downside": "Visible latency: button is briefly greyed out. For a fast local Firebase write (< 200ms) this is barely perceptible.",
+        "Key risks": "None material.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Optimistic update",
+        "Description": "Immediately flip `fridgeUsed` in local state before the Firebase `update()` returns. On error: roll back the local state + show toast.",
+        "Upside": "Zero perceived latency.",
+        "Downside": "Adds rollback logic — a second state path. More code. Overkill for a < 200ms write to a local Firebase RTDB. The bag-storage display has no rollback logic and no issues reported.",
+        "Key risks": "Rollback failure leaves UI out of sync with Firebase.",
+        "Viable?": "Yes, but not preferred"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Disabled-during-write.",
+      "Why this wins": "It requires no rollback logic. Firebase RTDB writes to a local node are fast enough that the disabled window is imperceptible. It is simpler to test — the pending state has exactly one success path and one error path, both trivially mockable. Option B's zero-latency advantage is not worth the rollback complexity for a < 200ms internal-tool write.",
+      "What it depends on": "Firebase RTDB being reachable (same dependency as the rest of the checkout screen — no new dependency introduced)."
+    },
+    "rejected_approaches": [
+      "Option B (Optimistic update) — Rejected. The latency benefit is negligible for a < 200ms internal-tool write. The rollback code adds a second state path and additional test cases with no material UX improvement."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Schema + types must exist before hook files (TypeScript import ordering).",
+        "`CheckoutTable.tsx` type change must land before `Checkout.tsx` wiring (TypeScript will catch mismatches).",
+        "Firebase rules update is independent and can land in the same commit.",
+        "Archive hook change is independent — can be a separate task or bundled."
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Fridge flag recording",
+          "current": "No digital step. Paper/verbal only.",
+          "trigger": "Guest hands fridge items to staff at checkout.",
+          "future": "1. Staff opens checkout screen. 2. Guest row shows FRIDGE column with a toggle button. 3. Staff clicks toggle — button disables immediately. 4. Firebase `update()` writes `fridgeStorage/<occupantId> = { used: true }`. 5. Firebase subscription delivers update → `Refrigerator` icon appears; button re-enables. 6. Clicking again reverses: `used: false`, icon disappears.",
+          "steady": "Rest of checkout flow (loans, keycard, Complete button) unchanged.",
+          "seams": "Toggle must disable during write to prevent double-fire. Error path: toast + re-enable."
+        },
+        {
+          "id": null,
+          "label": "FRIDGE column display",
+          "current": "`{guest.fridge \\",
+          "trigger": "\\",
+          "future": "\"\"}` — always blank.",
+          "steady": "Firebase subscription delivers `fridgeUsed: true`.",
+          "seams": "`Refrigerator` icon shown in FRIDGE cell when `fridgeUsed === true`; blank otherwise. Consistent with Luggage icon for bag storage."
+        },
+        {
+          "id": null,
+          "label": "Guest archival",
+          "current": "`useArchiveCheckedOutGuests` does not cover `fridgeStorage`.",
+          "trigger": "Archival triggered for past-checkout occupants.",
+          "future": "`fridgeStorage/<occupantId>` read → copied to `archive/fridgeStorage/<occupantId>` → live path nulled.",
+          "steady": "All other archival paths unchanged.",
+          "seams": "Additive only; no migration."
+        },
+        {
+          "id": null,
+          "label": "Guest deletion",
+          "current": "`useDeleteGuestFromBooking` nulls `bagStorage/<occupantId>` at line 119 but has no fridge equivalent.",
+          "trigger": "Operator deletes a guest record.",
+          "future": "`fridgeStorage/<occupantId>` is nulled in the same `updates` map alongside `bagStorage`. Prevents orphaned fridge records.",
+          "steady": "All other deletion paths unchanged.",
+          "seams": "Additive one-liner; no migration."
+        },
+        {
+          "id": null,
+          "label": "Firebase security",
+          "current": "`$other` wildcard covers `fridgeStorage`.",
+          "trigger": "Deploy of updated `database.rules.json`.",
+          "future": "Explicit `fridgeStorage` rule block: read for any authenticated user; write gated on staff/admin/manager/developer/owner role (same as all other guest-facing nodes).",
+          "steady": "All other rules unchanged.",
+          "seams": "Must deploy `database.rules.json` changes before or alongside code changes."
+        }
+      ]
+    }
+  }
+}

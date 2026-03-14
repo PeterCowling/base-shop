@@ -1,0 +1,154 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "prime-d1-messaging-db",
+  "source_artifact_path": "docs/plans/prime-d1-messaging-db/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-d1-messaging-db/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The prime app includes a messaging database for storing guest messages. The database ID in the deployment config is a placeholder that was never replaced with a real one. Any feature that reads or writes messages will not work in production.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The real Cloudflare D1 database ID is in wrangler.toml, migrations have been applied, and the PRIME_MESSAGING_DB binding resolves correctly at runtime.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "New D1 schema; migration files define the contract",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth changes; D1 binding is server-side only, no new data exposure",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing function tests use in-memory D1 mock; no new tests needed — existing pass",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Create DB → apply migrations → update wrangler.toml; rollback = delete DB + revert wrangler.toml",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Standard D1 for this schema size; no performance concerns",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No new metrics needed",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "Infra-only change — no UI affected",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "Infra-only change — no user-facing state change",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The prime app's Cloudflare Functions layer depends on a D1 database binding (`PRIME_MESSAGING_DB`) for storing message threads, drafts, campaigns, and delivery records. The `wrangler.toml` declares this binding but has a placeholder database ID (`000...000`). **The D1 database does not exist in the Cloudflare account.** Any function that calls `getPrimeMessagingDb()` will throw at runtime, making messaging inoperative in production. The fix requires: create the D1 database, apply 4 existing migration files in order, and update `wrangler.toml` with the real database ID.",
+    "goals": [
+      "Create the `prime-messaging` D1 database in the Cloudflare account",
+      "Apply all 4 migrations (0001–0004) to initialize the schema",
+      "Update `apps/prime/wrangler.toml` with the real `database_id`",
+      "Verify the binding works in a local Pages dev environment"
+    ],
+    "non_goals": [
+      "Changing any messaging application logic",
+      "Migrating existing data (database is new — no data to migrate)",
+      "Changes to the Cloudflare Pages dashboard binding (wrangler.toml is the source of truth)"
+    ],
+    "constraints": [
+      "CF API token in `.env.local` has write access to D1 (to be verified during build; CLOUDFLARE_ACCOUNT_ID = 9e2c24d2db8e38f743f0ad6f9dfcfd65)",
+      "This is a Cloudflare Pages deployment (not Workers) — `wrangler pages dev` picks up `[[d1_databases]]` from wrangler.toml",
+      "Migration files use `wrangler d1 migrations` format (numbered SQL files in `apps/prime/migrations/`)"
+    ],
+    "assumptions": [
+      "`wrangler` CLI is available in the local environment",
+      "The `prime` Pages project name matches what wrangler.toml expects"
+    ],
+    "key_entry_points": [
+      "`apps/prime/functions/api/review-threads.ts` — calls `getPrimeMessagingDb(env)` for all thread operations",
+      "`apps/prime/functions/api/direct-message.ts` — calls `getPrimeMessagingDb(env)` for DM operations"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis prime-d1-messaging-db`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "D1 database existence check",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Migration file inventory",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Application code readiness",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "CF credentials / token scope",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Token confirmed present; write scope for D1 not explicitly tested",
+        "Resolution Required": "No — low risk"
+      },
+      {
+        "Scope Area": "Pages binding mechanism",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Any Pages Function route that calls `getPrimeMessagingDb(env)` — e.g. `api/review-threads`, `api/direct-message`, inbox processing functions.",
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

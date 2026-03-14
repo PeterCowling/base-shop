@@ -3,6 +3,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Filter, MailSearch } from "lucide-react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Inline, Stack } from "@acme/design-system/primitives";
+
 import type { InboxThreadSummary } from "@/services/useInbox";
 
 import FilterBar from "./FilterBar";
@@ -113,7 +116,7 @@ export default function ThreadList({
             Threads
           </h2>
           {threads.length > 0 && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-3 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-foreground/70">
+            <Inline className="gap-1.5 rounded-full bg-surface-3 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-foreground/70">
               {hasActiveFilters && (
                 <>
                   <Filter className="h-3 w-3" />
@@ -121,7 +124,7 @@ export default function ThreadList({
                 </>
               )}
               {threads.length}
-            </span>
+            </Inline>
           )}
         </div>
       </div>
@@ -163,7 +166,7 @@ export default function ThreadList({
 
       {/* Empty state */}
       {!showInitialSkeleton && !error && threads.length === 0 && (
-        <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
+        <Stack gap={3} align="center" className="justify-center px-6 py-16 text-center">
           <div className="rounded-full bg-surface-2 p-3 text-muted-foreground">
             <MailSearch className="h-6 w-6" />
           </div>
@@ -173,12 +176,12 @@ export default function ThreadList({
               Hit refresh to pull new emails.
             </p>
           </div>
-        </div>
+        </Stack>
       )}
 
       {/* Filtered empty state */}
       {!showInitialSkeleton && !error && threads.length > 0 && hasActiveFilters && filteredThreads.length === 0 && (
-        <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center">
+        <Stack gap={3} align="center" className="justify-center px-6 py-12 text-center">
           <div className="rounded-full bg-surface-2 p-3 text-muted-foreground">
             <Filter className="h-5 w-5" />
           </div>
@@ -188,7 +191,7 @@ export default function ThreadList({
               Try clearing a filter to see more threads.
             </p>
           </div>
-        </div>
+        </Stack>
       )}
 
       {/* Thread list */}
@@ -203,9 +206,11 @@ export default function ThreadList({
               const time = formatInboxTimestamp(thread.latestMessageAt ?? thread.updatedAt);
 
               return (
-                <button
+                <Button
                   key={thread.id}
                   type="button"
+                  color="default"
+                  tone="ghost"
                   onClick={() => void onSelect(thread.id)}
                   className={`group w-full border-l-2 px-4 py-2.5 text-left transition-colors duration-700 ${badge.edgeColor} ${
                     isSelected
@@ -243,7 +248,7 @@ export default function ThreadList({
                   <p className="mt-0.5 truncate text-xs text-foreground/50">
                     {thread.snippet ?? "No preview available."}
                   </p>
-                </button>
+                </Button>
               );
             })}
           </div>

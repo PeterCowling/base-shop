@@ -1,0 +1,43 @@
+{
+  "round": 2,
+  "artifact": "analysis.md",
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/prime-outbound-send-path-correctness/analysis.md",
+      "line": "111",
+      "message": "The new `review_status === 'sent'` short-circuit breaks the reusable whole-hostel lane. `savePrimeReviewDraft` is the mechanism that resets that singleton thread back to `pending` for legitimate future broadcasts (`apps/prime/functions/lib/prime-review-drafts.ts:126-150`); returning `{ outcome: 'already_sent' }` before that call would cause every post-first-send compose attempt to be treated as a duplicate, contradicting the document's later claim that the next compose can create a fresh draft."
+    },
+    {
+      "severity": "critical",
+      "file": "docs/plans/prime-outbound-send-path-correctness/analysis.md",
+      "line": "111",
+      "message": "The proposed idempotency guard is still not atomic, so it does not actually meet the stated goal that two identical `prime-compose` calls must not produce two broadcast messages. Two overlapping requests can both read a non-`sent` status, both run `savePrimeReviewDraft`, and both enter `sendPrimeReviewThread`; there is no lock or compare-and-swap around the pre-check, and the whole-hostel draft save rewrites the thread to `pending` (`apps/prime/functions/lib/prime-review-drafts.ts:126-150`, `apps/prime/functions/lib/prime-review-send.ts:63-76`)."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-outbound-send-path-correctness/analysis.md",
+      "line": "99",
+      "message": "The response contract is still internally inconsistent. The chosen path switches duplicate retries to HTTP 200 `{ outcome: 'already_sent' }`, but this row, the end-state table at line 147, and TASK-04 at line 159 still describe a 409-based flow. Planning and test work will diverge unless the document is normalized to one contract."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-outbound-send-path-correctness/analysis.md",
+      "line": "163",
+      "message": "The Reception blast radius is understated. `sendPrimeInboxThread` is still used by the live Prime-send route at `apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts:69`, and broadcast-specific coverage already exists in `apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts:499-535`; the validation section only calls out `prime-compose` and `initiatePrimeOutboundThread` tests."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 4,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ceb8d-93ba-71c3-b121-ca08acf9a765",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 44488810,
+    "outputTokens": 147249,
+    "totalTokens": 44636059,
+    "costUsd": 0
+  },
+  "durationMs": 182115
+}

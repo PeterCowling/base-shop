@@ -4,6 +4,7 @@ import { Component, type ErrorInfo, type ReactNode } from "react";
 import { AlertTriangle, RotateCcw } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 interface Props {
   children: ReactNode;
@@ -39,7 +40,7 @@ export default class InboxErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-warning-muted bg-surface-1 p-8 text-center">
+        <Stack gap={4} align="center" className="justify-center rounded-2xl border border-warning-muted bg-surface-1 p-8 text-center">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-warning-soft text-warning-main">
             <AlertTriangle className="h-6 w-6" />
           </div>
@@ -62,7 +63,7 @@ export default class InboxErrorBoundary extends Component<Props, State> {
             <RotateCcw className="mr-2 h-4 w-4" />
             Try again
           </Button>
-        </div>
+        </Stack>
       );
     }
 

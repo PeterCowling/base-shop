@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "a5d259cb61",
+  "feature_slug": "reception-extension-city-tax-recording",
+  "emitted_at": "2026-03-14T11:57:06.480Z",
+  "why": "When staff check \"Mark city tax as paid\" during an extension, they expect the payment to be recorded. For guests without an outstanding balance (the majority, since most guests pay at check-in), nothing is written. Cash gets collected but never appears in the records — creating a reconciliation gap.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Checking \"Mark city tax as paid\" during an extension: (a) displays the correct collection amount including any old outstanding balance plus the extension nights' tax; and (b) always creates or updates a city tax record that correctly includes the extension nights' tax amount in totalDue, regardless of the guest's prior city tax status.",
+    "source": "operator"
+  }
+}

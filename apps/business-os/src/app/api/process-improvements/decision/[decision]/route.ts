@@ -7,6 +7,8 @@ import { performProcessImprovementsDecision } from "@/lib/process-improvements/d
 const DecisionRequestSchema = z.object({
   ideaKey: z.string().min(1),
   dispatchId: z.string().min(1),
+  deferDays: z.number().int().min(1).max(90).optional(),
+  rationale: z.string().max(500).optional(),
 });
 
 const DecisionParamSchema = z.enum(["do", "defer", "decline"]);
@@ -47,6 +49,8 @@ export async function POST(
       dispatchId: parsedBody.data.dispatchId,
       ideaKey: parsedBody.data.ideaKey,
       actor: currentUser,
+      deferDays: parsedBody.data.deferDays,
+      rationale: parsedBody.data.rationale,
     });
 
     if (!result.ok) {

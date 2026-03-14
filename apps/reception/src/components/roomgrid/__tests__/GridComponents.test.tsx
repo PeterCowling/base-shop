@@ -145,6 +145,21 @@ describe("Grid and related components", () => {
     expect(today).toHaveClass("today");
   });
 
+  it("renders No bookings message when data is empty", () => {
+    render(
+      <DndProvider backend={HTML5Backend}>
+        <Grid
+          start={start}
+          end={end}
+          data={[]}
+        />
+      </DndProvider>
+    );
+
+    expect(screen.getByText("No bookings")).toBeInTheDocument();
+    expect(getDataTestId("header")).toBeInTheDocument();
+  });
+
   it("renders Row without info column when showInfo is false", () => {
     const value = {
       ...initialValue,

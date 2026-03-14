@@ -22,7 +22,7 @@ Agent writes must go through the Business OS agent API. Markdown writes are **no
 
 **Auth header:** `X-Agent-API-Key: <value>` (env: `BOS_AGENT_API_KEY`)
 
-**Base URL:** `BOS_AGENT_API_BASE_URL` (local: `http://localhost:3000`, prod: `https://business-os.acme.dev`)
+**Base URL:** `BOS_AGENT_API_BASE_URL` (local: `http://localhost:3022`, prod: `https://business-os.acme.dev`)
 
 **Endpoints:**
 - Cards: `GET /api/agent/cards`, `POST /api/agent/cards`, `GET /api/agent/cards/:id`, `PATCH /api/agent/cards/:id`
@@ -296,7 +296,7 @@ Every Business OS operation requires **evidence**. Use evidence source types fro
 ### Skill fails with "Card not found"
 - Check card ID spelling (case-sensitive)
 - Verify card exists in `docs/business-os/cards/<ID>.user.md`
-- Run `pnpm docs:lint` to check for validation errors
+- Run `pnpm docs:lint` to refresh the registry and check changed-doc validation errors
 
 ### Skill fails with "Insufficient evidence"
 - Read the skill's evidence requirements section
@@ -327,7 +327,7 @@ Every Business OS operation requires **evidence**. Use evidence source types fro
 
 Before any agent skill commits:
 
-1. **Validation:** `pnpm docs:lint` passes (no errors)
+1. **Validation:** `pnpm docs:lint` passes (registry refresh + changed-doc validation). Use `pnpm docs:lint:full` only for explicit repo-wide cleanup work.
 2. **Evidence:** All claims reference specific evidence sources
 3. **Dual-audience:** Both `.user.md` and `.agent.md` updated (where applicable)
 4. **Identity:** Agent commits use `CommitIdentities.agent`

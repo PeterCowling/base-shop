@@ -1,0 +1,175 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-design-system-compliance",
+  "source_artifact_path": "docs/plans/reception-design-system-compliance/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-design-system-compliance/fact-find.md",
+    "plan": "docs/plans/reception-design-system-compliance/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Inline styles and arbitrary layout classes make future theme changes, dark-mode maintenance, and design-system upgrades fragile. Centralising all layout through DS primitives and eliminating inline styles ensures that token changes propagate correctly throughout the app.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All reception app production components are free of inline `style={{` overrides; arbitrary Tailwind bracket values are either replaced with tokens or formally suppressed with justification; raw flex/grid layout class patterns are migrated to DS layout primitives.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Migration risk: gap/align defaults must match; spot-check required per screen group",
+      "current_or_option_state": "Zero visual risk (no changes)",
+      "gap_or_implication": "Must verify DS primitive defaults produce identical layout before swapping; `align` must be set explicitly where `items-center` is used",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "JS-computed `top`/`left` retained in inline style; `position` migrated to class — no UX regression",
+      "current_or_option_state": "Zero UX risk",
+      "gap_or_implication": "Plan execution must keep computed coordinates inline",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — layout-only change",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Existing CI tests provide structural regression guard; snapshots updated intentionally per screen group",
+      "current_or_option_state": "No test impact",
+      "gap_or_implication": "CI test pass required per task group; snapshot drift is expected and intentional",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — CSS class swaps negligible",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single deploy or per-screen-group batches; rollback is git revert",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Deploy per screen group enables early detection of visual regressions; rollback to prior commit",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The reception app has two classes of remaining DS compliance violations: (1) inline `style={{` props in 2 production files, and (2) ~266 raw `className=\"flex ...\"` layout patterns across 15 component folders that should use DS layout primitives. The decision is: how to achieve compliance — by genuine migration to DS primitives, or by suppressing lint violations.",
+    "goals": [
+      "Eliminate all inline `style={{` props (except unavoidable JS-computed coordinates)",
+      "Migrate raw flex/grid layout patterns to DS layout primitives",
+      "Enable DS ESLint rule `ds/enforce-layout-primitives` to run as error-level without suppressions"
+    ],
+    "non_goals": [
+      "New token definitions or color changes",
+      "Visual redesign of any component",
+      "Test file changes"
+    ],
+    "constraints": [
+      "`_BookingTooltip` and `KeycardDepositMenu` use JS-computed cursor/click coordinates (`top`/`left`) — these must remain as inline styles; only `position` property can be migrated to a Tailwind class"
+    ],
+    "assumptions": [
+      "DS `<Inline>` `align` default is unknown at analysis time — always set `align` explicitly where `items-center` is present; do not rely on defaults",
+      "The 3 arbitrary bracket values (`max-h-[calc(100vh-12rem)]`, `max-h-[50vh]`, `ml-[100px]`) are already formally suppressed with justification comments; no action needed"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "True compliance vs suppression",
+        "Why it matters": "Suppressions don't achieve the goal; they just hide violations",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Visual equivalence after migration",
+        "Why it matters": "Must not break layouts; risk of gap/align default mismatch",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Execution parallelism",
+        "Why it matters": "266 instances across 15 folders; need to parallelise safely by screen group",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Regression risk",
+        "Why it matters": "Must not break existing component behavior or CI tests",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Inline style safety",
+        "Why it matters": "JS-computed positions must be preserved exactly",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A",
+        "Description": "Full DS primitive migration — replace all raw flex/grid classes with `<Inline>`, `<Stack>`, `<Cluster>`, `<Grid>`; fix 2 inline styles by moving `position` to Tailwind class",
+        "Upside": "Genuine compliance; `ds/enforce-layout-primitives` becomes error-level permanently; layout semantics expressed through DS",
+        "Downside": "High volume (266 instances); visual equivalence must be verified per component",
+        "Key risks": "Gap/align defaults differ from raw Tailwind in edge cases; layout regressions possible",
+        "Viable?": "Yes — **chosen**"
+      },
+      {
+        "Option": "B",
+        "Description": "Suppress all violations — add `// eslint-disable-next-line ds/enforce-layout-primitives` on each of the 266 instances",
+        "Upside": "Low migration risk; no visual changes",
+        "Downside": "Does not achieve compliance goal; suppressions are technical debt; future token changes still won't propagate through suppressed flex patterns",
+        "Key risks": "Suppression drift; opposite of stated goal",
+        "Viable?": "**No — rejected**"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Full DS primitive migration, executed in parallel screen-group tasks.",
+      "Why this wins": "Option B doesn't meet the stated goal. Option A achieves genuine compliance, enables `ds/enforce-layout-primitives` to run as a CI error permanently (preventing regression), and makes the DS token system the single source of truth for all layout. The 266-instance volume is high but mechanical — there's a direct 1:1 mapping for every pattern (`flex items-center gap-2` → `<Inline align=\"center\" gap=\"2\">`), and the work is safe to parallelise by non-overlapping screen groups.",
+      "**What it depends on": "**"
+    },
+    "rejected_approaches": [
+      "Option B (suppress) — Suppressing 266 lint violations doesn't achieve compliance; it buries technical debt. The suppressions would need to be revisited every time the DS token system changes. Rejected."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Inline style fix can be task 1 (independent)",
+        "Screen group migrations can run in parallel (non-overlapping file sets)",
+        "`common/` folder migration must complete before screen-specific tasks that consume shared components begin (or before their PRs merge)",
+        "Parallel screen-group tasks can start after `common/` lands; the ESLint error gate is last"
+      ],
+      "risks_to_carry_forward": [
+        "DS `<Inline>` `align` prop must be set explicitly (`align=\"center\"`) when replacing `items-center` — relying on defaults risks silent layout shift",
+        "`common/` components (26 violations) are shared by multiple screens — changes here have wider blast radius; treat as a standalone task"
+      ]
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change",
+      "areas": []
+    }
+  }
+}

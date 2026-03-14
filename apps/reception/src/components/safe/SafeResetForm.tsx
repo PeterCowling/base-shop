@@ -1,5 +1,7 @@
 import { memo, useRef, useState } from "react";
 
+import { Stack } from "@acme/design-system/primitives";
+
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
 import { DifferenceBadge } from "../common/DifferenceBadge";
@@ -60,10 +62,10 @@ export const SafeResetForm = memo(function SafeResetForm({
       hideConfirm
       submitRef={submitRef}
     >
-      <div className="mt-4 flex flex-col items-end text-info-main text-sm">
+      <Stack align="end" className="mt-4 text-info-main text-sm">
         <div>Expected keycards: {currentKeycards}</div>
         <DifferenceBadge value={countedKeycards - currentKeycards} />
-      </div>
+      </Stack>
       <div className="mt-4">
         <PasswordReauthInline
           onSubmit={() => submitRef.current?.()}

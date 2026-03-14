@@ -1,16 +1,16 @@
-/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 
 import { getStaffOwnerGateMessage } from '../../lib/security/staffOwnerGate';
+import { Container } from '../layout/Container';
 
 export default function StaffOwnerDisabledNotice() {
   const { t } = useTranslation('Homepage');
   return (
     <main className="min-h-svh bg-muted p-4">
-      <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+      <Container className="max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
         <h1 className="mb-2 text-xl font-semibold text-foreground">{t('accessRestricted.title')}</h1>
         <p className="mb-6 text-sm text-muted-foreground">{getStaffOwnerGateMessage()}</p>
         <Link
@@ -19,7 +19,7 @@ export default function StaffOwnerDisabledNotice() {
         >
           {t('accessRestricted.returnHome')}
         </Link>
-      </div>
+      </Container>
     </main>
   );
 }

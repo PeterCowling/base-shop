@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T13:31:34.227Z",
+  "plan_slug": "brikette-duplicate-screens",
+  "review_cycle_key": "brikette-duplicate-screens",
+  "source_path": "docs/plans/brikette-duplicate-screens/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

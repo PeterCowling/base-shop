@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-12T16:55:00.000Z",
+  "feature_slug": "reception-theme-inline-cascade",
+  "why": "shadcn/ui v4's @theme inline pattern simplifies color management but interacts directly with the reception shade token cascade fix.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "A validated migration path for @theme inline in reception documented: which token families are pre-wrapped, which are not, cascade ordering confirmed safe, and at least one token family piloted end-to-end without regressions.",
+  "source": "operator",
+  "build_date": "2026-03-12",
+  "status": "complete"
+}

@@ -1,0 +1,193 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "xa-uploader-test-logging-coverage",
+  "source_artifact_path": "docs/plans/xa-uploader-test-logging-coverage/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "The upload pipeline is the sole path for product data entering the XA storefront. Regressions silently affecting save, publish, or image upload create data loss risk. Absent logging means failures are invisible in production until a user reports them.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All critical upload pipeline routes and the `handleSaveImpl` action have automated test coverage; 7 of 8 server routes already emit structured `uploaderLog` JSON events on material failure paths (contract errors, R2 failures, sync failures, auth anomalies); the remaining gap (`products/[slug]/route.ts` GET/DELETE failure paths) and the missing `uploaderLogger.ts` unit test are addressed. Note: auth-denied and rate-limited branches across all routes intentionally return fast responses without logging — this is the established pattern and is not a gap.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No visual changes — logging and tests only",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No user-facing flow changes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Log context fields are: `storefront` (ID string), `slug` (product slug), `ip` (already in headers), `event` (enum string), `status` (HTTP numeric code), `operation` (enum string), `endpoint` (URL path fragment), `error` (`String(err)` — includes the error message string for ordinary `Error` objects, which can contain arbitrary text), `message` (error code string), `route` (path template string), `durationMs` (number). None of the currently logged fields are user PII. The `String(err)` pattern is a residual risk: if a future error type includes sensitive text in its message, it would appear in",
+      "gap_or_implication": "Low: no current PII leakage identified. Residual risk from `String(err)` convention in error context if error messages ever contain credentials or user data.",
+      "carry_forward_or_notes": "Yes — note in planning: `String(err)` is the accepted pattern; review must confirm no error type includes sensitive message text"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`uploaderLogger.ts` present and adopted across 7 of 8 server routes as of 2026-03-12. The holdout is `products/[slug]/route.ts` (GET and DELETE error paths not logged). Raw `console.*` eliminated from all other server production paths. Remaining `console.warn` in `CatalogProductImagesFields.client.tsx:276,284` is browser-side. No test for logger fallback path.",
+      "gap_or_implication": "Gap: `products/[slug]/route.ts` errors are not logged. Logger fallback path (lines 41-49) is untested.",
+      "carry_forward_or_notes": "Yes — add `uploaderLog` to slug route; add logger unit test"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "All 8 catalog API routes and middleware have unit tests. `handleSaveImpl` has 12+ test cases. `mergeAutosaveImageTuples` covered. Auth, access control, rate-limit all tested.",
+      "gap_or_implication": "Low: `uploaderLogger.ts` itself has no dedicated test; client image-delete error path untested",
+      "carry_forward_or_notes": "Yes — logger unit test is a quick win"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`uploaderLog` signature is `(level, event, context?)` — stable. No schema changes. All existing tests continue to pass (inferred from CI green history).",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Logging is synchronous JSON serialization to console — negligible cost on Cloudflare Workers",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "Tests and logging are additive. No migration, no flag, no deploy ordering dependency. Rollback = revert commits.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Two P1 items were opened for `apps/xa-uploader`: (1) no test coverage on critical upload paths, meaning regressions shipped silently, and (2) no production logging, meaning upload failures were invisible in production. Investigation reveals that both problems have been substantially resolved by a series of commits landed between 2026-03-05 and 2026-03-12. This fact-find documents the current state, identifies the remaining residual gaps, and determines what — if anything — requires further work.",
+    "goals": [
+      "Confirm what test coverage now exists across all critical upload pipeline paths.",
+      "Confirm what structured logging now exists and where raw `console.*` calls remain in production paths.",
+      "Identify any genuine remaining gaps that warrant a planning task.",
+      "Provide a truthful coverage map for future regression protection."
+    ],
+    "non_goals": [
+      "Assessing UI test coverage for the catalog editor components (non-critical path for the P1 scope).",
+      "End-to-end or integration test coverage (the existing policy is unit tests per `docs/testing-policy.md`).",
+      "Coverage for `apps/xa-b` storefront routes (separate app)."
+    ],
+    "constraints": [
+      "Tests run in CI only — no local `jest` execution. Evidence is from source inspection only.",
+      "`uploaderLogger.ts` uses `console.info/warn/error` as its transport — this is the correct pattern for `wrangler tail --format json` parsing. Not a defect."
+    ],
+    "assumptions": [
+      "The `wrangler tail` JSON-line approach is the agreed production observability mechanism for Cloudflare Workers.",
+      "Test coverage is measured at the route-handler and library level; React component hooks are out of scope for the two P1 items."
+    ],
+    "key_entry_points": [
+      "`apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts` — client-side action dispatcher; `handleSaveImpl` is the primary save orchestrator",
+      "`apps/xa-uploader/src/app/api/catalog/products/route.ts` — product upsert/list route (POST/GET)",
+      "`apps/xa-uploader/src/app/api/catalog/images/route.ts` — image upload (POST) and delete (DELETE) route",
+      "`apps/xa-uploader/src/app/api/catalog/publish/route.ts` — single-product publish route",
+      "`apps/xa-uploader/src/app/api/catalog/sync/route.ts` — full catalog sync/publish route",
+      "`apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts` — per-product GET/DELETE route",
+      "`apps/xa-uploader/src/app/api/catalog/products/bulk/route.ts` — bulk product upsert route",
+      "`apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts` — currency rates GET/PUT",
+      "`apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts` — deploy drain route",
+      "`apps/xa-uploader/src/lib/uploaderLogger.ts` — structured logging utility (JSON-line via console)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis xa-uploader-test-logging-coverage`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "`handleSaveImpl` save action test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Image upload/delete route test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Publish route test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Sync route test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bulk upsert route test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`products/[slug]/route.ts` test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None (tests exist in `route.test.ts` and `route.branches.test.ts`)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`uploaderLogger.ts` adoption across routes",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap] [Minor]: `products/[slug]/route.ts` has zero `uploaderLog` calls — errors not logged",
+        "Resolution Required": "No (minor, does not block)"
+      },
+      {
+        "Scope Area": "`uploaderLogger.ts` unit test",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Missing domain] [Minor]: No `uploaderLogger.test.ts` exists; fallback path untested",
+        "Resolution Required": "No (minor)"
+      },
+      {
+        "Scope Area": "Client-side `console.warn` in browser component",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap] [Minor]: `CatalogProductImagesFields.client.tsx:276,284` uses raw `console.warn` — correct for browser context, but no test covers these error paths",
+        "Resolution Required": "No (minor, correct behavior)"
+      },
+      {
+        "Scope Area": "Auth and access control coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Middleware coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only. The changes being assessed add tests and logging instrumentation to an existing pipeline; no multi-step operator workflow, CI lane, or deployment approval path is being altered.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-value-framing-test",
+  "business": "BRIK",
+  "emitted_at": "2026-03-13T20:13:35.943Z",
+  "dispatch_id": "IDEA-DISPATCH-20260313200000-PRIME-006",
+  "outcome_contract": {
+    "why": "TC-03 was disabled and never re-enabled, leaving the confidence cue rendering path untested. A bug in this path would reach guests undetected.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "TC-03 passes. The confidence cue rendering path has working test coverage.",
+    "source": "operator"
+  },
+  "status": "complete",
+  "commit_sha": "fb9e37369f"
+}

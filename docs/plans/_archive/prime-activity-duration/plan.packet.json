@@ -1,0 +1,261 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "prime-activity-duration",
+  "source_artifact_path": "docs/plans/prime-activity-duration/plan.md",
+  "source_artifact_status": "Archived",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-activity-duration/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Guests can be sent links to activity events that appear to end after exactly 2 hours regardless of how long the activity actually runs. Staff have no way to adjust this without a code change. Adding a duration field to the staff activity form means new activities will display accurate end times.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can create and edit activity instances via the Prime app UI, setting a custom duration in minutes. Activity cards show accurate end times derived from data, not a hardcoded default.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "New owner page (activity list + form) at `/owner/activities` using owner-area design conventions",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "Staff-only; no guest-facing visual change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Form: empty/loading/saving/error/success states; list: empty state when no instances",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "Form rejects invalid input before submit",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "`enforceStaffAuthTokenGate` gates the function; owner page behind `canAccessStaffOwnerRoutes` guard",
+      "current_or_option_state": "TASK-02, TASK-04",
+      "gap_or_implication": "No guest-facing API surface; no PII",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`recordDirectTelemetry('write.success')` + structured console log on every successful create/edit",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Provides audit trail for staff RTDB writes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Function unit tests (401, 400, correct write shape); form validation unit tests",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Mock `FirebaseRest` and `enforceStaffAuthTokenGate`; no RTDB emulator needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`ActivityInstance` type already typed with `durationMinutes?: number`; function validates payload before write",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No type changes; no RTDB schema migration",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — low-frequency staff-only write; no hot path concern",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "Infrequent write; no reliability mitigation needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive pages + function; rollback = revert form page to redirect stub and delete function",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "No guest risk; zero guest-facing changes",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Staff currently have no way to create or edit activity instances in the Prime guest app without direct Firebase console access. The `durationMinutes` field already exists in the `ActivityInstance` type and RTDB schema but is optional with a hardcoded 120-minute fallback, making activity end times inaccurate for guests. This plan builds a minimal staff-facing activity management UI: a new Cloudflare Pages Function (`activity-manage.ts`) as the privileged write layer, an `ActivityManageForm` component for create/edit, and an owner page at `/owner/activities` listing all instances. The existing `",
+    "goals": [
+      "Staff can create and edit activity instances through the Prime app UI (no Firebase console needed).",
+      "Activity cards show accurate end times derived from the stored `durationMinutes` field, not the hardcoded 120-minute default."
+    ],
+    "non_goals": [
+      "Guest-facing UI changes.",
+      "Type changes to `ActivityInstance` (field is already present as `durationMinutes?: number`).",
+      "Migration of existing Firebase records (fix is forward-only for new and edited instances).",
+      "Full activity analytics dashboard, bulk operations, or template editing."
+    ],
+    "constraints": [
+      "Activity management is staff-only; the write function must use `enforceStaffOwnerApiGate` (`apps/prime/functions/lib/staff-owner-gate.ts`) — the owner-area API pattern (CF Access or `PRIME_STAFF_OWNER_GATE_TOKEN` secret). The full Firebase Bearer token path (`enforceStaffAuthTokenGate`) is not used here because the owner area has no Firebase ID token source for client components (`PinAuthProvider` is in the messaging context tree, not the owner layout).",
+      "Firebase RTDB is the persistence layer; writes go via `FirebaseRest.set()` / `FirebaseRest.update()` using service account credentials.",
+      "Cloudflare Pages Functions (`functions/api/`) are the server-side layer; no new Next.js API route is needed.",
+      "`durationMinutes` must remain optional in the type (backward-compat with legacy RTDB records)."
+    ],
+    "assumptions": [
+      "`PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` and `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` are set in the CF Pages environment (same env vars required by `aggregate-kpis.ts` and `staff-auth-session.ts`).",
+      "`CF_FIREBASE_DATABASE_URL` and `CF_FIREBASE_API_KEY` are set (required by existing FirebaseRest usage).",
+      "Owner page auth follows the same `canAccessStaffOwnerRoutes` pattern used by `apps/prime/src/app/owner/page.tsx`."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "New CF function `apps/prime/functions/api/activity-manage.ts` — handles GET (list), POST (create), and PATCH (update) with `enforceStaffOwnerApiGate` auth and `FirebaseRest` reads/writes.",
+      "New owner page `apps/prime/src/app/owner/activities/page.tsx` — staff UI for listing instances and launching the create/edit form.",
+      "New form component `apps/prime/src/components/activity-manage/ActivityManageForm.tsx` — create/edit mode with full field set and validation.",
+      "Redirect `/chat/activities/manage` → `/owner/activities` (replaces stub redirect to `/activities`).",
+      "Why planning is not reopening option selection:",
+      "Analysis decisively chose Option B with explicit reasoning; all three options compared. No operator-only fork remains."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Update `/chat/activities/manage` redirect to `/owner/activities`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated redirect in `apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx`",
+        "affects": "`apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "New CF function `activity-manage.ts` — POST create + PATCH update",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `apps/prime/functions/api/activity-manage.ts` — handles `GET` (list all instances), `POST` (create), and `PATCH` (update); all routes gated by `enforceStaffOwnerApiGate`",
+        "affects": "`apps/prime/functions/api/activity-manage.ts`, `[readonly] apps/prime/functions/lib/staff-owner-gate.ts`, `[readonly] apps/prime/functions/lib/firebase-rest.ts`, `[readonly] apps/prime/functions/lib/firebase-custom-token.ts`, `[readonly] apps/prime/functions/lib/direct-telemetry.ts`, `[readonly] apps/prime/src/types/messenger/activity.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "New `ActivityManageForm` component — create/edit mode",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `apps/prime/src/components/activity-manage/ActivityManageForm.tsx`",
+        "affects": "`apps/prime/src/components/activity-manage/ActivityManageForm.tsx`, `[readonly] apps/prime/src/types/messenger/activity.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "New owner page `/owner/activities` — list + create + edit",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-14)",
+        "confidence": 82,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `apps/prime/src/app/owner/activities/page.tsx`",
+        "affects": "`apps/prime/src/app/owner/activities/page.tsx`, `apps/prime/src/app/owner/activities/ActivitiesPageClient.tsx`, `[readonly] apps/prime/src/app/owner/page.tsx`, `[readonly] apps/prime/src/lib/security/staffOwnerGate.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Unit tests — function validation and form validation",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-14)",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New test file `apps/prime/src/test/activity-manage/activity-manage.test.ts`",
+        "affects": "`apps/prime/functions/api/__tests__/activity-manage.test.ts`, `apps/prime/src/components/activity-manage/__tests__/ActivityManageForm.test.tsx`, `[readonly] apps/prime/functions/api/activity-manage.ts`, `[readonly] apps/prime/src/components/activity-manage/ActivityManageForm.tsx`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Staff creates an activity",
+          "trigger": "Staff navigates to `/owner/activities` and clicks \"Create\"",
+          "flow": "Staff opens form (title, startTime, durationMinutes ≥ 1, status; optional: description, meetUpPoint, meetUpTime) → submits → frontend POSTs to `POST /api/activity-manage` → function validates owner gate auth (`enforceStaffOwnerApiGate`: CF Access or `PRIME_STAFF_OWNER_GATE_TOKEN`) → validates payload → writes to `messaging/activities/instances/[newId]` via `FirebaseRest.set()` → emits telemetry → returns 201 → form shows success → guest real-time listeners pick up new instance automatically",
+          "task_ids": [
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Service account env vars must be set in CF Pages (pre-ship check); `PRIME_STAFF_OWNER_GATE_TOKEN` or CF Access must be configured in production"
+        },
+        {
+          "id": null,
+          "label": "Staff edits an activity",
+          "trigger": "Staff navigates to `/owner/activities` and clicks \"Edit\" on an existing instance",
+          "flow": "Form pre-populated with existing data → staff edits → submits → frontend sends `PATCH /api/activity-manage` with instance `id` in body → function validates owner gate auth + payload → `FirebaseRest.update()` on existing RTDB path → 200 → form shows success",
+          "task_ids": [
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Function must reject id mismatch / missing id on PATCH"
+        },
+        {
+          "id": null,
+          "label": "Guest views activity",
+          "trigger": "Guest loads `/activities`",
+          "flow": "No change to guest view. For instances created with new form, `durationMinutes` is set; guest sees accurate end time. Legacy instances without the field continue using `?? 120` fallback.",
+          "task_ids": [],
+          "dependency_note": "None (existing code unchanged)",
+          "seams": "None; fully backward-compatible"
+        },
+        {
+          "id": null,
+          "label": "Old `/chat/activities/manage` route",
+          "trigger": "Staff navigates to old URL",
+          "flow": "Page now redirects to `/owner/activities` (was: redirect to `/activities`)",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "Rollback: revert redirect target back to `/activities`"
+        }
+      ]
+    }
+  }
+}

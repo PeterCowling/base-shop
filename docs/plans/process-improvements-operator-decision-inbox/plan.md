@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Complete
+Status: Active
 Domain: BOS | Startup Loop
 Workstream: Operations
 Created: 2026-03-10
 Last-reviewed: 2026-03-11
-Last-updated: 2026-03-11
+Last-updated: 2026-03-12
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: process-improvements-operator-decision-inbox
 Deliverable-Type: multi-deliverable
@@ -13,62 +13,57 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-critique
-Overall-confidence: 87%
-Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort after architecture lock
+Overall-confidence: 83%
+Confidence-Method: min(Implementation,Approach,Impact); overall weighted by active-task effort after tranche-1 foundation completion
 Auto-Build-Intent: plan-only
 ---
 
 # Process Improvements Operator App Plan
 
 ## Summary
-The queue-authority cleanup is already done. The remaining problem is execution surface: the repo has a canonical queue-backed backlog, but the operator still only sees a passive report.
+Tranche 1 is complete: the Business OS app is now the authoritative process-improvements runtime, with working `Do`, `Defer`, and `Decline` actions, queue-backed authority, and a durable decision ledger. The remaining gap is no longer action plumbing. It is decision quality at the point of operator review.
 
-This plan makes `apps/business-os` the authoritative runtime for process-improvements decisions. The app will read queue-backed idea items directly from queue state through an app-local projection layer, overlay operator decisions from a dedicated append-only decision ledger, and expose exactly three actions:
+The current inbox card is still too system-shaped for the real audience. It exposes dispatch ids, timestamps, and raw evidence paths clearly, but it does not yet help a mixed readership of operators, business stakeholders, and non-technical reviewers decide whether an idea should be taken forward. The next tranche must turn the card into a decision brief that explains the problem, why it matters now, the business-wide benefit of acting, and what will happen after `Do`, while keeping technical evidence available behind the primary narrative.
 
-- `Do`: record the operator decision and immediately hand the item into the existing routing/work-package machinery.
-- `Defer`: record a 7-day snooze in the decision ledger without mutating queue lifecycle.
-- `Decline`: record the operator decision and move the queue item to a terminal queue state with explicit rejection metadata.
-
-The static generated report stays in place during this tranche, but only as a read-only reference surface with signposting into the app. It does not mirror operator decision state and it is not an action runtime or an authoritative data source for the app.
+This plan keeps the existing action semantics and queue authority intact. It focuses on app-side projection, copy contract, audit capture, and UI redesign so that the operator can make a fast decision in business terms rather than needing to interpret technical metadata.
 
 ## Active tasks
-- [x] TASK-01: Implement the authoritative queue-native inbox projection and lock the coexistence contract
-- [x] TASK-02: Implement the append-only process-improvements decision ledger and app-side persistence helpers
-- [x] TASK-03: Implement Business OS decision APIs and the dedicated operator-actions queue service
-- [x] TASK-04: Implement the Business OS process-improvements inbox route and UI
-- [x] TASK-05: Checkpoint the end-to-end app flow and confirm the report remains signpost-only
-- [x] TASK-06: Implement static-report read-only signposting with no mirrored decision overlay
-- [x] TASK-07: Add deterministic validation coverage across projection, ledger, API, UI, and report seams
+- [x] TASK-08: Define and implement the decision-brief projection contract — Complete (2026-03-12)
+- [x] TASK-09: Extend decision capture for operator rationale and durable recent-history replay — Complete (2026-03-12)
+- [x] TASK-10: Redesign the inbox UI for mixed and non-technical readers — Complete (2026-03-12)
+- [x] TASK-11: Checkpoint the end-to-end mixed-reader decision flow — Complete (2026-03-12)
+- [x] TASK-12: Add deterministic coverage and targeted frontend QA for the new decision surface — Complete (2026-03-12)
 
 ## Goals
-- Make the Business OS app the only authoritative action surface for process improvements.
-- Keep active idea backlog authority queue-backed.
-- Keep route choice hidden from the operator.
-- Make `Do` immediate handoff, not approval-for-pickup.
-- Make `Defer` durable, time-bounded, and queue-non-mutating.
-- Make `Decline` both auditable and workflow-effective.
+- Make each inbox card understandable on first read by non-technical stakeholders.
+- Frame benefits in business-wide terms rather than local technical cleanup terms.
+- Make `Do`, `Defer`, and `Decline` consequences explicit at card level.
+- Preserve route opacity while still showing the expected next step after `Do`.
+- Keep technical evidence available as supporting detail without dominating the card hierarchy.
+- Replace session-only “recently actioned” behavior with durable, ledger-backed replay.
 
 ## Non-goals
-- Preserving `file://` HTML as a mutating workflow surface.
-- Adding operator-visible route choice.
-- Extending the first action set beyond `Do`, `Defer`, and `Decline`.
-- Applying the first action set to `risk` or `pending-review` items.
-- Full autonomous execution in this tranche.
+- Changing the locked semantics of `Do`, `Defer`, or `Decline`.
+- Reopening queue authority, route selection, or report/app runtime decisions.
+- Adding new action types beyond `Do`, `Defer`, and `Decline`.
+- Turning the static report back into an action surface.
+- Broad redesign of Business OS navigation or unrelated inbox patterns.
 
 ## Constraints & Assumptions
 - Constraints:
-  - Active actionable idea backlog is queue-backed.
-  - `Do` must hand off immediately, not create a passive approval queue.
-  - `Defer` must not reuse `skipped`, `suppressed`, or `completed`.
-  - `Decline` must change queue workflow state and preserve explicit operator metadata.
+  - Queue-backed authority, decision-ledger persistence, and authenticated action APIs are already live and must remain authoritative.
+  - The first screenful of a card must work for readers with no queue, schema, or artifact knowledge.
+  - Benefits must be phrased in business-wide terms such as speed, risk, clarity, capacity, delivery reliability, or customer impact.
+  - Technical evidence must remain available for trust and audit, but only as secondary detail.
+  - `Do` must continue to hand off immediately through the existing route machinery.
   - Local Jest/Cypress execution remains out of scope under repo policy; CI is the test authority.
 - Assumptions:
-  - `apps/business-os` is the right host because it already has authenticated page/API patterns and repo-write seams.
-  - The app should read queue state directly and treat generated process-improvements artifacts as downstream report outputs, not upstream authority.
-  - A repo-readable append-only decision ledger is the right persistence shape because future automation needs event history, not only latest state.
+  - Existing queue fields plus deterministic projection rules are sufficient to derive a decision brief without introducing speculative freeform copy.
+  - Optional operator rationale is most valuable for `Decline`, but the schema should not preclude future use for other actions.
+  - The existing Business OS route can absorb a richer card layout without requiring a broader design-system overhaul.
 
 ## Inherited Outcome Contract
-- **Why:** The repo now has one canonical actionable idea backlog, but the current operator surface is still a passive report. The missing seam is an authenticated decision surface with durable persistence and immediate action handling.
+- **Why:** The repo now has one canonical actionable idea backlog, but the current operator surface is still a passive report. The missing seam is not backlog authority; it is an authenticated decision surface with durable persistence and immediate action handling.
 - **Intended Outcome Type:** operational
 - **Intended Outcome Statement:** Process improvements becomes a Business OS operator app where queue-backed idea candidates can be marked `Do`, `Defer`, or `Decline`; `Do` immediately hands the item into the normal routing flow, `Defer` hides it for 7 days via a decision ledger, and `Decline` records rejection while moving the queue item to a terminal state.
 - **Source:** operator
@@ -76,350 +71,291 @@ The static generated report stays in place during this tranche, but only as a re
 ## Fact-Find Reference
 - Related brief: [fact-find.md](/Users/petercowling/base-shop/docs/plans/process-improvements-operator-decision-inbox/fact-find.md)
 - Key findings used:
-  - The static `file://` report is the wrong mutating runtime.
-  - `apps/business-os` already provides authenticated page and API seams.
-  - Queue-backed idea backlog is canonical for this surface.
-  - The unresolved seams are projection, decision-ledger persistence, immediate-handoff APIs, and report coexistence.
+  - The action runtime is already correctly located in `apps/business-os`.
+  - The current inbox is functionally correct but still too system-shaped for the decision moment.
+  - Mixed and non-technical readers must be able to understand the first screenful without queue or artifact knowledge.
+  - Benefits must be translated into business-wide terms, not framed as local technical cleanup.
+  - The preferred card shape is now explicit: problem, why now, recommendation, business benefit, expected next step, impact/effort/urgency/recurrence, actions, collapsed evidence.
 
-## Locked Architecture
-- Authoritative read model:
-  - The app reads the currently authoritative startup-loop idea queue through an app-local queue-path resolver backed by the canonical startup-loop path constants.
-  - For this tranche, the authoritative queue mode is explicitly `trial`; promotion to `live` is a separate future change, not an implicit resolver behavior.
-  - The projection enriches queue-backed idea items with route/status/provenance fields needed for `Do`, `Defer`, and `Decline`.
-  - The projection overlays operator decision state by reducing `docs/business-os/process-improvements/operator-decisions.jsonl` into the latest visible state per `idea_key`.
-- Authoritative write model:
-  - `Do` appends an operator-decision event first, then invokes an app-side service wrapper around a dedicated startup-loop operator-actions module.
-  - `Defer` appends only an operator-decision event, including `defer_until`.
-  - `Decline` appends an operator-decision event first, then invokes the operator-actions module to move the dispatch to a first-class queue state `declined` with explicit `declined_by` metadata.
-  - Ledger records for `Do` and `Decline` must distinguish operator intent from execution result so partial failures do not masquerade as successful handoff.
-  - The decision ledger is append-only; concurrency is resolved by optimistic append plus reducer semantics, never destructive overwrite of prior operator events.
-- Static report contract:
-  - `docs/business-os/process-improvements.user.html` remains read-only in this tranche.
-  - The report does not consume decision-ledger state in this tranche.
-  - The app, not the report, is authoritative for actions and current operator state.
+## Current State Snapshot
+- Completed foundation already in place:
+  - queue-native projection and queue-path resolver
+  - append-only decision ledger
+  - authenticated `Do` / `Defer` / `Decline` APIs
+  - first-class `declined` queue state and operator actions module
+  - Business OS `/process-improvements` route
+  - static report reduced to signpost-only
+- Remaining product gap:
+  - the projection exposes mostly system metadata
+  - the card does not explain business benefit or likely consequence clearly enough
+  - `Recently actioned` is session-local UI state, not durable replay
+  - there is no operator rationale capture path for `Decline`
 
 ## Proposed Approach
-- Option A: keep the static report as the action surface and add a localhost shim.
-  - Rejected because it preserves the wrong runtime and duplicates auth/write concerns that the app already solves.
-- Option B: make the Business OS app authoritative and keep the report strictly read-only and signpost-only.
-  - Chosen because it aligns runtime, auth, writes, audit, and workflow authority in one place.
+- Option A: tweak labels and copy in the existing card while leaving the data contract mostly unchanged.
+  - Rejected because it would leave the UI dependent on raw system fields and would not reliably produce non-technical, business-framed decision support.
+- Option B: add an explicit app-side decision-brief contract, extend the ledger/API for rationale capture and replay, then rebuild the card around that contract.
+  - Chosen because it fixes the root problem: the app currently knows workflow state but does not yet present a decision-grade explanation.
+
+## Locked Architecture For This Tranche
+- Read model:
+  - Keep queue state plus reduced decision-ledger state as authority.
+  - Add an app-side decision-brief projection that maps queue/system fields into operator-facing fields such as `problem`, `why_now`, `business_benefit`, `expected_next_step`, `confidence_explainer`, and labeled evidence.
+  - The decision-brief projection must be deterministic and evidence-linked; it must not invent unsupported claims.
+  - Business-wide benefit wording must come from a controlled taxonomy derived from evidence-backed categories such as delivery speed, risk reduction, team capacity, clarity, customer trust, and conversion reliability.
+  - Expected-next-step wording must come from an explicit mapping over `recommendedRoute` and `status`, not ad hoc UI copy.
+- Write model:
+  - Keep existing action APIs and queue mutations.
+  - Extend the decision ledger and API contract to support optional operator rationale for all decisions, while capturing it in the UI for `Decline` in this tranche.
+  - Replace session-local recent-action replay with ledger-backed recent decision replay in the app.
+  - The recent-history section will show the latest 20 non-`defer` decisions from the last 7 days, ordered by `decided_at` descending.
+- Presentation model:
+  - Primary hierarchy is plain-language decision support.
+  - Technical evidence, dispatch ids, and raw paths move behind a collapsed evidence/details affordance.
+  - Action consequences remain visible at point of decision.
 
 ## Plan Gates
 - Foundation Gate: Pass
 - Sequenced: Yes
 - Edge-case review complete: Yes
-- Auto-build eligible: No until critique + revalidation are complete
+- Auto-build eligible: Yes
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Implement the queue-native projection and codify the app/report authority contract | 86% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 |
-| TASK-02 | IMPLEMENT | Implement the append-only operator decision ledger and persistence helpers | 84% | M | Complete (2026-03-11) | TASK-01 | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 |
-| TASK-03 | IMPLEMENT | Implement authenticated decision APIs and the dedicated operator-actions queue service | 82% | M | Complete (2026-03-11) | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07 |
-| TASK-04 | IMPLEMENT | Build the process-improvements inbox route and UI in Business OS | 84% | M | Complete (2026-03-11) | TASK-01, TASK-02, TASK-03 | TASK-05, TASK-06, TASK-07 |
-| TASK-05 | CHECKPOINT | Rehearse the end-to-end app flow and confirm the report remains signpost-only | 84% | S | Complete (2026-03-11) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06, TASK-07 |
-| TASK-06 | IMPLEMENT | Implement read-only report signposting with no mirrored decision overlay | 84% | S | Complete (2026-03-11) | TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Add deterministic validation coverage across the new seams | 84% | M | Complete (2026-03-11) | TASK-03, TASK-04, TASK-05, TASK-06 | - |
+| TASK-08 | IMPLEMENT | Define and implement the decision-brief projection contract from queue and ledger state | 84% | M | Complete (2026-03-12) | - | TASK-09, TASK-10, TASK-11, TASK-12 |
+| TASK-09 | IMPLEMENT | Extend decision capture for operator rationale and durable recent-history replay | 82% | M | Complete (2026-03-12) | TASK-08 | TASK-10, TASK-11, TASK-12 |
+| TASK-10 | IMPLEMENT | Redesign the Business OS inbox UI around the decision brief and mixed-reader rules | 84% | M | Complete (2026-03-12) | TASK-08, TASK-09 | TASK-11, TASK-12 |
+| TASK-11 | CHECKPOINT | Rehearse the mixed-reader end-to-end flow and lock any final wording/ordering adjustments | 83% | S | Complete (2026-03-12) | TASK-08, TASK-09, TASK-10 | TASK-12 |
+| TASK-12 | IMPLEMENT | Add deterministic tests and targeted frontend QA for the decision-grade surface | 84% | M | Complete (2026-03-12) | TASK-09, TASK-10, TASK-11 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-01 | - | Lock the projection and coexistence contract in code/docs first |
-| 2 | TASK-02 | TASK-01 | Ledger schema depends on the chosen projection identity |
-| 3 | TASK-03 | TASK-01, TASK-02 | API and queue mutation work needs the projection, ledger, and explicit decline semantics |
-| 4 | TASK-04 | TASK-01, TASK-02, TASK-03 | UI depends on the projection fields and decision endpoints |
-| 5 | TASK-05 | TASK-01, TASK-02, TASK-03, TASK-04 | Checkpoint after the core app flow exists |
-| 6 | TASK-06 | TASK-05 | Report stays signpost-only; no state mirroring work is allowed in this tranche |
-| 7 | TASK-07 | TASK-03, TASK-04, TASK-05, TASK-06 | Final tests should hit the real seams, not placeholders |
+| 1 | TASK-08 | - | Lock the app-facing decision-brief contract before touching UI hierarchy |
+| 2 | TASK-09 | TASK-08 | Rationale capture and durable recent-history replay depend on stable item identity and card semantics |
+| 3 | TASK-10 | TASK-08, TASK-09 | UI redesign should consume the final brief and rationale/history seams, not placeholders |
+| 4 | TASK-11 | TASK-08, TASK-09, TASK-10 | Rehearse only after the real mixed-reader surface exists |
+| 5 | TASK-12 | TASK-09, TASK-10, TASK-11 | Tests and QA should validate the final contract and card behavior |
 
 ## Tasks
 
-### TASK-01: Implement the authoritative queue-native inbox projection and lock the coexistence contract
+### TASK-08: Define and implement the decision-brief projection contract
 - **Type:** IMPLEMENT
-- **Deliverable:** app-local projection helper that reads queue-backed idea items directly from the authoritative queue path, overlays reduced decision state, and codifies the app/report authority contract
+- **Deliverable:** app-side projection layer that transforms queue and ledger state into a deterministic decision brief for each actionable idea
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Complete (2026-03-10)
-- **Affects:** `apps/business-os/src/lib/process-improvements/**`, `apps/business-os/src/app/process-improvements/**`, any app-local queue-path resolver/helper, nearby code comments that currently imply report authority
+- **Status:** Pending
+- **Affects:** `apps/business-os/src/lib/process-improvements/projection.ts`, nearby types, any app-side helpers that shape process-improvements copy
 - **Depends on:** -
-- **Blocks:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07
-- **Confidence:** 86%
-  - Implementation: 86% - the queue file, app route patterns, and generator seams already exist.
-  - Approach: 87% - treating generated artifacts as downstream compatibility outputs removes the biggest source of ambiguity.
-  - Impact: 87% - this contract prevents the app and report from drifting into dual authority.
+- **Blocks:** TASK-09, TASK-10, TASK-11, TASK-12
+- **Confidence:** 84%
+  - Implementation: 82% - the existing projection already carries enough raw fields, but the transformation contract must stay evidence-based.
+  - Approach: 85% - a dedicated decision-brief layer is cleaner than letting UI components interpret raw queue fields ad hoc.
+  - Impact: 85% - this is the core seam that makes the inbox understandable to mixed readers.
 - **Acceptance:**
-  - The app reads queue-backed process-improvement items from the authoritative queue path, not from generated report JSON.
-  - The projection exposes the route/status/provenance fields needed for action handling.
-  - The projection contract explicitly states that generated report artifacts are downstream compatibility outputs, not action authority.
-  - The queue-path resolver explicitly fixes queue mode to `trial` for this tranche.
-- **Validation contract (TC-01):**
-  - TC-01: one queue-backed dispatch can be projected into an app-facing inbox item without reading `docs/business-os/_data/process-improvements.json`.
-  - TC-02: the projected item includes stable identity, current queue state, recommended route, and enough metadata to support `Do`, `Defer`, and `Decline`.
-  - TC-03: the projection uses a dedicated queue-path resolver rather than hardcoding a one-off file path inside the UI route.
-  - TC-04: the app/report authority rule is stated in code-facing comments or helper docs close to the new projection seam.
-  - TC-05: targeted typecheck/lint pass for every touched package path.
-- **Planning validation evidence:** confirm the projection seam against `queue-state.json`, `ideas/page.tsx`, and the current generator before implementation starts.
-- **Rollout/rollback:** add the projection alongside the existing report first; rollback is to disable the new app route while leaving the report unchanged.
-- **Documentation impact:** update this plan and any nearby code comments that currently imply the report is authoritative.
-- **What would make this >=90%:** implement one projection fixture from a real queue entry and prove the app can render it without generated report data.
-- **Build completion evidence:**
-  - Added a queue-mode resolver in `apps/business-os/src/lib/process-improvements/queue-path.ts`.
-  - Added a queue-backed projection helper in `apps/business-os/src/lib/process-improvements/projection.ts`.
-  - Added deterministic projection tests in `apps/business-os/src/lib/process-improvements/projection.test.ts`.
-  - Validation passed: `pnpm --filter @apps/business-os typecheck`
-  - Validation passed: `pnpm --filter @apps/business-os lint`
+  - The projection emits operator-facing fields that answer:
+    - what is the problem
+    - why it matters now
+    - what business-wide benefit is expected if acted on
+    - what will happen next if `Do` is pressed
+  - The projection emits a confidence explanation in plain language when confidence is shown.
+  - The projection emits labeled evidence summaries suitable for collapsed details UI.
+  - The projection contract explicitly separates plain-language decision fields from raw technical evidence.
+  - Business-wide benefit output is selected from a controlled, documented taxonomy rather than freeform per-card invention.
+  - Expected-next-step output is derived from an explicit mapping table over route/status evidence.
+  - New outputs introduced by this task are traced to all consumers in the app route/UI.
+- **Expected user-observable behavior:**
+  - Card copy reads like a short decision brief rather than a dispatch record.
+  - A non-technical reviewer can understand the gist of an item without reading raw file paths.
+- **Validation contract (TC-08):**
+  - TC-01: a queue-backed dispatch projects into a decision brief without relying on generated report JSON.
+  - TC-02: every new field introduced by the brief contract has at least one named consumer in the route or UI layer.
+  - TC-03: business-wide benefit copy is derived from the controlled taxonomy via evidence-backed rules, not unsupported speculation.
+  - TC-04: expected-next-step copy comes from the explicit route/status mapping and matches one real handoff path.
+  - TC-05: confidence narrative falls back safely when evidence is insufficient.
+  - TC-06: targeted typecheck/lint pass for `@apps/business-os`.
+- **Planning validation evidence:** trace current raw fields in [projection.ts](/Users/petercowling/base-shop/apps/business-os/src/lib/process-improvements/projection.ts) to the card renderer and identify every new consumer before implementation.
+- **Rollout/rollback:** keep the existing raw projection contract available behind the app route while the new brief fields are introduced; rollback is to fall back to the previous card mapping without altering queue or ledger semantics.
+- **Documentation impact:** update projection comments and this plan to document the distinction between operator brief fields and raw evidence fields.
+- **What would make this >=90%:** confirm one real queue item can be projected into a credible decision brief with no unsupported claims and all new fields consumed explicitly.
 
-### TASK-02: Implement the append-only process-improvements decision ledger and app-side persistence helpers
+### TASK-09: Extend decision capture for operator rationale and durable recent-history replay
 - **Type:** IMPLEMENT
-- **Deliverable:** repo-readable append-only decision ledger at `docs/business-os/process-improvements/operator-decisions.jsonl` plus typed app-side read/write/reduce helpers
+- **Deliverable:** optional operator rationale capture, persisted in the decision ledger and surfaced as durable recent decision history in the app
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Complete (2026-03-11)
-- **Affects:** `apps/business-os/src/lib/process-improvements/**`, `apps/business-os/src/lib/repo/**`, `docs/business-os/process-improvements/operator-decisions.jsonl`
-- **Depends on:** TASK-01
-- **Blocks:** TASK-03, TASK-04, TASK-05, TASK-06, TASK-07
-- **Confidence:** 85%
-  - Implementation: 83% - repo-write helpers already exist, but append-only persistence and reducer helpers still need a clean schema and concurrency contract.
-  - Approach: 86% - an append-only ledger is the cleanest way to preserve operator history without corrupting queue lifecycle.
-  - Impact: 86% - `Defer`, auditability, and future automation all depend on this layer.
+- **Status:** Pending
+- **Affects:** `apps/business-os/src/lib/process-improvements/decision-ledger.ts`, `apps/business-os/src/lib/process-improvements/decision-service.ts`, `apps/business-os/src/app/api/process-improvements/decision/[decision]/route.ts`, `apps/business-os/src/components/process-improvements/**`
+- **Depends on:** TASK-08
+- **Blocks:** TASK-10, TASK-11, TASK-12
+- **Confidence:** 82%
+  - Implementation: 80% - the ledger and API seams already exist, but schema and replay behavior must evolve without muddying execution-state semantics.
+  - Approach: 83% - rationale and durable replay belong in the ledger rather than in client-only state.
+  - Impact: 84% - this increases audit quality and removes the current refresh-loss problem for recent actions.
 - **Acceptance:**
-  - Each ledger event stores stable item identity, decision type, operator identity, timestamp, optional `defer_until`, and execution outcome for workflow-mutating decisions.
-  - `Do` and `Decline` create durable ledger events even when they also mutate queue state.
-  - A reducer derives active, deferred, and recently actioned views in the app from the append-only event stream.
-- **Validation contract (TC-02):**
-  - TC-01: repeated writes for the same item produce deterministic reduced state according to the chosen ledger contract.
-  - TC-02: `Defer` records a future `defer_until` without mutating queue state.
-  - TC-03: failed `Do` or `Decline` execution can be represented without the ledger pretending the downstream mutation succeeded.
-  - TC-04: the reducer resolves multiple operator events on the same `idea_key` deterministically.
-  - TC-05: ledger helpers reject malformed decision payloads before any file write occurs.
-  - TC-06: targeted typecheck/lint pass for every touched package path.
-- **Planning validation evidence:** inspect existing repo-write helpers and confirm atomic-write expectations before choosing the helper implementation.
-- **Rollout/rollback:** add the ledger file and helpers behind the new route/API only; rollback is to disable the new API while leaving the append-only event log intact for audit.
-- **Documentation impact:** document the ledger path and semantics in code comments and this plan.
-- **What would make this >=90%:** complete one audited append/reduce round-trip for `defer` and one failed-execution `decline` event sequence.
-- **Build completion evidence:**
-  - Added append-only decision-ledger helpers in `apps/business-os/src/lib/process-improvements/decision-ledger.ts`.
-  - Added deterministic ledger tests in `apps/business-os/src/lib/process-improvements/decision-ledger.test.ts`.
-  - Extended projection state to carry reduced execution errors for failed `Do`/`Decline` attempts.
-  - Validation passed: `pnpm --filter @apps/business-os typecheck`
-  - Validation passed: `pnpm --filter @apps/business-os lint`
+  - The decision contract supports optional operator rationale for all decision types, with first-class UI capture for `Decline` in this tranche.
+  - Rationale is stored durably alongside the decision event without weakening existing execution-result semantics.
+  - The app can render recent decisions from reduced ledger state after refresh, rather than relying on session-local state only.
+  - The recent-history replay contract is explicit: latest 20 non-`defer` decisions from the last 7 days, ordered newest first.
+  - Consumer tracing covers every new ledger/API field introduced by this task.
+- **Expected user-observable behavior:**
+  - An operator can supply a short note when declining an idea.
+  - Recently actioned decisions remain visible after refresh or revisit, subject to the chosen replay window.
+- **Validation contract (TC-09):**
+  - TC-01: rationale capture is optional, validated, and preserved end to end from UI to ledger.
+  - TC-02: a declined item with rationale can be replayed into the recent-history UI after reload.
+  - TC-03: replay includes only non-`defer` decisions from the chosen 7-day / 20-item window.
+  - TC-04: existing `Do` and `Defer` semantics remain unchanged if no rationale is supplied.
+  - TC-05: targeted typecheck/lint pass for touched app and script paths.
+- **Planning validation evidence:** confirm the existing ledger reducer and API request schema can be extended without conflicting with execution-result replay.
+- **Rollout/rollback:** rationale fields are additive; rollback is to stop rendering/capturing notes while keeping ledger entries parseable.
+- **Documentation impact:** document new ledger fields and recent-history replay window/selection rules near the reducer/service code.
+- **What would make this >=90%:** settle the replay window and demonstrate one persisted decline rationale visible after full route reload.
 
-### TASK-03: Implement Business OS decision APIs and the dedicated operator-actions queue service
+### TASK-10: Redesign the Business OS inbox UI around the decision brief and mixed-reader rules
 - **Type:** IMPLEMENT
-- **Deliverable:** authenticated API surface and a dedicated startup-loop operator-actions module for `Do`, `Defer`, and `Decline`
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** mixed
-- **Effort:** M
-- **Status:** Complete (2026-03-11)
-- **Affects:** `apps/business-os/src/app/api/process-improvements/**`, `apps/business-os/src/lib/auth/**`, `apps/business-os/src/lib/process-improvements/**`, `scripts/src/startup-loop/ideas/lp-do-ideas-operator-actions.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-work-packages.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`
-- **Depends on:** TASK-01, TASK-02
-- **Blocks:** TASK-04, TASK-05, TASK-06, TASK-07
-- **Confidence:** 83%
-  - Implementation: 81% - endpoint and auth patterns are clear, but the new operator-actions module must introduce a first-class decline path cleanly.
-  - Approach: 84% - dedicated operator actions are cleaner than leaking app behavior into generic queue helpers.
-  - Impact: 85% - this is the execution seam that turns the report into an operator workflow.
-- **Acceptance:**
-  - `Do` appends the operator-decision event first and then hands off using the operator-actions module.
-  - `Defer` appends only the operator-decision event and returns the new defer state.
-  - `Decline` appends the operator-decision event first and then mutates the queue to a first-class terminal state `declined` with explicit `declined_by` metadata.
-  - Failed downstream execution after a ledger write is surfaced as a failed action state, not as a successful handoff or decline.
-  - All endpoints are authenticated and write-authorized under Business OS rules.
-- **Validation contract (TC-03):**
-  - TC-01: one `micro_build_ready` queue-backed item can be actioned via `Do` without exposing route choice in the API contract.
-  - TC-02: one deferred item remains `enqueued` in queue state and returns a future `defer_until`.
-  - TC-03: one declined item becomes `queue_state = "declined"` and carries explicit `declined_by` metadata in queue state plus the ledger.
-  - TC-04: if a `Do` or `Decline` downstream mutation fails after ledger creation, the API returns failure and the ledger records the failed execution result explicitly.
-  - TC-05: unauthorized requests are rejected before any ledger or queue mutation occurs.
-  - TC-06: targeted typecheck/lint pass for every touched package path.
-- **Planning validation evidence:** trace one existing `lp-do-build`-ready dispatch and one terminal queue mutation path before implementation starts.
-- **Rollout/rollback:** ship APIs behind the new app route only; rollback is to stop calling the new endpoints while preserving existing queue state.
-- **Documentation impact:** add short API/service comments explaining action ordering and audit guarantees.
-- **What would make this >=90%:** identify the precise queue helper or wrapper contract used by both `Do` and `Decline` and cover both with service-layer tests.
-- **Build completion evidence:**
-  - Added first-class queue `declined` state and `declined_by` metadata in `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`.
-  - Added dedicated operator actions in `scripts/src/startup-loop/ideas/lp-do-ideas-operator-actions.ts`.
-  - Added app-side decision service in `apps/business-os/src/lib/process-improvements/decision-service.ts`.
-  - Added authenticated decision API route in `apps/business-os/src/app/api/process-improvements/decision/[decision]/route.ts`.
-  - Added deterministic operator action tests plus API route tests.
-  - Validation passed: `pnpm --filter @apps/business-os typecheck`
-  - Validation passed: `pnpm --filter @apps/business-os lint`
-  - Validation passed: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
-  - Validation passed: `pnpm exec eslint --no-ignore scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts scripts/src/startup-loop/ideas/lp-do-ideas-operator-actions.ts scripts/src/startup-loop/__tests__/lp-do-ideas-operator-actions.test.ts`
-
-### TASK-04: Implement the Business OS process-improvements inbox route and UI
-- **Type:** IMPLEMENT
-- **Deliverable:** authenticated `/process-improvements` route in `apps/business-os` with `Awaiting decision`, `Deferred`, and `Recently actioned` views
+- **Deliverable:** redesigned `/process-improvements` card layout and action affordances optimized for mixed and non-technical readers
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Complete (2026-03-11)
-- **Affects:** `apps/business-os/src/app/process-improvements/**`, `apps/business-os/src/components/process-improvements/**`, app-local styles or existing design-system primitives as needed
-- **Depends on:** TASK-01, TASK-02, TASK-03
-- **Blocks:** TASK-05, TASK-06, TASK-07
+- **Status:** Complete (2026-03-12)
+- **Affects:** `apps/business-os/src/app/process-improvements/page.tsx`, `apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx`, any nearby component tests or style helpers
+- **Depends on:** TASK-08, TASK-09
+- **Blocks:** TASK-11, TASK-12
 - **Confidence:** 84%
-  - Implementation: 84% - Business OS already has list/filter/action patterns to reuse.
-  - Approach: 85% - the UI can stay intentionally narrow because route choice remains internal.
-  - Impact: 84% - this is the new operator surface the user actually works in.
+  - Implementation: 83% - the route already exists, so this is a focused redesign rather than a greenfield build.
+  - Approach: 85% - building the card around a stable decision brief keeps the UI simpler and less fragile.
+  - Impact: 85% - this is the visible change that turns the inbox into a usable decision tool.
 - **Acceptance:**
-  - Only `idea` items receive triage controls in this tranche.
-  - Visible actions are exactly `Do`, `Defer`, and `Decline`.
-  - Deferred and recently actioned items are visibly separated from awaiting-decision items.
+  - The card hierarchy follows the preferred structure from fact-find:
+    - headline
+    - why this matters now
+    - recommended action and reason
+    - business-wide benefit if done
+    - expected next step if `Do`
+    - impact / effort / urgency / recurrence
+    - actions
+    - collapsed evidence details
+  - Button consequences are visible at card level.
+  - Raw dispatch ids and artifact paths are demoted into collapsed details.
+  - The recent-history section is ledger-backed, not session-only.
   - Expected user-observable behavior:
-    - Operators can action an item without choosing a route.
-    - A successful `Do`, `Defer`, or `Decline` immediately removes or reclassifies the item in the visible inbox.
-    - No `risk` or `pending-review` item shows triage controls.
-- **Validation contract (TC-04):**
-  - TC-01: the route renders queue-backed process-improvement items using the authoritative app projection from TASK-01.
-  - TC-02: card actions call the decision API and transition visible state correctly.
-  - TC-03: loading, success, and failure states are explicit for each action path.
+    - a non-technical reader can understand what is at stake without opening evidence details
+    - `Do`, `Defer`, and `Decline` meanings are visible without relying on the page header alone
+    - evidence remains accessible for trust and audit
+- **Validation contract (TC-10):**
+  - TC-01: the route renders the new decision brief fields end to end.
+  - TC-02: action transitions continue to work for `Do`, `Defer`, and `Decline`.
+  - TC-03: the recent-history section survives a route refresh because it is replayed from the ledger.
   - TC-04: targeted typecheck/lint pass for `@apps/business-os`.
   - TC-05: post-build QA loop runs `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep` on the changed route/components, with Critical/Major findings fixed before completion.
-- **Planning validation evidence:** confirm the UI can reuse existing Business OS list/action patterns before introducing new primitives.
-- **Rollout/rollback:** ship the route behind normal app auth; rollback is to hide or remove the route while keeping the report available.
-- **Documentation impact:** update app navigation or nearby internal docs if the route is linked from existing Business OS pages.
-- **What would make this >=90%:** cover one mocked end-to-end visible transition for each action type in app tests.
-- **Build completion evidence:**
-  - Added `/process-improvements` route in `apps/business-os/src/app/process-improvements/page.tsx`.
-  - Added inbox client component in `apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx`.
-  - Added mocked UI transition coverage in `apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.test.tsx`.
-  - Added the route to Business OS navigation in `apps/business-os/src/components/navigation/NavigationHeader.tsx`.
-  - Validation passed: `pnpm --filter @apps/business-os typecheck`
-  - Validation passed: `pnpm --filter @apps/business-os lint`
+- **Planning validation evidence:** review the current card structure in [ProcessImprovementsInbox.tsx](/Users/petercowling/base-shop/apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx) and map every removed/retained metadata element before implementation.
+- **Rollout/rollback:** ship behind the existing authenticated route; rollback is to revert to the previous card presentation while keeping the same backend semantics.
+- **Documentation impact:** update any route-level description text that still frames the surface as a raw queue review tool rather than a decision brief.
+- **What would make this >=90%:** verify one full card renders all required sections cleanly at desktop and mobile breakpoints with no major accessibility or contrast issues.
 
-### TASK-05: Checkpoint the end-to-end app flow and confirm the report remains signpost-only
+### TASK-11: Checkpoint the mixed-reader end-to-end flow
 - **Type:** CHECKPOINT
-- **Deliverable:** one explicit confirmation that the report remains signpost-only based on a working end-to-end app flow
+- **Deliverable:** one explicit rehearsal of the built flow against mixed-reader and business-framing criteria
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Complete (2026-03-11)
-- **Affects:** `docs/plans/process-improvements-operator-decision-inbox/plan.md`, `docs/plans/process-improvements-operator-decision-inbox/fact-find.md`, any touched report/generator files only if the checkpoint changes scope
-- **Depends on:** TASK-01, TASK-02, TASK-03, TASK-04
-- **Blocks:** TASK-06, TASK-07
+- **Status:** Complete (2026-03-12)
+- **Affects:** `docs/plans/process-improvements-operator-decision-inbox/plan.md`, `docs/plans/process-improvements-operator-decision-inbox/fact-find.md`, nearby UI copy only if the checkpoint requires a wording correction
+- **Depends on:** TASK-08, TASK-09, TASK-10
+- **Blocks:** TASK-12
 - **Confidence:** 83%
-  - Implementation: 83% - the checkpoint is straightforward once the core app flow exists.
-  - Approach: 84% - deferring report overlay work until after the app works prevents speculative complexity.
-  - Impact: 84% - this protects the tranche from unnecessary generator work.
+  - Implementation: 83% - the checkpoint is straightforward once the redesigned surface exists.
+  - Approach: 83% - a rehearsal against the actual mixed-reader rules is the right gate before final QA.
+  - Impact: 84% - this prevents shipping a technically complete but still jargon-heavy decision surface.
 - **Acceptance:**
-  - A working app flow exists for `Do`, `Defer`, and `Decline`.
-  - The checkpoint confirms that the report remains signpost-only with no mirrored decision overlay.
-  - Any scope change caused by the checkpoint is captured explicitly before TASK-06 starts.
-- **Validation contract (TC-05):**
-  - TC-01: one end-to-end rehearsal of each action path is documented against the built app flow.
-  - TC-02: the report posture is explicit and leaves no ambiguity about authority.
-  - TC-03: the updated plan/fact-find remain consistent after the checkpoint decision.
-- **What would make this >=90%:** complete the rehearsal against a working route and capture one clear report decision with no fallback wording.
-- **Checkpoint evidence:**
-  - `Do` now appends a pending ledger event, creates the routed artifact through the operator-actions module, marks the queue dispatch processed, and then appends a succeeded or failed execution event.
-  - `Defer` now appends only a ledger event with `defer_until` and leaves queue state `enqueued`.
-  - `Decline` now appends a pending ledger event, writes first-class `queue_state = "declined"` plus `declined_by`, and then appends a succeeded or failed execution event.
-  - The static report is explicitly read-only and points operators to the Business OS app route.
+  - One end-to-end rehearsal confirms that a mixed or non-technical reader can understand:
+    - the problem
+    - why now
+    - the business benefit
+    - what happens after `Do`
+  - Any remaining wording ambiguity is resolved before TASK-12 closes.
+  - The checkpoint explicitly confirms that route choice remains hidden while next-step meaning is visible.
+- **Validation contract (TC-11):**
+  - TC-01: the rehearsal is documented against the built route, not the prior mockup.
+  - TC-02: any residual jargon or business-framing gaps are either fixed or recorded as explicit follow-up.
+  - TC-03: plan and fact-find remain aligned after the checkpoint.
+- **What would make this >=90%:** complete one full rehearsal against a real card after the redesign lands, with no major wording issues left open.
 
-### TASK-06: Implement static-report read-only signposting with no mirrored decision overlay
+### TASK-12: Add deterministic coverage and targeted frontend QA for the decision-grade surface
 - **Type:** IMPLEMENT
-- **Deliverable:** report-side read-only messaging and app signposting only
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** mixed
-- **Effort:** S
-- **Status:** Complete (2026-03-11)
-- **Affects:** `docs/business-os/process-improvements.user.html`, `docs/business-os/_data/process-improvements.json`, `scripts/src/startup-loop/build/generate-process-improvements.ts`, app/report linking paths
-- **Depends on:** TASK-05
-- **Blocks:** TASK-07
-- **Confidence:** 84%
-  - Implementation: 84% - the task is now narrow and does not require data overlay logic.
-  - Approach: 85% - signposting-only is the cleanest long-term posture while the app is authoritative.
-  - Impact: 84% - it reduces operator confusion without reopening app authority.
-- **Acceptance:**
-  - The report explicitly presents itself as read-only and directs operators to the app for actions.
-  - Expected user-observable behavior:
-    - Operators cannot mistake the report for the action surface.
-    - No decision-state mirroring appears in the report.
-- **Validation contract (TC-06):**
-  - TC-01: the report no longer presents itself as an action surface.
-  - TC-02: the report links or points clearly to the Business OS app route for actions.
-  - TC-03: targeted typecheck/lint pass for touched `scripts` and `@apps/business-os` paths.
-  - TC-04: if report UI changes materially, run `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep` on the changed report surface and fix Critical/Major findings.
-- **Planning validation evidence:** checkpoint output from TASK-05 confirms no overlay work is needed.
-- **Rollout/rollback:** signposting can ship independently; rollback removes signposting copy while preserving the app as authority.
-- **Documentation impact:** update any nearby report copy or generator comments that describe the report as the primary operator surface.
-- **What would make this >=90%:** TASK-05 confirms signposting-only posture and the report copy is validated against one real snapshot.
-- **Build completion evidence:**
-  - Updated `docs/business-os/process-improvements.user.html` to present the report as read-only and link directly to `http://127.0.0.1:3020/process-improvements`.
-  - Confirmed the report no longer implies local actions or mirrored decision state.
-
-### TASK-07: Add deterministic validation coverage across projection, ledger, API, UI, and report seams
-- **Type:** IMPLEMENT
-- **Deliverable:** targeted tests and validation checks for the new process-improvements app flow
+- **Deliverable:** focused tests and QA evidence covering the new brief contract, rationale/replay semantics, and mixed-reader UI behavior
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Complete (2026-03-11)
-- **Affects:** `apps/business-os/src/app/**/__tests__/**`, `apps/business-os/src/app/api/**/__tests__/**`, `apps/business-os/src/lib/process-improvements/**`, `scripts/src/startup-loop/__tests__/**`
-- **Depends on:** TASK-03, TASK-04, TASK-05, TASK-06
+- **Status:** Complete (2026-03-12)
+- **Affects:** `apps/business-os/src/lib/process-improvements/**`, `apps/business-os/src/components/process-improvements/**`, `apps/business-os/src/app/api/process-improvements/**`, related tests
+- **Depends on:** TASK-09, TASK-10, TASK-11
 - **Blocks:** -
 - **Confidence:** 84%
-  - Implementation: 84% - existing app and script test patterns are available.
-  - Approach: 84% - the seams are deterministic enough for focused coverage.
-  - Impact: 85% - this is required to keep the new control surface safe.
+  - Implementation: 83% - the seams are deterministic enough for focused tests.
+  - Approach: 84% - coverage should lock both behavioral correctness and decision-surface clarity.
+  - Impact: 85% - this is required to keep the new presentation trustworthy as it evolves.
 - **Acceptance:**
-  - App/API tests cover `Do`, `Defer`, and `Decline`.
-  - Projection and ledger helpers are covered by deterministic tests.
-  - Queue mutation semantics for immediate handoff and first-class terminal decline are covered.
-  - Report signposting behavior is covered where it changed.
-- **Validation contract (TC-07):**
-  - TC-01: every action type has at least one deterministic test at the API or service layer.
-  - TC-02: projection tests prove queue-backed items render without generated report JSON.
-  - TC-03: queue mutation semantics for `Do` and `Decline` are covered by focused tests, including `queue_state = "declined"`.
-  - TC-04: report signposting behavior is covered where TASK-06 changed the report surface.
-  - TC-05: targeted typecheck/lint pass for every touched package path.
-- **Planning validation evidence:** reuse existing Business OS action tests and startup-loop queue tests rather than inventing a new test style.
-- **Rollout/rollback:** tests ship with the feature; rollback is not applicable.
-- **Documentation impact:** add or update nearby test comments only where the seam would otherwise be unclear.
-- **What would make this >=90%:** complete service-layer coverage for all three actions plus one route-render test using the final projection model.
-- **Build completion evidence:**
-  - Added projection coverage in `apps/business-os/src/lib/process-improvements/projection.test.ts`.
-  - Added decision-ledger coverage in `apps/business-os/src/lib/process-improvements/decision-ledger.test.ts`.
-  - Added operator action coverage in `scripts/src/startup-loop/__tests__/lp-do-ideas-operator-actions.test.ts`.
-  - Added API route coverage in `apps/business-os/src/app/api/process-improvements/decision/[decision]/route.test.ts`.
-  - Added inbox UI coverage in `apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.test.tsx`.
-  - Added report-signpost coverage in `scripts/src/startup-loop/__tests__/generate-process-improvements.test.ts`.
+  - Projection tests cover the new decision-brief fields and safe fallbacks.
+  - API/service tests cover optional rationale persistence and replay.
+  - UI tests cover visible business-benefit/next-step/action-consequence rendering and durable recent-history replay.
+  - Targeted frontend QA on the changed route/components records no Critical/Major issues.
+- **Validation contract (TC-12):**
+  - TC-01: every new projection field introduced by TASK-08 is covered either by projection tests or route/UI tests.
+  - TC-02: rationale capture and recent-history replay are covered by deterministic tests.
+  - TC-03: `Do`, `Defer`, and `Decline` still behave according to the locked semantics after the UI redesign.
+  - TC-04: targeted typecheck/lint pass for `@apps/business-os` and any touched script path.
+  - TC-05: `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep` run on the changed surface and any Critical/Major findings are fixed before completion.
+- **Planning validation evidence:** reuse the existing process-improvements route/API test patterns instead of inventing a new test style.
+- **Rollout/rollback:** tests and QA ship with the feature; rollback is not applicable.
+- **Documentation impact:** update nearby test comments only where the new brief contract would otherwise be unclear.
+- **What would make this >=90%:** complete end-to-end deterministic coverage for one full decline-with-note flow and one `Do` flow that shows the expected-next-step copy correctly.
+
+## Rehearsal Trace
+| Step | Preconditions Met | Issues Found | Resolution Required |
+|---|---|---|---|
+| TASK-08: Define and implement the decision-brief projection contract | Yes | None | No |
+| TASK-09: Extend decision capture for operator rationale and durable recent-history replay | Yes | None | No |
+| TASK-10: Redesign the Business OS inbox UI around the decision brief and mixed-reader rules | Yes | Moderate: if the UI starts before TASK-08 fields and TASK-09 replay semantics are locked, the card will regress into ad hoc copy mapping | Yes |
+| TASK-11: Checkpoint the mixed-reader end-to-end flow | Yes | None | No |
+| TASK-12: Add deterministic coverage and targeted frontend QA for the decision-grade surface | Yes | None | No |
 
 ## Risks & Mitigations
-- The app could become authoritative while the report still appears actionable.
-  - Mitigation: TASK-06 must explicitly mark the report read-only and direct operators to the app.
-- `Do` could mutate workflow state without durable operator audit.
-  - Mitigation: TASK-03 requires ledger-first write ordering and test coverage for it.
-- `Decline` could collapse into generic skip semantics.
-  - Mitigation: TASK-03 introduces explicit operator rejection metadata and TASK-07 tests it.
-- `Defer` could accidentally become a queue-state transition.
-  - Mitigation: TASK-02 and TASK-03 keep `Defer` ledger-only and TASK-07 tests queue non-mutation.
-- The report overlay could expand into unnecessary generator complexity.
-  - Mitigation: the plan now forbids mirrored decision overlay in this tranche; TASK-05 only confirms that posture.
+- The new business-wide benefit copy could overstate impact beyond the evidence.
+  - Mitigation: TASK-08 requires deterministic, evidence-linked phrasing with safe fallbacks and no unsupported claims.
+- The UI could remain readable only to technical users if jargon leaks through from raw fields.
+  - Mitigation: TASK-10 acceptance requires first-screen comprehension without queue or artifact knowledge, and TASK-11 rehearses this explicitly.
+- Recent-history replay could confuse action status if ledger rationale/history is not reduced cleanly.
+  - Mitigation: TASK-09 keeps rationale additive and requires durable replay semantics before UI adoption.
+- The redesign could bury technical evidence too deeply and reduce operator trust.
+  - Mitigation: TASK-10 keeps evidence present in collapsed details rather than removing it.
+- The page could say one thing and the backend do another about `Do` next steps.
+  - Mitigation: TASK-08 derives expected-next-step copy from route/status evidence, and TASK-12 covers it.
 
 ## Observability
 - Logging:
-  - decision API request outcome
-  - queue handoff result for `Do`
-  - terminal mutation result for `Decline`
-  - ledger read/write failures
+  - decision API outcome with rationale-presence flag
+  - projection fallback usage for missing business-benefit or next-step copy
+  - ledger replay/read failures for recent-history rendering
 - Metrics:
-  - count of `Do`, `Defer`, `Decline`
-  - average defer duration
-  - route chosen after `Do`
-  - reappearance rate after `Defer`
-  - action failure count
+  - count of decisions with rationale
+  - count of cards using fallback copy
+  - count of replayed recent decisions shown in UI
 - Alerts/Dashboards:
-  - none in this tranche
+  - None: internal operator route only in this tranche
 
 ## Acceptance Criteria (overall)
-- [ ] Business OS has an authenticated process-improvements inbox route for queue-backed idea items.
-- [ ] The app reads queue-backed items from queue state plus decision-ledger overlay, not from generated report JSON.
-- [ ] `Do`, `Defer`, and `Decline` are implemented with the locked semantics from the fact-find.
-- [ ] Route choice remains hidden from the operator.
-- [ ] The static report is explicitly read-only and signpost-only, with no mirrored decision overlay.
-- [ ] Deterministic validation covers the projection, ledger, API, UI, and any retained report seam.
+- [ ] The `/process-improvements` card is understandable on first read by mixed and non-technical readers.
+- [ ] Benefits are framed in business-wide terms, not only as technical cleanup.
+- [ ] `Do`, `Defer`, and `Decline` consequences are visible at card level.
+- [ ] The app shows an expected next step for `Do` without exposing route choice as a control.
+- [ ] Raw dispatch ids and artifact paths are secondary details behind collapsed evidence.
+- [ ] Optional operator rationale and durable recent-history replay are supported through the ledger and app UI.
+- [ ] Deterministic tests and targeted frontend QA cover the new brief contract and card behavior.
 
 ## Decision Log
 - 2026-03-10: Chose app runtime in `apps/business-os` over extending the `file://` report.
@@ -427,18 +363,22 @@ The static generated report stays in place during this tranche, but only as a re
 - 2026-03-10: Locked the app read model to queue state plus reduced decision-ledger overlay; generated process-improvements artifacts remain downstream compatibility outputs only.
 - 2026-03-10: Locked the decision-ledger authority to append-only `docs/business-os/process-improvements/operator-decisions.jsonl`.
 - 2026-03-10: Chose first-class `queue_state = "declined"` plus `declined_by` metadata instead of overloading generic terminal queue states.
-- 2026-03-10: Chose a dedicated startup-loop operator-actions module instead of embedding operator behavior directly into generic queue helpers.
 - 2026-03-10: Locked the static report to signpost-only with no mirrored decision overlay.
+- 2026-03-11: Opened tranche 2 to turn the inbox from a working action surface into a decision-grade mixed-reader surface.
+- 2026-03-11: Locked business-wide benefit framing and non-technical first-read comprehensibility as hard UI requirements.
+- 2026-03-11: Locked business-benefit wording to a controlled evidence-backed taxonomy rather than freeform copy generation.
+- 2026-03-11: Locked recent-history replay to the latest 20 non-`defer` decisions from the last 7 days, with optional rationale stored for all decision types and UI capture first for `Decline`.
 
 ## What Would Make This >=90%
-- Prove the queue-native projection against one real queue entry and one full app render.
-- Prove append/reduce ledger behavior and failed-execution action recording.
-- Complete TASK-05 so the signpost-only report posture is evidenced, not just asserted.
+- Prove one real queue item can be transformed into a decision brief with credible business-wide benefit wording and no unsupported claims.
+- Complete TASK-11 with no major jargon or ambiguity findings.
 
 ## Overall-confidence Calculation
-- Confidence dimensions:
-  - Implementation: 84%
-  - Approach: 87%
-  - Impact: 87%
-- Effort weights: S=1, M=2, L=3
-- Overall-confidence = sum(task confidence * effort weight) / sum(effort weight) = 84%
+- Active-task confidence dimensions:
+  - TASK-08: 84% (M)
+  - TASK-09: 82% (M)
+  - TASK-10: 84% (M)
+  - TASK-11: 83% (S)
+  - TASK-12: 84% (M)
+- S=1, M=2, L=3
+- Overall-confidence = (84x2 + 82x2 + 84x2 + 83x1 + 84x2) / 9 = 83%

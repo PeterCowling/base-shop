@@ -41,6 +41,93 @@ describe("CompScreen preorder modal", () => {
     jest.clearAllMocks();
   });
 
+  it("TC-D03: plan badge shows 'preordered' when breakfastTxnId is present", async () => {
+    useActivitiesByCodeDataMock.mockReturnValue({
+      activitiesByCodes: { "12": { occ1: {} } },
+      loading: false,
+      error: null,
+    });
+    usePreorderMock.mockReturnValue({
+      preorder: {
+        occ1: {
+          night1: {
+            breakfast: "PREPAID_MP_A",
+            breakfastTxnId: "txn_20260314091523042",
+            drink1: "NA",
+            drink2: "NA",
+          },
+        },
+      },
+      loading: false,
+      error: null,
+    });
+    useBookingsDataMock.mockReturnValue({
+      bookings: { BR1: { occ1: { checkInDate: "2025-01-01" } } },
+      loading: false,
+      error: null,
+    });
+    useGuestDetailsMock.mockReturnValue({
+      guestsDetails: { BR1: { occ1: { firstName: "Alice", lastName: "A" } } },
+      loading: false,
+      error: null,
+      validationError: null,
+    });
+    useGuestsByBookingMock.mockReturnValue({
+      guestsByBooking: { occ1: { reservationCode: "BR1" } },
+      loading: false,
+      error: null,
+    });
+
+    render(<CompScreen />);
+
+    // Should show "preordered" badge, not the raw txnId or entitlement value
+    expect(await screen.findByText("preordered")).toBeInTheDocument();
+    expect(screen.queryByText("txn_20260314091523042")).not.toBeInTheDocument();
+    expect(screen.queryByText("PREPAID_MP_A")).not.toBeInTheDocument();
+  });
+
+  it("TC-D04: plan badge shows 'continental' when no breakfastTxnId and breakfast is continental", async () => {
+    useActivitiesByCodeDataMock.mockReturnValue({
+      activitiesByCodes: { "12": { occ1: {} } },
+      loading: false,
+      error: null,
+    });
+    usePreorderMock.mockReturnValue({
+      preorder: {
+        occ1: {
+          night1: {
+            breakfast: "continental",
+            drink1: "NA",
+            drink2: "NA",
+          },
+        },
+      },
+      loading: false,
+      error: null,
+    });
+    useBookingsDataMock.mockReturnValue({
+      bookings: { BR1: { occ1: { checkInDate: "2025-01-01" } } },
+      loading: false,
+      error: null,
+    });
+    useGuestDetailsMock.mockReturnValue({
+      guestsDetails: { BR1: { occ1: { firstName: "Alice", lastName: "A" } } },
+      loading: false,
+      error: null,
+      validationError: null,
+    });
+    useGuestsByBookingMock.mockReturnValue({
+      guestsByBooking: { occ1: { reservationCode: "BR1" } },
+      loading: false,
+      error: null,
+    });
+
+    render(<CompScreen />);
+
+    // Without breakfastTxnId, falls through to breakfast value
+    expect(await screen.findByText("continental")).toBeInTheDocument();
+  });
+
   it("displays preorder details when a row is double-clicked", async () => {
     useActivitiesByCodeDataMock.mockReturnValue({
       activitiesByCodes: { "12": { occ1: {} } },

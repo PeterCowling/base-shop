@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import { z } from "zod";
 
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import {
   useDenominationCalculator,
@@ -99,7 +100,9 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
       >
         <p className="text-sm mb-4">{description}</p>
         <Button
-          className="mb-4 underline text-sm text-info-main"
+          color="info"
+          tone="ghost"
+          className="mb-4 text-sm"
           onClick={() =>
             setDirection((prev) =>
               prev === "drawerToSafe" ? "safeToDrawer" : "drawerToSafe"
@@ -108,7 +111,7 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
         >
           {toggleLabel}
         </Button>
-        <div className="flex flex-col gap-6">
+        <Stack gap={6}>
           <div className="flex-1 w-full">
             <h3 className="text-lg font-semibold mb-2 text-center">{title}</h3>
             <DenominationInput
@@ -128,18 +131,18 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
               ).toFixed(2)}
             </p>
           </div>
-        </div>
+        </Stack>
         {!isValid && (
           <div className="text-center text-error-main mt-2">
             Totals must match and be greater than zero.
           </div>
         )}
-        <div className="mt-4 flex flex-col items-center gap-2">
+        <Stack gap={2} align="center" className="mt-4">
           <PasswordReauthInline
             onSubmit={handleConfirm}
             submitLabel="Confirm exchange"
           />
-        </div>
+        </Stack>
       </FormContainer>
     </>
   );

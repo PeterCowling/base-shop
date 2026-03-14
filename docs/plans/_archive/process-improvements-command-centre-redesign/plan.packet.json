@@ -1,0 +1,332 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "process-improvements-command-centre-redesign",
+  "source_artifact_path": "docs/plans/process-improvements-command-centre-redesign/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/process-improvements-command-centre-redesign/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Process-improvements pages are the operator's daily work surface. Currently passive report feel — stale counts, internal jargon, flat lists — undermines daily use. Pages need accurate live state and a command-centre look to be genuinely useful.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Redesigned `/process-improvements/*` pages with: (a) zero data-accuracy regressions on the 5 identified bugs, (b) scoped dark command-centre visual theme, (c) spatial dashboard layout with urgency-tiered sections, and (d) all internal-system copy replaced with operator-facing plain language.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "P1: minimal; P2: new CSS utilities + wrapper class + hero re-skin; P3: full swimlane layout + sub-nav upgrade",
+      "current_or_option_state": "TASK-05, TASK-07, TASK-08, TASK-09",
+      "gap_or_implication": "All DS atoms inherit `.cmd-centre` overrides automatically",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "All states (loading, empty, error, pending, bulk-select, snooze-picker) re-skinned in P2; new swimlane empty states added in P3",
+      "current_or_option_state": "TASK-05, TASK-07, TASK-08",
+      "gap_or_implication": "Existing state machine behaviour unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — internal operator tool; no auth changes; no PII",
+      "current_or_option_state": "None",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no changes to decision ledger or API routes",
+      "current_or_option_state": "None",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "P1: regression assertions for B1–B5; P2: snapshot updates; P3: snapshot updates + smoke test of all triage actions",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03, TASK-05, TASK-07, TASK-08",
+      "gap_or_implication": "TC-07/08/09 in `InProgressInbox.test.tsx` must pass throughout",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "P1: `initialInProgressCount` removed from `NewIdeasInboxProps`; `InboxSection` gains explicit `count` prop; `InProgressInbox` type assertion expanded",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No lib-layer changes; all changes in page/component layer",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Sub-nav poll adds one `useEffect` + `fetch` on mount (same endpoint as existing polls). Zero additional overhead otherwise.",
+      "current_or_option_state": "TASK-09",
+      "gap_or_implication": "Sub-nav poll must fail silently if API unavailable",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Three independently revertable commit sets (one per phase). Production Workers deployment — each phase must pass full CI before considered stable.",
+      "current_or_option_state": "All tasks",
+      "gap_or_implication": "`git revert <phase-commit>` is full rollback per phase",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The `/process-improvements/new-ideas` and `/process-improvements/in-progress` pages are the operator's daily triage surface. This plan delivers a three-phase upgrade: Phase 1 fixes 4 confirmed data-accuracy bugs (B1: stale initialInProgressCount prop; B2: hardcoded zero in ProcessImprovementsSummary; B4: SSR-locked newIdeasCount badge; B5: internal copy labels) plus one code-quality hardening change (B3: explicit count prop on InboxSection — current children-length works for existing call sites but is brittle); Phase 2 installs a scoped dark command-centre visual theme using `.cmd-centre` CSS ",
+    "goals": [
+      "Fix confirmed data-accuracy bugs B1, B2, B4, B5; add explicit `count` prop to `InboxSection` (B3 code quality improvement — current children-length derivation works for existing `.map()` call sites but is brittle for future uses).",
+      "Apply scoped dark command-centre theme (navy/indigo palette) without affecting rest of BOS.",
+      "Restructure both pages to urgency-tiered spatial dashboards with live large-number stats.",
+      "Replace all internal-system copy in operator-facing elements with plain-language labels.",
+      "Convert sub-nav to live-count polling component.",
+      "Preserve all triage actions (do/defer/decline/mark-done/snooze/bulk) exactly."
+    ],
+    "non_goals": [
+      "Full BOS dark-mode switch.",
+      "Lib layer changes (`projection.ts`, `active-plans.ts`, `decision-ledger.ts`).",
+      "Keyboard shortcuts.",
+      "Mobile-first redesign."
+    ],
+    "constraints": [
+      "Tailwind v4 `@theme inline` pattern; no hardcoded hex values in className strings.",
+      "New CSS custom properties defined in `apps/business-os/src/styles/global.css` only — not in `packages/themes/`.",
+      "DS component API (Button, Tag, etc.) for interactive controls; no changes to DS package code.",
+      "`pnpm typecheck` must pass after Phase 1 before Phase 2 begins.",
+      "No `--no-verify` commits."
+    ],
+    "assumptions": [
+      "DS atoms resolve `hsl(var(--color-*))` and will inherit `.cmd-centre` scope overrides automatically.",
+      "`isActiveNow` (5-min file-mtime window) is honest enough for \"Running Now\" labelling."
+    ],
+    "selected_approach": [
+      "What was chosen: Three-phase sequential with scoped CSS class approach and client-side count derivation. Sub-nav independently polls the same endpoint on mount.",
+      "Why planning is not reopening option selection: All approaches compared in analysis with explicit elimination rationale. Option A is the only one achieving all goals while keeping each phase independently safe. Sub-option choice (A1 vs A2, D1 vs D2) closed in analysis with evidence."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes — Waves 1–5 (TASK-01 through TASK-09 except TASK-07) are all ≥80% confidence. TASK-07 (75%) is gated behind TASK-06 CHECKPOINT where `/lp-do-replan` will decompose or raise it before execution. Build can start on Wave 1 today."
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Fix B1+B2+B3 — Remove `initialInProgressCount`, derive counts, fix `InboxSection`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx`, `apps/business-os/src/app/process-improvements/new-ideas/page.tsx`, `apps/business-os/src/components/process-improvements/NewIdeasInbox.test.tsx`",
+        "affects": "`apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx`, `apps/business-os/src/app/process-improvements/new-ideas/page.tsx`, `apps/business-os/src/components/process-improvements/NewIdeasInbox.test.tsx`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Fix B4 — Live `newIdeasCount` in In Progress page",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/business-os/src/components/process-improvements/InProgressInbox.tsx`, `apps/business-os/src/app/process-improvements/in-progress/page.tsx`, `apps/business-os/src/components/process-improvements/InProgressInbox.test.tsx`",
+        "affects": "`apps/business-os/src/components/process-improvements/InProgressInbox.tsx`, `apps/business-os/src/app/process-improvements/in-progress/page.tsx`, `apps/business-os/src/components/process-improvements/InProgressInbox.test.tsx`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Fix B5 — `formatPriorityLabel()` replaces raw `priorityReason`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-01",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx`, `apps/business-os/src/components/process-improvements/NewIdeasInbox.test.tsx`",
+        "affects": "`apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx`, `apps/business-os/src/components/process-improvements/NewIdeasInbox.test.tsx`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "CHECKPOINT — Phase 1 Gate",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": null,
+        "effort": null,
+        "depends_on": [
+          "TASK-01",
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": null,
+        "deliverable": null,
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Dark Theme CSS — `.cmd-centre` + `bg-cmd-hero` + Glow Utilities + Hero Re-skin",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-04"
+        ],
+        "blocks": [
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/business-os/src/styles/global.css`, `apps/business-os/src/app/process-improvements/layout.tsx`, `apps/business-os/src/app/process-improvements/new-ideas/page.tsx`, `apps/business-os/src/app/process-improvements/in-progress/page.tsx`, snapshot test files",
+        "affects": "`apps/business-os/src/styles/global.css`, `apps/business-os/src/app/process-improvements/layout.tsx`, `apps/business-os/src/app/process-improvements/new-ideas/page.tsx`, `apps/business-os/src/app/process-improvements/in-progress/page.tsx`"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "CHECKPOINT — Phase 2 Gate",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": null,
+        "effort": null,
+        "depends_on": [
+          "TASK-05"
+        ],
+        "blocks": [
+          "TASK-07",
+          "TASK-08",
+          "TASK-09"
+        ],
+        "execution_skill": null,
+        "deliverable": null,
+        "affects": null
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "New Ideas Page — Urgency Swimlanes + Live-Stat Hero Strip",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 75,
+        "effort": "L",
+        "depends_on": [
+          "TASK-06"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx`, `apps/business-os/src/app/process-improvements/new-ideas/page.tsx`, `apps/business-os/src/components/process-improvements/NewIdeasInbox.test.tsx`",
+        "affects": "`apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx`, `apps/business-os/src/app/process-improvements/new-ideas/page.tsx`, `apps/business-os/src/components/process-improvements/NewIdeasInbox.test.tsx`"
+      },
+      {
+        "task_id": "TASK-08",
+        "title": "In Progress Page — Sectioned List + Live-Stat Hero Strip",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-06"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/business-os/src/components/process-improvements/InProgressInbox.tsx`, `apps/business-os/src/app/process-improvements/in-progress/page.tsx`, `apps/business-os/src/components/process-improvements/InProgressInbox.test.tsx`",
+        "affects": "`apps/business-os/src/components/process-improvements/InProgressInbox.tsx`, `apps/business-os/src/app/process-improvements/in-progress/page.tsx`, `apps/business-os/src/components/process-improvements/InProgressInbox.test.tsx`"
+      },
+      {
+        "task_id": "TASK-09",
+        "title": "Sub-Nav Upgrade — Live Counts + Pulse Dot",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [
+          "TASK-06"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/business-os/src/components/process-improvements/ProcessImprovementsSubNav.tsx`",
+        "affects": "`apps/business-os/src/components/process-improvements/ProcessImprovementsSubNav.tsx`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-02",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "**New Ideas page**",
+          "trigger": "Operator navigates to `/process-improvements/new-ideas`",
+          "flow": "(1) SSR renders projection + active plans; (2) hero strip shows Inbox/InProgress/Overdue stats (initially SSR-derived, updating client-side via auto-refresh); (3) urgency swimlanes render: Overdue danger strip → Operator Actions section → Ideas Queue section → Deferred (collapsed) → Done timeline (collapsed); (4) auto-refresh (30s) updates all counts and swimlane contents",
+          "task_ids": [
+            "TASK-01",
+            "TASK-05",
+            "TASK-07"
+          ],
+          "dependency_note": "(data) (theme) (layout)",
+          "seams": "If swimlane categorisation has edge cases, empty-state fallback shows \"Nothing here\" within each section"
+        },
+        {
+          "id": null,
+          "label": "**In Progress page**",
+          "trigger": "Operator navigates to `/process-improvements/in-progress`",
+          "flow": "(1) SSR renders active plans; (2) hero strip shows InProgress + NewIdeas counts (client-side via badges); (3) three sections render: Running Now (isActiveNow, animated ring) → Blocked (tasksBlocked > 0) → In Progress (remaining); (4) auto-refresh (30s) updates counts and section membership",
+          "task_ids": [
+            "TASK-02",
+            "TASK-05",
+            "TASK-08"
+          ],
+          "dependency_note": "(data) (theme) (layout)",
+          "seams": "`InProgressCountBadge` already wired (pre-existing); `LiveNewIdeasCount` badge wired in TASK-02"
+        },
+        {
+          "id": null,
+          "label": "**Sub-navigation**",
+          "trigger": "Any process-improvements page mount",
+          "flow": "(1) SubNav component mounts; (2) `useEffect` fires `fetch(\"/api/process-improvements/items\")`; (3) counts computed: `newIdeasCount` from items + inProgressDispatchIds, `inProgressCount` from activePlans; (4) tabs show `Inbox (N)` and `In Progress (N)`; (5) pulse dot shown when any plan `isActiveNow`; (6) 30s interval re-fetches; (7) on API error: counts silently drop, static labels shown",
+          "task_ids": [
+            "TASK-09"
+          ],
+          "dependency_note": null,
+          "seams": "Third concurrent poll against same endpoint — negligible cost; must not block render"
+        },
+        {
+          "id": null,
+          "label": "**Triage decisions**",
+          "trigger": "Operator expands card → takes action",
+          "flow": "Identical to current flow: card expand → do/defer/decline/mark-done/snooze/bulk → POST to decision/operator-action endpoint → ledger write → optimistic UI update. Cards re-skinned to dark glassmorphism but all button placement and state machine unchanged",
+          "task_ids": [
+            "TASK-05",
+            "TASK-07",
+            "TASK-08"
+          ],
+          "dependency_note": null,
+          "seams": "Cards must visually distinguish pending/error states in dark context — verify in TASK-05 smoke test"
+        }
+      ]
+    }
+  }
+}

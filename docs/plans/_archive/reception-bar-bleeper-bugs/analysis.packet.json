@@ -1,0 +1,237 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-bar-bleeper-bugs",
+  "source_artifact_path": "docs/plans/reception-bar-bleeper-bugs/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-bar-bleeper-bugs/fact-find.md",
+    "plan": "docs/plans/reception-bar-bleeper-bugs/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Live audit on 2026-03-13 found these bugs causing incorrect bleeper assignments during bar shifts — staff can't reliably use Go mode, COMP eligibility is wrong, Firebase errors are silent, and the UI misleads. All 6 defects confirmed in source code.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All 6 confirmed bar/bleeper defects resolved: Go mode correctly skips bleeper reservation, COMP screen filters to tonight only, Firebase write failures are surfaced to staff, bleep number field initialises clean, ticket list renders stably without key churn, placeholder text matches actual behaviour.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Bug 8: replace placeholder text (1 line); Bug 6: field no longer pre-fills on load",
+      "current_or_option_state": "Same changes",
+      "gap_or_implication": "Fix placeholder copy; remove auto-fill effect",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Bug 3: guard on `if (usage === \"go\")` makes Go mode functional end-to-end; Bug 4: COMP screen filters to tonight only",
+      "current_or_option_state": "Same but `doConfirmPayment` is restructured",
+      "gap_or_implication": "Coordinated Bug 3+6 fix required",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A for both",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Bug 5: check `BleeperResult.success`, notify staff on failure via toast",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Error notification on Firebase write failure",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New unit tests for each fixed path; existing tests not broken",
+      "current_or_option_state": "Requires more mock restructuring due to helper extraction",
+      "gap_or_implication": "Tests can be written with existing mock-capture pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Bug 5: enforce `BleeperResult` return contract at call site",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Contract now enforced",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Bug 7: index fallback eliminates UUID key churn",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Stable keys on every render",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Standard Git revert; no Firebase migration",
+      "current_or_option_state": "Standard Git revert but larger diff",
+      "gap_or_implication": "Git revert is clean",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Six confirmed defects in the bar/bleeper subsystem of `apps/reception` must be fixed together. The analysis decides whether to apply minimal targeted fixes (Option A), refactor the subsystem more broadly (Option B), or phase critical vs cosmetic fixes (Option C). The decision must account for the interaction between Bug 3 (Go mode ignored) and Bug 6 (auto-fill useEffect makes Go unselectable), which requires coordinated changes.",
+    "goals": [
+      "Fix all 6 confirmed defects with the smallest viable change surface.",
+      "Preserve existing codebase patterns; no architectural changes required.",
+      "Add unit tests for all fixed code paths."
+    ],
+    "non_goals": [
+      "Redesigning the bleeper assignment system.",
+      "Adding new bleeper features.",
+      "Refactoring unrelated bar components."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Bug 3 and Bug 6 should ship together for UX completeness. Bug 3 fixes the backend (Go mode no longer reserves a bleeper). Bug 6 removes confusing pre-fill. They are independent — Go mode is functional after Bug 3 alone. The Go/Bleep toggle in `PayModal.tsx` is separate from the bleep # field.",
+      "Preorder night keys are ordinal strings `night1/night2`; `getNightIndex()` and `addDays()` utilities already exist in `ModalPreorderDetails.tsx` / `dateUtils.ts`."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Change surface (diff size)",
+        "Why it matters": "Smaller diff = lower regression risk, easier review",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Correctness of fix",
+        "Why it matters": "Must actually fix the stated bug, not just reduce symptoms",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Test coverage achievable",
+        "Why it matters": "Each fix must be independently verifiable",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Pattern alignment",
+        "Why it matters": "Fixes should follow existing codebase conventions",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "Must be reversible without Firebase migration",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Minimal targeted fixes",
+        "Description": "Fix each bug with the smallest possible change; ship all 6 together (Bug 3+6 must be coordinated)",
+        "Upside": "Lowest risk, smallest diff, easy to review per-bug, each fix independently testable",
+        "Downside": "Leaves `doConfirmPayment` logic somewhat procedural but functional",
+        "Key risks": "Bug 4 is moderately complex (requires `isEligibleForPreorder` signature change + night-key computation); risk if `checkInDate` is absent for any occupant",
+        "Viable?": "**Yes**"
+      },
+      {
+        "Option": "B — Refactor + fix",
+        "Description": "Extract bleeper assignment into pure helper `chooseBleeper(usage, bleepNumber, bleepers, findNext): string`; rewrite `doConfirmPayment` to use it; apply all other bug fixes alongside",
+        "Upside": "Cleaner architecture, helper testable in isolation, prevents similar bugs",
+        "Downside": "Higher diff surface on critical payment path; harder to review; adds refactoring risk on production-live code; no net correctness gain vs Option A",
+        "Key risks": "Refactoring `doConfirmPayment` introduces regression risk without clear benefit over minimal fix",
+        "Viable?": "**Yes but not recommended**"
+      },
+      {
+        "Option": "C — Phase critical now, cosmetic later",
+        "Description": "Fix Bugs 3+5+4 now; defer Bug 6+7+8",
+        "Upside": "Faster delivery of correctness-critical fixes",
+        "Downside": "The Go/Bleep toggle (`bleepUsage` state) lives in `PayModal.tsx` — completely independent of the bleep # field and `bleepNumber` state. Go mode is functional after Bug 3 fix alone. However, phasing adds deploy overhead and leaves confusing UI state; all 6 bugs are in the same subsystem and the full fix is small enough to ship together.",
+        "Key risks": "Two deploys for a small fix set; Bug 6 UX confusion persists after Bug 3 fix if deferred",
+        "Viable?": "**No — ship all 6 together for simplicity; not because Bug 3 requires Bug 6**"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Minimal targeted fixes for all 6 bugs, shipped together.",
+      "Why this wins": "Smallest change surface on production-live payment code. Each bug has a clear, independently testable fix. Bug 3+6 interdependence is handled by shipping together. Pattern alignment is perfect — no new abstractions. Option B adds refactoring risk on a critical payment path without any correctness gain. Option C is excluded because Bug 3 is only effective once Bug 6 removes the UI obstacle.",
+      "**What it depends on": "**",
+      "`checkInDate` being present for checked-in occupants in Bug 4 fix (safe default": "return `false` if absent)."
+    },
+    "rejected_approaches": [
+      "**Option B (Refactor + fix)** — Adds refactoring risk on critical payment path. The `doConfirmPayment` function is messy but correct after the minimal fix; refactoring it adds regression surface without net correctness gain. Deferred to a dedicated refactor task if desired post-fix.",
+      "**Option C (Phased)** — Excluded. Bug 6 is not cosmetic — it is mechanically required for Bug 3's fix to be usable from the UI. Staff cannot select Go mode if the auto-fill useEffect immediately re-fills the field on every keystroke clear. The two must ship together."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Bug 3+6 must be sequenced as a single atomic task or two adjacent tasks with no intermediate CI-breaking state (removing the useEffect alone with Bug 3 unfixed leaves an edge case but is not critical)."
+      ],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Bug 3 and Bug 6 should ship in the same PR for UX completeness. They are not functionally dependent — Go mode works correctly after Bug 3 alone (the toggle in `PayModal.tsx` is independent of the bleep # field). Bug 6 removes confusing pre-fill state that persists after Bug 3 is fixed.",
+        "Bug 4 is independent.",
+        "Bugs 5, 7, 8 are independent.",
+        "Tests for each bug can be written alongside the fix in the same task."
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Payment confirmation — Go mode",
+          "current": "Go/Bleep toggle selection is ignored; Go always assigns a bleeper because `doConfirmPayment` calls `chooseNext()` in the go branch",
+          "trigger": "Staff selects Go toggle and taps Pay",
+          "future": "(1) `if (usage === \"go\")` branch does NOT call `chooseNext()`. (2) `finalBleep` remains `\"go\"`. (3) `if (finalBleep !== \"go\")` block skipped — no bleeper reserved. (4) `confirmOrder(\"go\", ...)` records the sale without a bleeper number.",
+          "steady": "Bleep mode path unchanged; `chooseNext()` still called as fallback in bleep branch.",
+          "seams": "Bug 6 must also be fixed so UI allows Go selection."
+        },
+        {
+          "id": null,
+          "label": "Payment confirmation — Firebase error handling",
+          "current": "`setBleeperAvailability` result silently ignored; write failure allows duplicate bleeper assignments",
+          "trigger": "Firebase write fails during order confirmation",
+          "future": "(1) `result = await setBleeperAvailability(n, false)`. (2) If `!result.success`: show error toast via `NotificationProviderWithGlobal` and abort order confirmation. (3) Staff can retry.",
+          "steady": "Success path unchanged.",
+          "seams": "Race condition (two simultaneous orders) partially mitigated — full idempotency requires server-side enforcement (out of scope)."
+        },
+        {
+          "id": null,
+          "label": "Bleep # field initialisation",
+          "current": "`useEffect` auto-fills `bleepNumber` state on mount from `firstAvailableBleeper`; field shows a number on load even though no order has started",
+          "trigger": "Page load / navigation to /bar",
+          "future": "`useEffect` removed. `bleepNumber` state starts and stays `\"\"`. `PaymentSection.displayNumber` (already in place) shows `firstAvailableBleeper` as a visual suggestion without setting state. Staff type to override (bleep mode) or leave blank — the suggestion is displayed but not committed to state. Go mode is selected via the Pay modal toggle, independent of this field.",
+          "steady": "`PaymentSection.displayNumber` logic unchanged; bleeper suggestion still visible.",
+          "seams": "None — `doConfirmPayment` bleep branch handles `bleepNumber === \"\"` via `chooseNext()`; go branch is unaffected."
+        },
+        {
+          "id": null,
+          "label": "COMP screen eligibility",
+          "current": "`isEligibleForPreorder` checks all nights (`Object.values(occPre).some(...)`); guests with past/future preorders show incorrectly",
+          "trigger": "Staff opens COMP screen",
+          "future": "`isEligibleForPreorder(id, checkInDate)` checks only `occPre[\"night\" + daysSinceCheckIn]`. Staff see only guests with tonight's preorder.",
+          "steady": "Rendering, table layout, double-click modal unchanged.",
+          "seams": "If `checkInDate` is absent for an occupant, function returns `false` (safe default)."
+        },
+        {
+          "id": null,
+          "label": "Ticket item rendering",
+          "current": "`key={it.id ?? crypto.randomUUID()}` causes remount on every render for items without `id`",
+          "trigger": "Any state change in bar order",
+          "future": "`key={it.id ?? i}` — stable index fallback; no remounts.",
+          "steady": "Item list rendering logic unchanged.",
+          "seams": "None."
+        },
+        {
+          "id": null,
+          "label": "Bleep # placeholder",
+          "current": "`'Leave blank for \"go\"'` contradicts auto-fill; field is never visually blank when a bleeper is available",
+          "trigger": "—",
+          "future": "Placeholder updated to `\"No bleepers available\"` — visible only when `firstAvailableBleeper` is `null` (all 18 in use).",
+          "steady": "Field display logic unchanged.",
+          "seams": "None."
+        }
+      ]
+    }
+  }
+}

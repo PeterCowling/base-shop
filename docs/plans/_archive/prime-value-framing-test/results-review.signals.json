@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T20:18:10.381Z",
+  "plan_slug": "prime-value-framing-test",
+  "review_cycle_key": "prime-value-framing-test",
+  "source_path": "docs/plans/prime-value-framing-test/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

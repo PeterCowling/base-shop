@@ -8,6 +8,7 @@ import React, {
 } from "react";
 
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+import { Inline } from "@acme/design-system/primitives";
 
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
@@ -131,7 +132,7 @@ function Row3({
 
 
   return (
-    <div className="flex flex-wrap gap-12 mb-75px">
+    <Inline gap={12} className="mb-75px">
       {/* Document Number */}
       <div className="flex flex-col w-300px">
         <label
@@ -202,7 +203,7 @@ function Row3({
       <div className="flex flex-col w-300px">
         <DOBSection occupantDetails={occupantDetails} saveField={saveField} />
       </div>
-    </div>
+    </Inline>
   );
 }
 

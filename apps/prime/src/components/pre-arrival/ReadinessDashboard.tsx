@@ -264,6 +264,13 @@ export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
           </div>
         )}
 
+        {/* Confidence cue — shown when all checklist items are complete */}
+        {completedCount === totalItems && (
+          <div className="rounded-xl bg-success-soft px-4 py-3 text-center font-semibold text-success-foreground">
+            {t('confidenceCue.readyForArrival')}
+          </div>
+        )}
+
         {/* Next action card */}
         <NextActionCard
           checklist={checklistProgress}

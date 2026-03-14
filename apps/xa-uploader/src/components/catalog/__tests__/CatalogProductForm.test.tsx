@@ -184,6 +184,24 @@ describe("CatalogProductForm", () => {
     };
     expect(firstCallProps.sections).toEqual(["identity"]);
   });
+
+  it("calls onSavedFeedback after the saved-state delay", async () => {
+    jest.useFakeTimers();
+    const rendered = renderForm();
+
+    fireEvent.click(screen.getByTestId("catalog-save-details"));
+
+    await waitFor(() => {
+      expect(rendered.onSave).toHaveBeenCalledTimes(1);
+    });
+    expect(rendered.onSavedFeedback).not.toHaveBeenCalled();
+
+    await act(async () => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    expect(rendered.onSavedFeedback).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("CatalogProductForm — Make Live button (TASK-03)", () => {

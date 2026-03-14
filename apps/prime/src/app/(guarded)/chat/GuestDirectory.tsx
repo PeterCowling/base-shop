@@ -15,6 +15,7 @@
 
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { MessageCircle, Users } from 'lucide-react';
 
@@ -24,9 +25,11 @@ import logger from '@acme/lib/logger/client';
 import { useGuestProfiles } from '../../../hooks/data/useGuestProfiles';
 import useUuid from '../../../hooks/useUuid';
 import { readGuestSession } from '../../../lib/auth/guestSessionGuard';
-import { buildDirectMessageChannelId } from '../../../lib/chat/directMessageChannel';
+import { buildDirectMessageChannelId, WHOLE_HOSTEL_BROADCAST_CHANNEL_ID } from '../../../lib/chat/directMessageChannel';
 import { isVisibleInDirectory } from '../../../lib/chat/messagingPolicy';
 import type { GuestProfile } from '../../../types/guestProfile';
+
+const STAFF_MESSAGES_HREF = `/chat/channel?id=${encodeURIComponent(WHOLE_HOSTEL_BROADCAST_CHANNEL_ID)}&mode=broadcast`;
 
 /**
  * Guest directory component.
@@ -71,17 +74,38 @@ export default function GuestDirectory() {
       .map(([uuid, profile]) => ({ uuid, profile }));
   }, [currentBookingId, profiles, currentProfile, currentUuid]);
 
+  // Render the staff messages link section — always visible regardless of opt-in/loading/empty state
+  const staffMessagesSection = (
+    <div className="p-4 border-b border-border">
+      <Link
+        href={STAFF_MESSAGES_HREF}
+        className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border hover:border-primary transition-colors"
+      >
+        <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
+          <MessageCircle className="h-5 w-5 text-muted-foreground" />
+        </div>
+        <div>
+          <p className="font-medium text-foreground">{t('chat.directory.staffMessages', 'Staff messages')}</p>
+          <p className="text-xs text-muted-foreground">{t('chat.directory.staffMessagesSubtitle', 'Messages from the hostel team')}</p>
+        </div>
+      </Link>
+    </div>
+  );
+
   // Show opt-in required if current user hasn't opted in
   if (currentProfile && !currentProfile.chatOptIn) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-96 p-6 text-center">
-        <MessageCircle className="h-16 w-16 text-border mb-4" />
-        <h2 className="text-xl font-semibold text-foreground mb-2">
-          {t('chat.directory.optInRequired')}
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          {t('chat.directory.optInDescription')}
-        </p>
+      <div>
+        {staffMessagesSection}
+        <div className="flex flex-col items-center justify-center min-h-96 p-6 text-center">
+          <MessageCircle className="h-16 w-16 text-border mb-4" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">
+            {t('chat.directory.optInRequired')}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {t('chat.directory.optInDescription')}
+          </p>
+        </div>
       </div>
     );
   }
@@ -89,8 +113,11 @@ export default function GuestDirectory() {
   // Show loading state
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
-        <div className="text-muted-foreground">{t('chat.directory.loading')}</div>
+      <div>
+        {staffMessagesSection}
+        <div className="flex items-center justify-center min-h-96">
+          <div className="text-muted-foreground">{t('chat.directory.loading')}</div>
+        </div>
       </div>
     );
   }
@@ -98,51 +125,57 @@ export default function GuestDirectory() {
   // Show empty state if no eligible guests
   if (eligibleGuests.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-96 p-6 text-center">
-        <Users className="h-16 w-16 text-border mb-4" />
-        <h2 className="text-xl font-semibold text-foreground mb-2">
-          {t('chat.directory.noGuests')}
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          {t('chat.directory.noGuestsDescription')}
-        </p>
+      <div>
+        {staffMessagesSection}
+        <div className="flex flex-col items-center justify-center min-h-96 p-6 text-center">
+          <Users className="h-16 w-16 text-border mb-4" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">
+            {t('chat.directory.noGuests')}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {t('chat.directory.noGuestsDescription')}
+          </p>
+        </div>
       </div>
     );
   }
 
   // Render directory
   return (
-    <div className="space-y-4 p-4">
-      <div className="flex items-center gap-2 mb-6">
-        <Users className="h-6 w-6 text-foreground" />
-        <h2 className="text-xl font-semibold text-foreground">
-          {t('chat.directory.title')}
-        </h2>
-      </div>
+    <div>
+      {staffMessagesSection}
+      <div className="space-y-4 p-4">
+        <div className="flex items-center gap-2 mb-6">
+          <Users className="h-6 w-6 text-foreground" />
+          <h2 className="text-xl font-semibold text-foreground">
+            {t('chat.directory.title')}
+          </h2>
+        </div>
 
-      <div className="space-y-2">
-        {eligibleGuests.map(({ uuid, profile }) => (
-          <GuestCard
-            key={uuid}
-            uuid={uuid}
-            profile={profile}
-            currentUuid={currentUuid}
-            onStartChat={(targetUuid) => {
-              if (!currentUuid) {
-                return;
-              }
+        <div className="space-y-2">
+          {eligibleGuests.map(({ uuid, profile }) => (
+            <GuestCard
+              key={uuid}
+              uuid={uuid}
+              profile={profile}
+              currentUuid={currentUuid}
+              onStartChat={(targetUuid) => {
+                if (!currentUuid) {
+                  return;
+                }
 
-              const channelId = buildDirectMessageChannelId(currentUuid, targetUuid);
-              const searchParams = new URLSearchParams({
-                id: channelId,
-                mode: 'direct',
-                peer: targetUuid,
-              });
+                const channelId = buildDirectMessageChannelId(currentUuid, targetUuid);
+                const searchParams = new URLSearchParams({
+                  id: channelId,
+                  mode: 'direct',
+                  peer: targetUuid,
+                });
 
-              router.push(`/chat/channel?${searchParams.toString()}`);
-            }}
-          />
-        ))}
+                router.push(`/chat/channel?${searchParams.toString()}`);
+              }}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

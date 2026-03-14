@@ -4,6 +4,7 @@ import { type FC, useMemo, useState } from "react";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Inline, Stack } from "@acme/design-system/primitives";
 
 import { canAccess, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
@@ -27,6 +28,8 @@ interface ActionButtonsProps {
   handleAddKeycard: () => void;
   handleReturnKeycard: () => void;
   handleLiftClick: () => void;
+  setIsEditMode: (v: boolean) => void;
+  setIsDeleteMode: (v: boolean) => void;
 }
 
 const ActionButtons: FC<ActionButtonsProps> = ({
@@ -45,6 +48,8 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   handleAddKeycard,
   handleReturnKeycard,
   handleLiftClick,
+  setIsEditMode,
+  setIsDeleteMode,
 }) => {
   const [openId, setOpenId] = useState<string | null>(null);
   const [showDrawerReauth, setShowDrawerReauth] = useState(false);
@@ -79,7 +84,7 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row">
+    <Stack gap={4} className="sm:flex-row">
       <ActionDropdown
         id="shift"
         openId={openId}
@@ -115,16 +120,31 @@ const ActionButtons: FC<ActionButtonsProps> = ({
                 label: "Add",
                 onClick: handleAddChangeClick,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Exchange Notes",
                 onClick: handleExchangeClick,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Lift",
                 onClick: handleLiftClick,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
+              },
+              {
+                label: "Edit Transaction",
+                onClick: () => setIsEditMode(true),
+                disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
+              },
+              {
+                label: "Delete Transaction",
+                onClick: () => setIsDeleteMode(true),
+                disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
             ]}
           />
@@ -138,23 +158,26 @@ const ActionButtons: FC<ActionButtonsProps> = ({
                 label: "Add Keycard",
                 onClick: handleAddKeycard,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Return Keycard",
                 onClick: handleReturnKeycard,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Count Keycards",
                 onClick: handleKeycardCountClick,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
             ]}
           />
         </>
       )}
       {canManageDrawerLimit && (
-        <div className="flex items-center gap-2 sm:ms-auto">
+        <Inline className="sm:ms-auto">
           <label
             className="text-sm font-semibold"
             htmlFor="drawerLimit"
@@ -184,9 +207,9 @@ const ActionButtons: FC<ActionButtonsProps> = ({
               onCancel={handleDrawerLimitCancel}
             />
           )}
-        </div>
+        </Inline>
       )}
-    </div>
+    </Stack>
   );
 };
 

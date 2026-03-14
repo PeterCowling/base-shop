@@ -1,0 +1,16 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-extension-city-tax-activity-guard",
+  "business": "BRIK",
+  "emitted_at": "2026-03-13T15:00:00.000Z",
+  "dispatch_id": "IDEA-DISPATCH-20260313150000-0002",
+  "outcome_contract": {
+    "why": "City tax activity log was written regardless of whether the guest had an outstanding balance, creating false duplicate entries.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The city tax paid activity entry is only written when the guest had an outstanding balance.",
+    "source": "operator"
+  },
+  "build_status": "complete",
+  "tasks_complete": 1,
+  "tasks_total": 1
+}

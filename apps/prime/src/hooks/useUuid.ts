@@ -7,11 +7,12 @@ import { z } from 'zod';
 
 import logger from '@acme/lib/logger/client';
 
+import { useAuthSession } from '@/contexts/auth/AuthSessionContext';
+import { recordActivationFunnelEvent } from '@/lib/analytics/activationFunnel';
 import { zodErrorToString } from '@/utils/zodErrorToString';
 
 /**
- * Validates whether the provided string is a recognized ID.
- * Adjust the pattern to match your real usage.
+ * Validates whether the provided string is a recognized occupant ID.
  */
 const UUID_REGEX = /^occ_\d{13}$/i;
 
@@ -19,67 +20,87 @@ const uuidSchema = z.string().regex(UUID_REGEX);
 
 /**
  * useUuid
- * Retrieves and validates the UUID from URL query params.
- * If missing or invalid, redirects to /error.
+ *
+ * Retrieves and validates the guest UUID with the following priority:
+ *   1. Server-confirmed guestUuid from AuthSessionContext (populated via prime_session cookie)
+ *   2. localStorage['prime_guest_uuid'] fallback (used on root page / transient failures)
+ *
+ * If the URL ?uuid= param differs from the resolved uuid, a mismatch analytics event is
+ * emitted and the context/localStorage uuid wins. This eliminates the URL tamper vector.
+ *
+ * NOTE: app/page.tsx (root page) is outside GuardedGate and does not have AuthSessionContext —
+ * useAuthSession() returns { guestUuid: null } and this hook falls back to localStorage.
+ * This is intentional: root-page bookmarks use a uuid written from localStorage in
+ * buildGuestHomeUrl(), so URL and localStorage always match on the root page.
+ *
+ * If both sources are unavailable, redirects to /error (same as previous behavior).
  */
 export default function useUuid(): string {
   const [uuid, setUuid] = useState<string>('');
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { guestUuid: contextUuid } = useAuthSession();
 
   useEffect(() => {
-    let uuidFromURL = searchParams?.get('uuid'); // Use 'let' if you might reassign (e.g., after trimming)
+    // 1. Try context first (server-confirmed uuid from prime_session cookie)
+    let resolvedUuid: string | null = contextUuid ?? null;
 
-    // --- Optional but Recommended: Trim whitespace ---
-    // Query parameters can sometimes have leading/trailing spaces
-    if (uuidFromURL) {
-      uuidFromURL = uuidFromURL.trim();
-    }
-    // --- End Trim ---
-
-    // Perform checks *after* potential trimming
-    if (uuidFromURL) {
-      // If already in state and URL hasn't changed, do nothing
-      // Compare trimmed version if you trimmed it
-      if (uuidFromURL === uuid) {
-        return;
+    // 2. Fall back to localStorage if context is not available
+    if (!resolvedUuid) {
+      const stored = localStorage.getItem('prime_guest_uuid')?.trim() || '';
+      if (stored) {
+        resolvedUuid = stored;
       }
     }
 
-    if (!uuidFromURL) {
-      const storedUuid = localStorage.getItem('prime_guest_uuid')?.trim() || '';
-      if (storedUuid) {
-        uuidFromURL = storedUuid;
-      }
+    // 3. Check URL param for mismatch detection (advisory only — not the primary source)
+    const urlUuid = searchParams?.get('uuid')?.trim() ?? null;
+    if (urlUuid && resolvedUuid && urlUuid !== resolvedUuid) {
+      // URL uuid differs from server-confirmed uuid — potential tamper attempt.
+      // Context/localStorage wins; emit mismatch event for observability.
+      logger.warn(
+        `UUID mismatch: URL param "${urlUuid}" differs from session uuid "${resolvedUuid}". Using session uuid.`,
+      );
+      recordActivationFunnelEvent({
+        type: 'utility_action_used',
+        sessionKey: resolvedUuid,
+        route: typeof window !== 'undefined' ? window.location.pathname : '',
+        context: {
+          utilityAction: 'security_uuid_mismatch',
+          urlUuid,
+          sessionUuid: resolvedUuid,
+        },
+      });
     }
 
-    // Missing or invalid UUID → redirect to error
-    // The short-circuiting here correctly prevents validating an empty string
-    if (!uuidFromURL) {
+    // 4. Already have the same resolved uuid in state — no update needed
+    if (resolvedUuid === uuid && uuid !== '') {
+      return;
+    }
+
+    // 5. No uuid found from any source → redirect to /error
+    if (!resolvedUuid) {
       logger.error(
-        `Redirecting to /error: Required 'uuid' value is missing from URL and guest session. Received: ${JSON.stringify(uuidFromURL)}`,
+        `Redirecting to /error: Required 'uuid' value is missing from session and guest session. URL param: ${JSON.stringify(urlUuid)}`,
       );
       router.replace('/error');
-      return; // Exit useEffect early
+      return;
     }
 
-    // At this point, we know uuidFromURL is a non-empty string. Now check its format.
-    const parsed = uuidSchema.safeParse(uuidFromURL);
+    // 6. Validate uuid format
+    const parsed = uuidSchema.safeParse(resolvedUuid);
     if (!parsed.success) {
-      // CASE 2: UUID is present and non-empty, but its format is invalid.
       const details = zodErrorToString(parsed.error);
-
       logger.error(
-        `Redirecting to /error: Invalid 'uuid' query parameter (${details}). Value: "${uuidFromURL}"`,
+        `Redirecting to /error: Invalid uuid format (${details}). Value: "${resolvedUuid}"`,
       );
       router.replace('/error');
-      return; // Exit useEffect early
+      return;
     }
 
-    // Valid UUID → update state
-    // At this point, uuidFromURL is guaranteed to be a non-null, non-empty, valid string
-    setUuid(uuidFromURL);
-  }, [searchParams, uuid, router]); // Keep dependencies as they are
+    // 7. Valid uuid — update state
+    setUuid(resolvedUuid);
+  }, [contextUuid, searchParams, uuid, router]);
 
   return uuid;
 }

@@ -1,0 +1,53 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T16:57:41.686Z",
+  "plan_slug": "startup-loop-security-audit",
+  "review_cycle_key": "startup-loop-security-audit",
+  "source_path": "docs/plans/startup-loop-security-audit/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",
+      "body": "New skill — Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",
+      "source": "results-review.user.md",
+      "date": "2026-03-13T00:00:00.000Z",
+      "path": "docs/plans/startup-loop-security-audit/results-review.user.md",
+      "idea_key": "be81a3e6d4aa25e1cc017a2c3b458cb9b498aca0",
+      "review_cycle_key": "startup-loop-security-audit",
+      "canonical_title": "Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",
+      "build_signal_id": "d7095cb2238d09126762e53ea1f20e6580438d5e",
+      "recurrence_key": "87a26adc5941f5a646dd41c5837e68b45a69ed4d",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — Candidate: Automate SEC-05 (repo secrets) check — SEC-05 currently relies on TruffleHog in CI, but the /lp-launch-qa domain-security check at QA time still requires the agent to describe what it found in CI. This could be made deterministic: read the last CI run's TruffleHog output via the GitHub API and report findings directly without agent interpretation. Trigger observation: TASK-05 added TruffleHog to CI but TASK-01 domain-security.md still describes SEC-05 as an agent-read check on the repo.",
+      "body": "AI-to-mechanistic — Candidate: Automate SEC-05 (repo secrets) check — SEC-05 currently relies on TruffleHog in CI, but the /lp-launch-qa domain-security check at QA time still requires the agent to describe what it found in CI. This could be made deterministic: read the last CI run's TruffleHog output via the GitHub API and report findings directly without agent interpretation. Trigger observation: TASK-05 added TruffleHog to CI but TASK-01 domain-security.md still describes SEC-05 as an agent-read check on the repo.",
+      "source": "results-review.user.md",
+      "date": "2026-03-13T00:00:00.000Z",
+      "path": "docs/plans/startup-loop-security-audit/results-review.user.md",
+      "idea_key": "6f1eec1f98f181555c8bffedcb918837fa6ede35",
+      "review_cycle_key": "startup-loop-security-audit",
+      "canonical_title": "Candidate: Automate SEC-05 (repo secrets) check — SEC-05 currently relies on TruffleHog in CI, but the /lp-launch-qa domain-security check at QA time still requires the agent to describe what it found in CI. This could be made deterministic: read the last CI run's TruffleHog output via the GitHub API and report findings directly without agent interpretation. Trigger observation: TASK-05 added TruffleHog to CI but TASK-01 domain-security.md still describes SEC-05 as an agent-read check on the repo.",
+      "build_signal_id": "99f6f5e01ee709f905cef5962206415c9b4e8d96",
+      "recurrence_key": "2158c32829d1a131c63a6fdcdd980355eae13d10",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

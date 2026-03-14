@@ -1,5 +1,6 @@
 import "server-only";
 
+import { signActorClaims } from "./actor-claims";
 import type {
   InboxDraftApiModel,
   InboxMessageApiModel,
@@ -9,7 +10,7 @@ import { resolveInboxChannelAdapter } from "./channel-adapters.server";
 
 export type PrimeReviewThreadSummary = {
   id: string;
-  channel: "prime_direct" | "prime_broadcast";
+  channel: "prime_direct" | "prime_broadcast" | "prime_activity";
   lane: "support" | "promotion";
   reviewStatus: "pending" | "review_later" | "auto_archived" | "resolved" | "sent";
   subject: string | null;
@@ -255,8 +256,19 @@ async function primeRequest<T>(path: string, init: RequestInit = {}): Promise<T>
   return payload.data;
 }
 
-function buildPrimeActorHeaders(actorUid?: string): Record<string, string> | undefined {
-  return actorUid ? { "x-prime-actor-uid": actorUid } : undefined;
+async function buildPrimeActorHeaders(
+  actorUid?: string,
+  roles?: string[],
+): Promise<Record<string, string> | undefined> {
+  if (!actorUid) return undefined;
+  const secret = process.env.PRIME_ACTOR_CLAIMS_SECRET?.trim();
+  if (!secret) {
+    throw new Error(
+      "PRIME_ACTOR_CLAIMS_SECRET is required to sign actor claims for Prime requests",
+    );
+  }
+  const claimsHeader = await signActorClaims({ uid: actorUid, roles: roles ?? [] }, secret);
+  return { "x-prime-actor-claims": claimsHeader };
 }
 
 /**
@@ -310,7 +322,7 @@ function mapPrimeSummaryToInboxThread(
     latestAdmissionDecision: summary.latestAdmissionDecision,
     latestAdmissionReason: summary.latestAdmissionReason,
     currentDraft: null,
-    guestBookingRef: summary.bookingId,
+    guestBookingRef: summary.channel === "prime_activity" ? null : summary.bookingId,
     guestFirstName: null,
     guestLastName: null,
   };
@@ -464,6 +476,7 @@ export async function savePrimeInboxDraft(
   prefixedThreadId: string,
   payload: { plainText: string; templateUsed?: string },
   actorUid?: string,
+  roles?: string[],
 ): Promise<InboxDraftApiModel | null> {
   const threadId = parsePrimeInboxThreadId(prefixedThreadId);
   if (!threadId) {
@@ -474,7 +487,7 @@ export async function savePrimeInboxDraft(
     `/api/review-thread-draft?threadId=${encodeURIComponent(threadId)}`,
     {
       method: "PUT",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid, roles),
       body: JSON.stringify({ plainText: payload.plainText }),
     },
   );
@@ -489,6 +502,7 @@ export async function savePrimeInboxDraft(
 export async function resolvePrimeInboxThread(
   prefixedThreadId: string,
   actorUid?: string,
+  roles?: string[],
 ): Promise<InboxThreadSummaryApiModel | null> {
   const threadId = parsePrimeInboxThreadId(prefixedThreadId);
   if (!threadId) {
@@ -499,7 +513,7 @@ export async function resolvePrimeInboxThread(
     `/api/review-thread-resolve?threadId=${encodeURIComponent(threadId)}`,
     {
       method: "POST",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid, roles),
     },
   );
 
@@ -509,6 +523,7 @@ export async function resolvePrimeInboxThread(
 export async function dismissPrimeInboxThread(
   prefixedThreadId: string,
   actorUid?: string,
+  roles?: string[],
 ): Promise<InboxThreadSummaryApiModel | null> {
   const threadId = parsePrimeInboxThreadId(prefixedThreadId);
   if (!threadId) {
@@ -519,7 +534,7 @@ export async function dismissPrimeInboxThread(
     `/api/review-thread-dismiss?threadId=${encodeURIComponent(threadId)}`,
     {
       method: "POST",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid, roles),
     },
   );
 
@@ -529,6 +544,7 @@ export async function dismissPrimeInboxThread(
 export async function sendPrimeInboxThread(
   prefixedThreadId: string,
   actorUid?: string,
+  roles?: string[],
 ): Promise<{
   draft: InboxDraftApiModel | null;
   sentMessageId: string | null;
@@ -541,25 +557,6 @@ export async function sendPrimeInboxThread(
     };
   }
 
-  const detail = await getPrimeInboxThreadDetail(prefixedThreadId);
-  if (detail?.campaign?.id && detail.thread.channel === "prime_broadcast") {
-    const payload = await primeRequest<{
-      campaign: PrimeReviewCampaignDetail;
-      sentMessageId: string | null;
-    }>(
-      `/api/review-campaign-send?campaignId=${encodeURIComponent(detail.campaign.id)}`,
-      {
-        method: "POST",
-        headers: buildPrimeActorHeaders(actorUid),
-      },
-    );
-
-    return {
-      draft: detail.currentDraft,
-      sentMessageId: payload.sentMessageId,
-    };
-  }
-
   const payload = await primeRequest<{
     thread: PrimeReviewThreadSummary;
     draft: PrimeReviewThreadDetail["currentDraft"];
@@ -568,7 +565,7 @@ export async function sendPrimeInboxThread(
     `/api/review-thread-send?threadId=${encodeURIComponent(threadId)}`,
     {
       method: "POST",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid, roles),
     },
   );
 
@@ -576,6 +573,75 @@ export async function sendPrimeInboxThread(
     draft: mapPrimeCurrentDraft(buildPrimeInboxThreadId(threadId), payload.draft),
     sentMessageId: payload.sentMessageId,
   };
+}
+
+/**
+ * Initiate a whole-hostel outbound broadcast thread on Prime.
+ *
+ * Calls POST /api/staff-initiate-thread with the provided text, creating the
+ * broadcast thread and an initial draft ready for sending.
+ *
+ * Returns null when Prime is not configured (graceful degrade — caller should 503).
+ * Propagates throws from primeRequest for Prime 4xx/5xx errors (caller should 502).
+ *
+ * @deprecated Use `staffBroadcastSend` instead. This function only initiates the thread
+ * and draft; the caller must separately call `sendPrimeInboxThread`, which creates a race
+ * window between draft save and send. `staffBroadcastSend` collapses the entire pipeline
+ * into a single atomic hop via `/api/staff-broadcast-send`.
+ */
+export async function initiatePrimeOutboundThread(input: {
+  text: string;
+  actorUid?: string;
+  roles?: string[];
+}): Promise<{ detail: PrimeReviewThreadDetail } | null> {
+  if (!readPrimeReviewConfig()) {
+    return null;
+  }
+
+  const payload = await primeRequest<{ detail: PrimeReviewThreadDetail }>(
+    "/api/staff-initiate-thread",
+    {
+      method: "POST",
+      body: JSON.stringify({ plainText: input.text }),
+      headers: await buildPrimeActorHeaders(input.actorUid, input.roles),
+      // 10-second hard timeout: prevents a slow Prime function from hanging the Reception API route.
+      signal: AbortSignal.timeout(10_000),
+    },
+  );
+
+  return { detail: payload.detail };
+}
+
+/**
+ * Send a whole-hostel staff broadcast via the single-hop `/api/staff-broadcast-send` endpoint.
+ *
+ * Combines thread upsert, draft save, and send in one Prime function invocation, eliminating
+ * the previous three-hop chain (staff-initiate-thread → prime-compose route → review-thread-send).
+ *
+ * Returns null when Prime is not configured (graceful degrade — caller should 503).
+ * Propagates throws from primeRequest for Prime 4xx/5xx errors (caller should 502).
+ */
+export async function staffBroadcastSend(input: {
+  text: string;
+  actorUid?: string;
+  roles?: string[];
+}): Promise<{ sentMessageId: string | null } | null> {
+  if (!readPrimeReviewConfig()) {
+    return null;
+  }
+
+  const payload = await primeRequest<{ outcome: string; sentMessageId: string | null }>(
+    "/api/staff-broadcast-send",
+    {
+      method: "POST",
+      body: JSON.stringify({ plainText: input.text }),
+      headers: await buildPrimeActorHeaders(input.actorUid, input.roles),
+      // 10-second hard timeout: prevents a slow Prime function from hanging the Reception API route.
+      signal: AbortSignal.timeout(10_000),
+    },
+  );
+
+  return { sentMessageId: payload.sentMessageId };
 }
 
 export async function replayPrimeInboxCampaignDelivery(
@@ -590,7 +656,7 @@ export async function replayPrimeInboxCampaignDelivery(
     `/api/review-campaign-replay?campaignId=${encodeURIComponent(campaignId)}&deliveryId=${encodeURIComponent(deliveryId)}`,
     {
       method: "POST",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid),
     },
   );
 

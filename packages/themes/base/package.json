@@ -17,7 +17,12 @@
       "import": "./dist/index.js",
       "require": "./dist/index.js"
     },
-    "./tokens.css": "./tokens.css"
+    "./tokens.css": "./tokens.css",
+    "./build-profile": {
+      "types": "./dist/build-profile.d.ts",
+      "import": "./dist/build-profile.js",
+      "require": "./dist/build-profile.js"
+    }
   },
   "acmeTheme": {
     "rapidLaunch": true,

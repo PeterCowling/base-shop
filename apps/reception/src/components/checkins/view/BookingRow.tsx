@@ -4,12 +4,10 @@ import { Input } from "@acme/design-system";
 import { TableCell, TableRow } from "@acme/design-system/atoms";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
-import type { Activity } from "../../../types/hooks/data/activitiesData";
 import type { LoanMethod } from "../../../types/hooks/data/loansData";
 import { getKeycardIcon } from "../../../utils/keycardIcon";
 import CityTaxPaymentButton from "../cityTaxButton/CityTaxPaymentButton";
 import DocInsertButton from "../DocInsertButton";
-import EmailBookingButton from "../EmailBookingButton";
 import KeycardDepositButton from "../keycardButton/KeycardDepositButton";
 import BookingNotesModal from "../notes/BookingNotesModal";
 import RoomPaymentButton from "../roomButton/roomPaymentButton";
@@ -84,7 +82,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
         <div className="flex items-center justify-center">
           <Input compatibilityMode="no-wrapper"
             type="text"
-            className="w-10 px-0.5 py-0.5 border-0 border-b border-border-2 text-center bg-transparent text-foreground text-sm font-mono focus:outline-none focus:border-primary-main/100"
+            className="w-10 px-0.5 py-0.5 border border-border-2 rounded-lg text-center bg-surface-2 text-foreground text-sm font-mono focus:outline-none focus:border-primary-main"
             value={draftValue}
             onChange={(e) => onDraftChange(e.target.value)}
             onBlur={onBlur}
@@ -136,15 +134,6 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           <DocInsertButton booking={booking} selectedDate={selectedDate} />
         </div>
       </TableCell>
-      <TableCell className="px-3 py-2">
-        <div className="flex justify-center items-center">
-          <EmailBookingButton
-            bookingRef={booking.bookingRef}
-            activities={(booking.activities ?? []) as Activity[]}
-            isFirstForBooking={Boolean(booking.isFirstForBooking)}
-          />
-        </div>
-      </TableCell>
     </TableRow>
     {notesOpen && booking.isFirstForBooking && (
       <TableRow>
@@ -153,7 +142,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           table semantics (a <div> directly under <TableBody> triggers DOM nesting
           warnings during tests).
         */}
-        <TableCell colSpan={8} className="p-0">
+        <TableCell colSpan={7} className="p-0">
           <BookingNotesModal
             bookingRef={booking.bookingRef}
             onClose={closeNotes}

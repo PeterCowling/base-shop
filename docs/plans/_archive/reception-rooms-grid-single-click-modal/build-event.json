@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-rooms-grid-single-click-modal",
+  "business": "BRIK",
+  "dispatch_id": "IDEA-DISPATCH-20260313140000-0002",
+  "build_date": "2026-03-13",
+  "execution_track": "code",
+  "outcome_type": "operational",
+  "outcome_statement": "A single click on any room cell opens the booking detail modal immediately. The 400ms double-click guard is removed.",
+  "outcome_source": "operator",
+  "status": "complete"
+}

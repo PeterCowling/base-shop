@@ -1,0 +1,18 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "bos-process-improvements-visual-redesign",
+  "business": "BOS",
+  "completed_at": "2026-03-14",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "why": "The process-improvements screens use flat, heavily coloured cards that feel visually dense. There is no proper light mode — the operator always works in a forced dark theme. A lighter glassmorphism treatment combined with full light and dark mode support would make the tool noticeably more comfortable to use during the working day, particularly when reviewing and actioning a long list of plans.",
+  "why_source": "operator",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "Process-improvements pages have glassmorphism-style cards, a restrained/less heavy colour palette, and a polished light/dark mode experience that switches correctly based on system preference.",
+  "outcome_source": "operator",
+  "dispatch_id": "IDEA-DISPATCH-20260313213000-BOS-001",
+  "plan_path": "docs/plans/bos-process-improvements-visual-redesign/plan.md",
+  "build_record_path": "docs/plans/bos-process-improvements-visual-redesign/build-record.user.md",
+  "tasks_completed": ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05"],
+  "commits": ["39ddd6011f", "e4b4bd0ebf", "9d32d2a128", "33351197fa"]
+}

@@ -167,4 +167,60 @@ describe("catalog products route", () => {
       }),
     );
   });
+
+  // ---------------------------------------------------------------------------
+  // Server normalization regression guards (TC-01, TC-02)
+  // These tests confirm deriveCatalogPublishState() is always applied at persist
+  // time, regardless of the incoming publishState value. They pass before any
+  // client-side changes and must stay green permanently.
+  // ---------------------------------------------------------------------------
+
+  // TC-01: regression guard — server normalises imageless-live to draft even when
+  // confirmUnpublish bypasses the 409 would_unpublish guard
+  it("TC-01: POST with publishState live and no images normalizes to draft even when confirmUnpublish is true", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products?storefront=xa-b", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product: { id: "p1", slug: "studio-jacket", publishState: "live", imageFiles: "" },
+          confirmUnpublish: true,
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(upsertProductInCloudSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        product: expect.objectContaining({ publishState: "draft" }),
+      }),
+    );
+  });
+
+  // TC-02: happy path regression — live product with images stays live
+  it("TC-02: POST with publishState live and images present persists as live", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/products?storefront=xa-b", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          product: {
+            id: "p1",
+            slug: "studio-jacket",
+            publishState: "live",
+            imageFiles: "xa-b/studio-jacket/front.jpg",
+          },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(upsertProductInCloudSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        product: expect.objectContaining({ publishState: "live" }),
+      }),
+    );
+  });
 });

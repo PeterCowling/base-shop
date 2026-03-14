@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 
 import { showToast } from "../../utils/toastUtils";
 import { PasswordReauthInline } from "../common/PasswordReauthInline";
@@ -103,7 +104,7 @@ export const BankDepositForm = memo(function BankDepositForm({
           <PasswordReauthInline onSubmit={handleSubmit} submitLabel="Deposit" />
         </div>
 
-        <div className="flex justify-end">
+        <Cluster justify="end">
           <Button
             type="button"
             onClick={onCancel}
@@ -111,7 +112,7 @@ export const BankDepositForm = memo(function BankDepositForm({
           >
             Cancel
           </Button>
-        </div>
+        </Cluster>
       </div>
     </div>
   );

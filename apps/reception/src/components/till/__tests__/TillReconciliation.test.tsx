@@ -138,7 +138,7 @@ describe("TillReconciliation", () => {
 
   // Float nudge banner tests
 
-  it("TC-01: shiftOpenTime=null, no openingFloat today — nudge banner visible with link to /eod-checklist/", () => {
+  it("TC-01: shiftOpenTime=null, no openingFloat today — nudge banner visible with link to /eod", () => {
     baseProps.shiftOpenTime = null;
     useCashCountsDataMock.mockReturnValue({
       cashCounts: [],
@@ -185,7 +185,7 @@ describe("TillReconciliation", () => {
     expect(screen.queryByTestId("float-nudge-banner")).not.toBeInTheDocument();
   });
 
-  it("TC-04: nudge link href is /eod-checklist/", () => {
+  it("TC-04: nudge link href is /eod", () => {
     baseProps.shiftOpenTime = null;
     useCashCountsDataMock.mockReturnValue({
       cashCounts: [],
@@ -196,6 +196,6 @@ describe("TillReconciliation", () => {
     render(<TillReconciliation />);
 
     const link = screen.getByTestId("float-nudge-link");
-    expect(link).toHaveAttribute("href", "/eod-checklist/");
+    expect(link).toHaveAttribute("href", "/eod");
   });
 });

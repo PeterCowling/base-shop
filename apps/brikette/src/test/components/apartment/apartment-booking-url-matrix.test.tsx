@@ -51,8 +51,17 @@ jest.mock("@/utils/dateUtils", () => ({
 jest.mock("@/utils/ga4-events", () => ({
   ...jest.requireActual("@/utils/ga4-events"),
   createBrikClickId: () => "brik-click-id",
-  fireHandoffToEngine: jest.fn(),
   fireWhatsappClick: jest.fn(),
+}));
+
+jest.mock("@/utils/trackThenNavigate", () => ({
+  trackThenNavigate: jest.fn((_event: string, _params: Record<string, unknown>, navigate: () => void) => {
+    navigate();
+  }),
+}));
+
+jest.mock("@/utils/entryAttribution", () => ({
+  readAttribution: jest.fn(() => null),
 }));
 
 // eslint-disable-next-line import/first -- mocks must be declared before import under test

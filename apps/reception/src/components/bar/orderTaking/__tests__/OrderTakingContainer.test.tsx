@@ -165,7 +165,7 @@ beforeEach(() => {
   bleepers = {};
   firstAvailableBleeper = 1;
   findNextAvailableBleeper = jest.fn();
-  setBleeperAvailability = jest.fn();
+  setBleeperAvailability = jest.fn().mockResolvedValue({ success: true });
   getProductsByCategory = jest.fn().mockReturnValue([]);
   getSubCat = jest.fn();
 });
@@ -223,29 +223,31 @@ describe("OrderTakingContainer", () => {
   expect(addItemToOrderDb).toHaveBeenCalledTimes(2);
 });
 
-  it("confirms payment and resets bleep", async () => {
-    findNextAvailableBleeper.mockReturnValue(2);
-  render(<OrderTakingContainer menuType="nonalcoholic" />);
-  await act(async () => {
-    await getCapturedProps().onConfirmPayment("cash", "go");
+  it("confirms payment in go mode without reserving a bleeper", async () => {
+    render(<OrderTakingContainer menuType="nonalcoholic" />);
+    await act(async () => {
+      await getCapturedProps().onConfirmPayment("cash", "go");
+    });
+    expect(setBleeperAvailability).not.toHaveBeenCalled();
+    expect(confirmOrder).toHaveBeenCalledWith(
+      "go",
+      "tester",
+      expect.any(String),
+      "cash"
+    );
   });
-  expect(confirmOrder).toHaveBeenCalledWith(
-    "2",
-    "tester",
-    expect.any(String),
-    "cash"
-  );
-  expect(setBleeperAvailability).toHaveBeenCalledWith(2, false);
 
-  // invalid typed bleep falls back to next available
-  act(() => {
-    getCapturedProps().onBleepNumberChange("foo");
-  });
-  findNextAvailableBleeper.mockReturnValue(3);
-  await act(async () => {
-    await getCapturedProps().onConfirmPayment("card", "bleep");
-  });
-    expect(confirmOrder).toHaveBeenLastCalledWith(
+  it("confirms payment in bleep mode: invalid typed bleep falls back to next available", async () => {
+    findNextAvailableBleeper.mockReturnValue(3);
+    render(<OrderTakingContainer menuType="nonalcoholic" />);
+    act(() => {
+      getCapturedProps().onBleepNumberChange("foo");
+    });
+    await act(async () => {
+      await getCapturedProps().onConfirmPayment("card", "bleep");
+    });
+    expect(setBleeperAvailability).toHaveBeenCalledWith(3, false);
+    expect(confirmOrder).toHaveBeenCalledWith(
       "3",
       "tester",
       expect.any(String),
@@ -359,5 +361,64 @@ describe("OrderTakingContainer", () => {
     screen.getByText(/Error adding item to order: Error: boom/)
   ).toBeInTheDocument();
 });
+
+  // TC-01: Bug 3 — Go mode must NOT reserve a bleeper
+  it("TC-01: doConfirmPayment with usage=go does not call setBleeperAvailability", async () => {
+    render(<OrderTakingContainer menuType="alcoholic" />);
+    await act(async () => {
+      await getCapturedProps().onConfirmPayment("cash", "go");
+    });
+    expect(setBleeperAvailability).not.toHaveBeenCalled();
+    expect(confirmOrder).toHaveBeenCalledWith("go", expect.any(String), expect.any(String), "cash");
+  });
+
+  // TC-02: Bug 3 — Bleep mode with valid typed number reserves that bleeper
+  it("TC-02: doConfirmPayment with usage=bleep and valid number calls setBleeperAvailability", async () => {
+    bleepers = { 3: true };
+    render(<OrderTakingContainer menuType="alcoholic" />);
+    act(() => {
+      getCapturedProps().onBleepNumberChange("3");
+    });
+    await act(async () => {
+      await getCapturedProps().onConfirmPayment("cash", "bleep");
+    });
+    expect(setBleeperAvailability).toHaveBeenCalledWith(3, false);
+    expect(confirmOrder).toHaveBeenCalledWith("3", expect.any(String), expect.any(String), "cash");
+  });
+
+  // TC-03: Bug 5 — Firebase write failure aborts order and shows toast
+  it("TC-03: doConfirmPayment shows toast and does not confirm when setBleeperAvailability fails", async () => {
+    findNextAvailableBleeper.mockReturnValue(5);
+    setBleeperAvailability.mockResolvedValue({ success: false, error: "Network error" });
+    mockShowToast.mockClear();
+    render(<OrderTakingContainer menuType="alcoholic" />);
+    await act(async () => {
+      await getCapturedProps().onConfirmPayment("cash", "bleep");
+    });
+    expect(mockShowToast).toHaveBeenCalledWith(
+      "Failed to reserve bleeper. Please try again.",
+      "error"
+    );
+    expect(confirmOrder).not.toHaveBeenCalled();
+  });
+
+  // TC-04: Bug 5 — Firebase write success continues to confirm order
+  it("TC-04: doConfirmPayment calls confirmOrder when setBleeperAvailability succeeds", async () => {
+    findNextAvailableBleeper.mockReturnValue(5);
+    setBleeperAvailability.mockResolvedValue({ success: true });
+    mockShowToast.mockClear();
+    render(<OrderTakingContainer menuType="alcoholic" />);
+    await act(async () => {
+      await getCapturedProps().onConfirmPayment("cash", "bleep");
+    });
+    expect(mockShowToast).not.toHaveBeenCalled();
+    expect(confirmOrder).toHaveBeenCalledWith("5", expect.any(String), expect.any(String), "cash");
+  });
+
+  // TC-05: Bug 6 — bleepNumber initialises as empty, no auto-fill
+  it("TC-05: bleepNumber starts as empty string and is not auto-filled on mount", () => {
+    render(<OrderTakingContainer menuType="alcoholic" />);
+    expect(getCapturedProps().bleepNumber).toBe("");
+  });
 });
 

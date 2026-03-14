@@ -4,13 +4,17 @@ import { getRepoRoot } from "@/lib/get-repo-root";
 import {
   declineQueuedIdea,
   handoffQueuedIdeaToRegularProcess,
-} from "../../../../../scripts/src/startup-loop/ideas/lp-do-ideas-operator-actions.js";
+} from "../../../../../scripts/src/startup-loop/ideas/lp-do-ideas-operator-actions";
 
 import {
   appendProcessImprovementsDecisionEvent,
   type ProcessImprovementsDecisionType,
 } from "./decision-ledger";
-import { loadProcessImprovementsProjection } from "./projection";
+import {
+  isProcessImprovementQueueItem,
+  loadProcessImprovementsProjection,
+  type ProcessImprovementQueueInboxItem,
+} from "./projection";
 import { resolveProcessImprovementsQueuePath } from "./queue-path";
 
 export interface PerformProcessImprovementsDecisionInput {
@@ -19,6 +23,8 @@ export interface PerformProcessImprovementsDecisionInput {
   ideaKey: string;
   actor: User;
   now?: Date;
+  deferDays?: number;
+  rationale?: string;
 }
 
 export type PerformProcessImprovementsDecisionResult =
@@ -48,8 +54,12 @@ export async function performProcessImprovementsDecision(
   const queuePath = resolveProcessImprovementsQueuePath();
   const projection = await loadProcessImprovementsProjection({ repoRoot });
   const item = projection.items.find(
-    (candidate) =>
-      candidate.dispatchId === input.dispatchId && candidate.ideaKey === input.ideaKey
+    (
+      candidate
+    ): candidate is ProcessImprovementQueueInboxItem =>
+      isProcessImprovementQueueItem(candidate) &&
+      candidate.dispatchId === input.dispatchId &&
+      candidate.ideaKey === input.ideaKey
   );
 
   if (!item) {
@@ -65,7 +75,7 @@ export async function performProcessImprovementsDecision(
   const decidedAt = now.toISOString();
 
   if (input.decision === "defer") {
-    const deferUntil = addDays(now, 7).toISOString();
+    const deferUntil = addDays(now, input.deferDays ?? 7).toISOString();
     await appendProcessImprovementsDecisionEvent(
       {
         ideaKey: item.ideaKey,
@@ -78,6 +88,7 @@ export async function performProcessImprovementsDecision(
         deferUntil,
         sourcePath: item.sourcePath,
         queueMode: item.queueMode,
+        rationale: input.rationale,
       },
       repoRoot
     );
@@ -103,6 +114,7 @@ export async function performProcessImprovementsDecision(
       executionResult: "pending",
       sourcePath: item.sourcePath,
       queueMode: item.queueMode,
+      rationale: input.rationale,
     },
     repoRoot
   );

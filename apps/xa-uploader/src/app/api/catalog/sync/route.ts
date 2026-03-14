@@ -227,13 +227,11 @@ async function tryPublishCloudCatalogPayload(params: {
   } catch (error) {
     const publishError = getPublishErrorDetails(error);
     const isUnconfigured = publishError.code === "unconfigured";
-    if (process.env.NODE_ENV !== "test") {
-      console.error({
-        route: "POST /api/catalog/sync",
-        error: getErrorMessage(error),
-        durationMs: Date.now() - params.startedAt,
-      });
-    }
+    uploaderLog("error", "catalog_publish_failed", {
+      route: "POST /api/catalog/sync",
+      error: getErrorMessage(error),
+      durationMs: Date.now() - params.startedAt,
+    });
     return {
       ok: false,
       errorResponse: NextResponse.json(
@@ -270,6 +268,10 @@ async function loadCloudSyncInputs(params: {
   } catch (error) {
     if (error instanceof CatalogDraftContractError) {
       const isInvalidRates = error.code === "invalid_response";
+      uploaderLog("error", "cloud_sync_inputs_load_failed", {
+        storefront: params.storefrontId,
+        code: error.code,
+      });
       return {
         ok: false,
         errorResponse: NextResponse.json(
@@ -284,6 +286,10 @@ async function loadCloudSyncInputs(params: {
         ),
       };
     }
+    uploaderLog("error", "cloud_sync_inputs_load_failed", {
+      storefront: params.storefrontId,
+      code: "unknown",
+    });
     throw error;
   }
 }
@@ -537,6 +543,7 @@ export async function POST(request: Request) {
   try {
     const acquired = await acquireCloudSyncLock(storefrontId);
     if (acquired.status === "busy") {
+      uploaderLog("warn", "sync_lock_busy", { storefront: storefrontId });
       return withRateHeaders(
         NextResponse.json(
           { ok: false, error: "conflict", reason: "sync_already_running" },

@@ -1,0 +1,15 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-bar-bleeper-bugs",
+  "business": "BRIK",
+  "completed_date": "2026-03-13",
+  "execution_track": "code",
+  "why": "Live audit on 2026-03-13 found these bugs causing incorrect bleeper assignments during bar shifts — staff cannot reliably use Go mode, COMP eligibility is wrong, Firebase errors are silent, and the UI misleads. All 6 defects confirmed in source code.",
+  "why_source": "operator",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "All 6 confirmed bar/bleeper defects resolved: Go mode correctly skips bleeper reservation, COMP screen filters to tonight only, Firebase write failures are surfaced to staff, bleep number field initialises clean, ticket list renders stably without key churn, placeholder text matches actual behaviour.",
+  "tasks_completed": 7,
+  "tasks_total": 7,
+  "plan_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md",
+  "build_record_path": "docs/plans/_archive/reception-bar-bleeper-bugs/build-record.user.md"
+}

@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { Cluster } from "@acme/design-system/primitives";
+
 export interface ActionRailProps {
   /** Role-gated action buttons — caller is responsible for conditional rendering */
   children: React.ReactNode;
@@ -21,10 +23,12 @@ export const ActionRail = memo(function ActionRail({
   className,
 }: ActionRailProps) {
   return (
-    <div
-      className={`mb-4 flex items-center justify-end gap-2${className ? ` ${className}` : ""}`}
+    <Cluster
+      justify="end"
+      gap={2}
+      className={`mb-4${className ? ` ${className}` : ""}`}
     >
       {children}
-    </div>
+    </Cluster>
   );
 });

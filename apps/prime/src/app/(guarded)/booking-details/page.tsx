@@ -1,10 +1,11 @@
-/* eslint-disable ds/container-widths-only-at, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { CalendarDays, Clock3, FileText, MessageCircle, Package, UtensilsCrossed } from 'lucide-react';
+
+import { Container } from '@/components/layout/Container';
 
 import { useGuestBookingSnapshot } from '../../../hooks/dataOrchestrator/useGuestBookingSnapshot';
 import { getGuestArrivalState } from '../../../lib/preArrival/arrivalState';
@@ -104,13 +105,13 @@ export default function BookingDetailsPage() {
   if (!snapshot || !arrivalState) {
     return (
       <main className="min-h-svh bg-muted p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+        <Container className="max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-foreground">{t('page.title')}</h1>
           <p className="text-sm text-muted-foreground">{t('page.loadError')}</p>
           <Link href="/" className="mt-5 inline-block text-primary hover:underline">
             {t('page.returnHome')}
           </Link>
-        </div>
+        </Container>
       </main>
     );
   }
@@ -120,7 +121,7 @@ export default function BookingDetailsPage() {
 
   return (
     <main className="min-h-svh bg-muted p-4 pb-20">
-      <div className="mx-auto max-w-md space-y-4">
+      <Container className="max-w-md space-y-4">
         <div className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-4 flex items-start justify-between gap-3">
             <div>
@@ -211,7 +212,7 @@ export default function BookingDetailsPage() {
             <button
               type="submit"
               disabled={isSubmitting || !requestedCheckOutDate}
-              className="mt-4 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+              className="mt-4 min-h-11 min-w-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
             >
               {isSubmitting ? t('extension.submitting') : t('extension.submitButton')}
             </button>
@@ -265,7 +266,7 @@ export default function BookingDetailsPage() {
             {t('page.returnHome')}
           </Link>
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

@@ -5,6 +5,11 @@
     "bookings": {
       ".indexOn": ["start_time", "occupants"]
     },
+    "guestProfiles": {
+      "$uuid": {
+        ".write": "auth != null && auth.uid == $uuid"
+      }
+    },
     "messaging": {
       ".read": "auth != null",
       ".write": "auth != null",

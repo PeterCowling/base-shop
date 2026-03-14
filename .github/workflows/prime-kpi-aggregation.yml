@@ -1,0 +1,56 @@
+name: Prime KPI Aggregation
+
+# Daily cron at 02:00 UTC — runs after midnight to capture all check-in data for the previous day.
+# Also supports manual dispatch with an optional date override for backfill runs.
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Date to aggregate (YYYY-MM-DD). Defaults to yesterday.'
+        required: false
+        type: string
+
+jobs:
+  aggregate:
+    name: Aggregate owner KPIs
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Resolve aggregation date
+        id: date
+        run: |
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            echo "date=${{ github.event.inputs.date }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "date=$(date -u -d 'yesterday' '+%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Call aggregate-kpis endpoint
+        env:
+          PRIME_KPI_AGGREGATION_SECRET: ${{ secrets.PRIME_KPI_AGGREGATION_SECRET }}
+        run: |
+          DATE="${{ steps.date.outputs.date }}"
+          echo "Aggregating KPIs for date: $DATE"
+
+          RESPONSE=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Authorization: Bearer $PRIME_KPI_AGGREGATION_SECRET" \
+            -H "Content-Type: application/json" \
+            -d "{\"date\":\"$DATE\"}" \
+            "https://prime.brikette.com/api/aggregate-kpis")
+
+          HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+
+          echo "HTTP status: $HTTP_STATUS"
+          echo "Response body: $BODY"
+
+          if [ "$HTTP_STATUS" != "200" ]; then
+            echo "::error::KPI aggregation failed with HTTP $HTTP_STATUS: $BODY"
+            exit 1
+          fi
+
+          echo "KPI aggregation succeeded for $DATE"

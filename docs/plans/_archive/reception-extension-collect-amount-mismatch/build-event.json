@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T15:49:30.000Z",
+  "business": "BRIK",
+  "plan_slug": "reception-extension-collect-amount-mismatch",
+  "build_commit": "18c488d024",
+  "outcome_contract": {
+    "why": "Staff see one nightly rate in the table and a different total in the modal when extending for more than one night. They have to recalculate manually and risk collecting the wrong amount from guests.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The Collect amount in the extension modal always equals the displayed nightly rate multiplied by the number of extension nights, with no rounding discrepancy.",
+    "source": "operator"
+  }
+}

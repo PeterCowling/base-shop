@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-13T14:04:49.925Z",
+  "plan_slug": "reception-checkout-fridge-tracking",
+  "review_cycle_key": "reception-checkout-fridge-tracking",
+  "source_path": "docs/plans/reception-checkout-fridge-tracking/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

@@ -1,0 +1,6 @@
+Running node v22.16.0 (npm v10.9.2)
+Reviewing 1 file(s) via codex (session: Q1qNA84X...)...
+(node:47721) ExperimentalWarning: globSync is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+  [review] Started (PID: 47866, cmd: codex)
+  [review] Thread: 019ce23b-5fa...

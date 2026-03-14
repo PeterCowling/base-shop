@@ -1,0 +1,235 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "prime-outbound-send-path-correctness",
+  "source_artifact_path": "docs/plans/prime-outbound-send-path-correctness/fact-find.md",
+  "source_artifact_status": "Needs-input",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-outbound-send-path-correctness/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff broadcast path routes to an endpoint designed for review campaigns, creating potential misrouting, duplicate sends on retry, and unclear delivery guarantees.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The send path for staff whole-hostel broadcasts is correctly routed through `review-thread-send` (not `review-campaign-send`), has idempotency protection against retry-created duplicate threads/messages, and the delivery model to guest devices is documented and verified.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "Reception compose UI was built in the outbound messaging build; no UI changes needed here",
+      "gap_or_implication": "No UI gap",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "`prime-compose/route.ts` returns 200/400/502/503 — but the retry/partial-failure UX is untested; if send returns 502, the thread may be in an inconsistent state with no operator-visible recovery path",
+      "gap_or_implication": "No operator-visible error recovery UX for orphaned thread state",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Staff-owner gate on Prime endpoints; `requireStaffAuth` on Reception route. Rate limit on `review-campaign-send` (3/60s) — this rate limit does not belong on a staff announcement path. Guest message content passes through Reception → Prime HTTP — no PII fan-out beyond Firebase RTDB broadcast channel.",
+      "gap_or_implication": "Rate limit gate mismatch; actor UID passthrough verified.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`recordInboxEvent` fires `prime_broadcast_initiated` (fire-and-forget). `sendPrimeReviewThread` writes `recordPrimeMessageAdmission` with `actorSource: 'reception_proxy'`. No observable signal when thread is left in partial-failure state.",
+      "gap_or_implication": "No alert/log when thread is orphaned. Audit trail exists but silent on partial failure.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`review-threads.test.ts` TC-06B covers whole_hostel send happy path (via `review-thread-send`). TC-03D covers whole_hostel draft save. Routing branch in `sendPrimeInboxThread` (Reception) is untested. Retry/partial-failure/idempotency scenarios are untested.",
+      "gap_or_implication": "Routing branch + retry/partial-failure coverage missing. New tests required for routing decision and idempotency scenarios.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Singleton `broadcast_whole_hostel` thread; campaign record per broadcast; draft per broadcast; message per broadcast. Thread `review_status: sent` blocks re-use from the normal send path but `isReusableWholeHostelLane` in `savePrimeReviewDraft` bypasses the draft conflict check, enabling future broadcasts. `sendPrimeReviewThread` performs 7 sequential independent D1 writes (no transaction): `createPrimeMessage`, `updatePrimeMessageDraft`, `upsertPrimeMessageThread`, `markWholeHostelCampaignSent`, `recordPrimeMessageAdmission`, `enqueuePrimeProjectionJob`, `recordWholeHostelCampaignDelivery`. F",
+      "gap_or_implication": "Firebase/D1 split-write AND non-transactional D1 write sequence are the core data integrity risks.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "3 sequential HTTP hops (Reception → staff-initiate-thread → [detail fetch] → review-campaign-send). Each hop is a point of failure. Rate limit on campaign-send adds unnecessary restriction. `buildReviewMessageId(Date.now())` is non-idempotent on retry — different messageId each time.",
+      "gap_or_implication": "Sequential hops with no idempotency key across chain.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "The feature is already deployed (committed). Fix will be a targeted routing change in `sendPrimeInboxThread` (Reception) + any idempotency additions. Rollback = revert routing change. Singleton thread state in D1 may need cleanup if broadcasts were sent via wrong path. No migration required for schema (no new tables).",
+      "gap_or_implication": "Existing sent-broadcast state in D1/Firebase is not affected by routing fix.",
+      "carry_forward_or_notes": "Yes"
+    }
+  ],
+  "open_operator_questions": [
+    "For the idempotency fix: is it acceptable to add a new combined `staff-broadcast` endpoint to Prime that atomically creates the draft and sends in one hop? Or should the existing two-hop design be preserved and a client idempotency key added instead?",
+    "Should the `broadcast_whole_hostel` singleton thread be reset to `pending` as part of the send path fix, or is the current design (reset via next draft save) acceptable?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The `reception-prime-outbound-messaging` build introduced a staff broadcast flow: Reception → `POST /api/mcp/inbox/prime-compose` → `initiatePrimeOutboundThread` → Prime's `staff-initiate-thread` → then `sendPrimeInboxThread` which, for broadcast threads with a campaign, routes to `review-campaign-send`. The dispatch identifies 4 concerns: (C-01) wrong endpoint routing for broadcasts, (C-02) no idempotency in the 3-hop chain, (C-03) race condition / orphaned thread on partial failure, and (C-05) silent/unclear audience delivery. M-03 asks whether a purpose-built direct-message endpoint exists ",
+    "goals": [
+      "Determine whether `review-campaign-send` is the correct or incorrect endpoint for whole-hostel broadcasts.",
+      "Determine idempotency status at each hop of the 3-hop chain.",
+      "Map the partial-failure / orphaned-thread race condition and its retry behaviour.",
+      "Determine what `audience: 'whole_hostel'` and `review-campaign-send` actually deliver to guest devices.",
+      "Identify any purpose-built staff-to-guest direct-message endpoint and whether it applies."
+    ],
+    "non_goals": [
+      "Changes to guest-facing messaging UI in the Prime app.",
+      "Review campaign flow for booking/room-scoped campaigns (already a separate path).",
+      "Firebase RTDB schema changes."
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/reception/src/app/api/mcp/inbox/prime-compose/route.ts` — POST handler. Calls `initiatePrimeOutboundThread` then `sendPrimeInboxThread` sequentially. No idempotency key. Catches errors at each step but cannot distinguish \"thread created, send failed\" from \"thread creation failed\".",
+      "`apps/prime/functions/api/staff-initiate-thread.ts` — POST `/api/staff-initiate-thread`. Upserts thread, creates draft, calls `ensureWholeHostelCampaignForDraft`.",
+      "`apps/prime/functions/api/review-campaign-send.ts` — POST `/api/review-campaign-send?campaignId=...`. Rate-limited (3/60s). This is where `sendPrimeInboxThread` currently routes for broadcast threads.",
+      "`apps/prime/functions/api/review-thread-send.ts` — POST `/api/review-thread-send?threadId=...`. The simpler, direct send path that calls `sendPrimeReviewThread` directly. Does NOT go through campaign-send. No rate limit beyond staff-owner gate."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Needs-input",
+      "Idempotency approach": "A second `prime-compose` call runs `initiatePrimeOutboundThread` which calls `savePrimeReviewDraft` → `isReusableWholeHostelLane` bypass → resets `review_status: 'pending'`. A simple \"check thread status before send\" guard is bypassed because the initiate step actively resets the status on every call. The fact-find documents the correct behaviour but cannot choose the fix approach — analysis must decide between: (a) collapse initiate+send into a new single-hop Prime endpoint; (b) add a client-provided idempotency key to `staff-initiate-thread`; (c) make `prime-compose` skip initiate if an unse"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Entry point: `prime-compose/route.ts`",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Entry point: `staff-initiate-thread.ts`",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Entry point: `review-campaign-send.ts`",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — routing incorrectness confirmed as a code quality issue, not a missing investigation path",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Key module: `sendPrimeInboxThread` routing logic",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap in investigation] [Minor]: the `detail.thread.channel` type mapping (`prime_broadcast`) vs D1 `channel_type` (`broadcast`) was not traced through `mapPrimeSummaryToInboxThread` — confirmed as correct mapping via `resolveInboxChannelAdapter`.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Key module: `sendPrimeReviewCampaign` whole_hostel path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap] [Minor]: initial draft overstated actor UID loss — `actorUid` is correctly threaded via header; only `actorSource` is hardcoded. Corrected in Round 1. Round 2 further corrected: `review-thread-send.ts` ALSO hardcodes `actorSource: 'reception_proxy'` (line 34), so routing change alone does not fix actorSource. Corrected in Round 2.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Key module: `sendPrimeReviewThread` + whole_hostel campaign tracking",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap] [Minor]: initial draft claimed D1 writes were \"atomic\" — they are 7 independent sequential calls with no transaction. Corrected Round 1. Projection job enqueue order corrected (step 8, after Firebase). C-03 severity upgraded.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Outcome Contract / scope alignment",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap] [Moderate — resolved]: initial draft deferred idempotency as optional while Outcome Contract requires idempotency protection. Corrected in Round 2: idempotency check at compose level is now in scope.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Key module: `projectPrimeThreadMessageToFirebase` Firebase write",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Key module: `prime-messaging-repositories.ts` upsert semantics",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Idempotency audit (all 3 hops)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "M-03: purpose-built endpoint",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Staff member composes a whole-hostel broadcast in Reception inbox UI → clicks Send.",
+      "end_condition": "Reception returns `{ success: true }` to the client. Guest devices may or may not have received the message (unclear — see C-05 finding).",
+      "areas": [
+        {
+          "id": null,
+          "label": "Reception → Prime: initiate",
+          "flow": "Reception `POST /api/mcp/inbox/prime-compose` calls `initiatePrimeOutboundThread({ text, actorUid })` which POSTs to Prime `/api/staff-initiate-thread` with `{ plainText }`. `staff-initiate-thread` upserts `broadcast_whole_hostel` thread (idempotent), creates a draft via `savePrimeReviewDraft`, which calls `ensureWholeHostelCampaignForDraft` → creates/updates a campaign record. Returns `{ detail }`.",
+          "owners": "Reception Next.js server action → Prime Cloudflare Function",
+          "evidence": "`prime-compose/route.ts:42-51`, `prime-review.server.ts:590-608`, `staff-initiate-thread.ts:47-73`",
+          "issues": "Thread upsert is idempotent (ON CONFLICT DO UPDATE). Draft creation is NOT idempotent: each call creates a new draft if no active staff draft exists, or updates the existing draft. Campaign: creates a new campaign record if no non-terminal one exists. Idempotent at thread level, partially idempotent at draft/campaign level."
+        },
+        {
+          "id": null,
+          "label": "Reception → Prime: send",
+          "flow": "`prime-compose/route.ts` calls `sendPrimeInboxThread(broadcastPrefixedId, auth.uid)`. `sendPrimeInboxThread` fetches thread detail (a second HTTP call to Prime via `getPrimeInboxThreadDetail`). If thread is `prime_broadcast` AND `detail.campaign.id` is present, it routes to `POST /api/review-campaign-send?campaignId=...`. Otherwise falls through to `POST /api/review-thread-send?threadId=...`.",
+          "owners": "Reception server → Prime Functions",
+          "evidence": "`prime-review.server.ts:529-579`",
+          "issues": "**C-01 (Critical):** `review-campaign-send` was built for review campaigns (`booking`/`room` audience), not for whole-hostel staff announcements. The routing is triggered by `(channel === 'prime_broadcast' && campaign.id present)`, which will be true for broadcast_whole_hostel. This sends through `sendPrimeReviewCampaign` → `sendPrimeReviewThread` (for whole_hostel audience). The indirection through campaign-send is unnecessary and adds: (1) a KV rate limit gate (3/60s) that does not belong on staff announcements; (2) an extra network hop; (3) `actorSource` is hardcoded as `'reception_proxy'`"
+        },
+        {
+          "id": null,
+          "label": "Prime send execution: whole_hostel path",
+          "flow": "`review-campaign-send` reads `x-prime-actor-uid` header and passes it as `actorUid` to `sendPrimeReviewCampaign(db, env, { campaignId, actorUid, actorSource: 'reception_proxy' })`. `actorUid` is correctly threaded; only `actorSource` is hardcoded. Because `campaign.audience !== 'booking' && !== 'room'`, it falls to `sendPrimeReviewThread(db, env, { threadId: campaign.threadId, ... })`. `sendPrimeReviewThread` order: (1) conflict check, (2) `projectPrimeThreadMessageToFirebase` (Firebase write — external), (3) `createPrimeMessage` (D1), (4) `updatePrimeMessageDraft` (D1), (5) `upsertPrimeMessag",
+          "owners": "Prime D1 (PRIME_MESSAGING_DB) + Firebase RTDB",
+          "evidence": "`prime-review-campaign-actions.ts:61-134`, `prime-review-send.ts:53-242`, `prime-whole-hostel-campaigns.ts`",
+          "issues": "**C-03 (Major — upgraded from dispatch assessment):** (a) If Firebase projection (step 2) fails, none of the D1 writes occur — no projection job is enqueued, so there is NO replay job to process. The broadcast is silently lost. (b) If any D1 write after step 2 fails, Firebase already has the message but D1 state is partially inconsistent. (c) If steps 1–9 succeed but the network drops before Reception receives the response, a retry finds the thread with `review_status = 'sent'` → 409 conflict → 502 to the client, with no way to re-send from the compose path. This is worse than the dispatch sta"
+        },
+        {
+          "id": null,
+          "label": "Firebase projection",
+          "flow": "`projectPrimeThreadMessageToFirebase` writes channel meta to `messaging/channels/{threadId}/meta` and message to `messaging/channels/{threadId}/messages/{messageId}`. For broadcast channel, calls `ensureBroadcastChannelMeta` which validates existing meta or creates it.",
+          "owners": "Firebase RTDB",
+          "evidence": "`prime-thread-projection.ts:174-220`",
+          "issues": "Channel ID for whole_hostel is `broadcast_whole_hostel`. Guest client app must subscribe to `messaging/channels/broadcast_whole_hostel/messages` to receive. This is a Firebase RTDB path, not a per-device push notification. Delivery depends on guests having an active Prime app connection. **C-05 finding:** there is no push notification fan-out."
+        },
+        {
+          "id": null,
+          "label": "Idempotency (3-hop chain)",
+          "flow": "The retry model is more complex than a simple status check because `initiatePrimeOutboundThread` runs BEFORE `sendPrimeInboxThread` on every compose call. `savePrimeReviewDraft` inside `staff-initiate-thread` checks `isReusableWholeHostelLane` and explicitly bypasses the `sent`/`resolved` conflict guards (lines 73-83 of `prime-review-drafts.ts`), resetting `review_status: 'pending'` via `upsertPrimeMessageThread`. A retry therefore RESETS the thread to `pending` before the send check — making a \"check thread status before send\" guard unreliable. **The compose initiate step actively undoes any",
+          "owners": "All hops",
+          "evidence": "`prime-review-drafts.ts:73-83` (isReusableWholeHostelLane bypass), `prime-review-send-support.ts:87-99`",
+          "issues": "**C-02 (Major):** Idempotency cannot be achieved by a simple status check at the send step because the initiate step resets the thread. This is the core finding for analysis. The correct fix approach must target the initiate step's idempotency, or collapse the two steps."
+        }
+      ]
+    }
+  }
+}

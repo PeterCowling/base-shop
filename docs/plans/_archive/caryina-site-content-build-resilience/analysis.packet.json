@@ -1,0 +1,248 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "caryina-site-content-build-resilience",
+  "source_artifact_path": "docs/plans/caryina-site-content-build-resilience/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/caryina-site-content-build-resilience/fact-find.md",
+    "plan": "docs/plans/caryina-site-content-build-resilience/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Fresh deployments and CI builds fail silently (500 on every page) when the content generation step is skipped. The materializer warning also means even manual re-runs are unsafe without the trustStrip fix.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The Caryina app builds and serves content on fresh checkout without a separate manual generation step; all pages fall back to hardcoded safe content rather than throwing a 500 when the file is absent or malformed.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A — no visual change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Fallback returns defaults; shop renders with placeholder copy instead of 500",
+      "current_or_option_state": "Same fallback + prebuild keeps fresh content; fresh checkout works end-to-end",
+      "gap_or_implication": "Graceful degraded state on missing file; full state on normal build",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`console.warn` when falling back",
+      "current_or_option_state": "Same; also logs when materializer runs in prebuild",
+      "gap_or_implication": "Add `console.warn` in fallback path; CI logs capture prebuild run",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Tests for missing/malformed file paths",
+      "current_or_option_state": "Same; also test that prebuild produces valid output",
+      "gap_or_implication": "Unit tests for `readPayload()` fallback; integration: prebuild + typecheck in CI",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No change to materializer schema; trustStrip remains manual",
+      "current_or_option_state": "Materializer schema extended with `trustStrip`; app-local stale copy deleted; single canonical path",
+      "gap_or_implication": "Schema drift resolved; one authoritative copy",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Single point of failure eliminated for missing-file case; malformed-file case also covered",
+      "current_or_option_state": "Same; additionally, fresh checkout produces correct content via prebuild",
+      "gap_or_implication": "Full resilience across missing + malformed + fresh checkout",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Safe; fallback is purely additive",
+      "current_or_option_state": "Materializer change is additive (new field added, not removed); committed file remains rollback baseline",
+      "gap_or_implication": "Rollback = revert the JSON commit; no migration needed",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The Caryina shop throws 500 errors on every server-rendered page when `data/shops/caryina/site-content.generated.json` is absent. Generation is entirely manual, there is no prebuild hook, and the materializer currently cannot be run safely because `productPage.trustStrip` is not in its output schema (the field was added manually after generation). Two decisions need to be made: 1. **Resilience approach**: Should the app have a runtime fallback, a prebuild guard, or both? 2. **trustStrip gap**: Should we port `trustStrip` to the materializer (enabling automated prebuild) or keep it manual-only ",
+    "goals": [
+      "App never hard-crashes (500) when the content file is absent or malformed",
+      "No manual step required between fresh checkout and a successful build",
+      "Two-copy divergence resolved; single authoritative path",
+      "Unit tests cover the fallback paths"
+    ],
+    "non_goals": [
+      "Migrating to a DB/CMS",
+      "Internationalising fallback copy",
+      "Runtime content hot-reload",
+      "Changing the content-packet generation pipeline (`compile-website-content-packet`)"
+    ],
+    "constraints": [
+      "`trustStrip` in `productPage` must not be dropped; it is customer-visible content on every PDP",
+      "CI `caryina.yml` build command cannot be changed without a separate PR touching the workflow file",
+      "`prebuild` in `apps/caryina/package.json` runs with `cwd = apps/caryina/`; materializer needs `--repo-root ../..`"
+    ],
+    "assumptions": [
+      "The `## Reusable Trust Blocks` section in `HBAG/content-packet.md` is the correct source for trustStrip bullets — confirmed by reading the file (delivery, exchange, origin are all present)",
+      "The committed `data/shops/caryina/site-content.generated.json` (repo root) is the app's primary resolved path; the app-local copy at `apps/caryina/data/` is stale and safe to delete"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "No 500 on fresh checkout",
+        "Why it matters": "Core goal — entire shop is offline otherwise",
+        "Weight/priority": "P0"
+      },
+      {
+        "Criterion": "No content loss (trustStrip)",
+        "Why it matters": "Customer-visible on every PDP; must not be dropped by regeneration",
+        "Weight/priority": "P0"
+      },
+      {
+        "Criterion": "Minimal manual steps after landing",
+        "Why it matters": "Prevents regression to the same fragile state",
+        "Weight/priority": "P1"
+      },
+      {
+        "Criterion": "Test coverage",
+        "Why it matters": "Ensures fallback paths don't silently regress",
+        "Weight/priority": "P1"
+      },
+      {
+        "Criterion": "Data / schema integrity",
+        "Why it matters": "Two-copy divergence is a maintenance hazard",
+        "Weight/priority": "P2"
+      },
+      {
+        "Criterion": "Rollout safety",
+        "Why it matters": "Prebuild must not corrupt committed content",
+        "Weight/priority": "P2"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Fallback-only",
+        "Description": "Add `SAFE_DEFAULTS` payload in `contentPacket.ts`; replace hard throws with `console.warn` + return defaults. No prebuild, no materializer change.",
+        "Upside": "Smallest change; ship fast; no risk of materializer overwriting content",
+        "Downside": "Does nothing to keep content fresh; fresh checkout still serves placeholder copy; trustStrip gap remains",
+        "Key risks": "Stale/missing content served silently in production after future deploys",
+        "Viable?": "Yes (partial)"
+      },
+      {
+        "Option": "B — Prebuild-only (no trustStrip port)",
+        "Description": "Add `prebuild` script that runs materializer. Don't port trustStrip. Guard: skip regeneration if hash unchanged.",
+        "Upside": "Automates generation; fresh checkout works",
+        "Downside": "Materializer would overwrite trustStrip on first changed-hash run; guard only delays problem",
+        "Key risks": "Loss of customer-visible PDP trust copy after any content-packet edit",
+        "Viable?": "No — too risky"
+      },
+      {
+        "Option": "C — Port trustStrip + prebuild + fallback (recommended)",
+        "Description": "(1) Port `trustStrip` to materializer `buildPayload()` from `## Reusable Trust Blocks`. (2) Add `prebuild` that runs materializer. (3) Add `SAFE_DEFAULTS` fallback in `readPayload()`. (4) Delete stale app-local copy. (5) Add unit tests.",
+        "Upside": "Solves all dimensions: no crash on fresh checkout; content stays fresh; no manual step; no content loss; tested",
+        "Downside": "More tasks than A alone; materializer change requires care to extract trust bullets correctly",
+        "Key risks": "If `## Reusable Trust Blocks` section is renamed or removed from content-packet, trustStrip would revert to defaults — acceptable since defaults are reasonable copy",
+        "Viable?": "Yes — recommended"
+      },
+      {
+        "Option": "D — Committed-file-as-only-source + error page",
+        "Description": "Keep manual generation; add a proper Next.js error boundary that renders a useful \"shop temporarily unavailable\" page instead of a raw 500",
+        "Upside": "Honest failure mode; no content surprises",
+        "Downside": "Still requires manual step on fresh checkout; production can go offline silently; doesn't fix the root fragility",
+        "Key risks": "Operator must always remember to run generation before push/deploy",
+        "Viable?": "No — addresses symptom only"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option C — Port trustStrip to materializer, add prebuild script, add runtime fallback, delete stale copy, add unit tests.",
+      "Why this wins": "Only approach that simultaneously eliminates the 500 crash (via fallback), eliminates the manual generation step (via prebuild), and avoids content loss (by porting trustStrip before the prebuild runs). Option A alone fixes the crash but leaves fresh checkout serving placeholder copy indefinitely. Option B is unsafe until trustStrip is ported. Option C is the minimal complete fix.",
+      "**What it depends on": "**",
+      "`## Reusable Trust Blocks` section in `HBAG/content-packet.md` being machine-parseable (confirmed": "contains 3 bullet lines matching delivery/exchange/origin semantics already in `TRUST_STRIP_DEFAULTS`)",
+      "The `--repo-root ../..` flag working correctly when materializer is invoked from `apps/caryina/` (confirmed": "`materializeSiteContentPayload` accepts `repoRoot` option)",
+      "**Option B (prebuild without trustStrip port)** — Unsafe": "any content-packet edit triggering a hash change would cause the materializer to regenerate and strip `productPage.trustStrip`, replacing customer-visible PDP trust copy with empty/placeholder content. Eliminated."
+    },
+    "rejected_approaches": [
+      "**Option A (fallback only)** — Fixes the 500 crash but fresh checkout still serves placeholder copy from `SAFE_DEFAULTS`. Does not fulfil the outcome contract (\"builds and serves content on fresh checkout without a separate manual generation step\"). Retained as a component of Option C.",
+      "**Option B (prebuild without trustStrip port)** — Unsafe: any content-packet edit triggering a hash change would cause the materializer to regenerate and strip `productPage.trustStrip`, replacing customer-visible PDP trust copy with empty/placeholder content. Eliminated.",
+      "**Option D (error boundary only)** — Fixes the presentation of failure but not the failure itself. Fresh checkout still requires a manual step. Does not fulfil the outcome contract."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "TASK-01 before TASK-03 (materializer must include trustStrip before prebuild run could overwrite the file)",
+        "TASK-02 before TASK-05 (fallback must exist before tests for it)",
+        "TASK-04 can be done any time (only removes a stale tracked file)",
+        "TASK-06 is final validation gate"
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Content generation",
+          "current": "Manual: operator runs materializer, commits result",
+          "trigger": "Developer runs `pnpm build` or pushes to CI",
+          "future": "`prebuild` in `apps/caryina/package.json` auto-runs materializer with `--repo-root ../..`; materializer reads `HBAG/content-packet.md`, writes `data/shops/caryina/site-content.generated.json`; `next build` then consumes the freshly-written file",
+          "steady": "Content-packet editing is still manual (out of scope); operator must still update `HBAG/content-packet.md` to change content",
+          "seams": "If content-packet is missing (corrupted checkout), materializer fails with `ok:false`; prebuild exits non-zero; build fails with a clear diagnostic (better than silent 500)"
+        },
+        {
+          "id": null,
+          "label": "Runtime resilience",
+          "current": "Hard throw + 500 on any missing/malformed file",
+          "trigger": "SSR page render when file absent",
+          "future": "`readPayload()` logs a warning and returns `SAFE_DEFAULTS`; all `get*Content()` functions return safe fallback copy; pages render with degraded but non-crashing content",
+          "steady": "File is still read on first call; cache logic unchanged",
+          "seams": "Fallback copy must be real brand copy, not generator placeholders, to avoid customer-facing quality issues"
+        },
+        {
+          "id": null,
+          "label": "Two-copy divergence",
+          "current": "Two tracked copies (root + app-local), diverged",
+          "trigger": "This PR lands",
+          "future": "`git rm apps/caryina/data/shops/caryina/site-content.generated.json`; only `data/shops/caryina/site-content.generated.json` remains; `GENERATED_PAYLOAD_CANDIDATES` still checks all three paths (no code change needed)",
+          "steady": "Candidate resolution order unchanged",
+          "seams": "None; app-local copy was never preferred by the candidate list"
+        },
+        {
+          "id": null,
+          "label": "Materializer schema",
+          "current": "Does not emit `productPage.trustStrip`",
+          "trigger": "This PR lands",
+          "future": "`buildPayload()` extracts trust bullets from `## Reusable Trust Blocks` in content-packet; maps to `{ delivery, exchange, origin }` matching `TRUST_STRIP_DEFAULTS` shape; `securePayment` falls back to default",
+          "steady": "`trustStrip` remains optional in consumer (`SiteContentPayload`); existing `mergeLocalizedSection` handling unchanged",
+          "seams": "`## Reusable Trust Blocks` section shape must remain stable in content-packet; if renamed, trustStrip reverts to defaults (acceptable)"
+        },
+        {
+          "id": null,
+          "label": "Test coverage",
+          "current": "Zero tests for missing/invalid file paths",
+          "trigger": "This PR lands",
+          "future": "Unit tests in `contentPacket.test.ts` cover: (a) missing file → returns `SAFE_DEFAULTS`, (b) malformed JSON → returns `SAFE_DEFAULTS`",
+          "steady": "Existing chrome locale tests unchanged",
+          "seams": "Tests run in CI only; must follow `fs.existsSync`/`fs.readFileSync` mock pattern"
+        }
+      ]
+    }
+  }
+}

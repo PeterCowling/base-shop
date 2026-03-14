@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Infra
 Workstream: Engineering
 Created: 2026-03-06
@@ -28,8 +28,8 @@ The `hostel-positano.com` Cloudflare zone still uses `ssl=flexible` and `min_tls
 ## Active tasks
 
 - [x] TASK-01: Write CF zone hardening script (`apply-prime-zone-hardening.ts`)
-- [ ] TASK-02: Apply zone settings (ssl=strict, min_tls=1.2, always_use_https=on) [BLOCKED: CF token 403]
-- [ ] TASK-03: Checkpoint — verify zone health post-settings change [BLOCKED: awaiting TASK-02]
+- [x] TASK-02: Apply zone settings (ssl=strict, min_tls=1.2, always_use_https=on)
+- [x] TASK-03: Checkpoint — verify zone health post-settings change
 - [x] TASK-04: Add `apps/prime/public/_headers` with security headers
 - [x] TASK-05: Extend Prime CI with custom domain healthcheck step
 - [x] TASK-06: Write WAF/Access posture ADR
@@ -97,8 +97,8 @@ The `hostel-positano.com` Cloudflare zone still uses `ssl=flexible` and `min_tls
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Write CF zone hardening script | 85% | S | Complete (2026-03-06) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Apply zone settings (ssl/tls/https) | 85% | S | Blocked (CF token 403) | TASK-01 | TASK-03 |
-| TASK-03 | CHECKPOINT | Verify zone health post-settings | 95% | S | Blocked (awaiting TASK-02) | TASK-02 | TASK-04 |
+| TASK-02 | IMPLEMENT | Apply zone settings (ssl/tls/https) | 85% | S | Complete | TASK-01 | TASK-03 |
+| TASK-03 | CHECKPOINT | Verify zone health post-settings | 95% | S | Complete | TASK-02 | TASK-04 |
 | TASK-04 | IMPLEMENT | Add Prime `_headers` security file | 85% | S | Complete (2026-03-06) | TASK-03 | TASK-05 |
 | TASK-05 | IMPLEMENT | Extend CI with custom domain check | 85% | S | Complete (2026-03-06) | TASK-04 | - |
 | TASK-06 | IMPLEMENT | Write WAF/Access posture ADR | 85% | S | Complete (2026-03-06) | - | - |
@@ -182,7 +182,7 @@ The `hostel-positano.com` Cloudflare zone still uses `ssl=flexible` and `min_tls
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `[external] hostel-positano.com Cloudflare zone settings`, `[readonly] scripts/src/ops/apply-prime-zone-hardening.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03
@@ -233,7 +233,7 @@ The `hostel-positano.com` Cloudflare zone still uses `ssl=flexible` and `min_tls
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `docs/plans/prime-edge-tls-hardening/plan.md`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-04

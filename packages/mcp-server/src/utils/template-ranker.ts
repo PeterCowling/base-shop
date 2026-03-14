@@ -176,7 +176,7 @@ export const SYNONYMS: Record<string, string[]> = {
   allowed: ["permitted", "possible", "available", "can"],
   availability: ["available", "open", "free", "vacancy", "vacancies", "beds", "rooms"],
   available: ["availability", "open", "free", "vacancy", "beds"],
-  pool: ["swimming", "swim", "rooftop", "facility", "amenity"],
+  pool: ["swimming", "swim", "rooftop"],
   facility: ["facilities", "amenity", "amenities", "pool", "gym", "sauna", "services"],
   amenity: ["amenities", "facilities", "pool", "gym", "services", "feature"],
   parking: ["car", "garage", "vehicle", "park", "spot"],

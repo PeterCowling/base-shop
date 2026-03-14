@@ -27,33 +27,37 @@ function parsePositiveIntParam(
   return { ok: true, value: parsed };
 }
 
-export async function GET(req: NextRequest): Promise<NextResponse> {
+export async function POST(req: NextRequest): Promise<NextResponse> {
   const authHeader = req.headers.get("authorization");
   const expectedAuth = `Bearer ${process.env.CRON_SECRET}`;
   if (!process.env.CRON_SECRET || authHeader !== expectedAuth) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); // i18n-exempt -- machine-readable API error
   }
 
-  const staleMinutesParam = req.nextUrl.searchParams.get("staleMinutes");
-  const maxAttemptsParam = req.nextUrl.searchParams.get("maxAttempts");
-  const staleMinutesParsed = parsePositiveIntParam(
-    staleMinutesParam,
-    "staleMinutes",
-  );
-  if (!staleMinutesParsed.ok) {
-    return NextResponse.json(
-      { error: staleMinutesParsed.message },
-      { status: 400 },
-    );
+  let body: Record<string, unknown> = {};
+  try {
+    const text = await req.text();
+    if (text) body = JSON.parse(text) as Record<string, unknown>;
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 }); // i18n-exempt -- machine-readable API error
   }
-  const maxAttemptsParsed = parsePositiveIntParam(maxAttemptsParam, "maxAttempts");
+
+  const staleMinutesRaw =
+    body.staleMinutes !== undefined ? String(body.staleMinutes) : null;
+  const maxAttemptsRaw =
+    body.maxAttempts !== undefined ? String(body.maxAttempts) : null;
+
+  const staleMinutesParsed = parsePositiveIntParam(staleMinutesRaw, "staleMinutes");
+  if (!staleMinutesParsed.ok) {
+    return NextResponse.json({ error: staleMinutesParsed.message }, { status: 400 });
+  }
+  const maxAttemptsParsed = parsePositiveIntParam(maxAttemptsRaw, "maxAttempts");
   if (!maxAttemptsParsed.ok) {
     return NextResponse.json({ error: maxAttemptsParsed.message }, { status: 400 });
   }
-  const staleMinutes =
-    staleMinutesParam === null ? undefined : staleMinutesParsed.value;
-  const maxAttempts =
-    maxAttemptsParam === null ? undefined : maxAttemptsParsed.value;
+
+  const staleMinutes = staleMinutesRaw === null ? undefined : staleMinutesParsed.value;
+  const maxAttempts = maxAttemptsRaw === null ? undefined : maxAttemptsParsed.value;
 
   try {
     const summary = await reconcileStaleCheckoutAttempts({

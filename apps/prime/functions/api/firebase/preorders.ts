@@ -9,6 +9,9 @@ import { errorResponse, FirebaseRest, jsonResponse } from '../../lib/firebase-re
 import { validateGuestSessionToken } from '../../lib/guest-session';
 import { buildPrimeRequestId, createPrimeRequestRecord, createPrimeRequestWritePayload } from '../../lib/prime-requests';
 
+import { generatePreorderTxnId, serviceDateToBarPath } from './preorder-helpers';
+import { parseBreakfastOrderString, parseEvDrinkOrderString } from './preorder-parser';
+
 function parseCookie(cookieHeader: string, name: string): string | null {
   for (const part of cookieHeader.split(';')) {
     const [key, ...rest] = part.trim().split('=');
@@ -30,6 +33,14 @@ interface PreorderNight {
   drink1: string;
   drink2: string;
   serviceDate?: string;
+  /** txnId of the placed breakfast bar order (backref; breakfast field is NOT overwritten) */
+  breakfastTxnId?: string;
+  /** Original pipe-delimited breakfast order string for human-readable display */
+  breakfastText?: string;
+  /** txnId of the placed evening drink bar order (drink1 field is NOT overwritten) */
+  drink1Txn?: string;
+  /** Original pipe-delimited drink order string for human-readable display */
+  drink1Text?: string;
 }
 
 interface PreorderRequestBody {
@@ -43,6 +54,20 @@ interface PreorderRequestBody {
 interface BookingOccupantRecord {
   firstName?: string;
   lastName?: string;
+}
+
+/**
+ * Bar preorder record written to barOrders/{type}/{monthName}/{day}/{txnId}.
+ *
+ * Satisfies both placedPreorderSchema ({ preorderTime, items }) and the
+ * runtime fields PreorderButtons reads (guestFirstName, guestSurname, uuid).
+ */
+interface BarPreorderRecord {
+  preorderTime: string;
+  items: Array<{ product: string; count: number; lineType: 'kds' | 'bds'; price: number }>;
+  guestFirstName: string;
+  guestSurname: string;
+  uuid: string;
 }
 
 function todayInRome(): string {
@@ -217,18 +242,56 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       serviceDate,
     };
 
-    if (service === 'breakfast') {
-      nextNight.breakfast = value;
-    } else {
-      nextNight.drink1 = value;
-    }
+    // Note: breakfast and drink1 fields are NOT overwritten with txnId.
+    // Bridge fields (breakfastTxnId/breakfastText or drink1Txn/drink1Text) are added separately.
+    // This preserves entitlement marker values for useMealPlanEligibility and detectDrinkTier.
 
-    await firebase.set(`preorder/${guestUuid}/${nightKey}`, nextNight);
+    // Generate txnId before the write so the bar path is fully constructible
+    const txnId = generatePreorderTxnId();
+    const { monthName, day } = serviceDateToBarPath(serviceDate);
+
+    // Parse the order string to structured items for the bar record
+    const parsed = service === 'breakfast'
+      ? parseBreakfastOrderString(value)
+      : parseEvDrinkOrderString(value);
+
+    // Fetch guest name for bar record (null-safe: order is not blocked if occupant is missing)
+    const occupant = await firebase.get<BookingOccupantRecord>(
+      `bookings/${authResult.session.bookingId}/${guestUuid}`,
+    );
+    const guestFirstName = occupant?.firstName ?? '';
+    const guestSurname = occupant?.lastName ?? '';
+
+    // Build the updated preorder night with bridge backref fields
+    const preorderNightWithBridge: PreorderNight = {
+      ...nextNight,
+      ...(service === 'breakfast'
+        ? { breakfastTxnId: txnId, breakfastText: value }
+        : { drink1Txn: txnId, drink1Text: value }),
+    };
+
+    // Build bar record
+    const barPreorderType = service === 'breakfast' ? 'breakfastPreorders' : 'evDrinkPreorders';
+    const barRecord: BarPreorderRecord = {
+      preorderTime: parsed.preorderTime,
+      items: parsed.items,
+      guestFirstName,
+      guestSurname,
+      uuid: guestUuid,
+    };
+
+    // Atomic multi-path write: preorder node + bar record together
+    const multiPathPayload: Record<string, unknown> = {
+      [`preorder/${guestUuid}/${nightKey}`]: preorderNightWithBridge,
+      [`barOrders/${barPreorderType}/${monthName}/${day}/${txnId}`]: barRecord,
+    };
+
+    await firebase.update('/', multiPathPayload);
 
     return jsonResponse({
       success: true,
       nightKey,
-      order: nextNight,
+      order: preorderNightWithBridge,
       updated: isEditingExisting,
     });
   } catch (error) {

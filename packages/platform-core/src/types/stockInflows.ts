@@ -25,6 +25,7 @@ export type StockInflowRequest = z.infer<typeof stockInflowRequestSchema>;
 export type StockInflowActor = {
   customerId?: string;
   role?: string;
+  ip?: string;
 };
 
 export type StockInflowItemResult = {

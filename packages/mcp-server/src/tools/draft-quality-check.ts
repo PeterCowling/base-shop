@@ -89,7 +89,6 @@ const STRICT_REFERENCE_CATEGORIES = new Set<string>([
   "payment",
   "policies",
   "booking-changes",
-  "booking-issues",
 ]);
 
 let categoryReferencePolicyCache: Map<string, CategoryReferencePolicy> | null = null;

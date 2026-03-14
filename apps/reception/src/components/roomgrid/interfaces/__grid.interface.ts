@@ -1,5 +1,3 @@
-// File: /src/libs/reservation-grid/src/lib/interfaces/grid.interface.ts
-
 export interface TGridRow {
   id: string;
   title: string;

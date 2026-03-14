@@ -1,9 +1,10 @@
-/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
+
+import { Container } from '@/components/layout/Container';
 
 import GuidedOnboardingFlow from '../../components/portal/GuidedOnboardingFlow';
 import {
@@ -53,7 +54,7 @@ export default function GuestPortalPage() {
         return;
       }
 
-      if (result === 'valid') {
+      if (result.status === 'valid') {
         if (!forcePersonalizationEdit && hasCompletedGuidedOnboarding(currentSession)) {
           router.replace(buildGuestHomeUrl(currentSession));
           return;
@@ -64,7 +65,7 @@ export default function GuestPortalPage() {
         return;
       }
 
-      if (result === 'network_error') {
+      if (result.status === 'network_error') {
         setStatus('network_error');
         return;
       }
@@ -91,7 +92,7 @@ export default function GuestPortalPage() {
   if (status === 'network_error') {
     return (
       <main className="min-h-svh bg-muted p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+        <Container className="max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-2xl font-bold text-foreground">{t('errorPage.title')}</h1>
           <p className="mb-6 text-muted-foreground">
             {t('errorPage.message')}
@@ -103,7 +104,7 @@ export default function GuestPortalPage() {
           >
             {t('offline.tryAgain')}
           </button>
-        </div>
+        </Container>
       </main>
     );
   }

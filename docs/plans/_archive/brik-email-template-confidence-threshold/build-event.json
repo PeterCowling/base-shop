@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "brik-email-template-confidence-threshold-1773384002457",
+  "feature_slug": "brik-email-template-confidence-threshold",
+  "emitted_at": "2026-03-13T06:40:02.457Z",
+  "why": "When a guest asks about something the hostel has no template for, the system selects the closest BM25 match and sends it as if it were correct. Staff should only see genuinely tricky cases — not false alarms from a missing threshold gate or spurious reference-link failures on routine FAQ emails.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Per-question confidence floor and category-compatibility check gate template block acceptance in draft-generate; below-threshold single-question emails emit follow_up_required with the escalation fallback sentence and no template text. booking-issues removed from STRICT_REFERENCE_CATEGORIES to eliminate false reference-link quality failures on FAQ drafts.",
+    "source": "operator"
+  }
+}

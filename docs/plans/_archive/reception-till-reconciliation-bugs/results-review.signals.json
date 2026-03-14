@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T13:57:14.752Z",
+  "plan_slug": "reception-till-reconciliation-bugs",
+  "review_cycle_key": "reception-till-reconciliation-bugs",
+  "source_path": "docs/plans/reception-till-reconciliation-bugs/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

@@ -1,0 +1,28 @@
+{
+  "round": 1,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-today-movements/fact-find.md",
+      "line": "128",
+      "message": "The fact-find leaves the new component's prop contract unresolved. It says `TodayMovements` is a pure display component testable with `allRoomsData`, but live `useGridData` does not expose `allRoomData`; it only exposes `getReservationDataForRoom`, `unallocatedOccupants`, `loading`, and `error`. Analysis needs to choose a real seam: either compute arrivals/departures in `RoomsGrid` and pass arrays, or widen the hook/API surface."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-today-movements/fact-find.md",
+      "line": "136",
+      "message": "The test strategy is internally inconsistent. The coverage gap section at lines 122-123 says `RoomsGrid` integration coverage for `TodayMovements` must be added, but the recommended approach then says integration tests are not needed because the component is leaf-level. The leaf component itself may only need unit tests, but the `RoomsGrid` wiring still needs at least one integration assertion."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-roomgrid-today-movements/fact-find.md",
+      "line": "66",
+      "message": "The entry-point note is slightly inaccurate. `/rooms-grid` does not render `RoomsGrid` directly; the route goes through `apps/reception/src/app/rooms-grid/page.tsx` -> `RoomsGridClient.tsx` -> `RoomsGrid`."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

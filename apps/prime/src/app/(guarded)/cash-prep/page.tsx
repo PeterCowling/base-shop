@@ -1,9 +1,10 @@
-/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
+
+import { Container } from '@/components/layout/Container';
 
 import CashPrep from '../../../components/pre-arrival/CashPrep';
 import { useUnifiedBookingData } from '../../../hooks/dataOrchestrator/useUnifiedBookingData';
@@ -46,7 +47,7 @@ export default function CashPrepPage() {
 
   return (
     <main className="min-h-svh bg-muted px-4 py-6 pb-24">
-      <div className="mx-auto max-w-md rounded-2xl bg-card p-4 shadow-sm">
+      <Container className="max-w-md rounded-2xl bg-card p-4 shadow-sm">
         <CashPrep
           cityTaxAmount={cashAmounts.cityTax}
           depositAmount={cashAmounts.deposit}
@@ -55,7 +56,7 @@ export default function CashPrepPage() {
           onConfirm={handleConfirm}
           onBack={() => router.push('/')}
         />
-      </div>
+      </Container>
     </main>
   );
 }

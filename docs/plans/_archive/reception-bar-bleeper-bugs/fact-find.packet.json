@@ -1,0 +1,195 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-bar-bleeper-bugs",
+  "source_artifact_path": "docs/plans/reception-bar-bleeper-bugs/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Live audit on 2026-03-13 found these bugs causing incorrect bleeper assignments during bar shifts — staff can't reliably use Go mode, COMP eligibility is wrong, Firebase errors are silent, and the UI misleads. All 6 defects confirmed in source code.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All 6 confirmed bar/bleeper defects resolved: Go mode correctly skips bleeper reservation, COMP screen filters to tonight only, Firebase write failures are surfaced to staff, bleep number field initialises clean, ticket list renders stably without key churn, placeholder text matches actual behaviour.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`PaymentSection.tsx` placeholder text; bleep # field display value",
+      "gap_or_implication": "Bug 8: misleading placeholder. Bug 6: field shows number on load",
+      "carry_forward_or_notes": "Fix placeholder copy; remove auto-fill effect"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Go/Bleep toggle in Pay modal; COMP eligibility display",
+      "gap_or_implication": "Bug 3: Go state ignored in payment logic; Bug 4: COMP eligibility wrong date",
+      "carry_forward_or_notes": "Fix `doConfirmPayment` guard; fix `isEligibleForPreorder` date filter"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth or PII changes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`useBleeperMutations` logs error to console but caller ignores return",
+      "gap_or_implication": "Bug 5: Firebase write failure is silent to staff",
+      "carry_forward_or_notes": "Add result check + notify on failure"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing tests in `OrderTakingContainer.test.tsx`, `CompScreen.preorder.test.tsx`; no tests for TicketItems or PaymentSection",
+      "gap_or_implication": "Coverage gaps for all 6 bug paths",
+      "carry_forward_or_notes": "Add unit tests for each fixed path"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`BleeperResult` return type is documented but not used at call site",
+      "gap_or_implication": "Bug 5: contract violated at call site",
+      "carry_forward_or_notes": "Enforce result check in OrderTakingContainer"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Bug 7: React key churn on every render",
+      "gap_or_implication": "`TicketItems`: unnecessary remounts",
+      "carry_forward_or_notes": "Fix key to use index fallback"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Local `apps/reception` app; Firebase data persists independently",
+      "gap_or_implication": "None — changes are pure client-side logic except Bug 5 notification",
+      "carry_forward_or_notes": "Standard Git revert path; no migration needed"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Six confirmed defects in the bar/bleeper subsystem of the reception app (`apps/reception`), all discovered in a live audit on 2026-03-13. The bugs collectively break the \"Bleep vs Go\" payment flow, silently assign bleep numbers when staff intend Go, show incorrect preorder eligibility on the COMP screen, hide Firebase write errors, display stale state on page load, cause unnecessary React remounts, and show misleading UI text.",
+    "goals": [
+      "Produce a precise, evidence-backed plan for fixing all 6 bugs.",
+      "Ensure fixes are consistent across the shared `bleepNumber`/`usage` state.",
+      "Add or update unit tests for each corrected code path."
+    ],
+    "non_goals": [
+      "Redesigning the bleeper assignment architecture.",
+      "Adding new bleeper features (e.g. multiple orders per bleeper).",
+      "Fixing unrelated bar issues not in this work package."
+    ],
+    "constraints": [
+      "Firebase write API for bleepers is `useBleeperMutations.setBleeperAvailability` — callers may not bypass it."
+    ],
+    "assumptions": [
+      "The Go mode is intended to seat a guest without reserving any physical bleeper.",
+      "`firstAvailableBleeper` from `useBleepersData` is the canonical source of the next free bleeper.",
+      "The `useEffect` in `OrderTakingContainer` that auto-fills `bleepNumber` state is redundant with `PaymentSection`'s `displayNumber` computed value, and should be removed."
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx` — container for order-taking flow including bleeper state, payment confirmation",
+      "`apps/reception/src/components/bar/CompScreen.tsx` — COMP/free-preorder eligibility screen",
+      "`apps/reception/src/components/bar/sales/TicketItems.tsx` — order ticket item list",
+      "`apps/reception/src/components/bar/orderTaking/PaymentSection.tsx` — bleep # input + total display"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis reception-bar-bleeper-bugs`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Bug 3 — doConfirmPayment Go/Bleep logic",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 4 — isEligibleForPreorder night filter",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Keys are ordinal `night1/night2` (confirmed `preorderData.ts`); fix requires `checkInDate` param + night-index computation; utilities exist in `ModalPreorderDetails.tsx`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 5 — setBleeperAvailability result handling",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 6 — auto-fill useEffect interaction with PaymentSection",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 7 — TicketItems key stability",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 8 — PaymentSection placeholder text",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test coverage gaps",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "All 6 paths untested; TicketItems + PaymentSection have no test files",
+        "Resolution Required": "Tests to be created in plan"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Staff member opens the Bar screen, takes an order, and proceeds to payment.",
+      "end_condition": "Order is confirmed, Firebase is updated (sale recorded, bleeper marked in-use if applicable), UI resets for next order.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Payment confirmation",
+          "flow": "Staff selects Bleep or Go toggle → enters bleep number or leaves blank → taps Pay. `doConfirmPayment` in OrderTakingContainer reads `usage` and `bleepNumber`, calls `chooseNext()` regardless of usage, writes to Firebase",
+          "owners": "`OrderTakingContainer.tsx:260-304`, `useBleeperMutations.ts`",
+          "evidence": "See Bug 3, Bug 5 below",
+          "issues": "Go mode silently assigns a bleeper; Firebase write failure is not surfaced"
+        },
+        {
+          "id": null,
+          "label": "COMP screen eligibility",
+          "flow": "Staff opens COMP screen; system checks `preorder` Firebase data per occupant to show who is eligible tonight",
+          "owners": "`CompScreen.tsx:185-194`, `usePreorder.ts`",
+          "evidence": "See Bug 4 below",
+          "issues": "Checks all nights' preorder data, not just tonight — shows guests as eligible even when their preorder is for a different date"
+        },
+        {
+          "id": null,
+          "label": "Bleep # field initialisation",
+          "flow": "On page load (or navigation to /bar), `bleepNumber` state starts `\"\"`, useEffect auto-fills from `firstAvailableBleeper`",
+          "owners": "`OrderTakingContainer.tsx:252-256`, `PaymentSection.tsx:26-31`",
+          "evidence": "See Bug 6, Bug 8 below",
+          "issues": "Field shows \"5\" (or whatever next available is) on fresh load even though no order has started; placeholder contradicts auto-fill"
+        },
+        {
+          "id": null,
+          "label": "Ticket item rendering",
+          "flow": "Ticket list renders items with `key={it.id ?? crypto.randomUUID()}`",
+          "owners": "`TicketItems.tsx:22`",
+          "evidence": "See Bug 7 below",
+          "issues": "Items without an `id` get a new UUID on every render → remounts on any state change"
+        }
+      ]
+    }
+  }
+}

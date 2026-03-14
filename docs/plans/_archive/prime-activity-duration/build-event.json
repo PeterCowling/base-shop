@@ -1,0 +1,14 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-activity-duration",
+  "business": "BRIK",
+  "plan_path": "docs/plans/prime-activity-duration/plan.md",
+  "build_record_path": "docs/plans/prime-activity-duration/build-record.user.md",
+  "completed_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "Staff can create and edit activity instances via the Prime app UI, setting a custom duration in minutes. Activity cards show accurate end times derived from data, not a hardcoded default.",
+  "why": "Guests receive activity links showing end times that are always exactly 2 hours after start, regardless of the real activity length.",
+  "source": "operator",
+  "tasks_completed": 5,
+  "tasks_total": 5
+}

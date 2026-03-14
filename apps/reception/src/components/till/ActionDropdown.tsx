@@ -12,6 +12,7 @@ interface DropdownOption {
   label: string;
   onClick: () => void;
   disabled?: boolean;
+  disabledReason?: string;
 }
 
 interface ActionDropdownProps {
@@ -48,6 +49,7 @@ const ActionDropdown: FC<ActionDropdownProps> = ({
           <DropdownMenuItem
             key={opt.label}
             disabled={opt.disabled}
+            title={opt.disabled && opt.disabledReason ? opt.disabledReason : undefined}
             onSelect={(event) => {
               event.preventDefault();
               setOpenId(null);

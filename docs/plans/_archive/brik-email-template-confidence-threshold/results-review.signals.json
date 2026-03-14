@@ -1,0 +1,32 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T06:54:43.090Z",
+  "plan_slug": "brik-email-template-confidence-threshold",
+  "review_cycle_key": "brik-email-template-confidence-threshold",
+  "source_path": "docs/plans/brik-email-template-confidence-threshold/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process — Add a pre-push broken-symlink hygiene check to the repo's validate-changes gates. Trigger observation: the planned wave commit was blocked by a pre-existing broken symlink under .agents/skills/, requiring an out-of-scope fix commit before CI could proceed. Suggested next action: create card.",
+      "body": "New loop process — Add a pre-push broken-symlink hygiene check to the repo's validate-changes gates. Trigger observation: the planned wave commit was blocked by a pre-existing broken symlink under .agents/skills/, requiring an out-of-scope fix commit before CI could proceed. Suggested next action: create card.",
+      "source": "results-review.user.md",
+      "date": "2026-03-13T00:00:00.000Z",
+      "path": "docs/plans/brik-email-template-confidence-threshold/results-review.user.md",
+      "idea_key": "97f3a9d48a6a4c5f0d85d6bac35ec9f6bdd86c20",
+      "review_cycle_key": "brik-email-template-confidence-threshold",
+      "canonical_title": "Add a pre-push broken-symlink hygiene check to the repo's validate-changes gates. Trigger observation: the planned wave commit was blocked by a pre-existing broken symlink under .agents/skills/, requiring an out-of-scope fix commit before CI could proceed. Suggested next action: create card.",
+      "build_signal_id": "31c17bfb088f5bf47aa0de64d2afe72a78c96a28",
+      "recurrence_key": "600c6c8c4d5694837554bb9efdabd4f8a04b29d4",
+      "build_origin_status": "ready",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    }
+  ]
+}

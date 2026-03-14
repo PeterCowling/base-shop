@@ -27,6 +27,7 @@ export type LedgerEvent = {
   quantityDelta: number;
   referenceId: string | null;
   note: string | null;
+  operatorId: string | null;
 };
 
 export function createKey(): string {

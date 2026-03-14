@@ -4,7 +4,10 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
+import { Button } from "@acme/design-system/shadcn";
 import { useCart } from "@acme/platform-core/contexts/CartContext";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
 
 import CheckoutAnalytics from "./CheckoutAnalytics.client";
 
@@ -88,12 +91,14 @@ function buildCheckoutPayload(
     return {
       idempotencyKey: createIdempotencyKey(),
       lang,
+      acceptedLegalTerms: true,
     };
   }
 
   return {
     idempotencyKey: createIdempotencyKey(),
     lang,
+    acceptedLegalTerms: true,
     cardNumber: card.cardNumber,
     expiryMonth: card.expiryMonth,
     expiryYear: card.expiryYear,
@@ -236,6 +241,42 @@ function StripeCheckoutNotice({ lang }: { lang: string }) {
   );
 }
 
+function CheckoutLegalNotice({ lang }: { lang: string }) {
+  return (
+    <div className="rounded-2xl border border-border/70 bg-accent-soft p-5 text-sm text-muted-foreground">
+      <label className="flex items-start gap-3">
+        <input
+          type="checkbox"
+          checked
+          readOnly
+          aria-label="I agree to the Caryina legal policies before paying"
+          className="mt-1 min-h-11 min-w-11 rounded border"
+        />
+        <span>
+          By selecting <span className="font-medium text-foreground">Pay now</span>, you confirm
+          that you agree to the{" "}
+          <Link href={`/${lang}/terms`} className="underline underline-offset-4">
+            Terms of Sale and Website Use
+          </Link>
+          , have read the{" "}
+          <Link href={`/${lang}/privacy`} className="underline underline-offset-4">
+            Privacy Policy
+          </Link>
+          , and accept the{" "}
+          <Link href={`/${lang}/shipping`} className="underline underline-offset-4">
+            Shipping Policy
+          </Link>{" "}
+          and{" "}
+          <Link href={`/${lang}/returns`} className="underline underline-offset-4">
+            Returns Policy
+          </Link>
+          . Caryina records this confirmation when your checkout request is submitted.
+        </span>
+      </label>
+    </div>
+  );
+}
+
 export function CheckoutClient({ provider }: CheckoutClientProps) {
   const [cart] = useCart();
   const params = useParams<{ lang?: string }>();
@@ -335,27 +376,34 @@ export function CheckoutClient({ provider }: CheckoutClientProps) {
             {formatEur(total, lang)}
           </p>
         </div>
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          Delivery timing shown before payment is estimated. Eligible online consumer orders
+          normally include a 14-day cancellation right, and unused-item exchange requests may be
+          handled within 30 days after delivery where stock allows.
+        </p>
         {isAxerve ? (
           <CardForm card={card} onChange={handleCardChange} disabled={loading} />
         ) : (
           <StripeCheckoutNotice lang={lang} />
         )}
+        <CheckoutLegalNotice lang={lang} />
         {error && (
           <p className="text-sm text-destructive" role="alert">
             {error}
           </p>
         )}
         <div className="flex flex-wrap items-center gap-4">
-          <button
+          <Button
             type="button"
             onClick={() => {
               void handlePayNow();
             }}
             disabled={loading}
-            className="btn-primary min-h-11 min-w-11 rounded-full px-6 text-sm disabled:opacity-50"
+            compatibilityMode="passthrough"
+            className={`${BTN_PRIMARY} min-h-11 min-w-11 rounded-full px-6 text-sm`}
           >
             {loading ? (isAxerve ? "Processing..." : "Redirecting...") : "Pay now"}
-          </button>
+          </Button>
           <Link
             href={`/${lang}/cart`}
             className="flex min-h-11 items-center rounded-full px-5 text-sm text-muted-foreground hover:text-foreground"

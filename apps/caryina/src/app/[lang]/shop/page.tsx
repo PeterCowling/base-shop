@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { Button } from "@acme/design-system/shadcn";
 import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
@@ -18,6 +19,7 @@ import {
   resolveLaunchFamily,
 } from "@/lib/launchMerchandising";
 import { formatMoney, readShopCurrency, readShopInventory, readShopSkus } from "@/lib/shop";
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
 
 import ShopAnalytics from "./ShopAnalytics.client";
 
@@ -64,8 +66,47 @@ export default async function ShopPage({
   const filteredSkus = filterSkusByLaunchFamily(skus, activeFamily);
   const hasUnknownFamily = Boolean(familyParam) && activeFamily === null;
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://caryina.com";
+
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${siteUrl}/${lang}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: shopContent.heading,
+        item: `${siteUrl}/${lang}/shop`,
+      },
+    ],
+  };
+
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: shopContent.heading,
+    description: shopContent.summary,
+    url: `${siteUrl}/${lang}/shop`,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
+      />
       <ShopAnalytics locale={lang} />
       <section className="space-y-10">
         <div className="space-y-4">
@@ -77,28 +118,36 @@ export default async function ShopPage({
             </p>
           </div>
 
+          <p className="text-xs text-muted-foreground">
+            {lang === "it"
+              ? "Prezzo IVA inclusa"
+              : lang === "de"
+              ? "Preis inkl. MwSt."
+              : "Price includes VAT"}
+          </p>
+
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <ul className="flex list-none flex-wrap gap-2">
               <li>
-                <Link
-                  href={`/${lang}/shop`}
-                  className={`inline-flex rounded-full border px-4 py-2 text-sm ${
-                    activeFamily === null ? "btn-primary" : ""
-                  }`}
+                <Button
+                  asChild
+                  compatibilityMode="passthrough"
+                  className={`inline-flex rounded-full border px-4 py-2 text-sm${activeFamily === null ? ` ${BTN_PRIMARY}` : ""}`}
                 >
-                  All
-                </Link>
+                  <Link href={`/${lang}/shop`}>All</Link>
+                </Button>
               </li>
               {LAUNCH_FAMILY_ANCHORS.map((family) => (
                 <li key={family.key}>
-                  <Link
-                    href={`/${lang}/shop?family=${family.key}`}
-                    className={`inline-flex rounded-full border px-4 py-2 text-sm ${
-                      activeFamily === family.key ? "btn-primary" : ""
-                    }`}
+                  <Button
+                    asChild
+                    compatibilityMode="passthrough"
+                    className={`inline-flex rounded-full border px-4 py-2 text-sm${activeFamily === family.key ? ` ${BTN_PRIMARY}` : ""}`}
                   >
-                    {familyCopy[family.key]?.label ?? family.label}
-                  </Link>
+                    <Link href={`/${lang}/shop?family=${family.key}`}>
+                      {familyCopy[family.key]?.label ?? family.label}
+                    </Link>
+                  </Button>
                 </li>
               ))}
             </ul>
@@ -133,7 +182,7 @@ export default async function ShopPage({
                     href={`/${lang}/product/${sku.slug}`}
                     category={getSkuFamilyLabel(sku, index, familyCopy)}
                     title={sku.title}
-                    priceLabel={formatMoney(sku.price, currency)}
+                    priceLabel={formatMoney(sku.price, currency, lang)}
                     primarySrc={media.primarySrc}
                     primaryAlt={media.primaryAlt}
                     secondarySrc={media.secondarySrc}

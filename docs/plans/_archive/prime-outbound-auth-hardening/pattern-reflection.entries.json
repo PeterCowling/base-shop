@@ -1,0 +1,35 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-14T14:57:05.700Z",
+  "plan_slug": "prime-outbound-auth-hardening",
+  "review_cycle_key": "prime-outbound-auth-hardening",
+  "source_path": "docs/plans/prime-outbound-auth-hardening/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": [
+    {
+      "canonical_title": "deploy-order gate for sequential service dependencies",
+      "pattern_summary": "deploy-order gate for sequential service dependencies",
+      "category": "new-loop-process",
+      "routing_target": "defer",
+      "occurrence_count": 1,
+      "evidence_refs": [],
+      "review_cycle_key": "prime-outbound-auth-hardening",
+      "build_signal_id": "0e19e58c954e4e8ae19c0b352de32986b8ef47f7",
+      "recurrence_key": "481b1ea1194acf17e24d69280da29be79bf35530",
+      "build_origin_status": "ready"
+    },
+    {
+      "canonical_title": "signed-claims header verification is already fully deterministic",
+      "pattern_summary": "signed-claims header verification is already fully deterministic",
+      "category": "ai-to-mechanistic",
+      "routing_target": "defer",
+      "occurrence_count": 1,
+      "evidence_refs": [],
+      "review_cycle_key": "prime-outbound-auth-hardening",
+      "build_signal_id": "5c7003d4d26bc6102c1543137e308b12642f4de9",
+      "recurrence_key": "7e8251a38db3b774c92db04ea5d19fc6cd93f34c",
+      "build_origin_status": "ready"
+    }
+  ]
+}

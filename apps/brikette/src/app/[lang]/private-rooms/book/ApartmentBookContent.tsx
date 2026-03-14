@@ -14,23 +14,29 @@ import FitCheck from "@/components/apartment/FitCheck";
 import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel";
 import type { DateRange } from "@/components/booking/DateRangePicker";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
+import { buildWhatsappMessageUrl } from "@/config/hotel";
+import { BOOKING_CODE } from "@/context/modal/constants";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
-import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
-import { createBrikClickId, fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
+import { countNights, formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
+import type { EntryAttributionPayload } from "@/utils/entryAttribution";
+import { readAttribution } from "@/utils/entryAttribution";
+import { createBrikClickId, fireWhatsappClick } from "@/utils/ga4-events";
 import { getPrivateBookingPath } from "@/utils/localizedRoutes";
+import { buildOctorateCalendarUrl } from "@/utils/octorateLinks";
+import { trackThenNavigate } from "@/utils/trackThenNavigate";
 
 type Props = {
   lang: AppLanguage;
 };
 
-const WHATSAPP_BASE = "https://wa.me/393287073695";
 const APARTMENT_BOOKING_RETURN_KEY = "apartment_booking_return";
 
 function buildWhatsappUrl(checkin: string, checkout: string): string {
-  const text = `Hi, I'm interested in staying at the Brikette apartment. Could you tell me about availability for ${checkin} to ${checkout}?`;
-  return `${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`;
+  return buildWhatsappMessageUrl(
+    `Hi, I'm interested in staying at the Brikette apartment. Could you tell me about availability for ${checkin} to ${checkout}?`,
+  );
 }
 
 const APARTMENT_RATE_CODES = {
@@ -44,17 +50,30 @@ function buildOctorateLink(
   plan: "flex" | "nr",
   pax: 2 | 3
 ): string {
-  const base = "https://book.octorate.com/octobook/site/reservation/calendar.xhtml";
-  const params = new URLSearchParams();
-  params.set("codice", "45111");
-  params.set("checkin", checkin);
-  params.set("checkout", checkout);
-  params.set("pax", String(pax));
-  params.set("room", APARTMENT_RATE_CODES[plan][pax]);
-  params.set("utm_source", "site");
-  params.set("utm_medium", "cta");
-  params.set("utm_campaign", `apartment_${plan}_${pax}pax`);
-  return `${base}?${params.toString()}`;
+  return buildOctorateCalendarUrl({
+    codice: BOOKING_CODE,
+    checkin,
+    checkout,
+    pax,
+    room: APARTMENT_RATE_CODES[plan][pax],
+    utm_source: "site",
+    utm_medium: "cta",
+    utm_campaign: `apartment_${plan}_${pax}pax`,
+  });
+}
+
+function buildAttributionFields(attribution: EntryAttributionPayload | null): Record<string, unknown> {
+  if (!attribution) return {};
+  return {
+    entry_source_surface: attribution.source_surface,
+    entry_source_cta: attribution.source_cta,
+    entry_resolved_intent: attribution.resolved_intent,
+    ...(attribution.product_type !== null ? { entry_product_type: attribution.product_type } : {}),
+    entry_decision_mode: attribution.decision_mode,
+    entry_destination_funnel: attribution.destination_funnel,
+    entry_locale: attribution.locale,
+    entry_fallback_triggered: attribution.fallback_triggered,
+  };
 }
 
 function ApartmentBookContent({ lang }: Props) {
@@ -92,9 +111,7 @@ function ApartmentBookContent({ lang }: Props) {
   }, []);
 
   // Derive nights and long-stay flag reactively from date state (TZ-safe via Date objects)
-  const nights = range.from && range.to
-    ? Math.max(1, Math.round((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24)))
-    : 1;
+  const nights = range.from && range.to ? countNights(range.from, range.to) : 1;
   const isLongStay = nights > 14;
   const isValidRange = Boolean(checkinIso && checkoutIso);
 
@@ -120,19 +137,8 @@ function ApartmentBookContent({ lang }: Props) {
       });
     }
 
-    // Canonical handoff event (TASK-05A). Beacon transport ensures delivery before same-tab navigation.
-    fireHandoffToEngine({
-      handoff_mode: "same_tab",
-      engine_endpoint: "calendar",
-      checkin: checkinIso,
-      checkout: checkoutIso,
-      pax,
-      rate_plan: plan,
-      room_id: "apartment",
-      source_route: getPrivateBookingPath(lang),
-      cta_location: `apartment_${plan}_cta`,
-      brik_click_id: createBrikClickId(),
-    });
+    // Read entry attribution carrier written at CTA click on private summary page.
+    const attributionFields = buildAttributionFields(readAttribution());
 
     // Store booking state before navigation so we can restore on return (Option A — TASK-09)
     sessionStorage.setItem(
@@ -140,8 +146,24 @@ function ApartmentBookContent({ lang }: Props) {
       JSON.stringify({ checkin: checkinIso, checkout: checkoutIso, plan }),
     );
 
-    // Navigate to Octorate
-    window.location.assign(octorateUrl);
+    // Canonical handoff event. Beacon transport ensures delivery before same-tab navigation.
+    trackThenNavigate(
+      "handoff_to_engine",
+      {
+        handoff_mode: "same_tab",
+        engine_endpoint: "calendar",
+        checkin: checkinIso,
+        checkout: checkoutIso,
+        pax,
+        rate_plan: plan,
+        room_id: "apartment",
+        source_route: getPrivateBookingPath(lang),
+        cta_location: `apartment_${plan}_cta`,
+        brik_click_id: createBrikClickId(),
+        ...attributionFields,
+      },
+      () => { window.location.assign(octorateUrl); },
+    );
   }, [checkinIso, checkoutIso, lang, nights, pax]);
 
   const handleWhatsappClick = useCallback(() => {
@@ -158,7 +180,7 @@ function ApartmentBookContent({ lang }: Props) {
 
       <div className="mt-8 space-y-6">
         {/* Date Selection */}
-        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
+        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm dark:border-white/30">
           <div className="mb-4 flex items-center gap-3">
             <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>1</Inline>
             <h2 className="text-lg font-semibold text-brand-heading">
@@ -189,7 +211,7 @@ function ApartmentBookContent({ lang }: Props) {
         </div>
 
         {/* Rate Options */}
-        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
+        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm dark:border-white/30">
           <div className="mb-4 flex items-center gap-3">
             <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>2</Inline>
             <h2 className="text-lg font-semibold text-brand-heading">
@@ -202,12 +224,12 @@ function ApartmentBookContent({ lang }: Props) {
               type="button"
               onClick={() => handleCheckout("nr")}
               disabled={!isValidRange}
-              className="group flex min-h-11 min-w-11 flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent disabled:pointer-events-none disabled:opacity-50"
+              className="group flex min-h-11 min-w-11 flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:pointer-events-none disabled:opacity-50"
             >
               <div className="flex flex-1 flex-col p-4">
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <h3 className="font-semibold text-brand-heading">{tBook("apartment.nr.title")}</h3>
-                  <span className="shrink-0 rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-heading">
+                  <span className="shrink-0 rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-on-accent">
                     {tBook("apartment.nr.saving")}
                   </span>
                 </div>
@@ -216,11 +238,11 @@ function ApartmentBookContent({ lang }: Props) {
                   <li>{tBook("apartment.nr.bullets.1")}</li>
                 </ul>
               </div>
-              <div className="flex items-center justify-between gap-2 rounded-b-lg border-t border-brand-outline/20 bg-brand-accent/10 px-4 py-3 transition-colors group-hover:bg-brand-accent">
-                <span className="text-sm font-semibold text-brand-accent group-hover:text-brand-on-accent">
+              <div className="flex items-center justify-between gap-2 rounded-b-lg border-t border-brand-outline/20 bg-brand-primary/10 px-4 py-3 transition-colors group-hover:bg-brand-primary">
+                <span className="text-sm font-semibold text-brand-primary group-hover:text-brand-on-primary">
                   {tBook("apartment.cta.nr")}
                 </span>
-                <ArrowRight size={15} className="shrink-0 text-brand-accent group-hover:text-brand-on-accent transition-transform group-hover:translate-x-0.5" aria-hidden />
+                <ArrowRight size={15} className="shrink-0 text-brand-primary group-hover:text-brand-on-primary transition-transform group-hover:translate-x-0.5" aria-hidden />
               </div>
             </button>
 
@@ -234,7 +256,7 @@ function ApartmentBookContent({ lang }: Props) {
               <div className="flex flex-1 flex-col p-4">
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <h3 className="font-semibold text-brand-heading">{tBook("apartment.flex.title")}</h3>
-                  <span className="shrink-0 rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-heading">
+                  <span className="shrink-0 rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-on-accent">
                     {tBook("apartment.flex.saving")}
                   </span>
                 </div>
@@ -267,9 +289,9 @@ function ApartmentBookContent({ lang }: Props) {
             onClick={handleWhatsappClick}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2 dark:border-white/30"
           >
-            {t("streetLevelArrival.whatsappCta")}
+            {t("book.whatsappCta")}
           </a>
         </div>
       </div>

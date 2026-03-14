@@ -107,6 +107,18 @@ describe("useActivitiesMutations", () => {
     expect(updateMock).not.toHaveBeenCalled();
   });
 
+  it("skipEmailSend option suppresses guest email side-effect for relevant codes", async () => {
+    const { result } = renderHook(() => useActivitiesMutations());
+
+    let activityResult;
+    await act(async () => {
+      activityResult = await result.current.addActivity("occ1", 21, { skipEmailSend: true });
+    });
+
+    expect(activityResult).toMatchObject({ success: true });
+    expect(sendEmailGuestMock).not.toHaveBeenCalled();
+  });
+
   it("does not call sendEmailGuest for non-relevant codes", async () => {
     const { result } = renderHook(() => useActivitiesMutations());
 

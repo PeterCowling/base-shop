@@ -1,0 +1,19 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T10:59:57.185Z",
+  "business": "BRIK",
+  "feature_slug": "reception-roomgrid-legend",
+  "plan_slug": "reception-roomgrid-legend",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "outcome_contract": {
+    "why": "The room grid uses 8+ colours to show different booking states but has no key explaining what each colour means.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A colour legend added to the room grid page mapping each status colour to its plain-English label.",
+    "source": "auto"
+  },
+  "dispatch_ids": [
+    "IDEA-DISPATCH-20260314190000-BRIK-005"
+  ],
+  "build_completed_at": "2026-03-14T10:59:57.186Z"
+}

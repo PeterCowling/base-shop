@@ -34,12 +34,27 @@ hostname = "reception.hostel-positano.com"
 # Guest matching (optional — only if Firebase RTDB blocks unauthenticated reads):
 #   wrangler secret put FIREBASE_DB_SECRET
 #
-# Inbox recovery cron (required for automatic stuck-thread recovery):
+# Inbox cron auth (required for automatic inbox sync/recovery):
+#   wrangler secret put INBOX_SYNC_SECRET
+# Fallback for backward compatibility:
 #   wrangler secret put INBOX_RECOVERY_SECRET
 #
 # Optional recovery configuration (set via [vars] or wrangler secret):
 #   INBOX_RECOVERY_STALE_HOURS  — hours before a thread is considered stuck (default: 2)
 #   INBOX_RECOVERY_ENABLED      — set to "false" to disable recovery (default: enabled)
+#   INBOX_AUTO_SYNC_ENABLED     — set to "false" to disable scheduled inbox sync (default: enabled)
+#
+# Prime messaging — actor claims signing (required for Prime inbox actions):
+#   wrangler secret put RECEPTION_PRIME_API_BASE_URL
+#   wrangler secret put RECEPTION_PRIME_ACCESS_TOKEN
+#   wrangler secret put PRIME_ACTOR_CLAIMS_SECRET
+#
+#   PRIME_ACTOR_CLAIMS_SECRET rules:
+#     - Must be ≥32 characters (shorter values → Prime returns 503 on all mutations)
+#     - Must NOT equal PRIME_STAFF_OWNER_GATE_TOKEN (secret independence)
+#   Generate: openssl rand -base64 48 | tr -d '\n'
+#   Both Reception (signer) and Prime (verifier) must share the same value.
+#   See: docs/plans/prime-outbound-auth-hardening/plan.md
 # ============================================================================
 
 [[d1_databases]]
@@ -48,7 +63,7 @@ database_name = "reception-inbox"
 database_id = "f3ed1b8f-cb6a-4950-9bfa-8f85a0913db9"
 
 [triggers]
-crons = ["*/30 * * * *"]
+crons = ["* * * * *", "*/30 * * * *"]
 
 [vars]
 # Server-side runtime vars. NEXT_PUBLIC_ vars must be set at build time.

@@ -1,4 +1,4 @@
-import { type NextRequest,NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
 import {
@@ -8,11 +8,11 @@ import {
   type StageDoc,
   StageDocSchema,
   type StageType,
+  StageTypeSchema,
   upsertStageDoc,
 } from "@acme/platform-core/repositories/businessOs.server";
 
 import { requireAgentAuth } from "@/lib/auth/middleware";
-import { getContractMigrationConfig, normalizeStageKey } from "@/lib/contract-migration";
 import { getDb } from "@/lib/d1.server";
 import { computeEntitySha } from "@/lib/entity-sha";
 
@@ -25,25 +25,6 @@ const CreateStageDocSchema = z.object({
 const INVALID_REQUEST_ERROR = "Invalid request";
 // i18n-exempt -- BOS-02 API validation message [ttl=2026-12-31]
 const INVALID_STAGE_ERROR = "Invalid stage";
-
-function maybeLogStageAliasUse(input: {
-  endpoint: string;
-  cardId: string;
-  normalized: ReturnType<typeof normalizeStageKey>;
-}): string | null {
-  const { normalized } = input;
-  if (!normalized || !normalized.normalized) return null;
-
-  // Telemetry surface = structured log only (no doc content).
-  console.info("bos.stage_alias_used", {
-    cardId: input.cardId,
-    rawStage: normalized.rawStage,
-    normalizedStage: normalized.normalizedStage,
-    endpoint: input.endpoint,
-  });
-
-  return `${normalized.rawStage}->${normalized.normalizedStage}`;
-}
 
 /**
  * GET /api/agent/stage-docs
@@ -65,14 +46,11 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const { config } = getContractMigrationConfig();
-
-  let normalizedHeader: string | null = null;
   let stageFilter: StageType | undefined;
 
   if (stageParam) {
-    const normalized = normalizeStageKey(config, stageParam);
-    if (!normalized) {
+    const parsed = StageTypeSchema.safeParse(stageParam);
+    if (!parsed.success) {
       return NextResponse.json(
         // i18n-exempt -- BOS-02 API validation message [ttl=2026-03-31]
         { error: "Invalid stage filter" },
@@ -80,23 +58,13 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    stageFilter = normalized.stage;
-    normalizedHeader = maybeLogStageAliasUse({
-      endpoint: "GET /api/agent/stage-docs",
-      cardId,
-      normalized,
-    });
+    stageFilter = parsed.data;
   }
 
   const db = getDb();
   const stageDocs = await listStageDocsForCard(db, cardId, stageFilter);
 
-  const response = NextResponse.json({ stageDocs });
-  if (normalizedHeader) {
-    response.headers.set("x-bos-stage-normalized", normalizedHeader);
-  }
-
-  return response;
+  return NextResponse.json({ stageDocs });
 }
 
 /**
@@ -120,9 +88,8 @@ export async function POST(request: NextRequest) {
 
     const { cardId, stage: rawStage, content } = parsed.data;
 
-    const { config } = getContractMigrationConfig();
-    const normalized = normalizeStageKey(config, rawStage);
-    if (!normalized) {
+    const stageParsed = StageTypeSchema.safeParse(rawStage);
+    if (!stageParsed.success) {
       return NextResponse.json(
         // i18n-exempt -- BOS-02 API validation message [ttl=2026-03-31]
         {
@@ -139,12 +106,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const stage = normalized.stage;
-    const normalizedHeader = maybeLogStageAliasUse({
-      endpoint: "POST /api/agent/stage-docs",
-      cardId,
-      normalized,
-    });
+    const stage = stageParsed.data;
 
     const db = getDb();
 
@@ -189,7 +151,7 @@ export async function POST(request: NextRequest) {
       changes_json: JSON.stringify({ cardId, stage }),
     });
 
-    const response = NextResponse.json(
+    return NextResponse.json(
       {
         success: true,
         // i18n-exempt -- BOS-02 API success message [ttl=2026-03-31]
@@ -197,12 +159,6 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-
-    if (normalizedHeader) {
-      response.headers.set("x-bos-stage-normalized", normalizedHeader);
-    }
-
-    return response;
   } catch (error) {
     return NextResponse.json(
       // i18n-exempt -- BOS-02 API error message [ttl=2026-03-31]

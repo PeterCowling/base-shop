@@ -121,6 +121,9 @@
   "celebration": {
     "niceProgress": "Nice progress: {{item}} completed."
   },
+  "confidenceCue": {
+    "readyForArrival": "You are ready for arrival"
+  },
   "header": {
     "arrivalDay": "Arrival day",
     "arrivalDayHint": "Final checks now mean a faster handoff at reception.",

@@ -1,0 +1,257 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "prime-outbound-send-path-correctness",
+  "source_artifact_path": "docs/plans/prime-outbound-send-path-correctness/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-outbound-send-path-correctness/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff broadcast path routes to an endpoint designed for review campaigns, creating potential misrouting, duplicate sends on retry, and unclear delivery guarantees.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The send path for staff whole-hostel broadcasts is correctly routed through a dedicated single-hop endpoint (`staff-broadcast-send`, not `review-campaign-send`), has structural protection against multi-hop retry-window duplicates, and the delivery model to guest devices is documented and verified.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no UI changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Internal API path only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "New endpoint returns `{ outcome: 'sent', sentMessageId }` on success; `{ outcome: 'conflict' }` (409) if `sendPrimeReviewThread` detects a conflict (e.g. thread is `sent` and was not reset); `{ outcome: 'not_found' }` (404) if thread missing. Reception maps 409 → 502. Note: for the whole-hostel reusable lane, `savePrimeReviewDraft` resets `review_status: pending` before `sendPrimeReviewThread` fires — so strictly concurrent duplicates arriving before any write completes may both proceed to send (accepted residual risk; see Risks section).",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-04",
+      "gap_or_implication": "Response contract specified in TASK-01 acceptance",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Staff-owner gate preserved on new endpoint (`enforceStaffOwnerApiGate`). Rate limit removed — was incorrectly blocking broadcast path. `actorSource: 'reception_staff_compose'` set correctly.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "`enforceStaffOwnerApiGate` pattern is unchanged from existing Prime endpoints",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`actorSource: 'reception_staff_compose'` written to admission record (not `'reception_proxy'`). `console.error` when send throws.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Admission record is written inside `sendPrimeReviewThread` — no change to recording logic",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New endpoint tested in isolation (TC: auth gate, missing DB, missing plainText, happy path including cold-DB upsert assertion, 409 conflict). Route test updated to mock single `staffBroadcastSend` call. `inbox-actions.route.test.ts:499-535` mocks `sendPrimeInboxThread` at the boundary and does NOT exercise the internal routing branch — so removal of the branch needs a new proxy-level test added in TASK-05 verifying the branch is gone (or via `sendPrimeInboxThread` unit test in TASK-02).",
+      "current_or_option_state": "TASK-04, TASK-05",
+      "gap_or_implication": "TC-06B in `review-threads.test.ts` unaffected; routing branch removal tested in TASK-05",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No schema changes. `actorSource` value changes in new admission records (forward only). `initiatePrimeOutboundThread` exported signature unchanged (deprecated, not removed).",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-06",
+      "gap_or_implication": "No D1 column additions",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One fewer HTTP hop (3 → 2). C-03 residual (Firebase → D1 non-transactional) unchanged and accepted as out-of-scope.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Multi-hop retry window eliminated structurally",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Rollback = revert `prime-compose/route.ts` + remove `staff-broadcast-send.ts` + restore `staffBroadcastSend` removal from prime-review.server.ts. No migration to roll back.",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "Staff-only internal path; no feature flag needed",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Four defects in the staff whole-hostel broadcast path are fixed by introducing a new single-hop `POST /api/staff-broadcast-send` Prime endpoint that combines draft upsert and send in one Cloudflare Pages Function. The `prime-compose` Reception route is updated to call this single endpoint instead of the current `initiatePrimeOutboundThread` + `sendPrimeInboxThread` two-call chain. The broadcast routing branch is removed from `sendPrimeInboxThread`. Tests for the new endpoint and updated route are written. The Firebase RTDB delivery model is documented inline. `staff-initiate-thread.ts` is depr",
+    "goals": [
+      "Correct send endpoint routing for whole-hostel broadcasts (C-01).",
+      "Eliminate the multi-hop sequential retry window that causes duplicate broadcasts (C-02).",
+      "Fix `actorSource` audit label on broadcast send path.",
+      "Document the Firebase RTDB delivery model for broadcasts (C-05).",
+      "Maintain or improve test coverage for the changed paths."
+    ],
+    "non_goals": [
+      "Full transactional consistency across Firebase and D1.",
+      "Guest-facing push notification delivery.",
+      "Changes to `booking`/`room` campaign send paths.",
+      "Fixing `review-campaign-send.ts` or `review-thread-send.ts` `actorSource` for generic callers."
+    ],
+    "constraints": [
+      "No D1 schema migrations — no new columns or tables.",
+      "New Prime endpoint follows the same Cloudflare Pages Function pattern as `staff-initiate-thread.ts` and `review-thread-send.ts`.",
+      "`inbox-actions.route.test.ts` broadcast test (lines 499–535) calls `sendPrimeInboxThread` via `[threadId]/send/route.ts` — this path is preserved. The routing branch inside `sendPrimeInboxThread` that routes to `review-campaign-send` is removed; the fallback to `review-thread-send` is preserved.",
+      "`staff-broadcast-send.ts` is staff-owner gated; `enforceStaffOwnerApiGate` returns `null` in non-production environments, so tests do not need to set up access tokens."
+    ],
+    "assumptions": [
+      "`WHOLE_HOSTEL_BROADCAST_CHANNEL_ID` (constant from `apps/prime/src/lib/chat/directMessageChannel.ts`) is importable from Prime functions as it is in `staff-initiate-thread.ts`.",
+      "`savePrimeReviewDraft` and `sendPrimeReviewThread` are stable; no signature changes are needed.",
+      "The `isReusableWholeHostelLane` reset in `savePrimeReviewDraft` is correct by design; the new endpoint relies on this for legitimate subsequent broadcasts."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "New `POST /api/staff-broadcast-send` endpoint that calls `savePrimeReviewDraft` then `sendPrimeReviewThread` in one function.",
+      "Reception proxy lib gains `staffBroadcastSend` helper; `prime-compose/route.ts` uses it directly.",
+      "Broadcast routing branch in `sendPrimeInboxThread` removed; `initiatePrimeOutboundThread` deprecated.",
+      "Why planning is not reopening option selection:",
+      "Analysis evaluated three options; Option A was decisive. No operator-only fork remains. Planning proceeds to decomposition."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Create `staff-broadcast-send` Prime endpoint",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `apps/prime/functions/api/staff-broadcast-send.ts`",
+        "affects": "`apps/prime/functions/api/staff-broadcast-send.ts` (new), `[readonly] apps/prime/functions/lib/prime-review-drafts.ts`, `[readonly] apps/prime/functions/lib/prime-review-send.ts`, `[readonly] apps/prime/functions/lib/staff-owner-gate.ts`, `[readonly] apps/prime/functions/lib/prime-messaging-db.ts`, `[readonly] apps/prime/src/lib/chat/directMessageChannel.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add `staffBroadcastSend` helper to Reception Prime proxy lib",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New exported function `staffBroadcastSend` in `apps/reception/src/lib/inbox/prime-review.server.ts`",
+        "affects": "`apps/reception/src/lib/inbox/prime-review.server.ts`; `[readonly] prime-review.server.ts` (routing branch in `sendPrimeInboxThread` to be removed)"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Update `prime-compose/route.ts` to use `staffBroadcastSend`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/reception/src/app/api/mcp/inbox/prime-compose/route.ts`",
+        "affects": "`apps/reception/src/app/api/mcp/inbox/prime-compose/route.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Write unit tests for `staff-broadcast-send.ts`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New test file `apps/prime/functions/__tests__/staff-broadcast-send.test.ts`",
+        "affects": "`apps/prime/functions/__tests__/staff-broadcast-send.test.ts` (new), `[readonly] apps/prime/functions/__tests__/helpers.ts`, `[readonly] apps/prime/functions/__tests__/review-threads.test.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Update Reception tests for new broadcast path",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/reception/src/app/api/mcp/inbox/prime-compose/route.test.ts` + new routing-branch removal test in `apps/reception/src/lib/inbox/__tests__/`",
+        "affects": "`apps/reception/src/app/api/mcp/inbox/prime-compose/route.test.ts`, `apps/reception/src/lib/inbox/__tests__/send-prime-inbox-thread.test.ts` (new or added to existing)"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Deprecate `staff-initiate-thread.ts` and `initiatePrimeOutboundThread`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Deprecation notice on `apps/prime/functions/api/staff-initiate-thread.ts` and `initiatePrimeOutboundThread` in `prime-review.server.ts`",
+        "affects": "`apps/prime/functions/api/staff-initiate-thread.ts`, `apps/reception/src/lib/inbox/prime-review.server.ts`, `apps/reception/src/lib/inbox/__tests__/initiate-prime-outbound-thread.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Staff broadcast compose",
+          "trigger": "Staff submits broadcast in Reception inbox UI (POST `/api/mcp/inbox/prime-compose`)",
+          "flow": "(1) `requireStaffAuth` gate. (2) Validate text. (3) Call `staffBroadcastSend({ text, actorUid })` → single HTTP POST to Prime `/api/staff-broadcast-send`. (4) Prime: staff-owner gate → `upsertPrimeMessageThread(db, { id: WHOLE_HOSTEL_BROADCAST_CHANNEL_ID, ... })` (cold-DB guard, idempotent ON CONFLICT DO UPDATE) → `savePrimeReviewDraft` (resets singleton thread to `pending`) → `sendPrimeReviewThread` (Firebase write, 7 D1 writes, thread set `sent`). (5) Reception: map `{ outcome: 'sent', sentMessageId }` → 200 success, or map 409 → 502 conflict. (6) Fire-and-forget `recordInboxEvent('prime_bro",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03"
+          ],
+          "dependency_note": "(Prime endpoint) (helper) (route)",
+          "seams": "C-03 residual: Firebase failure = broadcast lost silently. Rollback = revert TASK-03 + remove TASK-01 file."
+        },
+        {
+          "id": null,
+          "label": "Staff broadcast send via thread-send route",
+          "trigger": "Staff clicks Send for an existing Prime thread via `[threadId]/send/route.ts`",
+          "flow": "(1) `sendPrimeInboxThread` called with prefixed threadId. (2) Routing branch for `prime_broadcast + campaign.id` removed — all threads fall through to `review-thread-send` endpoint. (3) For non-broadcast threads: unchanged. For broadcast_whole_hostel via this route: goes to `review-thread-send` (same as non-broadcast non-campaign threads).",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": "(routing branch removal)",
+          "seams": "`inbox-actions.route.test.ts` broadcast coverage (lines 499–535) must pass against the updated `sendPrimeInboxThread`."
+        }
+      ]
+    }
+  }
+}

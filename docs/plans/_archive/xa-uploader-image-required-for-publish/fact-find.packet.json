@@ -1,0 +1,158 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "xa-uploader-image-required-for-publish",
+  "source_artifact_path": "docs/plans/xa-uploader-image-required-for-publish/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/xa-uploader-image-required-for-publish/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When staff add products using the main upload workflow, products can appear live in the store without images, which looks unprofessional and loses sales — shoppers browsing a luxury fashion brand expect visuals for everything.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Products cannot go live without at least one image.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`CatalogProductForm` shows `workflowImageRequired` hint when `!hasImages && dataReady && !publishReady` — but it is a text hint, not a hard block",
+      "gap_or_implication": "No hard UI gate prevents the \"Publish\" action when no images",
+      "carry_forward_or_notes": "Client-side hard gate: disable/error publish button when `imageFiles` empty"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Staff sees `would_unpublish` dialog; if confirmed, product goes live without images (the bug)",
+      "gap_or_implication": "UX conflates \"you're removing images from a live product\" with \"you can't publish without images\" — misleading confirmation",
+      "carry_forward_or_notes": "Two distinct UX flows: (1) block publish + show \"add images first\" message, (2) keep confirm dialog for image-removal-from-live-product only"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Admin-only tool, session auth unchanged",
+      "gap_or_implication": "No security surface change",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`uploaderLog(\"info\", \"save_start\", ...)` in `catalogConsoleActions.ts`; no specific log for `would_unpublish` confirmation bypass",
+      "gap_or_implication": "Would-unpublish bypass that leads to imageless publish is silent",
+      "carry_forward_or_notes": "Add structured log event when `confirmUnpublish: true` is used and product has no images"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`route.test.ts` does NOT test `would_unpublish` guard or the `confirmUnpublish: true` bypass. The `branches.test.ts` variant may cover some cases (not verified). `catalogWorkflow.test.ts` covers `deriveCatalogPublishState`.",
+      "gap_or_implication": "No CI test exercises the bypass bug path",
+      "carry_forward_or_notes": "Add TCs: (1) POST with `publishState: \"live\"`, no images, `confirmUnpublish: true` → must return downgraded state or reject; (2) client doSave retry with confirmed flag downgrades publishState"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`CatalogProductDraftInput.publishState` — no schema change needed; the fix enforces existing derived-state logic at persist time",
+      "gap_or_implication": "`withAutoCatalogDraftFields()` normalizes `publishState` but does not call `deriveCatalogPublishState()` — so \"live\" passes through even with no images",
+      "carry_forward_or_notes": "Server-side: normalize to `deriveCatalogPublishState(product)` at write time (not just at read/guard time)"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Single synchronous state derivation; negligible overhead",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "CSS-level/server-level change; no migration",
+      "gap_or_implication": "Clean git revert; no migration rollback needed",
+      "carry_forward_or_notes": "Verify CI passes before merging"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The dispatch concern was that products could go live without images. Investigation confirms that image upload capability is **fully implemented** (R2 storage, upload endpoint, client UI) — but a specific bypass bug in the publish gate allows this anyway. When a staff member attempts to publish a product with no images, the server returns a 409 `would_unpublish` error, the client prompts for confirmation, and if confirmed it retries with `confirmUnpublish: true`. The server then **bypasses the guard entirely and saves the product as `publishState: \"live\"` without images**. The storefront render",
+    "goals": [
+      "Prevent products from being saved with `publishState: \"live\"` when `imageFiles` is empty.",
+      "Ensure the publish block is enforced on both client (hard UI gate) and server (hard data gate).",
+      "Preserve the existing `would_unpublish` confirmation for the legitimate case: removing images from an already-live product."
+    ],
+    "non_goals": [
+      "Image optimization, resizing, or CDN changes.",
+      "Changes to the R2 upload endpoint or image management UI.",
+      "Changes to the storefront's no-image fallback rendering.",
+      "Migrating image storage off R2.",
+      "Any other xa-uploader feature work."
+    ],
+    "constraints": [
+      "Tests run in CI only — do not run `pnpm test` locally.",
+      "English-only — XA uploader is an internal tool with no i18n.",
+      "No new API routes; fix must use existing `/api/catalog/products` route.",
+      "`deriveCatalogPublishState()` from `packages/lib/src/xa/catalogWorkflow.ts` is already correct — it returns `\"draft\"` when `imageFiles` is empty. The server must consult it authoritatively."
+    ],
+    "assumptions": [
+      "Staff can always save a product as \"draft\" (no images required for draft state).",
+      "The `would_unpublish` dialog must be preserved for the \"remove images from live product\" case."
+    ],
+    "key_entry_points": [],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Fix direction established": "client-side publishState downgrade + server-side normalization via `deriveCatalogPublishState()`",
+      "Blast radius confirmed narrow": "two files, ~10 lines total"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Bug site (catalogConsoleActions.ts:461)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Server guard (route.ts:270)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`deriveCatalogPublishState` authoritativeness",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape (would_unpublish path)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Missing Coverage] [Advisory]: `route.test.ts` has no TC for `confirmUnpublish: true` bypass",
+        "Resolution Required": "No — planned as TC-01..TC-03 in build"
+      },
+      {
+        "Scope Area": "Storefront impact (XaProductCard)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Two-case UX distinction (no-images vs remove-from-live)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[UX Conflation] [Advisory]: current dialog message conflates the two scenarios",
+        "Resolution Required": "No — addressed in fix design"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

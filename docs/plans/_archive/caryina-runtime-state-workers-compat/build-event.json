@@ -1,0 +1,13 @@
+{
+  "feature_slug": "caryina-runtime-state-workers-compat",
+  "dispatch_id": "IDEA-DISPATCH-20260314160002-PLAT-012",
+  "build_date": "2026-03-14",
+  "status": "complete",
+  "outcome_type": "operational",
+  "outcome_statement": "Both the checkout idempotency store and the cart backend are migrated to Workers-compatible Prisma/Neon storage; no fs calls remain in either checkout path; deployed Worker can complete a checkout end-to-end without a runtime exception.",
+  "source": "operator",
+  "tasks_completed": 8,
+  "tasks_total": 8,
+  "commits": ["7c362d3d61", "927f53ac47", "e120e97f13", "8c20717f57"],
+  "plan_path": "docs/plans/_archive/caryina-runtime-state-workers-compat/plan.md"
+}

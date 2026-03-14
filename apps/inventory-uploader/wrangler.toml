@@ -14,7 +14,19 @@ binding = "ASSETS"
 #   wrangler secret put INVENTORY_SESSION_SECRET
 #   wrangler secret put INVENTORY_ADMIN_TOKEN
 #   wrangler secret put DATABASE_URL
+#   wrangler secret put INVENTORY_ALLOWED_IPS
+#
+# DATABASE_URL format (Neon serverless Postgres):
+#   postgresql://user:pass@<project>.neon.tech/<dbname>?sslmode=require
+# The Prisma client uses @prisma/adapter-neon in this Worker runtime so that
+# HTTP-based connections are used instead of TCP (TCP is blocked in V8 isolates).
 # ============================================================================
+
+[[kv_namespaces]]
+binding = "INVENTORY_KV"
+id = "b7e28041b6644024bebd7be4f791f1fb"
+# Create with: wrangler kv:namespace create INVENTORY_KV
 
 [vars]
 INVENTORY_LOCAL_FS_DISABLED = "1"
+INVENTORY_BACKEND = "prisma"

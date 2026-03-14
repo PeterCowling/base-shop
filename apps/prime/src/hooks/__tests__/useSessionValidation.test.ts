@@ -20,12 +20,11 @@ describe('useSessionValidation', () => {
   });
 
   it('TC-01: valid token keeps session active without callbacks', async () => {
-    mockedValidateGuestToken.mockResolvedValue('valid');
+    mockedValidateGuestToken.mockResolvedValue({ status: 'valid', guestUuid: 'occ_1234567890123' });
     const onInvalidOrExpired = jest.fn();
 
     renderHook(() =>
       useSessionValidation({
-        token: 'token-123',
         enabled: true,
         intervalMs: 1000,
         onInvalidOrExpired,
@@ -41,12 +40,11 @@ describe('useSessionValidation', () => {
   });
 
   it('TC-02: expired token triggers invalid/expired callback', async () => {
-    mockedValidateGuestToken.mockResolvedValue('expired');
+    mockedValidateGuestToken.mockResolvedValue({ status: 'expired', guestUuid: null });
     const onInvalidOrExpired = jest.fn();
 
     renderHook(() =>
       useSessionValidation({
-        token: 'token-123',
         enabled: true,
         intervalMs: 1000,
         onInvalidOrExpired,
@@ -59,12 +57,11 @@ describe('useSessionValidation', () => {
   });
 
   it('TC-03: network errors fail-open and do not clear session', async () => {
-    mockedValidateGuestToken.mockResolvedValue('network_error');
+    mockedValidateGuestToken.mockResolvedValue({ status: 'network_error', guestUuid: null });
     const onInvalidOrExpired = jest.fn();
 
     renderHook(() =>
       useSessionValidation({
-        token: 'token-123',
         enabled: true,
         intervalMs: 1000,
         onInvalidOrExpired,

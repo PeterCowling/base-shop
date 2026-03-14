@@ -1,5 +1,3 @@
-// File: /src/libs/reservation-grid/src/lib/hooks/useGridData.ts
-
 import { useCallback, useMemo } from "react";
 
 import { buildDays, buildRows } from "../components/Day/utils/buildData";

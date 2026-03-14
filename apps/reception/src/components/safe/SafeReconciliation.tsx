@@ -3,6 +3,7 @@
 import { memo, useEffect, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 
 import { useSafeData } from "../../context/SafeDataContext";
 import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
@@ -111,7 +112,7 @@ function SafeReconciliation(): JSX.Element {
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-wrap gap-3">
+        <Inline gap={3}>
           <Button
             onClick={() => openForm("reconcile")}
             color="warning"
@@ -136,7 +137,7 @@ function SafeReconciliation(): JSX.Element {
           >
             Petty Cash
           </Button>
-        </div>
+        </Inline>
         {activeForm === "reconcile" && (
           <SafeReconcileForm
             expectedSafe={safeBalance}

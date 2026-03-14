@@ -333,6 +333,118 @@ describe("inbox regenerate/send/resolve routes", () => {
     expect(threadContext?.messages[19]?.snippet).toBe("Question body 29");
   });
 
+  // TC-01: gmail_draft_id already set → skip createGmailDraft, emit send_duplicate_blocked, send with existing ID
+  it("TC-01: skips draft creation and emits send_duplicate_blocked when gmail_draft_id already exists", async () => {
+    const threadRecord = buildThreadRecord({
+      drafts: [
+        {
+          ...buildThreadRecord().drafts[0],
+          gmail_draft_id: "existing-gmail-draft-1",
+        },
+      ],
+    });
+    getThreadMock.mockResolvedValue(threadRecord);
+    sendGmailDraftMock.mockResolvedValue({ id: "gmail-msg-1", threadId: "thread-1" });
+    updateDraftMock
+      .mockResolvedValueOnce({ ...threadRecord.drafts[0], status: "approved" })
+      .mockResolvedValueOnce({ ...threadRecord.drafts[0], status: "sent" });
+
+    const response = await sendDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/thread-1/send"),
+      { params: { threadId: "thread-1" } },
+    );
+
+    expect(response.status).toBe(200);
+    // createGmailDraft must NOT be called
+    expect(createGmailDraftMock).not.toHaveBeenCalled();
+    // sendGmailDraft must be called with the EXISTING ID
+    expect(sendGmailDraftMock).toHaveBeenCalledWith("existing-gmail-draft-1");
+    // send_duplicate_blocked event must be recorded
+    expect(recordInboxEventMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        threadId: "thread-1",
+        eventType: "send_duplicate_blocked",
+        actorUid: "staff-1",
+        metadata: expect.objectContaining({ gmailDraftId: "existing-gmail-draft-1" }),
+      }),
+    );
+  });
+
+  // TC-02: gmail_draft_id is null → create, write ID to D1 before send, send completes
+  it("TC-02: writes gmailDraftId to D1 before sendGmailDraft in normal path", async () => {
+    getThreadMock.mockResolvedValue(buildThreadRecord());
+    createGmailDraftMock.mockResolvedValue({ id: "gmail-draft-new" });
+    sendGmailDraftMock.mockResolvedValue({ id: "gmail-msg-2", threadId: "thread-1" });
+
+    const callOrder: string[] = [];
+    updateDraftMock.mockImplementation((args: Record<string, unknown>) => {
+      if (!args.status) {
+        // The pre-send gmailDraftId write (no status field)
+        callOrder.push("updateDraft_id_write");
+      } else if (args.status === "approved") {
+        callOrder.push("updateDraft_approved");
+      } else if (args.status === "sent") {
+        callOrder.push("updateDraft_sent");
+      }
+      return Promise.resolve({ ...buildThreadRecord().drafts[0], gmail_draft_id: "gmail-draft-new" });
+    });
+    sendGmailDraftMock.mockImplementation(() => {
+      callOrder.push("sendGmailDraft");
+      return Promise.resolve({ id: "gmail-msg-2", threadId: "thread-1" });
+    });
+
+    const response = await sendDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/thread-1/send"),
+      { params: { threadId: "thread-1" } },
+    );
+
+    expect(response.status).toBe(200);
+    expect(createGmailDraftMock).toHaveBeenCalledTimes(1);
+    // D1 ID write must precede the send call
+    const idWriteIdx = callOrder.indexOf("updateDraft_id_write");
+    const sendIdx = callOrder.indexOf("sendGmailDraft");
+    expect(idWriteIdx).toBeGreaterThanOrEqual(0);
+    expect(sendIdx).toBeGreaterThan(idWriteIdx);
+    // The pre-send write must pass gmailDraftId and no status
+    expect(updateDraftMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        draftId: "draft-1",
+        gmailDraftId: "gmail-draft-new",
+      }),
+    );
+    // No send_duplicate_blocked event
+    expect(recordInboxEventMock).not.toHaveBeenCalledWith(
+      expect.objectContaining({ eventType: "send_duplicate_blocked" }),
+    );
+  });
+
+  // TC-04: expectedUpdatedAt conflict → 409 returned, send_duplicate_blocked not emitted
+  it("TC-04: returns 409 on optimistic lock conflict without emitting send_duplicate_blocked", async () => {
+    const threadRecord = buildThreadRecord({
+      drafts: [
+        {
+          ...buildThreadRecord().drafts[0],
+          updated_at: "2026-03-06T10:02:00.000Z",
+        },
+      ],
+    });
+    getThreadMock.mockResolvedValue(threadRecord);
+
+    const response = await sendDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/thread-1/send", {
+        expectedUpdatedAt: "2026-03-06T09:00:00.000Z",
+      }),
+      { params: { threadId: "thread-1" } },
+    );
+
+    expect(response.status).toBe(409);
+    expect(createGmailDraftMock).not.toHaveBeenCalled();
+    expect(sendGmailDraftMock).not.toHaveBeenCalled();
+    expect(recordInboxEventMock).not.toHaveBeenCalledWith(
+      expect.objectContaining({ eventType: "send_duplicate_blocked" }),
+    );
+  });
+
   it("returns 400 when send is attempted without a draft", async () => {
     getThreadMock.mockResolvedValue(buildThreadRecord({ drafts: [] }));
 
@@ -415,7 +527,7 @@ describe("inbox regenerate/send/resolve routes", () => {
     const payload = await response.json();
 
     expect(response.status).toBe(200);
-    expect(sendPrimeInboxThreadMock).toHaveBeenCalledWith("prime:broadcast_whole_hostel", "staff-1");
+    expect(sendPrimeInboxThreadMock).toHaveBeenCalledWith("prime:broadcast_whole_hostel", "staff-1", ["staff"]);
     expect(getThreadMock).not.toHaveBeenCalled();
     expect(createGmailDraftMock).not.toHaveBeenCalled();
     expect(sendGmailDraftMock).not.toHaveBeenCalled();
@@ -428,11 +540,18 @@ describe("inbox regenerate/send/resolve routes", () => {
     createGmailDraftMock.mockResolvedValue({ id: "gmail-draft-1" });
     sendGmailDraftMock.mockResolvedValue({ id: "gmail-msg-1", threadId: "thread-1" });
     updateDraftMock
+      // First call: pre-send gmailDraftId write (no status)
+      .mockResolvedValueOnce({
+        ...buildThreadRecord().drafts[0],
+        gmail_draft_id: "gmail-draft-1",
+      })
+      // Second call: status "approved"
       .mockResolvedValueOnce({
         ...buildThreadRecord().drafts[0],
         gmail_draft_id: "gmail-draft-1",
         status: "approved",
       })
+      // Third call: status "sent"
       .mockResolvedValueOnce({
         ...buildThreadRecord().drafts[0],
         gmail_draft_id: "gmail-draft-1",
@@ -481,6 +600,23 @@ describe("inbox regenerate/send/resolve routes", () => {
       },
     });
     expect(payload.data.sentMessageId).toBe("gmail-msg-1");
+  });
+
+  it("returns 502 with GMAIL_AUTH_EXPIRED when sendGmailDraft throws 401", async () => {
+    isPrimeInboxThreadIdMock.mockReturnValue(false);
+    getThreadMock.mockResolvedValue(buildThreadRecord());
+    createGmailDraftMock.mockResolvedValue({ id: "gmail-draft-1" });
+    updateDraftMock.mockResolvedValueOnce({ ...buildThreadRecord().drafts[0], gmail_draft_id: "gmail-draft-1" });
+    sendGmailDraftMock.mockRejectedValue(new Error("Gmail API request failed: HTTP 401"));
+
+    const response = await sendDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/thread-1/send"),
+      { params: { threadId: "thread-1" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(502);
+    expect(payload).toMatchObject({ code: "GMAIL_AUTH_EXPIRED" });
   });
 
   it("routes Prime resolve through the Prime review proxy for prefixed threads", async () => {

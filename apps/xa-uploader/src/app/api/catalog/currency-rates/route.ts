@@ -11,6 +11,7 @@ import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLi
 import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../lib/uploaderLogger";
 
 export const runtime = "nodejs";
 
@@ -63,6 +64,7 @@ export async function GET(request: Request) {
   } catch (error) {
     if (error instanceof CatalogDraftContractError) {
       const isInvalidRates = error.code === "invalid_response";
+      uploaderLog("error", "currency_rates_read_failed", { storefront: DEFAULT_STOREFRONT, code: error.code });
       return withRateHeaders(
         buildErrorResponse(
           isInvalidRates ? "invalid_rates" : "service_unavailable",
@@ -72,6 +74,7 @@ export async function GET(request: Request) {
         limit,
       );
     }
+    uploaderLog("error", "currency_rates_read_failed", { storefront: DEFAULT_STOREFRONT, error: String(error) });
     return withRateHeaders(buildErrorResponse("internal_error", 500, "currency_rates_read_failed"), limit);
   }
 }
@@ -131,11 +134,13 @@ export async function PUT(request: Request) {
     return withRateHeaders(NextResponse.json({ ok: true }), limit);
   } catch (error) {
     if (error instanceof CatalogDraftContractError) {
+      uploaderLog("error", "currency_rates_write_failed", { storefront: DEFAULT_STOREFRONT, code: error.code });
       return withRateHeaders(
         buildErrorResponse("service_unavailable", 503, "currency_rates_contract_unavailable"),
         limit,
       );
     }
+    uploaderLog("error", "currency_rates_write_failed", { storefront: DEFAULT_STOREFRONT, error: String(error) });
     return withRateHeaders(buildErrorResponse("internal_error", 500, "internal_error"), limit);
   }
 }

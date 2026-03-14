@@ -18,7 +18,7 @@ const TimeElapsedChip: FC<TimeElapsedChipProps> = ({
   if (currentCode === 1) {
     // Booking Created stage: overdue ≥48h = danger, else ok
     if (hoursElapsed >= 48) {
-      chipColorClasses = "bg-danger-fg/15 border border-danger-fg text-danger-fg";
+      chipColorClasses = "bg-error-main/10 border border-error-main text-error-main";
     } else {
       chipColorClasses = "bg-primary-soft border border-primary-main/30 text-primary-main";
     }
@@ -31,7 +31,7 @@ const TimeElapsedChip: FC<TimeElapsedChipProps> = ({
     }
   } else if (currentCode === 4) {
     // Cancelled stage: always danger
-    chipColorClasses = "bg-danger-fg/15 border border-danger-fg text-danger-fg";
+    chipColorClasses = "bg-error-main/10 border border-error-main text-error-main";
   } else {
     chipColorClasses = "bg-primary-soft border border-primary-main/30 text-primary-main";
   }

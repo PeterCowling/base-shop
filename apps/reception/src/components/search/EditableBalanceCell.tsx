@@ -151,7 +151,7 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
   return (
     <TableCell
       className={`border-b border-border py-2 px-3 ${
-        justUpdated ? "bg-success-surface" : ""
+        justUpdated ? "bg-success-light" : ""
       }`}
     >
       {isEditing ? (

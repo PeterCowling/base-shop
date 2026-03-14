@@ -9,6 +9,217 @@
 @source "../../../../packages/ui/src";
 @source "../../../../packages/design-system/src";
 
+/* Expose token CSS vars as Tailwind utilities.
+   @theme inline keeps these as CSS var references in generated utilities
+   (no new :root vars emitted — tokens.css owns the :root declarations). */
+@theme inline {
+  /* Page background / foreground */
+  --color-bg: hsl(var(--color-bg));
+  --color-fg: hsl(var(--color-fg));
+
+  /* Surfaces */
+  --color-surface: hsl(var(--surface-1));
+  --color-panel: hsl(var(--color-panel));
+  --color-inset: hsl(var(--color-inset));
+  --color-surface-1: hsl(var(--surface-1));
+  --color-surface-2: hsl(var(--surface-2));
+  --color-surface-3: hsl(var(--surface-3));
+
+  /* Borders */
+  --color-border: hsl(var(--color-border));
+  --color-border-strong: hsl(var(--color-border-strong));
+  --color-border-2: hsl(var(--color-border-muted));
+
+  /* Text shades */
+  --color-secondary: hsl(var(--color-fg-muted));
+  --color-muted: hsl(var(--color-fg-muted));
+
+  /* Accent */
+  --color-accent: hsl(var(--color-accent));
+  --color-accent-fg: hsl(var(--color-accent-fg));
+
+  /* Danger */
+  --color-danger: hsl(var(--color-danger));
+  --color-danger-fg: hsl(var(--color-danger-fg));
+  --color-danger-soft: hsl(var(--color-danger-soft));
+
+  /* Success */
+  --color-success: hsl(var(--color-success));
+  --color-success-fg: hsl(var(--color-success-fg));
+  --color-success-soft: hsl(var(--color-success-soft));
+
+  /* Warning */
+  --color-warning: hsl(var(--color-warning));
+  --color-warning-fg: hsl(var(--color-warning-fg));
+  --color-warning-soft: hsl(var(--color-warning-soft));
+
+  /* Info */
+  --color-info: hsl(var(--color-info));
+  --color-info-fg: hsl(var(--color-info-fg));
+  --color-info-soft: hsl(var(--color-info-soft));
+
+  /* Business OS brand bridge */
+  --color-brand-bg: hsl(var(--color-bg));
+  --color-brand-surface: hsl(var(--surface-1));
+  --color-brand-text: hsl(var(--color-fg));
+  --color-brand-heading: hsl(var(--color-fg));
+  --color-brand-outline: hsl(var(--color-border-strong));
+  --color-brand-primary: hsl(var(--color-primary));
+  --color-brand-secondary: hsl(var(--color-accent));
+  --color-brand-accent: hsl(var(--color-accent));
+  --color-brand-terra: hsl(var(--color-danger-fg));
+  --color-brand-on-primary: hsl(var(--color-primary-fg));
+  --color-brand-on-accent: hsl(var(--color-accent-fg));
+  --color-hero-foreground: hsl(var(--hero-fg));
+
+  /* Focus ring */
+  --color-ring: hsl(var(--ring));
+}
+
+@utility bg-hero {
+  background-image:
+    radial-gradient(
+      circle at 14% 18%,
+      hsl(var(--color-info) / 0.24),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 78% 14%,
+      hsl(var(--color-warning) / 0.18),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 72% 72%,
+      hsl(var(--color-success) / 0.16),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      hsl(var(--color-primary)) 0%,
+      hsl(var(--hospitality-progress-start, 196 90% 48%)) 46%,
+      hsl(var(--hospitality-progress-end, 158 70% 43%)) 100%
+    );
+}
+
+@utility bg-hero-contrast {
+  background-image:
+    linear-gradient(
+      160deg,
+      hsl(var(--overlay-scrim-1, 0 0% 0% / 0.40)),
+      hsl(var(--overlay-scrim-1, 0 0% 0% / 0.40))
+    ),
+    radial-gradient(
+      circle at 10% 20%,
+      hsl(var(--color-info) / 0.28),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 84% 16%,
+      hsl(var(--color-warning) / 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 68% 72%,
+      hsl(var(--color-success) / 0.16),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      hsl(var(--color-primary)) 0%,
+      hsl(var(--hospitality-progress-start, 196 90% 48%)) 44%,
+      hsl(var(--hospitality-progress-end, 158 70% 43%)) 100%
+    );
+}
+
+/* Glassmorphism panel: semi-transparent surface + backdrop blur.
+   Applied at hero/section level only — not per-row cards (GPU performance). */
+@utility glass-panel {
+  background-color: hsl(var(--surface-1) / 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Light mode base: near-white with subtle indigo tint — restrained, on-brand.
+   Dark mode: restrained purple-violet (lower saturation vs previous hsl(320 80% 62%)) */
+@utility bg-cmd-hero {
+  background-image: linear-gradient(135deg, hsl(240 15% 96%) 0%, hsl(260 20% 92%) 100%);
+
+  @media (prefers-color-scheme: dark) {
+    background-image: linear-gradient(135deg, hsl(300 35% 45%) 0%, hsl(260 55% 38%) 100%);
+  }
+}
+
+/* Manual dark theme toggle support */
+html.theme-dark .bg-cmd-hero {
+  background-image: linear-gradient(135deg, hsl(300 35% 45%) 0%, hsl(260 55% 38%) 100%);
+}
+
+@utility cmd-glow-sm {
+  box-shadow: 0 0 8px 0 hsl(200 100% 70% / 0.20);
+}
+
+@utility cmd-glow-lg {
+  box-shadow: 0 0 24px 4px hsl(200 100% 70% / 0.18);
+}
+
+@utility shadow-elevation-0 {
+  box-shadow: var(--elevation-0);
+}
+
+@utility shadow-elevation-1 {
+  box-shadow: var(--elevation-1);
+}
+
+@utility shadow-elevation-2 {
+  box-shadow: var(--elevation-2);
+}
+
+@utility shadow-elevation-3 {
+  box-shadow: var(--elevation-3);
+}
+
+@utility shadow-elevation-4 {
+  box-shadow: var(--elevation-4);
+}
+
+@utility shadow-elevation-5 {
+  box-shadow: var(--elevation-5);
+}
+
+/* Command Centre scoped theme — process-improvements section only */
+/* Light mode: inherit base tokens; only force hero foreground to dark text
+   (--hero-fg defaults to white in :root; must override for light surfaces) */
+.cmd-centre {
+  /* NOTE: do NOT use var(--color-fg-dark) here — it is near-white (0 0% 93%)
+     and would reproduce the contrast failure on light backgrounds */
+  --hero-fg: var(--color-fg);
+}
+
+/* Dark mode: restore dark-surface overrides */
+@media (prefers-color-scheme: dark) {
+  .cmd-centre {
+    --color-bg: 222 30% 10%;
+    --color-fg: 210 15% 92%;
+    --surface-1: 222 25% 12%;
+    --surface-2: 222 22% 14%;
+    --surface-3: 222 18% 16%;
+    --color-border: 222 20% 20%;
+    --color-border-muted: 222 18% 22%;
+    --color-fg-muted: 210 10% 60%;
+  }
+}
+
+html.theme-dark .cmd-centre {
+  --color-bg: 222 30% 10%;
+  --color-fg: 210 15% 92%;
+  --surface-1: 222 25% 12%;
+  --surface-2: 222 22% 14%;
+  --surface-3: 222 18% 16%;
+  --color-border: 222 20% 20%;
+  --color-border-muted: 222 18% 22%;
+  --color-fg-muted: 210 10% 60%;
+}
+
 /* Base styles */
 @layer base {
   body {

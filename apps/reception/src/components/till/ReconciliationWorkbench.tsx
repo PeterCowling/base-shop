@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { Input } from "@acme/design-system";
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 
 import { TillDataProvider, useTillData } from "../../context/TillDataContext";
 import usePmsPostings from "../../hooks/data/till/usePmsPostings";
@@ -13,6 +14,7 @@ import useTerminalBatches from "../../hooks/data/till/useTerminalBatches";
 import { usePmsPostingsMutations } from "../../hooks/mutations/usePmsPostingsMutations";
 import { useTerminalBatchesMutations } from "../../hooks/mutations/useTerminalBatchesMutations";
 import { type CashCount } from "../../types/hooks/data/cashCountData";
+import { getLocalToday } from "../../utils/dateUtils";
 import { formatEuro } from "../../utils/format";
 import { showToast } from "../../utils/toastUtils";
 import { PageShell } from "../common/PageShell";
@@ -51,7 +53,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
   }, [amount, method, note, onSubmit]);
 
   return (
-    <div className="flex items-end gap-2 flex-wrap">
+    <Inline gap={2} alignY="end">
       <div>
         <label className="block text-xs mb-1">Amount</label>
         <Input
@@ -96,7 +98,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       >
         {submitting ? "Saving…" : "Add PMS Posting"}
       </Button>
-    </div>
+    </Inline>
   );
 });
 
@@ -126,7 +128,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
   }, [amount, note, onSubmit]);
 
   return (
-    <div className="flex items-end gap-2 flex-wrap">
+    <Inline gap={2} alignY="end">
       <div>
         <label className="block text-xs mb-1">Amount</label>
         <Input
@@ -159,7 +161,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
       >
         {submitting ? "Saving…" : "Add Terminal Batch"}
       </Button>
-    </div>
+    </Inline>
   );
 });
 
@@ -193,37 +195,58 @@ const ReconciliationWorkbenchContent = memo(
     );
 
     /* ----------------------------- Cash drawer ------------------------------ */
+    const todayStr = useMemo(() => getLocalToday(), []);
+
     const lastCashCount = useMemo<CashCount | null>(() => {
-      if (cashCounts.length === 0) return null;
-      return cashCounts[cashCounts.length - 1];
-    }, [cashCounts]);
+      const todayCounts = cashCounts.filter(
+        (c) => c.timestamp.slice(0, 10) === todayStr
+      );
+      if (todayCounts.length === 0) return null;
+      return todayCounts[todayCounts.length - 1];
+    }, [cashCounts, todayStr]);
 
     const drawerTotal = lastCashCount?.count ?? 0;
 
     /* ----------------------------- PMS postings ----------------------------- */
+    const todayPostings = useMemo(
+      () =>
+        postings.filter(
+          (p) => !p.createdAt || p.createdAt.slice(0, 10) === todayStr
+        ),
+      [postings, todayStr]
+    );
+
     const pmsCashTotal = useMemo(
       () =>
-        postings
+        todayPostings
           .filter((p) => p.method === "CASH")
           .reduce((sum, p) => sum + p.amount, 0),
-      [postings]
+      [todayPostings]
     );
 
     const pmsCcTotal = useMemo(
       () =>
-        postings
+        todayPostings
           .filter((p) => p.method === "CC")
           .reduce((sum, p) => sum + p.amount, 0),
-      [postings]
+      [todayPostings]
     );
 
     /* --------------------------- Terminal batches --------------------------- */
-    const terminalTotal = useMemo(
-      () => batches.reduce((sum, b) => sum + b.amount, 0),
-      [batches]
+    const todayBatches = useMemo(
+      () =>
+        batches.filter(
+          (b) => !b.createdAt || b.createdAt.slice(0, 10) === todayStr
+        ),
+      [batches, todayStr]
     );
 
-    const numberSchema = z.number().nonnegative();
+    const terminalTotal = useMemo(
+      () => todayBatches.reduce((sum, b) => sum + b.amount, 0),
+      [todayBatches]
+    );
+
+    const numberSchema = z.number().finite();
     const posCashParse = numberSchema.safeParse(posCashTotal);
     const posCcParse = numberSchema.safeParse(posCcTotal);
     const drawerParse = numberSchema.safeParse(drawerTotal);
@@ -254,8 +277,8 @@ const ReconciliationWorkbenchContent = memo(
     const safeTerminalTotal = terminalParse.success ? terminalParse.data : 0;
 
     /* ----------------------- Missing data warnings ------------------------- */
-    const hasPmsData = !pmsLoading && postings.length > 0;
-    const hasBatchData = !batchLoading && batches.length > 0;
+    const hasPmsData = !pmsLoading && todayPostings.length > 0;
+    const hasBatchData = !batchLoading && todayBatches.length > 0;
 
     /* --------------------------------- UI ---------------------------------- */
     return (
@@ -342,7 +365,7 @@ const ReconciliationWorkbenchContent = memo(
               </TableRow>
 
               {/* Terminal Batch */}
-              <TableRow>
+              <TableRow className="border-b">
                 <TableCell className="p-2">Terminal Batch</TableCell>
                 <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
                 <TableCell className="p-2 text-end">{formatEuro(safeTerminalTotal)}</TableCell>
@@ -354,6 +377,21 @@ const ReconciliationWorkbenchContent = memo(
                 >
                   {formatEuro(safeTerminalTotal - safePosCcTotal)}
                 </TableCell>
+              </TableRow>
+
+              {/* PMS CC vs Terminal */}
+              <TableRow>
+                <TableCell className="p-2 font-medium">PMS vs Terminal</TableCell>
+                <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
+                <TableCell
+                  className={`p-2 text-right ${diffClass(
+                    safePmsCcTotal - safeTerminalTotal
+                  )}`}
+                >
+                  {formatEuro(safePmsCcTotal - safeTerminalTotal)}
+                </TableCell>
+                <TableCell className="p-2" />
+                <TableCell className="p-2" />
               </TableRow>
             </TableBody>
           </Table>

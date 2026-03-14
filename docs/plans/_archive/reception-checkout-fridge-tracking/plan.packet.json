@@ -1,0 +1,292 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-checkout-fridge-tracking",
+  "source_artifact_path": "docs/plans/reception-checkout-fridge-tracking/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-checkout-fridge-tracking/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff need to record at checkout whether a guest used the fridge, and see that flag on the checkout screen so nothing is missed before the guest leaves.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can toggle a fridge-used flag per guest on the checkout screen; the FRIDGE column shows a fridge icon when the flag is set, so staff know to retrieve fridge items before the guest departs.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "`Refrigerator` icon in FRIDGE cell; `Button` with `disabled` prop during write",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "Icon already available in lucide-react",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Empty cell when unset; icon when set; button disabled during write; toast on error",
+      "current_or_option_state": "TASK-04, TASK-05",
+      "gap_or_implication": "Pending state via `Set<string>` in `Checkout.tsx`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Explicit `fridgeStorage` Firebase rule, role-gated write, null-writes allowed",
+      "current_or_option_state": "TASK-06",
+      "gap_or_implication": "No PII; same auth model as all other guest-facing nodes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`console.error` + `showToast` on toggle failure",
+      "current_or_option_state": "TASK-03, TASK-05",
+      "gap_or_implication": "Follow existing pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Schema unit, hook unit, mutation unit, component, integration, rules, parity snapshot",
+      "current_or_option_state": "TASK-07",
+      "gap_or_implication": "Multiple test files; all CI-only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "New Zod schema, TS types; `Guest.fridgeUsed?: boolean`; `CheckoutTableProps` updated; `CheckoutRow` unchanged",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "Breaking type change on `Guest` — all callsites in scope",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Single Firebase `update()` per toggle; bounded node size; disabled button prevents double-fire",
+      "current_or_option_state": "TASK-03, TASK-05",
+      "gap_or_implication": "`finally` block ensures pending set is always cleared",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No feature flag; additive Firebase node; revert 5–6 files to rollback",
+      "current_or_option_state": "TASK-01–TASK-07",
+      "gap_or_implication": "Firebase node persists harmlessly after rollback",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The checkout screen has a FRIDGE column that always shows blank. This plan wires real Firebase data into it: a boolean `{ used: boolean }` flag per occupant at `fridgeStorage/<occupantId>`, displayed as a `Refrigerator` icon when set. Staff can toggle the flag directly on the checkout row. The implementation follows the bag-storage analogue exactly, extended with a direct-write mutation hook, a per-row disabled-during-write pending state, and full coverage of the occupant lifecycle (archive, delete-guest cleanup). Seven tasks, three waves. No feature flags, no migration.",
+    "goals": [
+      "Staff toggle fridge-used per guest row on the checkout screen.",
+      "FRIDGE column shows `Refrigerator` icon when `used === true`, blank otherwise.",
+      "Fridge flag archived alongside the guest; deleted alongside the guest record.",
+      "Firebase security rule explicitly covers `fridgeStorage` node."
+    ],
+    "non_goals": [
+      "No free-text, no item list, no POS transaction.",
+      "No fridge UI on any screen other than checkout."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Toggle is per-occupant, not per-booking.",
+      "All staff/admin/manager/developer/owner roles may write.",
+      "`Refrigerator` icon confirmed available in lucide-react installed in this app."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Bag-storage pattern for read path; disabled-during-write pending state for toggle UX.",
+      "Why planning is not reopening option selection:",
+      "Analysis settled all design decisions. Operator confirmed all requirements. No open forks."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Create fridgeStorage schema and types",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New files `apps/reception/src/schemas/fridgeStorageSchema.ts` and `apps/reception/src/types/hooks/data/fridgeStorageData.ts`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Create useFridgeStorageData read hook",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `apps/reception/src/hooks/data/useFridgeStorageData.ts`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Create useSetFridgeUsedMutation write hook",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `apps/reception/src/hooks/mutations/useSetFridgeUsedMutation.ts`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Update CheckoutTable — type change, Refrigerator icon, toggle button",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/reception/src/components/checkout/CheckoutTable.tsx`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Wire Checkout.tsx — subscribe, pending state, toggle handler",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/reception/src/components/checkout/Checkout.tsx`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Archive, delete-guest cleanup, and Firebase rules",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `useArchiveCheckedOutGuests.ts`, `useDeleteGuestFromBooking.ts`, `database.rules.json`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Tests — all layers",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-05",
+          "TASK-06"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New and updated test files across schema, hooks, mutation, component, integration, rules, parity",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Fridge flag recording at checkout",
+          "trigger": "Guest hands fridge items to staff; staff opens checkout screen",
+          "flow": "1. FRIDGE column shows toggle button per row. 2. Staff clicks toggle. 3. Button disables (pending state). 4. `useSetFridgeUsedMutation` calls `update(ref(db, fridgeStorage/<occupantId>), { used: true })`. 5. Firebase subscription delivers update → `Refrigerator` icon appears; button re-enables. 6. Clicking again reverses: `used: false`, icon disappears. 7. On error: toast shown; button re-enables; Firebase state unchanged.",
+          "task_ids": [
+            "TASK-03",
+            "TASK-04",
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Rollback: revert TASK-04 and TASK-05 changes; Firebase node persists harmlessly"
+        },
+        {
+          "id": null,
+          "label": "Guest archival",
+          "trigger": "Past-checkout occupants archived by `useArchiveCheckedOutGuests`",
+          "flow": "`fridgeStorage/<occupantId>` read → copied to `archive/fridgeStorage/<occupantId>` → live path nulled. Joins existing bagStorage archival block.",
+          "task_ids": [
+            "TASK-06"
+          ],
+          "dependency_note": null,
+          "seams": "Additive only"
+        },
+        {
+          "id": null,
+          "label": "Guest deletion",
+          "trigger": "Operator deletes a guest via `useDeleteGuestFromBooking`",
+          "flow": "`fridgeStorage/<occupantId> = null` added to the `updates` map alongside `bagStorage/<occupantId> = null` at line 119.",
+          "task_ids": [
+            "TASK-06"
+          ],
+          "dependency_note": null,
+          "seams": "Additive one-liner"
+        },
+        {
+          "id": null,
+          "label": "Firebase security",
+          "trigger": "Deploy of updated `database.rules.json`",
+          "flow": "Explicit `fridgeStorage` rule: authenticated read for all users; role-gated write (staff/admin/manager/developer/owner) without `newData.exists()` — null writes allowed for archive and delete flows.",
+          "task_ids": [
+            "TASK-06"
+          ],
+          "dependency_note": null,
+          "seams": "Rules change is safe to deploy before or alongside code"
+        }
+      ]
+    }
+  }
+}

@@ -1,6 +1,7 @@
-/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 import Link from 'next/link';
 import { Settings } from 'lucide-react';
+
+import { Container } from '@/components/layout/Container';
 
 import ActivationFunnelSummary from '../../../components/owner/ActivationFunnelSummary';
 import StaffOwnerDisabledNotice from '../../../components/security/StaffOwnerDisabledNotice';
@@ -13,7 +14,7 @@ export default function OwnerSetupPage() {
 
   return (
     <main className="min-h-svh bg-muted p-4">
-      <div className="mx-auto max-w-4xl">
+      <Container className="max-w-4xl">
         <div className="mb-6 flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-accent-soft">
             <Settings className="h-6 w-6 text-accent" />
@@ -36,7 +37,7 @@ export default function OwnerSetupPage() {
             Return Home
           </Link>
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

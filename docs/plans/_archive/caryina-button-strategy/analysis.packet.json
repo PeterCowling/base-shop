@@ -1,0 +1,195 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "caryina-button-strategy",
+  "source_artifact_path": "docs/plans/caryina-button-strategy/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/caryina-button-strategy/fact-find.md",
+    "plan": "docs/plans/caryina-button-strategy/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Local `.btn-primary` is a styling island: brand-token changes must be manually kept in sync between `global.css` and any DS-native button styles. Centralising on DS Button means one source of truth.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All caryina-owned call sites (12) use DS `<Button>` or an explicitly documented exception; `.btn-primary` CSS utility is removed from `global.css` once call sites are migrated.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Inline className replicates exact token chain; hover/active/focus-visible preserved",
+      "current_or_option_state": "Hover shifts to opacity-based; visual change on pink palette",
+      "gap_or_implication": "Inline className constant must precisely match `.btn-primary` token references; spot-check in dev before commit",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Disabled, loading, hover, active, focus-visible all carried via className; `disabled:opacity-50` already present in all call sites",
+      "current_or_option_state": "Same but hover state visual differs",
+      "gap_or_implication": "All states verified via existing render tests + visual spot-check",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Existing render tests survive (no class-name assertions); no new test infra needed; hover untestable in JSDOM",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Update/add render test assertions to confirm DS Button renders with expected role and disabled state",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — component swap has no runtime cost difference",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single PR; rollback = git revert; no data migration",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No feature flag; rollback verified by reverting one commit",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Caryina has 12 call sites using a locally-defined `.btn-primary` CSS utility class instead of the shared DS `<Button>` component from `@acme/design-system/shadcn`. The decision is: which migration approach replaces the local utility while preserving visual fidelity, centralises the styling source of truth, and carries the lowest execution risk?",
+    "goals": [
+      "Remove the `.btn-primary` CSS island from `apps/caryina/src/styles/global.css`.",
+      "All 12 caryina-owned call sites use DS `<Button>` as the component primitive.",
+      "Visual output is preserved (hover, active, focus-visible states match current behaviour).",
+      "`pnpm --filter @apps/caryina typecheck` passes; existing render tests pass."
+    ],
+    "non_goals": [
+      "Redesigning the button visual style.",
+      "Migrating `AddToCartButton` in `@acme/platform-core` (shared platform code, separate concern).",
+      "Adding new DS Button variants or props."
+    ],
+    "constraints": [
+      "`@acme/design-system/shadcn` is the required import path (ESLint `no-restricted-imports` bans `@acme/ui/components/atoms/shadcn`).",
+      "`@acme/design-system` is already a declared dependency (added by dispatch 0002, Input migration).",
+      "2 of 12 call sites are `<Link>` elements, not `<button>` elements — `<Button asChild>` pattern required for these."
+    ],
+    "assumptions": [
+      "DS `<Button compatibilityMode=\"passthrough\">` strips all DS-internal bg/padding/ring classes, giving the caller full className control.",
+      "Existing render tests assert DOM structure (button existence, disabled state) but not class names — migration does not break these tests."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Visual fidelity",
+        "Why it matters": "Hover/active/focus colours must match current — pink palette is brand-critical",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "DS centralisation",
+        "Why it matters": "Removes the local utility island so brand token changes propagate automatically",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Execution risk",
+        "Why it matters": "Low regression risk required — buttons appear on every CTA in the shop funnel",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Effort",
+        "Why it matters": "Simple migration preferred; no new infrastructure",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Future maintainability",
+        "Why it matters": "Token-based approach should be self-documenting and easy to update",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Passthrough migration",
+        "Description": "Replace all 12 call sites with `<Button compatibilityMode=\"passthrough\" className=\"...\">` using an inline string constant that replicates the exact token-based hover/active/focus chain. Remove `.btn-primary` from global.css.",
+        "Upside": "Exact visual fidelity preserved; full DS centralisation; no design change; single PR.",
+        "Downside": "Fidelity depends entirely on the inline className string matching current token values; no automated test catches a mismatch — requires dev spot-check.",
+        "Key risks": "CSS specificity conflict between Tailwind utilities in passthrough mode (low risk; predictable in Tailwind v4).",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — DS-native migration",
+        "Description": "Replace all 12 call sites with `<Button>` using the default variant — no passthrough. Accept opacity-based hover (`bg-primary/90`) instead of token-based.",
+        "Upside": "Cleanest component usage; no className overrides needed.",
+        "Downside": "Visual change: hover colour will look lighter on white backgrounds (opacity blends with white). This is a product/design change without operator sign-off.",
+        "Key risks": "Unexpected brand-visual regression; hover on pink palette at 90% opacity = effectively HSL 355 55% ~77% (lighter than `--color-primary-hover` at 68%).",
+        "Viable?": "No — visual change without approval"
+      },
+      {
+        "Option": "C — Document and keep `.btn-primary`",
+        "Description": "Retain the local utility class; add a comment explaining its relationship to DS tokens and why it's intentional.",
+        "Upside": "Zero migration effort; zero regression risk.",
+        "Downside": "Styling island persists; brand token updates require manual sync across two systems; does not achieve the stated goal of centralisation.",
+        "Key risks": "Future maintainers may not see the comment; island grows.",
+        "Viable?": "No — does not achieve centralisation goal"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Passthrough migration with inline className string constant.",
+      "**Why this wins": "**",
+      "**What it depends on": "**",
+      "For 2 `<Link>` sites": "`<Button asChild>` wrapping pattern — confirmed available via Radix Slot forwarding.",
+      "**Option B (DS-native)** — Rejected": "hover colour changes from `--color-primary-hover` (68% lightness) to `bg-primary/90` (blends with white background, appears ~77% lightness). Visual change on brand-critical pink CTA without operator sign-off.",
+      "**Option C (document and keep)** — Rejected": "styling island persists; fails the stated centralisation goal."
+    },
+    "rejected_approaches": [
+      "**Option B (DS-native)** — Rejected: hover colour changes from `--color-primary-hover` (68% lightness) to `bg-primary/90` (blends with white background, appears ~77% lightness). Visual change on brand-critical pink CTA without operator sign-off.",
+      "**Option C (document and keep)** — Rejected: styling island persists; fails the stated centralisation goal."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Define the shared inline className constant (hover/active/focus-visible token chain + `rounded-full`) and export from a caryina-local constants file or inline at each call site.",
+        "Migrate 10 `<button>` call sites → `<Button compatibilityMode=\"passthrough\" className={...}>`."
+      ],
+      "validation_implications": [
+        "`pnpm --filter @apps/caryina typecheck` must pass (this is the acceptance gate, not a separate CI run).",
+        "Existing render tests for checkout, cart, PDP, admin, shop, and NotifyMeForm pages must remain green.",
+        "Visual spot-check in dev server for hover/active/focus-visible on at least one `<button>` site and one `<Link asChild>` site before commit."
+      ],
+      "sequencing_constraints": [
+        "Define className constant first, then migrate call sites, then delete `.btn-primary`.",
+        "All 12 call sites + global.css deletion should land in a single commit so CI sees a consistent state."
+      ],
+      "risks_to_carry_forward": [
+        "`<Button asChild>` with Next.js `<Link>` — verify ref forwarding works (low risk; standard Radix Slot pattern, but worth confirming at dev time).",
+        "Tailwind v4 specificity on passthrough className — no known issue, verify locally."
+      ]
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. This change alters component imports and removes a CSS utility class. No CI/deploy lane, approval path, or operator runbook is affected.",
+      "areas": []
+    }
+  }
+}

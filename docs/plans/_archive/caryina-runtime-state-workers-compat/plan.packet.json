@@ -1,0 +1,350 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "caryina-runtime-state-workers-compat",
+  "source_artifact_path": "docs/plans/caryina-runtime-state-workers-compat/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/caryina-runtime-state-workers-compat/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Two pieces of Caryina checkout state use the file system for storage, which is incompatible with Cloudflare Workers. Every checkout attempt currently throws on the idempotency store, and cart state is lost between requests.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Both the checkout idempotency store and the cart backend are migrated to Workers-compatible Prisma/Neon storage; no fs calls remain in either checkout path; deployed Worker can complete a checkout end-to-end without a runtime exception.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — pure server-side storage layer swap",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UI files changed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — API response shapes unchanged; customers see no different behaviour",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Cart reads and checkout responses do not change shape",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "`buyerEmail` and transaction metadata move from local file to Neon DB; same access control as `Order` table via `DATABASE_URL` secret",
+      "current_or_option_state": "TASK-02, TASK-05",
+      "gap_or_implication": "No new PII surface beyond existing `Order` model",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Existing `recordMetric` call sites preserved in idempotency store rewrite; Prisma errors logged at `console.error`",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Cart Prisma errors also logged at same severity",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for both new backends; existing route/reconciliation tests remain valid (both stores are fully mocked in all existing tests)",
+      "current_or_option_state": "TASK-06, TASK-07",
+      "gap_or_implication": "No E2E test changes required",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Two new Prisma models, additive migration, `storeProviderSchema` enum extended",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "`Cart` has no `shopId` — UUID-keyed only; `CheckoutAttempt` has `@@unique([shopId, idempotencyKey])`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "P2002 unique constraint violation caught and mapped to `in_progress`/`conflict` result; `prisma.$transaction` used for `beginStripeCheckoutFinalization`; cart TTL via `expiresAt` checked on read",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "~5-15ms Neon latency per operation; acceptable at boutique volume",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive schema migration applied first; code deploys second; rollback is code revert + optionally drop new tables",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No feature flag needed; `MemoryCartStore` and fs-based code still available on rollback",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Caryina's checkout flow crashes on Cloudflare Workers because two state stores depend on the Node.js filesystem: the checkout idempotency store (`checkoutIdempotency.server.ts`) throws `EROFS` on every checkout attempt, and the `MemoryCartStore` default loses cart state between isolate instances. This plan migrates both stores to Prisma/Neon — the database already active for Caryina inventory, products, and orders — by adding two new schema models, implementing `PrismaCartStore` in `platform-core`, rewriting the idempotency store functions to use Prisma, extending the `CART_STORE_PROVIDER` Zod",
+    "goals": [
+      "Eliminate all `node:fs` calls from both checkout state stores.",
+      "Migrate cart backend to `PrismaCartStore` (Workers-compatible, durable across isolates).",
+      "Migrate idempotency store to Prisma with equivalent atomicity semantics (unique constraint + P2002 catch replaces file lock).",
+      "All existing caller code in `checkoutSession.server.ts`, `stripeCheckout.server.ts`, and `checkoutReconciliation.server.ts` remains unchanged.",
+      "Deployed Worker can complete a Caryina checkout end-to-end without a runtime exception."
+    ],
+    "non_goals": [
+      "Removing `export const runtime = \"nodejs\"` from checkout routes (descoped — email path depends on `createRequire`).",
+      "Adding Workers-compatible backends to any shop other than Caryina.",
+      "Changing the `CartStore` interface.",
+      "Migrating data from `checkout-idempotency.json` (no production records exist; Worker has never succeeded).",
+      "Replacing the Upstash Redis or Durable Object cart backends.",
+      "Adding a background cart TTL cleanup job (deferred follow-up)."
+    ],
+    "constraints": [
+      "Prisma/Neon is already active for Caryina. `DATABASE_URL` Worker secret is configured.",
+      "Schema additions go to `packages/platform-core/prisma/schema.prisma`; migrations checked in to `packages/platform-core/prisma/migrations/` as timestamped files.",
+      "`MemoryCartStore`, `RedisCartStore`, `CloudflareDurableObjectCartStore` must continue working.",
+      "`storeProviderSchema` Zod enum must be extended before `CART_STORE_PROVIDER=prisma` is added to `wrangler.toml` — otherwise env parse fails at startup.",
+      "Tests run CI-only. Never run Jest locally.",
+      "No failing test stubs in planning mode.",
+      "`PrismaCheckoutIdempotencyStore` must use the existing platform-core Prisma client singleton (same client used by inventory, orders)."
+    ],
+    "assumptions": [
+      "No production idempotency records exist in `checkout-idempotency.json` (Worker has never succeeded — schema-only migration is sufficient).",
+      "Cart data loss during migration is acceptable (`MemoryCartStore` already offers zero persistence).",
+      "`DATABASE_URL` is present in Caryina's Worker secrets (confirmed by existing inventory/products usage)."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Replace `node:fs`-based idempotency store with Prisma CRUD on a new `CheckoutAttempt` table.",
+      "Replace `MemoryCartStore` with `PrismaCartStore` backed by a new `Cart` table.",
+      "Why planning is not reopening option selection:",
+      "Analysis concluded decisively. All alternatives compared with explicit elimination rationale. No unresolved operator forks."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Extend `storeProviderSchema` enum to include `\"prisma\"`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `packages/config/src/env/auth.ts`",
+        "affects": "`packages/config/src/env/auth.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add `CheckoutAttempt` and `Cart` Prisma models + migration file",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-03",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `packages/platform-core/prisma/schema.prisma` + new migration file in `packages/platform-core/prisma/migrations/`",
+        "affects": "`packages/platform-core/prisma/schema.prisma`, `packages/platform-core/prisma/migrations/<timestamp>_add_checkout_attempt_and_cart/migration.sql`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Implement `PrismaCartStore` in `platform-core`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — new file `packages/platform-core/src/cartStore/prismaStore.ts`",
+        "affects": "`packages/platform-core/src/cartStore/prismaStore.ts` (new), `[readonly] packages/platform-core/src/cartStore.ts` (factory updated in TASK-04)"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Add `\"prisma\"` case to `createCartStore()` factory + set `CART_STORE_PROVIDER=prisma` in `wrangler.toml`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-08"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `packages/platform-core/src/cartStore.ts` + `apps/caryina/wrangler.toml`",
+        "affects": "`packages/platform-core/src/cartStore.ts`, `apps/caryina/wrangler.toml`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Rewrite `checkoutIdempotency.server.ts` using Prisma",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 82,
+        "effort": "L",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-07",
+          "TASK-08"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — full rewrite of `apps/caryina/src/lib/checkoutIdempotency.server.ts`",
+        "affects": "`apps/caryina/src/lib/checkoutIdempotency.server.ts`"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Unit tests for `PrismaCartStore`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 87,
+        "effort": "M",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-08"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — new test file `apps/caryina/src/lib/prismaCartStore.test.ts` (or in `packages/platform-core/src/__tests__/prismaCartStore.test.ts` — build should choose the location consistent with existing `cartStore.test.ts` if any)",
+        "affects": "new test file in `packages/platform-core/src/__tests__/` (or equivalent location for platform-core tests)"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Unit tests for Prisma idempotency store",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 83,
+        "effort": "M",
+        "depends_on": [
+          "TASK-05"
+        ],
+        "blocks": [
+          "TASK-08"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — new test file `apps/caryina/src/lib/checkoutIdempotency.test.ts`",
+        "affects": "`apps/caryina/src/lib/checkoutIdempotency.test.ts` (new)"
+      },
+      {
+        "task_id": "TASK-08",
+        "title": "CHECKPOINT — typecheck, lint, and integration review",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": null,
+        "effort": null,
+        "depends_on": [
+          "TASK-04",
+          "TASK-05",
+          "TASK-06",
+          "TASK-07"
+        ],
+        "blocks": [],
+        "execution_skill": null,
+        "deliverable": null,
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Cart CRUD (`/api/cart`)",
+          "trigger": "User adds/removes item in storefront",
+          "flow": "1. Request hits `createShopCartApi` → 2. `createCartStore()` reads `CART_STORE_PROVIDER=prisma` → routes to `PrismaCartStore` → 3. `incrementQty`/`setQty`/`removeItem` → Prisma `upsert` on `Cart` row keyed by UUID → 4. `expiresAt` set to now + 30 days on write → 5. Cart row persists in Neon DB across isolate recycles",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Rollback: revert `wrangler.toml` `CART_STORE_PROVIDER` var; existing `MemoryCartStore` resumes"
+        },
+        {
+          "id": null,
+          "label": "Cart read at checkout",
+          "trigger": "Customer submits checkout form",
+          "flow": "1. `handleCheckoutSessionRequest` calls `getCart(cartId)` → 2. `PrismaCartStore.getCart` → 3. Prisma `findUnique` on `Cart.id` → 4. Checks `expiresAt`; returns `{}` if expired → 5. Returns `CartState` to checkout handler",
+          "task_ids": [
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "No fallback to memory if `DATABASE_URL` missing; `db.ts` returns `missingPrismaClient()` proxy which throws — dev must have `DATABASE_URL` or must not set `CART_STORE_PROVIDER`"
+        },
+        {
+          "id": null,
+          "label": "Checkout idempotency gate",
+          "trigger": "Every checkout POST",
+          "flow": "1. `beginCheckoutAttempt` → 2. `prisma.checkoutAttempt.create` with `@@unique([shopId, idempotencyKey])` → 3. On P2002 (concurrent duplicate): re-read record → return `{ kind: \"in_progress\", record }` (if status in_progress/finalizing), `{ kind: \"conflict\", record }` (if hash differs), or `{ kind: \"replay\", record, responseStatus, responseBody }` (if terminal with responseBody) → 4. On success: return `{ kind: \"acquired\", record }`",
+          "task_ids": [
+            "TASK-02",
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "P2002 must be caught explicitly; missed catch = 500 instead of idempotency response"
+        },
+        {
+          "id": null,
+          "label": "Checkout idempotency updates",
+          "trigger": "Mid-checkout state transitions",
+          "flow": "1. `markCheckoutAttemptReservation` / `recordCheckoutAttemptStripeSession` / `markCheckoutAttemptPaymentAttempted` / `markCheckoutAttemptResult` → 2. `prisma.checkoutAttempt.update` filtering by `idempotencyKey + shopId` → 3. Individual field updates (no lock needed — record exists; atomic field writes)",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Missing record: log warning and return silently (matching current fs behaviour)"
+        },
+        {
+          "id": null,
+          "label": "Stripe finalization locking",
+          "trigger": "`checkout.session.completed` webhook",
+          "flow": "1. `beginStripeCheckoutFinalization` → 2. `prisma.$transaction` with interactive transaction → 3. SELECT record by `stripeSessionId` → 4. Check current status → 5. If `\"in_progress\"`: UPDATE `status = \"finalizing\"` → return `acquired` → 6. If `\"finalizing\"`: return `busy` → 7. If terminal status: return `already_finalized` → 8. If not found: return `no_match`",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "`prisma.$transaction` adds one extra round-trip vs. single query; acceptable for webhook path"
+        },
+        {
+          "id": null,
+          "label": "Stale checkout reconciliation",
+          "trigger": "Cron POST `/api/cron/checkout-reconciliation`",
+          "flow": "1. `reconcileStaleCheckoutAttempts` → 2. `listStaleInProgressCheckoutAttempts` → 3. `prisma.checkoutAttempt.findMany` where `status IN (\"in_progress\", \"finalizing\") AND updatedAt < staleCutoff` → 4. Mark stale records via `markCheckoutAttemptResult` → Prisma `update`",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "`runtime = \"nodejs\"` on cron route NOT removed in this migration — route still compatible with Workers via `nodejs_compat` flag"
+        }
+      ]
+    }
+  }
+}

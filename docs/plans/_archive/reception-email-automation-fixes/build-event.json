@@ -1,0 +1,20 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-email-automation-fixes",
+  "business": "BRIK",
+  "build_date": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "All four gaps are closed: button labels match reality, booking emails send immediately, attribution is visible in the UI, and auth failures surface actionable guidance.",
+  "why": "Staff are misled by button labels that imply emails are sent, and by generic errors when Gmail auth expires. Booking emails silently go undelivered when staff forget to send the draft from Gmail.",
+  "source": "operator",
+  "status": "complete",
+  "dispatch_ids": [
+    "IDEA-DISPATCH-20260314200000-BRIK-001",
+    "IDEA-DISPATCH-20260314200000-BRIK-002",
+    "IDEA-DISPATCH-20260314200000-BRIK-003",
+    "IDEA-DISPATCH-20260314200000-BRIK-004"
+  ],
+  "commit_refs": ["4d6595dba4", "210eed4866"],
+  "plan_path": "docs/plans/reception-email-automation-fixes/plan.md",
+  "build_record_path": "docs/plans/reception-email-automation-fixes/build-record.user.md"
+}

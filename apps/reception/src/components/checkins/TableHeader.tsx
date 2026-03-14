@@ -1,7 +1,7 @@
 // File: src/components/roomview/TableHeader.tsx
 
 import React from 'react'
-import { Bed, Clock, Coins, CreditCard, FileText, Key, Mail, User } from 'lucide-react'
+import { Bed, Clock, Coins, CreditCard, FileText, Key, User } from 'lucide-react'
 
 import { TableHead, TableHeader as DSTableHeader, TableRow } from '@acme/design-system'
 
@@ -71,12 +71,6 @@ const TableHeader: React.FC = () => {
           </div>
         </TableHead>
 
-        {/* Email Booking */}
-        <TableHead className='px-4 py-2 w-150px font-semibold' title='Email Booking'>
-          <div className='flex justify-center items-center'>
-            <Mail size={16} />
-          </div>
-        </TableHead>
       </TableRow>
     </DSTableHeader>
   )

@@ -50,6 +50,7 @@ export interface GuestProfile {
   pace: GuestPace;
   socialOptIn: boolean;
   chatOptIn: boolean;
+  ghostMode: boolean;
   blockedUsers: string[];
   createdAt: number;
   updatedAt: number;
@@ -67,6 +68,7 @@ export const DEFAULT_GUEST_PROFILE: Omit<GuestProfile, 'bookingId' | 'createdAt'
   pace: 'relaxed',
   socialOptIn: false,
   chatOptIn: false,
+  ghostMode: false,
   blockedUsers: [],
 };
 

@@ -1,0 +1,226 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "prime-portal-personalization",
+  "source_artifact_path": "docs/plans/prime-portal-personalization/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Guest portal personalization relies on the `?uuid=` query parameter in a fragile way that could cause data leakage or silent fallback to wrong guest data.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All entry points to the guarded home pass uuid exclusively through the server-validated session; uuid tamper risk is eliminated; no guest can access another guest's data by manipulating the URL parameter.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI-only changes expected; uuid resolution is backend-facing",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Error state exists (redirect to /error) when uuid invalid/missing; no UX for \"uuid tampered\" case",
+      "gap_or_implication": "No specific error state for uuid mismatch; guest gets silent redirect to /error which may be confusing",
+      "carry_forward_or_notes": "Minimal — keep error redirect but add instrumentation"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "`prime_session` HttpOnly cookie is secure; uuid validated by format only (not cross-checked against session); Firebase RTDB reads bypass server for all booking data via SDK",
+      "gap_or_implication": "Critical: uuid can be substituted by any valid-format `occ_<13 digits>` string if Firebase rules allow open reads with API key",
+      "carry_forward_or_notes": "Yes — primary concern"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`console.warn` on guestUuid mismatch in guest-booking.ts (server-only); client-side error logger on invalid uuid",
+      "gap_or_implication": "No audit log for uuid substitution attempts; no analytics event on uuid mismatch",
+      "carry_forward_or_notes": "Yes — add anomaly tracking for uuid mismatch"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Session guard tests exist but use stale type (token field); useUuid has zero test coverage; uuid tamper has zero test coverage",
+      "gap_or_implication": "Major gaps in uuid resolution and tamper detection testing",
+      "carry_forward_or_notes": "Yes — test seeds needed"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`GuestSessionSnapshot` type has diverged from tests (stale `token` field in test mocks); `PRIME_GUEST_SESSION_KEYS` does not include `prime_guest_token` yet it is still read by digital-assistant",
+      "gap_or_implication": "Type/implementation divergence; stale localStorage key read",
+      "carry_forward_or_notes": "Yes — type contract cleanup needed"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "uuid resolution is synchronous localStorage read; no perf concern",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flag needed; change is auth-path hardening; rollback is code revert",
+      "gap_or_implication": "Hardening the auth path may break existing sessions that rely on URL-only uuid (e.g. shared links navigated directly)",
+      "carry_forward_or_notes": "Yes — migration strategy for URL-based routing needed"
+    }
+  ],
+  "open_operator_questions": [
+    "What are the current Firebase RTDB security rules for the `bookings/`, `guestsDetails/`, `loans/` paths?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The prime guest portal uses a `?uuid=` URL query parameter (`occ_<13 digits>`) to identify the guest within Firebase. This parameter is read by `useUuid.ts` and used directly as a Firebase lookup key throughout the entire guarded section — without server-side cross-checking to confirm the uuid belongs to the authenticated session. The authentication layer (HttpOnly cookie `prime_session`) was hardened in TASK-05 to use a server-validated cookie, but `useUuid` still accepts the uuid from the URL and falls back to localStorage, while data hooks pass it directly to Firebase RTDB. The concern is w",
+    "goals": [
+      "Determine the exact code path by which `?uuid=` is read, validated, and trusted.",
+      "Determine whether the authenticated session (`prime_session` cookie) cross-checks the uuid.",
+      "Determine what happens when the param is missing, malformed, or tampered with.",
+      "Determine whether uuid is persisted to localStorage and whether that eliminates re-read-from-URL risk.",
+      "Produce a clear threat model and recommended changes for hardening."
+    ],
+    "non_goals": [
+      "Staff/pin-auth flows (separate auth path).",
+      "Owner dashboard data access.",
+      "Firebase RTDB security rules as configured in Firebase console (out-of-codebase-scope — not in this repo; operator must confirm rules before the plan can set tamper fix as Critical vs. advisory priority)."
+    ],
+    "constraints": [
+      "Cloudflare Pages Functions (edge) — no server-side React rendering in the data-fetch path.",
+      "Firebase RTDB security rules are unknown; assumed to be open or API-key-only given the FUNCTION_ONLY access model for sensitive flows (see `dataAccessModel.ts`)."
+    ],
+    "assumptions": [
+      "Firebase RTDB rules do not enforce per-occupant access for SDK paths at this time (based on `FUNCTION_ONLY` pattern for all sensitive flows).",
+      "The `prime_session` HttpOnly cookie is the canonical auth credential; uuid is supplemental identity carried in localStorage/URL for client routing."
+    ],
+    "key_entry_points": [
+      "`apps/prime/src/app/g/page.tsx` — deep link token entry; sets localStorage session after last-name verification",
+      "`apps/prime/src/app/portal/page.tsx` — portal/guided-onboarding entry; reads from localStorage, validates session via cookie",
+      "`apps/prime/src/app/(guarded)/layout.tsx` — guarded section entry gate; validates session via cookie, does NOT check uuid",
+      "`apps/prime/src/hooks/useUuid.ts` — uuid resolution hook; reads `?uuid` from URL, falls back to localStorage; used by all data hooks",
+      "`apps/prime/functions/api/guest-booking.ts` — booking snapshot endpoint; validates token from cookie/param, cross-checks `guestUuid` against booking",
+      "`apps/prime/functions/api/find-booking.ts` — booking lookup entry; issues token for lead guest (not necessarily matched occupant)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Deep link entry (`/g/<token>`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Guest session API (server)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Portal/onboarding entry",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Guarded layout auth gate",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — coverage confirmed that uuid check is absent (this is the finding, not a scope gap)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`useUuid` hook resolution logic",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Firebase data hooks (26 call sites)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Missing domain coverage] [Minor]: Firebase RTDB security rules not inspected (console/Firebase, not in repo)",
+        "Resolution Required": "No — operator question captured"
+      },
+      {
+        "Scope Area": "find-booking occupant scoping",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Stale localStorage key references",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test coverage assessment",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Type/interface divergence",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Guest receives a deep link `/g/<token>` (from email or `/find-my-stay` flow).",
+      "end_condition": "Guest lands on guarded home `/?uuid=<occ_id>` and the page renders personalized data.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Deep link entry",
+          "flow": "1. Guest visits `/g/<token>`. 2. `GuestEntryContent` reads `?token` from URL. 3. GET `/api/guest-session?token=<token>` validates existence and expiry in Firebase. 4. Guest submits last name via POST `/api/guest-session` with `{token, lastName}`. 5. Server checks last name against Firebase, sets `prime_session` HttpOnly cookie, returns `{bookingId, guestUuid, guestFirstName}`. 6. Client writes `bookingId`, `guestUuid`, `firstName`, `verifiedAt` to localStorage. 7. Redirects guest to `/portal`.",
+          "owners": "Cloudflare Pages Function, Firebase RTDB",
+          "evidence": "`apps/prime/src/app/g/page.tsx`, `apps/prime/functions/api/guest-session.ts`",
+          "issues": "`prime_guest_token` key in localStorage is still referenced by `digital-assistant/page.tsx:107` but not written by the current POST flow (stale reference)."
+        },
+        {
+          "id": null,
+          "label": "Portal entry / guided onboarding",
+          "flow": "1. `/portal` page runs `readGuestSession()` from localStorage. 2. Calls `validateGuestToken()` which GETs `/api/guest-session` using `prime_session` cookie. 3. If valid, shows `GuidedOnboardingFlow`. 4. On complete, calls `buildGuestHomeUrl(session)` → `/?uuid=<session.uuid>`. 5. Router replaces to guarded home with `?uuid=` in URL.",
+          "owners": "Client, Cloudflare Pages Function",
+          "evidence": "`apps/prime/src/app/portal/page.tsx`, `apps/prime/src/lib/auth/guestSessionGuard.ts`",
+          "issues": "uuid is read from localStorage and placed back into URL by client — no server cross-check."
+        },
+        {
+          "id": null,
+          "label": "Guarded layout auth gate",
+          "flow": "1. `GuardedGate` calls `validateGuestToken()` (cookie-based). 2. If valid, sets `gateState='allowed'` and renders children. 3. Periodic re-validation via `useSessionValidation` at 30-min interval.",
+          "owners": "Client",
+          "evidence": "`apps/prime/src/app/(guarded)/layout.tsx`",
+          "issues": "Gate checks session validity but NOT that uuid in URL belongs to the session."
+        },
+        {
+          "id": null,
+          "label": "uuid resolution in data hooks",
+          "flow": "1. All guarded-section data hooks call `useUuid()`. 2. `useUuid` reads `?uuid` from URL, validates format (`/^occ_\\d{13}$/i`), falls back to `localStorage['prime_guest_uuid']` if absent from URL. 3. The validated uuid is used as the Firebase lookup key for `bookings/`, `guestsDetails/`, `loans/`, etc.",
+          "owners": "Client, Firebase RTDB",
+          "evidence": "`apps/prime/src/hooks/useUuid.ts`, `apps/prime/src/hooks/pureData/useFetchBookingsData.client.ts`",
+          "issues": "**uuid from URL is NOT cross-checked against the session (prime_session cookie / Firebase session token).** An attacker who is authenticated (has a valid session) can substitute another guest's `occ_<id>` in the URL to attempt to read their data."
+        },
+        {
+          "id": null,
+          "label": "Find-My-Stay entry",
+          "flow": "1. Guest submits surname + bookingRef. 2. GET `/api/find-booking` matches surname → returns `{redirectUrl: \"/g/<token>\"}`. 3. Client assigns `window.location` to the URL.",
+          "owners": "Cloudflare Pages Function, Firebase RTDB",
+          "evidence": "`apps/prime/functions/api/find-booking.ts`",
+          "issues": "`find-booking` issues a token scoped to `leadOccupantId` (lead guest or first occupant), not necessarily the matched occupant. Non-lead occupants who match surname get a token scoped to the lead guest."
+        }
+      ]
+    }
+  }
+}

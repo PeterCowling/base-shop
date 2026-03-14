@@ -236,7 +236,7 @@ export async function receiveStockInflow(
           quantityDelta: r.delta,
           referenceId: parsed.data.idempotencyKey,
           note: parsed.data.note ?? null,
-          operatorId: null,
+          operatorId: options?.actor?.ip || null,
         },
       }),
     ),

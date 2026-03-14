@@ -54,7 +54,7 @@ describe('ReadinessDashboard value framing', () => {
     expect(screen.getByText('Final checks now mean a faster handoff at reception.')).toBeDefined();
   });
 
-  it.skip('TC-03: confidence cue renders when guest is highly ready', () => {
+  it('TC-03: confidence cue renders when guest is highly ready', () => {
     render(
       <ReadinessDashboard
         preArrivalData={baseData}

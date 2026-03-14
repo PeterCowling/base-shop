@@ -1328,6 +1328,25 @@ function selectQuestionTemplateCandidate(
     : undefined;
 }
 
+function selectSingleQuestionTemplate(
+  policyCandidates: TemplateCandidate[],
+  actionPlan: z.infer<typeof draftGenerateSchema>["actionPlan"],
+): EmailTemplate | undefined {
+  const categoryHints = resolveScenarioCategoryHints(actionPlan);
+  const hintedCandidates = policyCandidates.filter((c) =>
+    categoryHints.has(c.template.category),
+  );
+  if (hintedCandidates.length > 0) {
+    return hintedCandidates.reduce((best, cur) =>
+      candidateConfidence(cur) > candidateConfidence(best) ? cur : best,
+    ).template;
+  }
+  return policyCandidates[0] &&
+    candidateConfidence(policyCandidates[0]) >= UNHINTED_TEMPLATE_CONFIDENCE_FLOOR
+    ? policyCandidates[0].template
+    : undefined;
+}
+
 function buildQuestionAnswerBlocks(
   perQuestionRanks: PerQuestionRankEntry[],
   categoryHints: Set<string>,
@@ -1638,6 +1657,10 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       policyDecision,
     );
 
+    // Mirror selectQuestionTemplateCandidate semantics: hinted candidates first;
+    // unhinted accepted only when confidence >= UNHINTED_TEMPLATE_CONFIDENCE_FLOOR.
+    const gatedTemplate = selectSingleQuestionTemplate(policyCandidates, actionPlan);
+
     const hasAvailability = hasAvailabilityIntent(actionPlan);
     const agreementTemplate = shouldUseAgreementTemplate(actionPlan)
       ? selectAgreementTemplate(templates)
@@ -1647,7 +1670,7 @@ export async function handleDraftGenerateTool(name: string, args: unknown) {
       : undefined;
     const selectedTemplate = agreementTemplate
       ?? availabilityTemplate
-      ?? (rankResult.selection !== "none" ? policyCandidates[0]?.template : undefined);
+      ?? (rankResult.selection !== "none" ? gatedTemplate : undefined);
     // TASK-06: build deterministic per-question answer blocks for multipart emails.
     let questionBlocks = buildCompositeQuestionBlocks(actionPlan, templates);
     const isComposite = questionBlocks.length >= 2;

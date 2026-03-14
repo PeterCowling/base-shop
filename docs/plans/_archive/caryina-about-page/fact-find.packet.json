@@ -1,0 +1,184 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "caryina-about-page",
+  "source_artifact_path": "docs/plans/caryina-about-page/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "The \"Designed in Positano\" claim is the heart of Caryina's brand. Without an About page, the claim feels thin and unsubstantiated. A short brand story reinforces trust and differentiates from generic dropshippers.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Brand story page live at `/about` in all three locales, linked from header nav and site footer, with copy derived from the strategy dossier and placeholder image slot ready for operator-supplied photography.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "Support page provides exact template: `max-w-3xl rounded-lg border p-6`; brand tokens established",
+      "gap_or_implication": "About needs a hero element (image placeholder) not in current support pattern",
+      "carry_forward_or_notes": "Add hero slot with PLACEHOLDER `<div>` + TODO comment"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Content pages have no loading/error states — static content resolved at SSR",
+      "gap_or_implication": "No edge cases; if locale param is invalid, `resolveLocale` falls back to `en`",
+      "carry_forward_or_notes": "No new states needed"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Static content page; no user input, no auth, no PII processing",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "GA4 page-view tracking already active via layout; no custom events needed",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`contentPacket.test.ts` pattern established; `support/page.test.tsx` is the reference; no existing sitemap test file in the Caryina app",
+      "gap_or_implication": "New accessor test + page render test; sitemap test does not exist — out of scope unless explicitly added",
+      "carry_forward_or_notes": "Two test files to write"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`SiteContentPayload` interface in contentPacket.ts; `CHROME_DEFAULTS` for nav microcopy; single JSON copy at `data/shops/caryina/site-content.generated.json`",
+      "gap_or_implication": "`CHROME_DEFAULTS` must be updated in TypeScript (not JSON) for nav labels; JSON must be updated for About page content section",
+      "carry_forward_or_notes": "One JSON file + one TypeScript constant block to update"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Static server component; no data fetching; Next.js caches by default",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Cloudflare Pages deploy; static export; About route is purely additive — rollback is removing the directory commit",
+      "gap_or_implication": "No risk; new route with no dependencies on existing routes",
+      "carry_forward_or_notes": "Rollback = revert commit"
+    }
+  ],
+  "open_operator_questions": [
+    "What hero image or visual element should appear on the About page?"
+  ],
+  "stage_payload": {
+    "scope_summary": "Caryina's primary brand claim — \"Designed in Positano, Italy\" — appears on every page (homepage eyebrow, product cards, footer) but has no supporting page behind it. Visitors who respond to the provenance claim and want to know more hit a dead end: the company identity only surfaces in legal copy (support page). An About page would give the origin story a home, substantiate the claim, and differentiate Caryina from generic dropshippers. This requires: a new `/about` route (code), i18n content for en/de/it (business artifact), nav/footer link additions (code), and sitemap update (code).",
+    "goals": [
+      "Add `/[lang]/about` route serving a short brand story page in all three locales (en/de/it)",
+      "Add About to header nav and/or site footer so the page is discoverable",
+      "Draft brand story copy from existing strategy documents; mark photographer/image decisions as PLACEHOLDER",
+      "Update sitemap.ts to include `/about` in all locales",
+      "Content should be consistent with the brand voice: conversational, confident, no hard sell, whitespace-first"
+    ],
+    "non_goals": [
+      "Full brand redesign or visual overhaul",
+      "Custom photography shoot (images will be PLACEHOLDER)",
+      "Deep founder biography or press-style page",
+      "Adding the About page to the checkout/cart flow chrome"
+    ],
+    "constraints": [
+      "All existing locales (en, de, it) should be served from day one — `generateStaticParams` emits en/de/it independently of page content so missing About translations are a content-quality gap, not a build failure; `localizedText()` falls back to English. Full de/it translations in the same build is preferred but not a hard blocker.",
+      "Content must follow the contentPacket.ts / `data/shops/caryina/site-content.generated.json` architecture — no inline string literals in page.tsx"
+    ],
+    "assumptions": [
+      "About page link goes in both header nav and footer (standard for small DTC brands)",
+      "Story can be drafted in full from existing strategy documents; content does NOT require operator input before build proceeds",
+      "i18n (de/it translations) can be machine-assisted from en copy in the same build cycle; `LocalizedText` accepts `de?`/`it?` as optional so missing translations degrade gracefully to English — full de/it in one build is preferred but not a hard requirement",
+      "No server-side data fetching needed beyond the existing contentPacket pattern"
+    ],
+    "key_entry_points": [
+      "`apps/caryina/src/app/[lang]/about/` — does not exist yet",
+      "`apps/caryina/src/app/[lang]/support/page.tsx` — closest equivalent (content page pattern)",
+      "`apps/caryina/src/app/[lang]/layout.tsx` — locale layout wrapper (Header + SiteFooter + ConsentBanner)",
+      "`apps/caryina/src/components/Header.tsx` — nav with \"Shop\" + \"Support\" links only",
+      "`apps/caryina/src/components/SiteFooter.tsx` — footer links list"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis caryina-about-page`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "New route creation pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "contentPacket.ts extension",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Single JSON copy confirmed; CHROME_DEFAULTS is the source for nav labels (not JSON)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Header nav addition",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Footer link addition",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Sitemap STATIC_PATHS update",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "i18n all 3 locales",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Machine translation risk flagged; TODO comment for operator review",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Brand voice compliance",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "\"Made in Italy\" legal constraint documented",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Three test surfaces identified (accessor unit, page render, sitemap)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Hero image decision",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Resolved: text-only default + PLACEHOLDER comment",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only. This is a net-new static content page. There is no existing operator runbook, approval path, or multi-step process being altered. The change adds a new route to the site content catalogue.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

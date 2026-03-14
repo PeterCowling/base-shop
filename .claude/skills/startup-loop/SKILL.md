@@ -5,7 +5,7 @@ description: Chat command wrapper for operating Startup Loop runs. Supports /sta
 
 # Startup Loop
 
-Operate the Startup Loop through a single chat command surface. This skill is an operator wrapper. It does not replace the DO processes (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`).
+Operate the Startup Loop through a single chat command surface. This skill is an operator wrapper. It does not replace the DO processes (`/lp-do-fact-find`, `/lp-do-analysis`, `/lp-do-plan`, `/lp-do-build`).
 
 ## Operating Mode
 
@@ -52,8 +52,9 @@ Load the relevant module per command:
 | `modules/cmd-advance/advance-contract.md` | Shared `advance` contract: BOS sync expectations, blocked-packet requirements, operator sequence, and red flags. |
 | `modules/cmd-advance/assessment-gates.md` | `cmd-advance` submodule for ASSESSMENT gate family (`GATE-A08-00`, `GATE-ASSESSMENT-00`, `GATE-ASSESSMENT-01`). |
 | `modules/cmd-advance/market-product-website-gates.md` | `cmd-advance` submodule for MARKET / PRODUCT / WEBSITE gate family (`GATE-BD-03`, `GATE-PRODUCT-02-01`, `GATE-WEBSITE-DO-01`). |
-| `modules/cmd-advance/signals-gates.md` | `cmd-advance` submodule for SIGNALS weekly advance routing (`/lp-weekly`, `GATE-BD-08`, `/lp-signal-review`). |
+| `modules/cmd-advance/signals-gates.md` | `cmd-advance` submodule for SIGNALS weekly advance routing (`/lp-weekly`, `GATE-BD-08`). |
 | `modules/cmd-advance/sell-gates.md` | `cmd-advance` submodule for SELL strategy/activation gates and SELL-01 secondary dispatch. |
+| `modules/cmd-advance/s9b-gates.md` | `cmd-advance` submodule for S9B→SIGNALS advance gates. `GATE-LAUNCH-SEC` (Hard): blocks when security domain fails or QA report is absent/stale (>30 days). `GATE-UI-SWEEP-01` (Hard): blocks when no recent business-scoped rendered UI contrast sweep artifact exists, or when artifact is stale/incomplete/has S1 blockers. |
 | `modules/cmd-advance/gap-fill-gates.md` | `cmd-advance` submodule for ongoing loop gap-fill dispatch gates (`GATE-LOOP-GAP-01/02/03`). |
 
 ## Required Output Contract
@@ -63,7 +64,7 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 3.14.0
+loop_spec_version: 3.15.0
 current_stage: <STAGE_ID>
 current_stage_label: <label_operator_short for current_stage>
 current_stage_display: <label_operator_long for current_stage>
@@ -95,7 +96,7 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version 3.14.0).
+Canonical source: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version 3.15.0).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
 Stages (canonical IDs from loop-spec):
@@ -167,10 +168,10 @@ Stages (canonical IDs from loop-spec):
 | SELL-08 | Activation readiness (pre-spend) | `/startup-loop advance` | paid_spend_requested |
 | S4 | Baseline merge + manifest commit (join barrier) | `/lp-baseline-merge` | — |
 | WEBSITE | Website (container) | — | — |
-| WEBSITE-01 | L1 first build framework | `/lp-site-upgrade` (auto-handover to DO sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` -> `/lp-do-build` once Active) | launch-surface=pre-website |
+| WEBSITE-01 | L1 first build framework | `/lp-site-upgrade` (auto-handover to DO sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-analysis` -> `/lp-do-plan` -> `/lp-do-build` once Active) | launch-surface=pre-website |
 | WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` (L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs) | launch-surface=website-live |
-| DO | Do | `/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build` | — |
-| S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
+| DO | Do | `/lp-do-fact-find`, `/lp-do-analysis`, `/lp-do-plan`, `/lp-do-build` | — |
+| S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa`, `/tools-ui-contrast-sweep` | — |
 | SIGNALS | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — (legacy alias: `S10`) |
 
 ## Global Invariants

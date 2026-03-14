@@ -1,0 +1,166 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "caryina-i18n-hardcoded-english",
+  "source_artifact_path": "docs/plans/caryina-i18n-hardcoded-english/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/caryina-i18n-hardcoded-english/analysis.md"
+  },
+  "outcome_contract": {
+    "why": null,
+    "intended_outcome_type": null,
+    "intended_outcome_statement": null,
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "4 chrome components render strings from `getChromeContent(lang)` — all wired",
+      "gap_or_implication": "No DE/IT strings in data → all chrome renders EN regardless of locale",
+      "carry_forward_or_notes": "ensure DE/IT translations are natural and cover all 5 groups"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "DE/IT locale URL segment routes correctly; product pages localised; chrome layer not",
+      "gap_or_implication": "visitor locale experience is broken for DE/IT — mixed-language page",
+      "carry_forward_or_notes": "validate full DE/IT page rendering after fix"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth or session changes; no data exposure risk",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No observability changes needed; no audit trail for static strings",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "No unit test for `getChromeContent` locale resolution; component tests mock the function",
+      "gap_or_implication": "DE/IT translations not verified in any test",
+      "carry_forward_or_notes": "add `contentPacket.test.ts` with locale resolution assertions for all 5 chrome groups"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`LocalizedText` type allows `de?` and `it?` keys — schema supports fix without type changes",
+      "gap_or_implication": "`CHROME_EN_DEFAULTS` only has `en`; JSON chrome only has `en`",
+      "carry_forward_or_notes": "add `de`/`it` to defaults; remove chrome from JSON (Option A)"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Chrome strings are read once at request time from cached in-memory object",
+      "gap_or_implication": "No performance impact from adding translation keys",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Change is additive (adding keys to a constant); no migration",
+      "gap_or_implication": "Rollback: revert `CHROME_EN_DEFAULTS` changes; safe at any time",
+      "carry_forward_or_notes": "no feature flag needed; additive string addition is safe to deploy"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "All persistent UI chrome on the Caryina storefront (header nav, footer links, cookie consent banner, and shipping trust strip) displays in English regardless of the visitor's selected locale. The URL routing and product content are already correctly localised, but the surrounding chrome layer silently falls back to English for German and Italian visitors. The root cause is not hardcoding in the component layer — the components are correctly wired — but missing DE/IT translation values in the underlying chrome data source.",
+    "goals": [
+      "Identify the exact root cause of English-only chrome output for DE/IT locales",
+      "Map which data source controls chrome translations and how the fix path should work",
+      "Determine the correct approach for adding DE/IT translations durably",
+      "Confirm test landscape for chrome localisation coverage"
+    ],
+    "non_goals": [
+      "Translating product copy, policy body text, or SEO content (separate materializer scope)",
+      "Adding new chrome components or changing chrome structure",
+      "Internationalising admin routes"
+    ],
+    "constraints": [
+      "The materializer (`materialize-site-content-payload.ts`) must not be broken — existing product content generation must continue working",
+      "Any fix must survive a future materializer re-run without silently wiping DE/IT translations",
+      "Translations must be accurate and natural (not machine-literal) for DE and IT locales"
+    ],
+    "assumptions": [
+      "The chrome strings are UI micro-copy (Shop, Support, Terms, etc.) that belongs in code, not in a CMS or content packet",
+      "The LOCALES constant confirms `en`, `de`, `it` are the three supported locales"
+    ],
+    "key_entry_points": [
+      "`apps/caryina/src/lib/contentPacket.ts:306`",
+      "`getChromeContent(locale)` — single function that produces all chrome strings for all components; reads `readPayload().chrome ?? CHROME_EN_DEFAULTS`",
+      "`apps/caryina/src/lib/contentPacket.ts:268`",
+      "`CHROME_EN_DEFAULTS` — fallback when no chrome in JSON; currently EN-only; bypassed when JSON chrome exists",
+      "`data/shops/caryina/site-content.generated.json`",
+      "Active chrome data store; `chrome` key present with all 5 groups and 27 strings; all `{en: \"...\"}` only",
+      "`apps/caryina/src/app/[lang]/layout.tsx`",
+      "Root locale layout; calls `getChromeContent(lang)` and distributes to all chrome components"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Ready": "Yes",
+      "Recommended next step": "`lp-do-analysis`",
+      "Risk profile is low": "additive change, easy rollback, no migrations"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Chrome component wiring (Header, SiteFooter, ConsentBanner, ShippingReturnsTrustBlock)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all components correctly pass `lang` to `getChromeContent`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`getChromeContent` function logic",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`??` operator picks full JSON chrome object over defaults; per-string locale fallback exists but is never reached with DE/IT",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`site-content.generated.json` chrome data",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "All 27 chrome strings have only `en` key",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`CHROME_EN_DEFAULTS` in `contentPacket.ts`",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "All entries EN-only; bypassed anyway since JSON chrome exists",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Materializer scope",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`chrome` absent from `SiteContentPayload` type and `buildPayload()` — durability risk confirmed",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test coverage",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "No unit test for `getChromeContent` locale resolution; component tests mock the function",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, { type FC } from "react";
+import React, { type FC, useCallback, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -20,43 +20,82 @@ interface MarkAsFailedButtonProps {
 /**
  * MarkAsFailedButton:
  * Logs code=5,6,7 to reflect "Payment failed" attempts, triggering email.
+ * Returns null when code 7 already exists (terminal state — no further action possible).
+ * Two-step confirmation: first click shows confirm/cancel, second fires logActivity.
  */
 const MarkAsFailedButton: FC<MarkAsFailedButtonProps> = ({
-  bookingRef: _bookingRef, // Rename to satisfy lint rule for unused variables
+  bookingRef: _bookingRef,
   guestId,
   existingCodes,
   logActivity,
   onSuccess,
 }) => {
-  const handleMarkAsFailed = (): void => {
-    let codeToLog = 5;
-    let desc = "Payment failed (first attempt)";
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-    if (existingCodes.includes(5) && !existingCodes.includes(6)) {
-      codeToLog = 6;
-      desc = "Payment failed (second attempt)";
-    } else if (existingCodes.includes(6)) {
-      codeToLog = 7;
-      desc = "Payment failed (final attempt)";
-    }
-
-    logActivity(guestId, codeToLog, desc)
-      .then(() => {
-        if (onSuccess) onSuccess();
-      })
-      .catch((error: unknown) => {
-        console.error("Error marking as failed:", error);
-      });
+  const handleFirstClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsConfirming(true);
   };
+
+  const handleConfirm = useCallback(
+    async (e: React.MouseEvent) => {
+      e.stopPropagation();
+      let codeToLog = 5;
+      let desc = "Payment failed (first attempt)";
+      if (existingCodes.includes(5) && !existingCodes.includes(6)) {
+        codeToLog = 6;
+        desc = "Payment failed (second attempt)";
+      } else if (existingCodes.includes(6)) {
+        codeToLog = 7;
+        desc = "Payment failed (final attempt)";
+      }
+      setIsLoading(true);
+      setIsConfirming(false);
+      try {
+        await logActivity(guestId, codeToLog, desc);
+        if (onSuccess) onSuccess();
+      } catch (error: unknown) {
+        console.error("Error marking as failed:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [guestId, existingCodes, logActivity, onSuccess]
+  );
+
+  const handleCancel = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsConfirming(false);
+  };
+
+  // Terminal guard: code 7 = final failure recorded, no further action possible
+  if (existingCodes.includes(7)) {
+    return null;
+  }
+
+  if (isConfirming) {
+    return (
+      <span className="inline-flex items-center gap-1">
+        <Button onClick={handleConfirm} color="danger" tone="solid" size="sm">
+          ✓
+        </Button>
+        <Button onClick={handleCancel} color="default" tone="soft" size="sm">
+          ✗
+        </Button>
+      </span>
+    );
+  }
 
   return (
     <Button
-      onClick={handleMarkAsFailed}
+      onClick={handleFirstClick}
+      disabled={isLoading}
       color="danger"
       tone="solid"
       size="sm"
     >
-      Mark as Failed
+      {isLoading ? "…" : "Mark as Failed"}
     </Button>
   );
 };

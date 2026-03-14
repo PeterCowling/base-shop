@@ -90,7 +90,7 @@ function PrepareDashboard(): JSX.Element {
   if (combinedError) {
     return (
       <PreparePage dateSelector={dateSelector}>
-        <p className="text-error-main font-semibold">
+        <p className="rounded-lg bg-error-light p-4 text-error-main font-semibold">
           Error:{" "}
           {combinedError instanceof Error
             ? combinedError.message

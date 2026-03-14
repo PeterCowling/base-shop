@@ -84,7 +84,8 @@ export function withIconModal(config: WithIconModalConfig) {
           {visibleActions.map((action) => {
             const Icon = action.icon;
             return (
-              <button
+              <Button
+                compatibilityMode="passthrough"
                 key={action.route}
                 onClick={() => handleActionClick(action.route)}
                 disabled={!effectiveInteractive}
@@ -97,7 +98,7 @@ export function withIconModal(config: WithIconModalConfig) {
               >
                 <Icon size={26} className="shrink-0" />
                 <span className="text-sm font-medium leading-tight text-foreground">{action.label}</span>
-              </button>
+              </Button>
             );
           })}
         </Grid>

@@ -1,0 +1,33 @@
+{
+  "schema_version": "stage-handoff-packet.v1",
+  "stage": "fact-find",
+  "feature_slug": "process-improvements-snooze-buttons",
+  "dispatch_id": "IDEA-DISPATCH-20260312153000-0001",
+  "status": "Ready-for-analysis",
+  "created_at": "2026-03-12T00:00:00.000Z",
+  "artifact_path": "docs/plans/process-improvements-snooze-buttons/fact-find.md",
+  "critique_history_path": "docs/plans/process-improvements-snooze-buttons/critique-history.md",
+  "execution_track": "code",
+  "deliverable_family": "code-change",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "confidence": {
+    "implementation": 88,
+    "approach": 87,
+    "impact": 85,
+    "delivery_readiness": 90,
+    "testability": 83
+  },
+  "key_findings": [
+    "In-progress page has no snooze mechanism at all — InProgressInbox.tsx has no action buttons",
+    "New-ideas operator action Snooze is already fully wired end-to-end (ledger + API + UI)",
+    "New-ideas queue Defer already supports 3-day and 7-day periods via DEFER_PERIOD_OPTIONS",
+    "localStorage is the right storage for in-progress snooze: single-operator, plans are filesystem-derived, no cross-device requirement",
+    "Plan cards are identified by slug (directory name) — stable and unique",
+    "No D1 schema changes needed — active plans have no database backing",
+    "No new API routes needed for the localStorage path",
+    "One open operator-input question: whether new-ideas Defer should be relabelled as Snooze quick-picks"
+  ],
+  "next_stage": "lp-do-analysis",
+  "blocking_items": []
+}

@@ -1,0 +1,297 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-bar-bleeper-bugs",
+  "source_artifact_path": "docs/plans/reception-bar-bleeper-bugs/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-bar-bleeper-bugs/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Live audit on 2026-03-13 found these bugs causing incorrect bleeper assignments during bar shifts — staff can't reliably use Go mode, COMP eligibility is wrong, Firebase errors are silent, and the UI misleads. All 6 defects confirmed in source code.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All 6 confirmed bar/bleeper defects resolved: Go mode correctly skips bleeper reservation, COMP screen filters to tonight only, Firebase write failures are surfaced to staff, bleep number field initialises clean, ticket list renders stably without key churn, placeholder text matches actual behaviour.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Bug 8: correct placeholder text; Bug 6: field no longer pre-fills on load",
+      "current_or_option_state": "TASK-06, TASK-02",
+      "gap_or_implication": "Single-line and useEffect removal; `PaymentSection.displayNumber` unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Bug 3: Go mode correctly skips bleeper reservation end-to-end; Bug 4: COMP screen shows only tonight-eligible guests",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "Bug 3+6 ship together for UX completeness",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No auth or PII changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Bug 5: Firebase write failure now surfaced via `showToast(\"error\")` and aborts confirmation",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Uses existing `showToast` import; staff can retry",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New unit tests for all 6 fixed paths; existing tests must not break",
+      "current_or_option_state": "TASK-07",
+      "gap_or_implication": "Tests in CI only per policy",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Bug 5: `BleeperResult.success` now enforced at call site",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Existing `BleeperResult` type; no schema change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Bug 7: stable key fallback eliminates UUID-driven remounts",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Index fallback only when `it.id` absent",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Standard git revert; no Firebase migration; no deploy-lane change",
+      "current_or_option_state": "All tasks",
+      "gap_or_implication": "Pure client-side changes",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Six confirmed defects in the bar/bleeper subsystem of `apps/reception` are fixed together in a single PR using Option A (minimal targeted fixes). Bug 3 fixes Go mode by removing a misplaced `chooseNext()` call; Bug 5 adds error handling for Firebase write failures; Bug 6 removes a redundant auto-fill `useEffect`; Bug 4 fixes preorder eligibility to check tonight's night only; Bug 7 stabilises React keys; Bug 8 corrects misleading placeholder text. All changes are pure client-side, independently reversible via git revert, and require no Firebase migration. Tests covering all 6 fixed paths are a",
+    "goals": [
+      "Fix all 6 confirmed bar/bleeper defects with the smallest viable change surface.",
+      "Preserve existing codebase patterns; no architectural changes.",
+      "Add unit tests for all fixed code paths (CI-only per testing policy)."
+    ],
+    "non_goals": [
+      "Redesigning the bleeper assignment system.",
+      "Adding new bleeper features.",
+      "Refactoring unrelated bar components."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Bug 3 and Bug 6 are independent fixes shipping together for UX completeness. Bug 3 alone makes Go mode correct; Bug 6 removes confusing pre-fill.",
+      "Preorder night keys are ordinal strings `night1`, `night2`; `parseLocalDate` from `dateUtils.ts` is reusable.",
+      "`checkInDate` absent for an active occupant is handled gracefully with `false` return."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Option A: minimal targeted fixes. One change per bug, smallest possible diff, all shipped together in one PR.",
+      "Why planning is not reopening option selection:",
+      "Analysis is decisive. All 6 bugs have confirmed root causes. No open questions remain. Engineering coverage is complete."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Fix Bug 3 — guard doConfirmPayment go branch",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx`",
+        "affects": "`apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Fix Bug 6 — remove auto-fill useEffect",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx`",
+        "affects": "`apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Fix Bug 5 — check BleeperResult + toast on failure",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx`",
+        "affects": "`apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Fix Bug 4 — isEligibleForPreorder tonight filter + buildRow display",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/components/bar/CompScreen.tsx`",
+        "affects": "`apps/reception/src/components/bar/CompScreen.tsx`, `[readonly] apps/reception/src/utils/dateUtils.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Fix Bug 7 — stable key fallback in TicketItems",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/components/bar/sales/TicketItems.tsx`",
+        "affects": "`apps/reception/src/components/bar/sales/TicketItems.tsx`"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Fix Bug 8 — update placeholder text",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 97,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/components/bar/orderTaking/PaymentSection.tsx`",
+        "affects": "`apps/reception/src/components/bar/orderTaking/PaymentSection.tsx`"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Unit tests for all 6 fixed paths",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05",
+          "TASK-06"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New/updated test files covering all 6 bug fixes",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03",
+      "TASK-04",
+      "TASK-05",
+      "TASK-06"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Payment confirmation — Go mode",
+          "trigger": "Staff selects Go toggle and taps Pay",
+          "flow": "(1) `doConfirmPayment` called with `usage=\"go\"`. (2) Guard skips `chooseNext()`. (3) `finalBleep` stays `\"go\"`. (4) `setBleeperAvailability` not called. (5) `confirmOrder(\"go\", ...)` records sale without bleeper.",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "None — bleep mode path unchanged"
+        },
+        {
+          "id": null,
+          "label": "Payment confirmation — Firebase error",
+          "trigger": "Firebase write fails during bleeper reservation",
+          "flow": "(1) `result = await setBleeperAvailability(n, false)`. (2) `if (!result.success)`: `showToast(\"Failed to reserve bleeper. Please try again.\", \"error\")` and return. (3) `confirmOrder` NOT called. (4) Staff retries.",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Race condition (simultaneous orders) partially mitigated; full idempotency out of scope"
+        },
+        {
+          "id": null,
+          "label": "Bleep # field initialisation",
+          "trigger": "Staff opens /bar page",
+          "flow": "(1) `bleepNumber` state starts `\"\"`. (2) No `useEffect` auto-fills it. (3) `PaymentSection.displayNumber` shows `firstAvailableBleeper` as visual suggestion only (no state mutation).",
+          "task_ids": [
+            "TASK-02",
+            "TASK-06"
+          ],
+          "dependency_note": null,
+          "seams": "None — bleep-mode path reads typed value or calls `chooseNext()` as fallback"
+        },
+        {
+          "id": null,
+          "label": "COMP screen eligibility",
+          "trigger": "Staff opens COMP screen",
+          "flow": "(1) For each checked-in occupant, extract `checkInDate` from bookings data. (2) Compute `nightKey = \"night\" + (daysSinceCheckIn + 1)`. (3) Check only `preorder[id][nightKey]` for non-NA entries. (4) `buildRow` plan display shows tonight's breakfast, not first night's.",
+          "task_ids": [
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "`checkInDate` absent → `false` (safe default); no display impact"
+        },
+        {
+          "id": null,
+          "label": "Ticket item rendering",
+          "trigger": "Any state change in bar order",
+          "flow": "`key={it.id ?? i}` — stable index fallback; no remounts for items without `id`.",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "None"
+        }
+      ]
+    }
+  }
+}

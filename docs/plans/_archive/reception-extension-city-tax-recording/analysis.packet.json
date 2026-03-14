@@ -1,0 +1,232 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-extension-city-tax-recording",
+  "source_artifact_path": "docs/plans/reception-extension-city-tax-recording/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-extension-city-tax-recording/fact-find.md",
+    "plan": "docs/plans/reception-extension-city-tax-recording/plan.md"
+  },
+  "outcome_contract": {
+    "why": "When staff check \"Mark city tax as paid\" during an extension, they expect the payment to be recorded. For guests without an outstanding balance (the majority, since most guests pay at check-in), nothing is written. Cash gets collected but never appears in the records — creating a reconciliation gap.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Checking \"Mark city tax as paid\" during an extension: (a) displays the correct collection amount including any old outstanding balance plus the extension nights' tax; and (b) always creates or updates a city tax record that correctly includes the extension nights' tax amount in `totalDue`, regardless of the guest's prior city tax status (outstanding balance, fully paid, or no prior record).",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "One-line unified display fix in `displayedCityTaxTotal` useMemo",
+      "current_or_option_state": "Separate per-case display fix with branching",
+      "gap_or_implication": "Option A: `return sum + (record?.balance??0) + defaultCityTaxPerGuest`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Display matches write; staff see correct amount for all cases",
+      "current_or_option_state": "Display fix still separate from write fix — risk of drift",
+      "gap_or_implication": "Option A: display and write use same formula, no UX mismatch",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "One `saveActivity` call per occupant in all 3 cases",
+      "current_or_option_state": "Same — one per occupant, but within 3 separate branches",
+      "gap_or_implication": "Option A: activity 9 always logged; no conditional gaps",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "4 test changes (display, case A write shape, case B flip, case C new)",
+      "current_or_option_state": "4+ test changes; additional branches need coverage",
+      "gap_or_implication": "Option A: minimal test surface; known assertions",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "One unified write shape; `saveCityTax` called once per occupant",
+      "current_or_option_state": "Three write shapes; must verify all 3 are correct separately",
+      "gap_or_implication": "Option A: `{ totalDue: oldDue+ext, totalPaid: oldDue+ext, balance: 0 }` for all",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Max 2 Firebase writes per occupant (date + city tax)",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No difference",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single commit; rollback = revert",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No difference",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The \"Mark city tax as paid\" checkbox in the extension modal has two bugs: (1) it displays the wrong collection amount for guests who have an outstanding city tax balance (shows only the old unpaid amount, not old amount + extension nights), and (2) it silently fails to write a city tax record for all three guest cases: outstanding balance, fully paid, and no prior record. The decision is which implementation approach to use for the fix. This is a single-component fix with no architectural ambiguity. The analysis resolves which of three plausible approaches is cleanest given the existing data m",
+    "goals": [
+      "Fix `displayedCityTaxTotal` so staff see the correct amount to collect in all three cases",
+      "Fix `handleExtend` city tax block so a `CityTaxRecord` is always written when the checkbox is checked",
+      "Validate the fix via updated and new unit tests"
+    ],
+    "non_goals": [
+      "Changing the city tax rate (tracked as EXT-011)",
+      "Adding `allFinancialTransactions` mirroring for extension city tax",
+      "Replacing the checkbox with the full `CityTaxPaymentButton` component"
+    ],
+    "constraints": [
+      "Firebase `update()` is the only write primitive available — no RTDB transactions"
+    ],
+    "assumptions": [
+      "€2.50/night is the correct rate for this season",
+      "Extension city tax accumulates onto the existing record, not a separate node"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Correctness across all 3 cases",
+        "Why it matters": "All three cases must be handled — no conditional gaps",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Code simplicity",
+        "Why it matters": "Single clear write path reduces future bug surface",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test fidelity",
+        "Why it matters": "Existing tests must accurately reflect new behaviour",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Blast radius",
+        "Why it matters": "Runtime changes confined to `ExtensionPayModal.tsx`; test changes in `ExtensionPayModal.test.tsx`",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Pattern consistency",
+        "Why it matters": "Must not introduce accumulation logic that conflicts with `CityTaxRecord` semantics",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Unified formula",
+        "Description": "Replace both the display useMemo and the `if (record && record.balance > 0)` guard with a single unconditional write using `{ totalDue: (record?.totalDue??0)+ext, totalPaid: (record?.totalDue??0)+ext, balance: 0 }`",
+        "Upside": "Handles all 3 cases in one code path; no branching; display matches write exactly",
+        "Downside": "N/A",
+        "Key risks": "None — test assertions are fully known",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Per-case branching",
+        "Description": "Keep case A branch for balance>0 (fixing its write shape), add `else if (record && record.balance === 0)` for case B, and `else` for case C",
+        "Upside": "Preserves original guard intent; explicit case labels",
+        "Downside": "3× the code; harder to maintain; future bug surface is larger; display fix still needed separately",
+        "Key risks": "Divergence between display and write logic if maintained separately",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: Delegate to CityTaxPaymentButton helper",
+        "Description": "Rewrite checkbox to use `useCityTaxPayment` hook pattern",
+        "Upside": "Aligns with check-in flow pattern",
+        "Downside": "Requires increasing `totalDue` before calling helper; two distinct writes; would likely require `allFinancialTransactions` mirroring (rejected non-goal); significantly expands scope",
+        "Key risks": "Out-of-scope scope expansion; helper drives `balance` negative for fully-paid records if `totalDue` not pre-incremented",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — unified formula",
+      "Why this wins": "All three guest cases collapse into a single formula: `{ totalDue: (record?.totalDue??0)+ext, totalPaid: (record?.totalDue??0)+ext, balance: 0 }`. The display and write logic use the same mathematical basis. There is no branching to maintain, no risk of per-case drift, and the test changes are fully enumerated. Option B produces identical runtime behavior with 3× the code. Option C is out of scope.",
+      "What it depends on": "`defaultCityTaxPerGuest` being in scope at the write site (confirmed: `ExtensionPayModal.tsx:71-74`); `saveCityTax` supporting node creation from `undefined` (confirmed: Firebase `update()` creates paths when absent)."
+    },
+    "rejected_approaches": [
+      "**Option B (per-case branching)** — Functionally correct but produces 3 conditional branches where 1 unified write suffices. The extra branches triple the maintenance surface without adding any correctness benefit. Rejected on simplicity grounds.",
+      "**Option C (CityTaxPaymentButton helper delegation)** — Out of scope per fact-find non-goals. The helper would require `totalDue` to be incremented first as a separate step, pulling in `allFinancialTransactions` mirroring. Rejected for scope expansion."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "All tests run in CI only (per `docs/testing-policy.md`)",
+        "TypeScript typecheck must pass locally before push",
+        "No migration or data cleanup needed"
+      ],
+      "sequencing_constraints": [
+        "Display fix and write fix can be implemented in one commit — they are in the same file",
+        "Test changes must follow or accompany the code changes"
+      ],
+      "risks_to_carry_forward": [
+        "`isSaving` guard already prevents double-submit; no additional guard needed",
+        "`updateBookingDates` is called before city tax write — if it throws, city tax is not written. This is pre-existing behavior, not a regression. Planning should note this is intentional (partial failure is surfaced via toast)."
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "City tax display",
+          "current": "`displayedCityTaxTotal` shows `record.balance` for case A guests — omits extension nights' amount",
+          "trigger": "Staff open extension modal with case A guest selected",
+          "future": "`displayedCityTaxTotal` returns `(record?.balance??0) + defaultCityTaxPerGuest` for all occupants in `cityTaxTargets`",
+          "steady": "Radio buttons, date extension logic, accommodation price display",
+          "seams": "None — purely additive to existing useMemo"
+        },
+        {
+          "id": null,
+          "label": "City tax write (case A — balance > 0)",
+          "current": "Zeroes balance but omits extension nights from `totalDue`",
+          "trigger": "Staff check \"Mark city tax as paid\" → click \"Extend\"",
+          "future": "`saveCityTax(bookingRef, id, { totalDue: oldDue+ext, totalPaid: oldDue+ext, balance: 0 })` → `saveActivity(id, { code: ActivityCode.CITY_TAX_PAYMENT })`",
+          "steady": "`updateBookingDates` write chain; key extension logic",
+          "seams": "`saveCityTax` completes before `saveActivity` — if activity write fails, city tax record is persisted but activity is not logged; modal stays open (existing error-handling pattern, now applies to more occupants)"
+        },
+        {
+          "id": null,
+          "label": "City tax write (case B — balance = 0)",
+          "current": "Nothing written — guard `balance > 0` fails",
+          "trigger": "Same trigger",
+          "future": "Same unified write with `ActivityCode.CITY_TAX_PAYMENT` activity",
+          "steady": "Everything else",
+          "seams": "Same partial-write risk as case A — widened blast radius because case B occupants newly enter the `Promise.all` city-tax fan-out"
+        },
+        {
+          "id": null,
+          "label": "City tax write (case C — no record)",
+          "current": "Nothing written — outer `if (record)` guard fails",
+          "trigger": "Same trigger",
+          "future": "Same unified write with `ActivityCode.CITY_TAX_PAYMENT` activity",
+          "steady": "Everything else",
+          "seams": "Same partial-write risk — case C occupants also newly enter the fan-out"
+        },
+        {
+          "id": null,
+          "label": "Inbox pricing (downstream read)",
+          "current": "`pricing-queries.server.ts:114-139` sums `record.balance` for payable total",
+          "trigger": "Live inference from RTDB",
+          "future": "No code change — zeroing `balance` on payment now consistently reduces inbox-displayed city tax due",
+          "steady": "No change needed",
+          "seams": "None — already correct behavior; correctly benefits from the fix"
+        }
+      ]
+    }
+  }
+}

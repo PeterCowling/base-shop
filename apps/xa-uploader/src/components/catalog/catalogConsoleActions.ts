@@ -432,6 +432,12 @@ export async function handleSaveImpl({
     return { status: "validation_error" };
   }
 
+  if (!suppressUiBusy && draft.publishState === "live" && splitList(draft.imageFiles ?? "").length === 0) {
+    setFieldErrors({ imageFiles: "Add at least one image before publishing" }); // i18n-exempt -- internal tool only [ttl=2027-03-12]
+    uploaderLog("warn", "publish_blocked_no_images", { slug: draft.slug });
+    return { status: "error" };
+  }
+
   if (!tryBeginBusyAction(busyLockRef, setBusy, { suppressUiBusy })) return { status: "busy" };
   clearActionFeedbackDomains(setActionFeedback, ["draft"]);
   setFieldErrors({});

@@ -3,6 +3,26 @@
 import { useCallback } from "react";
 import { get, ref, update } from "firebase/database";
 
+import {
+  activitiesByCodeOccupantPath,
+  activitiesOccupantPath,
+  bagStorageOccupantPath,
+  bookingOccupantPath,
+  bookingRootPath,
+  checkinOccupantPath,
+  checkoutOccupantPath,
+  cityTaxOccupantPath,
+  completedTasksOccupantPath,
+  financialsRoomPath,
+  guestByRoomOccupantPath,
+  guestDetailsOccupantPath,
+  guestsByBookingOccupantPath,
+  HOSPITALITY_RTDB_ROOTS,
+  preorderOccupantPath,
+  roomsByDateGuestIdsPath,
+  roomsByDateRoomPath,
+} from "@acme/lib/hospitality";
+
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { MutationState } from "../../types/hooks/mutations/mutationState";
 import { generateDateRange } from "../../utils/dateUtils";
@@ -60,7 +80,7 @@ interface UseDeleteGuestFromBookingReturn extends MutationState<void> {
  *    7) guestsByBooking
  *    8) guestsDetails
  *    9) preorder
- *    10) roomByDate
+ *    10) roomsByDate
  *    11) If occupant is the last in the booking, remove the entire booking entry in financialsRoom
  *  - Logs an activity with code 25 to track occupant deletion.
  *
@@ -68,7 +88,7 @@ interface UseDeleteGuestFromBookingReturn extends MutationState<void> {
  *  - Keep occupant references strictly typed.
  *  - Do not remove or modify data beyond occupant-specific keys.
  *  - Use an atomic `update()` for direct occupant references (bookings, cityTax, etc.).
- *  - For date-based references (checkins, checkouts, roomByDate), fetch the entire node, remove occupant if present.
+ *  - For date-based references (checkins, checkouts, roomsByDate), fetch the entire node, remove occupant if present.
  *  - Then commit all changes in one `update()` call.
  *  - If occupant is the last occupant in a booking, remove the entire financialsRoom/<bookingRef> entry.
  */
@@ -90,7 +110,7 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
       await run(async () => {
         // Snapshot the booking to see if occupant is last occupant.
         const bookingSnapshot = await get(
-          ref(database, `bookings/${bookingRef}`)
+          ref(database, bookingRootPath(bookingRef))
         );
 
         let isLastOccupant = false;
@@ -107,19 +127,22 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
         const updates: Record<string, null | string[] | object> = {};
 
         // Remove occupant from direct references:
-        updates[`bookings/${bookingRef}/${occupantId}`] = null;
-        updates[`cityTax/${bookingRef}/${occupantId}`] = null;
-        updates[`completedTasks/${occupantId}`] = null;
-        updates[`guestByRoom/${occupantId}`] = null;
-        updates[`guestsByBooking/${occupantId}`] = null;
-        updates[`guestsDetails/${bookingRef}/${occupantId}`] = null;
-        updates[`preorder/${occupantId}`] = null;
+        updates[bookingOccupantPath(bookingRef, occupantId)] = null;
+        updates[cityTaxOccupantPath(bookingRef, occupantId)] = null;
+        updates[completedTasksOccupantPath(occupantId)] = null;
+        updates[guestByRoomOccupantPath(occupantId)] = null;
+        updates[guestsByBookingOccupantPath(occupantId)] = null;
+        updates[guestDetailsOccupantPath(bookingRef, occupantId)] = null;
+        updates[preorderOccupantPath(occupantId)] = null;
 
         // Remove bag storage entry if it exists
-        updates[`bagStorage/${occupantId}`] = null;
+        updates[bagStorageOccupantPath(occupantId)] = null;
+
+        // Remove fridge storage entry if it exists
+        updates[`fridgeStorage/${occupantId}`] = null;
 
         // Remove all activities under this occupant
-        updates[`activities/${occupantId}`] = null;
+        updates[activitiesOccupantPath(occupantId)] = null;
 
         // Gather all activity codes that reference this occupant
         const activitiesByCodeSnap = await get(
@@ -131,7 +154,7 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
           };
           for (const [codeKey, occMap] of Object.entries(actByCodeData)) {
             if (occMap && occMap[occupantId]) {
-              updates[`activitiesByCode/${codeKey}/${occupantId}`] = null;
+              updates[activitiesByCodeOccupantPath(codeKey, occupantId)] = null;
             }
           }
         }
@@ -152,8 +175,8 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
         // Fall back to node scans if dates are missing to avoid orphaned references.
         if (stayDateKeys.length > 0) {
           for (const dateKey of stayDateKeys) {
-            updates[`checkins/${dateKey}/${occupantId}`] = null;
-            updates[`checkouts/${dateKey}/${occupantId}`] = null;
+            updates[checkinOccupantPath(dateKey, occupantId)] = null;
+            updates[checkoutOccupantPath(dateKey, occupantId)] = null;
           }
         } else {
           const checkInsSnapshot = await get(ref(database, "checkins"));
@@ -163,7 +186,7 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
             };
             for (const dateKey of Object.keys(checkInsData)) {
               if (checkInsData[dateKey][occupantId]) {
-                updates[`checkins/${dateKey}/${occupantId}`] = null;
+                updates[checkinOccupantPath(dateKey, occupantId)] = null;
               }
             }
           }
@@ -175,18 +198,17 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
             };
             for (const dateKey of Object.keys(checkOutsData)) {
               if (checkOutsData[dateKey][occupantId]) {
-                updates[`checkouts/${dateKey}/${occupantId}`] = null;
+                updates[checkoutOccupantPath(dateKey, occupantId)] = null;
               }
             }
           }
         }
 
-        // roomByDate -> occupantId may be in guestIds array.
+        // roomsByDate -> occupantId may be in guestIds array.
         if (stayDateKeys.length > 0 && roomNumbers.length > 0) {
           for (const dateKey of stayDateKeys) {
             for (const roomNumber of roomNumbers) {
-              const roomIndex = `index_${roomNumber}`;
-              const rbdPath = `roomByDate/${dateKey}/${roomIndex}/${roomNumber}`;
+              const rbdPath = roomsByDateRoomPath(dateKey, roomNumber);
               const snap = await get(ref(database, rbdPath));
               if (snap.exists()) {
                 const data = snap.val() as { guestIds?: string[] };
@@ -197,7 +219,7 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
                   const filteredIds = data.guestIds.filter(
                     (id) => id !== occupantId
                   );
-                  updates[`${rbdPath}/guestIds`] = filteredIds.length
+                  updates[roomsByDateGuestIdsPath(dateKey, roomNumber)] = filteredIds.length
                     ? filteredIds
                     : null;
                 }
@@ -205,17 +227,19 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
             }
           }
         } else {
-          const roomByDateSnapshot = await get(ref(database, "roomByDate"));
-          if (roomByDateSnapshot.exists()) {
-            const roomByDateData = roomByDateSnapshot.val() as {
+          const roomsByDateSnapshot = await get(
+            ref(database, HOSPITALITY_RTDB_ROOTS.roomsByDate),
+          );
+          if (roomsByDateSnapshot.exists()) {
+            const roomsByDateData = roomsByDateSnapshot.val() as {
               [dateKey: string]: {
                 [roomIndex: string]: {
                   [bookingId: string]: { guestIds?: string[] };
                 };
               };
             };
-            for (const dateKey of Object.keys(roomByDateData)) {
-              const dateObj = roomByDateData[dateKey];
+            for (const dateKey of Object.keys(roomsByDateData)) {
+              const dateObj = roomsByDateData[dateKey];
               for (const roomIndex of Object.keys(dateObj)) {
                 const bookingIdsObj = dateObj[roomIndex];
                 for (const someBookingId of Object.keys(bookingIdsObj)) {
@@ -228,7 +252,7 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
                       (id) => id !== occupantId
                     );
                     updates[
-                      `roomByDate/${dateKey}/${roomIndex}/${someBookingId}/guestIds`
+                      `${HOSPITALITY_RTDB_ROOTS.roomsByDate}/${dateKey}/${roomIndex}/${someBookingId}/guestIds`
                     ] = filteredIds.length ? filteredIds : null;
                   }
                 }
@@ -239,7 +263,7 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
 
         // If occupant is last occupant in booking, remove entire financialsRoom/<bookingRef> entry
         if (isLastOccupant) {
-          updates[`financialsRoom/${bookingRef}`] = null;
+          updates[financialsRoomPath(bookingRef)] = null;
         }
 
         // Commit all removals in a single update

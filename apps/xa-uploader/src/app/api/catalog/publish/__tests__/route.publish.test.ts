@@ -348,6 +348,37 @@ describe("catalog publish route", () => {
     );
   });
 
+  it("passes only publishable products to buildCatalogArtifactsFromDrafts when snapshot has mixed publish states", async () => {
+    const DRAFT_PRODUCT_NO_IMAGES = {
+      ...VALID_CLOUD_PRODUCT,
+      id: "p2",
+      slug: "draft-bag",
+      title: "Draft Bag",
+      imageFiles: "",
+      imageAltTexts: "",
+    };
+    readCloudDraftSnapshotMock.mockResolvedValueOnce({
+      products: [{ ...VALID_CLOUD_PRODUCT }, { ...DRAFT_PRODUCT_NO_IMAGES }],
+      revisionsById: { p1: "rev-1", p2: "rev-2" },
+      docRevision: "doc-1",
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: true }));
+    const buildCall = buildCatalogArtifactsFromDraftsMock.mock.calls[0][0] as { products: unknown[] };
+    expect(buildCall.products).toHaveLength(1);
+    expect(buildCall.products[0]).toEqual(expect.objectContaining({ id: "p1" }));
+  });
+
   it("publishes with warnings when cloud images are missing in warn mode", async () => {
     buildCatalogArtifactsFromDraftsMock.mockReturnValue({
       catalog: {

@@ -6,6 +6,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -174,13 +175,24 @@ function RoomPaymentButton({ booking }: RoomPaymentButtonProps) {
   const isPaid = paymentComplete || outstanding <= 0;
   const isDisabled = buttonDisabled || isPaid;
 
-  // We track occupant's outstanding at initial mount for splitting.
-  const [originalTotal] = useState<number>(() => fixTwoDecimals(outstanding));
+  // Lock originalTotal to the first non-zero outstanding value (avoids stale 0
+  // when data loads after mount).
+  const hasLockedTotal = useRef(false);
+  const [originalTotal, setOriginalTotal] = useState<number>(() => fixTwoDecimals(outstanding));
 
   // Payment splits local state
   const [splitPayments, setSplitPayments] = useState<PaymentSplit[]>(() => [
-    { id: crypto.randomUUID(), amount: originalTotal, payType: "CC" }, // row 0 base
+    { id: crypto.randomUUID(), amount: fixTwoDecimals(outstanding), payType: "CC" }, // row 0 base
   ]);
+
+  useEffect(() => {
+    if (!hasLockedTotal.current && outstanding > 0) {
+      hasLockedTotal.current = true;
+      const locked = fixTwoDecimals(outstanding);
+      setOriginalTotal(locked);
+      setSplitPayments([{ id: crypto.randomUUID(), amount: locked, payType: "CC" }]);
+    }
+  }, [outstanding]);
 
   const { occupantId, bookingRef } = booking;
 

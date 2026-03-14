@@ -1,0 +1,18 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-portal-personalization",
+  "plan_path": "docs/plans/prime-portal-personalization/plan.md",
+  "build_record_path": "docs/plans/prime-portal-personalization/build-record.user.md",
+  "completed_at": "2026-03-13T21:00:00.000Z",
+  "why": "Guest portal personalization relies on the ?uuid= query parameter in a fragile way that could cause data leakage or silent fallback to wrong guest data.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All entry points to the guarded home pass uuid exclusively through the server-validated session; uuid tamper risk is eliminated; no guest can access another guest's data by manipulating the URL parameter.",
+    "source": "auto"
+  },
+  "dispatch_id": "IDEA-DISPATCH-20260313200000-PRIME-011",
+  "business": "BRIK",
+  "execution_track": "code",
+  "deliverable_type": "code-change"
+}

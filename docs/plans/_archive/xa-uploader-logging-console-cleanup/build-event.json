@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "xa-uploader-logging-console-cleanup",
+  "build_date": "2026-03-12",
+  "outcome_contract": {
+    "why": "When the upload tool breaks in production there is nothing to investigate — no record of what happened or why.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All xa-uploader server-side error paths emit structured log events observable via wrangler tail, leaving a clear trail for any production failure.",
+    "source": "operator"
+  },
+  "status": "complete"
+}

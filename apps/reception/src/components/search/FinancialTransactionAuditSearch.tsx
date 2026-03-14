@@ -165,7 +165,7 @@ function FinancialTransactionAuditSearch(): JSX.Element {
       </div>
 
       {errorMessage && (
-        <div className="text-error-main font-medium">Error: {errorMessage}</div>
+        <div className="rounded-lg bg-error-light p-3 text-error-main font-medium">Error: {errorMessage}</div>
       )}
       {loading && <div className="text-muted-foreground">Loading data ...</div>}
 

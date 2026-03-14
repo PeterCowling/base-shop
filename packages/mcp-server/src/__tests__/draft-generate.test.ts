@@ -8,7 +8,9 @@ import { handleBriketteResourceRead } from "../resources/brikette-knowledge.js";
 import { handleDraftGuideRead } from "../resources/draft-guide.js";
 import { handleVoiceExamplesRead } from "../resources/voice-examples.js";
 import { clearTemplateCache, handleDraftGenerateTool } from "../tools/draft-generate";
+import { appendTelemetryEvent } from "../tools/gmail.js";
 import { ingestUnknownAnswerEntries } from "../tools/reviewed-ledger.js";
+import * as templateRanker from "../utils/template-ranker.js";
 
 jest.mock("fs/promises", () => ({
   readFile: jest.fn(),
@@ -52,6 +54,7 @@ const handleBriketteResourceReadMock = handleBriketteResourceRead as jest.Mock;
 const handleDraftGuideReadMock = handleDraftGuideRead as jest.Mock;
 const handleVoiceExamplesReadMock = handleVoiceExamplesRead as jest.Mock;
 const ingestUnknownAnswerEntriesMock = ingestUnknownAnswerEntries as jest.Mock;
+const appendTelemetryEventMock = appendTelemetryEvent as jest.Mock;
 
 const draftGuideFixture = {
   length_calibration: {
@@ -1680,6 +1683,244 @@ describe("draft_generate tool TASK-07B — knowledge relevance hardening", () =>
     expect(payload.draft.bodyPlain).toContain("Pete or Cristiana will follow up with you directly");
     const anyInjected = (payload.sources_used as Array<{ injected: boolean }>).some((e) => e.injected);
     expect(anyInjected).toBe(false);
+  });
+});
+
+describe("draft_generate tool TC-01 — single-question confidence gate", () => {
+  let rankTemplatesSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    setupDraftGenerateMocks();
+    rankTemplatesSpy = jest.spyOn(templateRanker, "rankTemplates");
+  });
+
+  afterEach(() => {
+    rankTemplatesSpy.mockRestore();
+  });
+
+  it("TC-01-01: category-mismatched suggest-level candidate rejected → follow_up_required, escalation sentence, no template, telemetry fired", async () => {
+    readFileMock.mockResolvedValue(JSON.stringify([]));
+    rankTemplatesSpy.mockReturnValueOnce({
+      selection: "suggest",
+      confidence: 45,
+      candidates: [
+        {
+          template: {
+            subject: "Early Check-in Available",
+            body: "We can arrange early check-in from 8am on request.",
+            category: "check-in",
+          },
+          score: 0.5,
+          confidence: 45,
+          evidence: [],
+          matches: {},
+        },
+      ],
+      reason: "Top candidate requires review",
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Do you have a rooftop pool?",
+        intents: {
+          questions: [{ text: "Do you have a rooftop pool?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "faq", confidence: 0.7 },
+      },
+      subject: "Facility question",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.template_used.subject).toBeNull();
+    expect(payload.draft.bodyPlain).toContain("Pete or Cristiana will follow up with you directly");
+    expect(payload.question_blocks[0]?.follow_up_required).toBe(true);
+    expect(appendTelemetryEventMock).toHaveBeenCalledWith(
+      expect.objectContaining({ event_key: "email_fallback_detected" }),
+    );
+  });
+
+  it("TC-01-02: no-hint candidate below confidence floor rejected → follow_up_required", async () => {
+    readFileMock.mockResolvedValue(JSON.stringify([]));
+    // Scenario "general" → hints = {"general"}; template "faq" not in hints → confidence floor check
+    rankTemplatesSpy.mockReturnValueOnce({
+      selection: "suggest",
+      confidence: 45,
+      candidates: [
+        {
+          template: {
+            subject: "FAQ — About Our Hostel",
+            body: "Our hostel is located in the city centre of Positano.",
+            category: "faq",
+          },
+          score: 0.5,
+          confidence: 45,
+          evidence: [],
+          matches: {},
+        },
+      ],
+      reason: "Top candidate requires review",
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Do you have a rooftop pool?",
+        intents: {
+          questions: [{ text: "Do you have a rooftop pool?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "general", confidence: 0.6 },
+      },
+      subject: "Facility question",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.template_used.subject).toBeNull();
+    expect(payload.draft.bodyPlain).toContain("Pete or Cristiana will follow up with you directly");
+  });
+
+  it("TC-01-03: best hinted candidate selected via reduce, not policyCandidates[0]", async () => {
+    readFileMock.mockResolvedValue(JSON.stringify([]));
+    // policyCandidates[0] is "general" (not hinted for "faq" scenario); policyCandidates[1] is "faq" (hinted)
+    // Gate must pick policyCandidates[1] via reduce, not the top-scoring non-hinted index 0
+    rankTemplatesSpy.mockReturnValueOnce({
+      selection: "suggest",
+      confidence: 30,
+      candidates: [
+        {
+          template: {
+            subject: "General Hostel Information",
+            body: "Our hostel offers a variety of amenities.",
+            category: "general",
+          },
+          score: 0.9,
+          confidence: 30,
+          evidence: [],
+          matches: {},
+        },
+        {
+          template: {
+            subject: "FAQ — Check-in Time",
+            body: "Check-in starts at 2:30 pm. Best regards, Hostel Brikette",
+            category: "faq",
+          },
+          score: 0.5,
+          confidence: 65,
+          evidence: [],
+          matches: {},
+        },
+      ],
+      reason: "Top candidate requires review",
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "What time is check in?",
+        intents: {
+          questions: [{ text: "What time is check in?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "faq", confidence: 0.8 },
+      },
+      subject: "Check-in question",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.template_used.subject).toBe("FAQ — Check-in Time");
+    expect(payload.template_used.subject).not.toBe("General Hostel Information");
+  });
+
+  it("TC-01-04: no-hint candidate above confidence floor accepted (unhinted floor pass)", async () => {
+    readFileMock.mockResolvedValue(JSON.stringify([]));
+    // Scenario "general" → hints = {"general"}; template "transportation" not in hints
+    // Confidence 80 >= UNHINTED_TEMPLATE_CONFIDENCE_FLOOR=70 → accepted
+    rankTemplatesSpy.mockReturnValueOnce({
+      selection: "suggest",
+      confidence: 80,
+      candidates: [
+        {
+          template: {
+            subject: "Transportation to Hostel Brikette",
+            body: "We have detailed travel guides on our website with directions.",
+            category: "transportation",
+          },
+          score: 0.8,
+          confidence: 80,
+          evidence: [],
+          matches: {},
+        },
+      ],
+      reason: "Top candidate requires review",
+    });
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "How do I get to the hostel?",
+        intents: {
+          questions: [{ text: "How do I get to the hostel?" }],
+          requests: [],
+          confirmations: [],
+        },
+        scenario: { category: "general", confidence: 0.6 },
+      },
+      subject: "Directions",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.template_used.subject).toBe("Transportation to Hostel Brikette");
+  });
+
+  it("TC-01-05 (regression): composite path unchanged — two-question email still produces composite blocks", async () => {
+    // Uses real rankTemplates (no spy mock) to confirm the composite path is unaffected
+    readFileMock.mockResolvedValue(
+      JSON.stringify([
+        {
+          subject: "Breakfast — Eligibility and Hours",
+          body: "Dear Guest,\r\n\r\nBreakfast is served daily from 8:00 AM to 10:30 AM.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "breakfast",
+        },
+        {
+          subject: "WiFi Information",
+          body: "Dear Guest,\r\n\r\nComplimentary WiFi is available throughout the hostel.\r\n\r\nBest regards,\r\n\r\nPeter Cowling\r\nOwner",
+          category: "wifi",
+        },
+      ])
+    );
+
+    const result = await handleDraftGenerateTool("draft_generate", {
+      actionPlan: {
+        ...baseActionPlan,
+        normalized_text: "Is breakfast included? Do you have WiFi?",
+        intents: {
+          questions: [
+            { text: "Is breakfast included?" },
+            { text: "Do you have WiFi?" },
+          ],
+          requests: [],
+          confirmations: [],
+        },
+      },
+      subject: "Questions",
+    });
+    if ("isError" in result && result.isError) throw new Error(result.content[0].text);
+
+    const payload = JSON.parse(result.content[0].text);
+    expect(payload.composite).toBe(true);
+    expect(payload.question_blocks).toHaveLength(2);
+    const body = payload.draft.bodyPlain.toLowerCase();
+    expect(body).toContain("breakfast");
+    expect(body).toContain("wifi");
   });
 });
 

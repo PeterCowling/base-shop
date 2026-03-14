@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowLeft, Inbox, Mail, MessageSquare, RefreshCw } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 
 import { PageShell } from "@/components/common/PageShell";
 import useInbox from "@/services/useInbox";
@@ -281,14 +282,16 @@ export default function InboxWorkspace() {
           /* Mobile detail view */
           <div>
             <div className="mb-3">
-              <button
+              <Button
                 type="button"
+                color="default"
+                tone="ghost"
                 onClick={() => setMobileShowDetail(false)}
-                className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-surface-2 hover:text-foreground"
+                className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back to {mobileActiveTab === "email" ? "Email" : "Prime"}
-              </button>
+              </Button>
             </div>
             {detailPane}
           </div>
@@ -297,30 +300,38 @@ export default function InboxWorkspace() {
           <div className="space-y-3">
             {/* Tab strip */}
             <div className="flex gap-1 rounded-xl border border-border-1 bg-surface-2 p-1">
-              <button
+              <Button
                 type="button"
+                color="default"
+                tone={mobileActiveTab === "email" ? "outline" : "ghost"}
                 onClick={() => setMobileActiveTab("email")}
-                className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium ${
                   mobileActiveTab === "email"
                     ? "bg-surface-elevated text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <Mail className="h-4 w-4" />
-                Email
-              </button>
-              <button
+                <Cluster justify="center" gap={2} wrap={false}>
+                  <Mail className="h-4 w-4" />
+                  Email
+                </Cluster>
+              </Button>
+              <Button
                 type="button"
+                color="default"
+                tone={mobileActiveTab === "prime" ? "outline" : "ghost"}
                 onClick={() => setMobileActiveTab("prime")}
-                className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                className={`flex-1 rounded-lg px-3 py-2 text-sm font-medium ${
                   mobileActiveTab === "prime"
                     ? "bg-surface-elevated text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <MessageSquare className="h-4 w-4" />
-                Prime
-              </button>
+                <Cluster justify="center" gap={2} wrap={false}>
+                  <MessageSquare className="h-4 w-4" />
+                  Prime
+                </Cluster>
+              </Button>
             </div>
 
             {/* Active channel list */}
@@ -339,6 +350,7 @@ export default function InboxWorkspace() {
                 loading={loadingList}
                 error={listError}
                 onSelect={handleSelectPrimeThread}
+                onBroadcastSent={() => void handleRefreshInbox()}
               />
             )}
           </div>
@@ -371,6 +383,7 @@ export default function InboxWorkspace() {
             loading={loadingList}
             error={listError}
             onSelect={handleSelectPrimeThread}
+            onBroadcastSent={() => void handleRefreshInbox()}
           />
         </div>
       </div>

@@ -1,0 +1,198 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "caryina-about-page",
+  "source_artifact_path": "docs/plans/caryina-about-page/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/caryina-about-page/fact-find.md",
+    "plan": "docs/plans/caryina-about-page/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The \"Designed in Positano\" claim is the heart of Caryina's brand. Without an About page, the claim feels thin and unsubstantiated. A short brand story reinforces trust and differentiates from generic dropshippers.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Brand story page live at `/about` in all three locales, linked from header nav and site footer, with copy derived from the strategy dossier. Page ships as text-only with a `{/* TODO: PLACEHOLDER — operator to supply hero image */}` comment in the JSX marking where photography can be inserted later.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "New page inherits all brand tokens; `support/page.tsx` layout is the direct model; text-only with TODO comment for hero image",
+      "current_or_option_state": "No new UI work; brand sections would visually clash with support card style",
+      "gap_or_implication": "Use `support/page.tsx` card structure; add TODO comment for hero image slot",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Static content, SSR only; no loading/error states; `resolveLocale()` guards invalid params",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No new UX states",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "No user input, no auth, no PII",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "GA4 page-view auto-covers `/about` via layout",
+      "current_or_option_state": "N/A — existing route",
+      "gap_or_implication": "No new instrumentation",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Extend existing `contentPacket.test.ts` + new `about/page.test.tsx` (follow `support/page.test.tsx` pattern)",
+      "current_or_option_state": "Only page render diff",
+      "gap_or_implication": "Extend one existing test file + create one new test file",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Add `about` section to JSON; add `AboutContent` type + `getAboutContent()` accessor to contentPacket.ts; add `header.about` / `footer.about` to `CHROME_DEFAULTS` TypeScript constant (not JSON)",
+      "current_or_option_state": "No data changes",
+      "gap_or_implication": "Three targeted edits: JSON + contentPacket.ts interface + CHROME_DEFAULTS",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Static server component; no data fetching beyond existing `readPayload()` call",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Purely additive; rollback = revert commit; no migration",
+      "current_or_option_state": "No new deploy risk",
+      "gap_or_implication": "Lowest possible risk profile",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "What hero visual should appear when the operator is ready to add imagery?"
+  ],
+  "stage_payload": {
+    "decision_summary": "Caryina's \"Designed in Positano, Italy\" claim appears on every page but has no backing page. Visitors drawn to the provenance story hit a dead end; brand identity only surfaces in legal copy on the Support page. The decision here is: where does the brand story live and how is it surfaced in navigation?",
+    "goals": [
+      "Add `/[lang]/about` brand story page in all three locales (en/de/it)",
+      "Substantiate the \"Designed in Positano\" claim with a short, honest origin narrative",
+      "Make the page discoverable via header nav and site footer",
+      "Draft copy from existing strategy dossier without operator input"
+    ],
+    "non_goals": [
+      "Redesign of homepage or existing routes",
+      "Custom photography (hero image deferred; TODO comment in code)",
+      "Deep biography, press kit, or investor-facing content"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Three-item header nav (Shop / About / Support) is uncluttered and on-brand",
+      "Brand story content can be drafted fully from the HBAG strategy dossier",
+      "Text-only layout is acceptable for launch; hero image is a PLACEHOLDER TODO"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Brand story accessibility",
+        "Why it matters": "Customers who respond to \"Designed in Positano\" need somewhere to go",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation simplicity",
+        "Why it matters": "This is a content page; complexity should be near zero",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Nav discoverability",
+        "Why it matters": "About is only useful if customers can find it",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Locale completeness",
+        "Why it matters": "German and Italian shoppers need appropriate content",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Build speed",
+        "Why it matters": "P2 priority; should not require extended timeline",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Content accuracy",
+        "Why it matters": "\"Made in Italy\" legal constraint must be respected",
+        "Weight/priority": "High (non-negotiable)"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Dedicated `/about` route",
+        "Description": "New `apps/caryina/src/app/[lang]/about/page.tsx` server component following `support/page.tsx` pattern; content in JSON; nav labels in `CHROME_DEFAULTS`",
+        "Upside": "Clean separation of concerns; fully localized; easily discoverable via header + footer; matches all existing patterns",
+        "Downside": "Adds one new file and route to the content catalogue",
+        "Key risks": "None material; additive only",
+        "Viable?": "Yes — **Recommended**"
+      },
+      {
+        "Option": "B — Embed brand story in Support page",
+        "Description": "Add a brand story section to the existing `/support` route",
+        "Upside": "Zero new routes",
+        "Downside": "Conflates brand storytelling with customer service; wrong mental model for visitors; `support` URL is the wrong destination for brand-curious visitors",
+        "Key risks": "Visitors won't look for brand story under Support; SEO signal diluted",
+        "Viable?": "No"
+      },
+      {
+        "Option": "C — Homepage expandable section",
+        "Description": "Add a collapsible \"Our Story\" accordion on the homepage",
+        "Upside": "No new route needed",
+        "Downside": "Competes with conversion focus of homepage (shop CTA, product hero); not discoverable from nav or direct URL; no standalone SEO value",
+        "Key risks": "Homepage already has brand claim — adding more brand copy there dilutes conversion",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Dedicated `/about` route following the `support/page.tsx` pattern.",
+      "Why this wins": "The brief has one candidate with no viable alternatives. Option B places brand story content in the wrong UX context. Option C fragments the homepage. Option A is the only approach that gives the brand story a clean URL, standalone SEO value, and a proper nav placement. It also requires zero new patterns — the `support/page.tsx` template, the contentPacket accessor pattern, and `CHROME_DEFAULTS` extension are all established.",
+      "**What it depends on": "**",
+      "Q": "What hero visual should appear when the operator is ready to add imagery?",
+      "Why operator input is required": "The build delivers a text-only layout with a TODO comment. The specific image (editorial product shot, Positano setting photograph, etc.) requires creative direction only the operator can provide.",
+      "Planning impact": "None — build proceeds without resolving this. The TODO comment marks the insertion point."
+    },
+    "rejected_approaches": [
+      "Option B (Support embed) — Wrong URL, wrong mental model; brand storytelling and customer service should not share a page.",
+      "Option C (Homepage accordion) — Competes with the conversion focus of the homepage; no direct link possible; no SEO value."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "TypeScript typecheck must pass end-to-end (interface + JSON shape must align; CHROME_DEFAULTS must match updated interface)",
+        "All three locale routes (`/en/about`, `/de/about`, `/it/about`) must render without errors",
+        "Extend existing `apps/caryina/src/lib/contentPacket.test.ts` with `getAboutContent` assertions covering all three locales",
+        "Create new `apps/caryina/src/app/[lang]/about/page.test.tsx` covering locale rendering, following `support/page.test.tsx` pattern"
+      ],
+      "sequencing_constraints": [
+        "Task 1 (contentPacket types + JSON) must complete before Task 2 (page component) — page component imports `getAboutContent()`",
+        "Task 3 (CHROME_DEFAULTS + nav) is independent of Task 2; it only modifies `contentPacket.ts` `CHROME_DEFAULTS` constant and `Header.tsx` / `SiteFooter.tsx` — no dependency on the page component",
+        "Task 4 (sitemap) is independent; can run at any point after Task 1",
+        "Task 5 (tests) runs last, after Tasks 1–4 are complete"
+      ],
+      "risks_to_carry_forward": [
+        "\"Made in Italy\" must not appear in any copy — plan task must include a copycheck step"
+      ]
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The chosen approach adds a new static content route to the site catalogue. No operator runbook, CI/deploy/release lane, approval path, or multi-step workflow is altered. The new `/about` route is discovered via header nav and footer links; all existing flows remain unchanged.",
+      "areas": []
+    }
+  }
+}

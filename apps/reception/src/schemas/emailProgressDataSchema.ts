@@ -7,6 +7,8 @@ export const EmailProgressDataSchema = z.object({
   occupantEmail: z.string(),
   currentCode: z.number(),
   hoursElapsed: z.number().nullable(),
+  lastActionedBy: z.string().optional(),
+  lastActionedAt: z.string().optional(),
 });
 
 export type EmailProgressData = z.infer<typeof EmailProgressDataSchema>;

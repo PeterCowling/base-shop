@@ -1,0 +1,53 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T21:16:42.178Z",
+  "plan_slug": "prime-ds-rules-deferred",
+  "review_cycle_key": "prime-ds-rules-deferred",
+  "source_path": "docs/plans/prime-ds-rules-deferred/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — Possible: DS-Lint Batch Fix Skill. This build repeated a clear pattern: enumerate violations with dry-run lint, apply per-rule fix patterns (Container swap, Inline/Stack for leaf flex/grid, min-h-10 min-w-10 for tap targets) across clusters, validate with full lint. A parameterized skill for \"fix all DS lint suppression debts in a given app\" could automate this reliably and reduce build cycle time from hours to minutes for future DS compliance recovery sprints.",
+      "body": "New skill — Possible: DS-Lint Batch Fix Skill. This build repeated a clear pattern: enumerate violations with dry-run lint, apply per-rule fix patterns (Container swap, Inline/Stack for leaf flex/grid, min-h-10 min-w-10 for tap targets) across clusters, validate with full lint. A parameterized skill for \"fix all DS lint suppression debts in a given app\" could automate this reliably and reduce build cycle time from hours to minutes for future DS compliance recovery sprints.",
+      "source": "results-review.user.md",
+      "date": "2026-03-13T00:00:00.000Z",
+      "path": "docs/plans/prime-ds-rules-deferred/results-review.user.md",
+      "idea_key": "8e49932517871fe71962a805c7ceb4ab3da90ab7",
+      "review_cycle_key": "prime-ds-rules-deferred",
+      "canonical_title": "Possible: DS-Lint Batch Fix Skill. This build repeated a clear pattern: enumerate violations with dry-run lint, apply per-rule fix patterns (Container swap, Inline/Stack for leaf flex/grid, min-h-10 min-w-10 for tap targets) across clusters, validate with full lint. A parameterized skill for \"fix all DS lint suppression debts in a given app\" could automate this reliably and reduce build cycle time from hours to minutes for future DS compliance recovery sprints.",
+      "build_signal_id": "2924245d626ebc53863f5a729d3fb4bcfbbf8394",
+      "recurrence_key": "023b309ea333df3dab8f0facb7454e213def49fd",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — Possible: Container/Inline codemod. The fix pattern for container-widths-only-at (replace with ) and for enforce-layout-primitives (replace on leaf elements with ) are deterministic enough to be implemented as a jscodeshift codemod. Would eliminate LLM reasoning for the mechanical substitution step.",
+      "body": "AI-to-mechanistic — Possible: Container/Inline codemod. The fix pattern for container-widths-only-at (replace with ) and for enforce-layout-primitives (replace on leaf elements with ) are deterministic enough to be implemented as a jscodeshift codemod. Would eliminate LLM reasoning for the mechanical substitution step.",
+      "source": "results-review.user.md",
+      "date": "2026-03-13T00:00:00.000Z",
+      "path": "docs/plans/prime-ds-rules-deferred/results-review.user.md",
+      "idea_key": "17145d0d19c91cab3d4e50fa2bea8c18fb071678",
+      "review_cycle_key": "prime-ds-rules-deferred",
+      "canonical_title": "Possible: Container/Inline codemod. The fix pattern for container-widths-only-at (replace with ) and for enforce-layout-primitives (replace on leaf elements with ) are deterministic enough to be implemented as a jscodeshift codemod. Would eliminate LLM reasoning for the mechanical substitution step.",
+      "build_signal_id": "a909aec473560dacdeb17dad446ec161fff100a6",
+      "recurrence_key": "f854b99789492ff34edd7ca8b6ba32c18cf6bda2",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline } from "@acme/design-system/primitives";
 
 import { VARIANCE_REASON_CODES, type VarianceReasonCode } from "../../constants/inventoryReasons";
 import {
@@ -148,14 +149,14 @@ function VarianceBreakdownSection({
   return (
     <section className="border border-border rounded-lg p-4">
       <h2 className="text-xl font-semibold mb-3">Variance Breakdown</h2>
-      <div className="mb-3 flex items-center gap-2">
+      <Inline gap={2} className="mb-3">
         <label htmlFor="variance-window" className="text-sm text-muted-foreground">
           Window:
         </label>
         <select
           id="variance-window"
           data-cy="variance-window-select"
-          className="border px-2 py-1 text-sm"
+          className="border border-border-2 rounded-md bg-surface px-2 py-1 text-sm text-foreground focus:outline-none focus:border-primary-main"
           value={varianceWindowDays}
           onChange={(e) => setVarianceWindowDays(Number(e.target.value))}
         >
@@ -163,7 +164,7 @@ function VarianceBreakdownSection({
           <option value={14}>14 days</option>
           <option value={30}>30 days</option>
         </select>
-      </div>
+      </Inline>
       {Object.keys(unexplainedVarianceByItem).length === 0 ? (
         <p className="text-sm text-muted-foreground">
           No stock variance to explain in this period.
@@ -778,7 +779,7 @@ function StockManagement() {
       </section>
 
       <section>
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+        <Cluster justify="between" gap={2} wrap className="mb-3">
           <h2 className="text-xl font-semibold">Inventory Ledger</h2>
           <Button
             type="button"
@@ -787,7 +788,7 @@ function StockManagement() {
           >
             Start batch count
           </Button>
-        </div>
+        </Cluster>
         {batchCountMode ? (
           <BatchStockCount onComplete={() => setBatchCountMode(false)} />
         ) : items.length === 0 ? (
@@ -967,7 +968,7 @@ function StockManagement() {
 
       <section className="border border-border rounded-lg p-4 ">
         <h2 className="text-xl font-semibold mb-3">Exports</h2>
-        <div className="flex flex-wrap gap-2">
+        <Inline gap={2}>
           <Button
             type="button"
             onClick={handleExportLedger}
@@ -982,7 +983,7 @@ function StockManagement() {
           >
             Export Variance CSV
           </Button>
-        </div>
+        </Inline>
       </section>
 
       <section className="border border-border rounded-lg p-4 ">

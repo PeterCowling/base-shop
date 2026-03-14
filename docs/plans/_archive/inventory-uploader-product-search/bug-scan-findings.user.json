@@ -1,0 +1,17 @@
+{
+  "schema_version": "bug-scan-findings.v1",
+  "generated_at": "2026-03-13T18:03:28.727Z",
+  "scan_scope": {
+    "changed": true,
+    "staged": false,
+    "targets": [
+      "--"
+    ],
+    "scanned_files": 0
+  },
+  "finding_count": 0,
+  "critical_count": 0,
+  "warning_count": 0,
+  "business_scope": "PLAT",
+  "findings": []
+}

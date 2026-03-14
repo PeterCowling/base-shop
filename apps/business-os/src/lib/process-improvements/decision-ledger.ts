@@ -38,6 +38,7 @@ export interface ProcessImprovementsDecisionEvent {
   defer_until?: string;
   execution_result?: ProcessImprovementsExecutionResult;
   execution_error?: string;
+  rationale?: string;
 }
 
 export interface AppendProcessImprovementsDecisionEventInput {
@@ -51,6 +52,7 @@ export interface AppendProcessImprovementsDecisionEventInput {
   deferUntil?: string;
   executionResult?: ProcessImprovementsExecutionResult;
   executionError?: string;
+  rationale?: string;
   sourcePath?: string;
   queueMode?: "trial" | "live";
 }
@@ -185,6 +187,7 @@ function parseDecisionEvent(
 
   const deferUntil = readString(record.defer_until);
   const executionError = readString(record.execution_error);
+  const rationale = readString(record.rationale);
 
   return {
     schema_version: PROCESS_IMPROVEMENTS_DECISION_EVENT_SCHEMA_VERSION,
@@ -201,6 +204,7 @@ function parseDecisionEvent(
     defer_until: deferUntil,
     execution_result: executionResult,
     execution_error: executionError,
+    rationale,
   };
 }
 
@@ -248,6 +252,7 @@ export function reduceProcessImprovementsDecisionEvents(
       deferUntil: event.defer_until,
       executionResult: event.execution_result,
       executionError: event.execution_error,
+      rationale: event.rationale,
     });
   }
 
@@ -330,6 +335,7 @@ export async function appendProcessImprovementsDecisionEvent(
     defer_until: input.deferUntil,
     execution_result: executionResult,
     execution_error: input.executionError,
+    rationale: input.rationale,
   };
 
   await mkdirWithinRoot(

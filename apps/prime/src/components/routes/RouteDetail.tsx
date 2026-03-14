@@ -37,7 +37,7 @@ interface RouteDetailProps {
 
 // i18n-exempt -- PRIME-ROUTES-001 [ttl=2026-12-31] Non-UI window open target/features.
 const BRIKETTE_WINDOW_TARGET = '_blank';
-// eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-3 non-UI window.open features.
+// eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-ROUTES-001 window.open feature string, not user-visible copy
 const BRIKETTE_WINDOW_FEATURES = 'noopener,noreferrer';
 
 /**
@@ -219,8 +219,7 @@ export const RouteDetail: FC<RouteDetailProps> = memo(function RouteDetail({
         <button
           type="button"
           onClick={handleOpenBrikette}
-          // eslint-disable-next-line ds/min-tap-size -- BRIK-3 text+padding control exceeds mobile tap target.
-          className="flex h-11 w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 font-medium text-foreground transition-colors hover:bg-muted"
+          className="flex min-h-11 min-w-11 w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 font-medium text-foreground transition-colors hover:bg-muted"
         >
           <ExternalLink className="h-5 w-5" />
           {t('routes.viewFullGuide')}

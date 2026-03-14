@@ -37,7 +37,7 @@ export function useSessionValidation({
         return;
       }
 
-      if (result === 'expired' || result === 'invalid') {
+      if (result.status === 'expired' || result.status === 'invalid') {
         callbackRef.current();
       }
     };

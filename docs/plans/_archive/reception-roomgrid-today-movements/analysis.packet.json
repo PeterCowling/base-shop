@@ -1,0 +1,162 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-roomgrid-today-movements",
+  "source_artifact_path": "docs/plans/reception-roomgrid-today-movements/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-roomgrid-today-movements/fact-find.md",
+    "plan": "docs/plans/reception-roomgrid-today-movements/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Staff must manually scan each room timeline to find today's check-ins and check-outs; there is no summary. This creates friction during busy arrival/departure windows.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A \"Today's Movements\" section on the rooms-grid page lists arrivals (check-in date = today) and departures (check-out date = today) with room numbers and guest names, eliminating manual timeline scanning.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "DS primitives; minimal layout change",
+      "current_or_option_state": "Same DS primitives + loading state UI",
+      "gap_or_implication": "Option A: simpler — no loading state needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Empty state + populated state; panel hidden when off-window",
+      "current_or_option_state": "Empty/loading/error/populated states + always visible",
+      "gap_or_implication": "Option A: 2 states vs 4; accepted trade-off",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — reads in-memory data already loaded",
+      "current_or_option_state": "Same — no new external data exposure",
+      "gap_or_implication": "N/A either way",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — pure read display",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Pure component + RoomsGrid mock = simple test scope",
+      "current_or_option_state": "New hook needs its own tests; more integration surface",
+      "gap_or_implication": "Option A: smaller test surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No schema change; uses existing `TBookingPeriod` fields",
+      "current_or_option_state": "Would require new query shape + type",
+      "gap_or_implication": "Option A: zero schema work",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "O(rooms × rows × periods) — bounded; no async",
+      "current_or_option_state": "Extra Firebase listener; extra memory",
+      "gap_or_implication": "Option A: no overhead",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Direct commit; revert = rollback",
+      "current_or_option_state": "Same deploy model but more code to revert",
+      "gap_or_implication": "Option A: minimal rollback surface",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Choose how to surface today's arrivals and departures on the rooms-grid page. Two options exist: derive the data from the existing `getReservationDataForRoom` hook (no new data fetching), or add a new Firebase query dedicated to today-specific data. The decision affects implementation complexity, test surface, and data-freshness coupling.",
+    "goals": [
+      "Identify the correct data seam without widening the hook API.",
+      "Confirm that `todayInWindow` gating is acceptable (panel is a contextual overlay, not standalone).",
+      "Resolve the `TodayMovementEntry` shape including stable identity fields."
+    ],
+    "non_goals": [
+      "Edit/action capability on the panel.",
+      "Historical movements (yesterday, tomorrow).",
+      "Changing the Firebase data model."
+    ],
+    "constraints": [
+      "`useGridData` does not expose `allRoomData` directly — must use `getReservationDataForRoom`."
+    ],
+    "assumptions": [
+      "`period.end === today` means the guest departs today (exclusive-end convention confirmed by `OccupancyStrip` source).",
+      "`occupantId` is always unique per booking occupant — safe as React render key."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Implementation simplicity",
+        "Why it matters": "Fewer moving parts = lower risk",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Zero new data fetching",
+        "Why it matters": "Avoids race conditions and loading states",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Testability",
+        "Why it matters": "Pure props-in component is trivially testable",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Design consistency",
+        "Why it matters": "Matches OccupancyStrip/UnallocatedPanel patterns",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Derive from existing hook",
+        "Description": "Iterate `knownRooms` → `getReservationDataForRoom` → flat-map periods → filter by date. Compute in `RoomsGrid`, pass typed arrays to `TodayMovements` props.",
+        "Upside": "Zero new fetching; follows existing pattern; pure component; trivially testable",
+        "Downside": "Panel disappears when `todayInWindow` is false (accepted per scope)",
+        "Key risks": "None material",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — New Firebase query",
+        "Description": "Add a dedicated query for today's bookings separate from the grid window",
+        "Upside": "Panel always visible regardless of grid window position",
+        "Downside": "Significant complexity: new hook, new loading state, potentially duplicate data in memory; no business requirement for always-visible panel",
+        "Key risks": "Race conditions, data duplication, complexity overhead",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — derive from existing `getReservationDataForRoom` hook.",
+      "Why this wins": "Zero new data fetching, follows established patterns, pure component design, minimal blast radius, and the grid-window coupling is acceptable because the panel is contextually scoped to the visible grid.",
+      "What it depends on": "`getReservationDataForRoom` continues to return all periods for the grid window (stable API — no planned changes)."
+    },
+    "rejected_approaches": [
+      "Option B (new Firebase query) — unnecessary overhead given Option A works. No business requirement for always-visible panel. Rejected."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change.",
+      "areas": []
+    }
+  }
+}

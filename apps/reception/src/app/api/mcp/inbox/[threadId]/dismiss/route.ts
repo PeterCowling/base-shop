@@ -33,7 +33,7 @@ export async function POST(
   const params = await context.params;
   if (isPrimeInboxThreadId(params.threadId)) {
     try {
-      const thread = await dismissPrimeInboxThread(params.threadId, auth.uid);
+      const thread = await dismissPrimeInboxThread(params.threadId, auth.uid, auth.roles);
       if (!thread) {
         return notFoundResponse(`Thread ${params.threadId} not found`);
       }

@@ -1,0 +1,352 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "caryina-runtime-state-workers-compat",
+  "source_artifact_path": "docs/plans/caryina-runtime-state-workers-compat/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/caryina-runtime-state-workers-compat/fact-find.md",
+    "plan": "docs/plans/caryina-runtime-state-workers-compat/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Two pieces of Caryina checkout state use the file system for storage, which is incompatible with Cloudflare Workers. Every checkout attempt currently throws on the idempotency store, and cart state is lost between requests.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Both the checkout idempotency store and the cart backend are migrated to Workers-compatible Prisma/Neon storage; no fs calls remain in either checkout path; deployed Worker can complete a checkout end-to-end without a runtime exception.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no UI change",
+      "current_or_option_state": "N/A — no UI change",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — API response shapes unchanged",
+      "current_or_option_state": "N/A — API response shapes unchanged",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "`buyerEmail` and transaction metadata move to Neon DB — same access control as `Order` table (DATABASE_URL secret). No new PII exposure surface.",
+      "current_or_option_state": "DO/KV: data scattered across bindings; no unified audit trail alongside orders. Redis: new external service in the PII data path.",
+      "gap_or_implication": "Prisma centralises PII alongside existing order data, consistent access control.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Existing `recordMetric` calls preserved. Prisma errors logged at `console.error`. Cart errors loggable at same level.",
+      "current_or_option_state": "DO/KV/Redis errors require different error handling patterns.",
+      "gap_or_implication": "Prisma error handling follows existing codebase pattern.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New `PrismaCartStore` and `PrismaCheckoutIdempotencyStore` unit-tested via Prisma mock. Existing route tests unchanged (mock shapes identical).",
+      "current_or_option_state": "DO/KV: unit testing requires Miniflare or DO mock harness — more complex.",
+      "gap_or_implication": "Prisma mock is simpler and consistent with existing test patterns.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Two new Prisma models, additive migration. `CheckoutAttemptRecord` fields map 1:1. Cart stored as JSON column. Migration is additive-only. `storeProviderSchema` enum in `packages/config/src/env/auth.ts` must be extended to include `\"prisma\"`.",
+      "current_or_option_state": "DO: no DB migration needed but state is opaque. KV: no schema.",
+      "gap_or_implication": "Prisma gives a typed, queryable, auditable schema. Stale attempt scan (`listStaleInProgressCheckoutAttempts`) maps directly to a DB query. Enum extension is a required code change in `packages/config`.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "~5-15ms Neon latency per operation. Idempotency: 2-4 DB calls per checkout (begin, mark reservation, mark payment, mark result). Cart: 1-2 DB calls per cart interaction. Prisma connection pool handles concurrency. P2002 (unique violation) caught and mapped to `in_progress` / `conflict` response.",
+      "current_or_option_state": "DO: sub-ms for cart reads; suitable for high-frequency add-to-cart. Idempotency KV: eventually consistent — unacceptable.",
+      "gap_or_implication": "Prisma latency is acceptable for Caryina's boutique volume. Atomicity is correct.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive schema migration → code deploy → remove `nodejs` runtime overrides. Rollback: revert code + optionally drop new tables (additive-only). No feature flag needed.",
+      "current_or_option_state": "More complex — DO binding requires `wrangler.toml` change + new class export; rollback involves removing DO binding while potentially losing in-flight cart state.",
+      "gap_or_implication": "Prisma rollout is simpler and safer.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "Should `checkout-idempotency.json` data be migrated to the new `CheckoutAttempt` table on first deploy?"
+  ],
+  "stage_payload": {
+    "decision_summary": "Caryina deploys to Cloudflare Workers (`wrangler.toml` confirmed, `DB_MODE=prisma`, `INVENTORY_BACKEND=prisma`). Two stores in the checkout flow are incompatible with the Workers runtime: 1. **Checkout idempotency store** (`checkoutIdempotency.server.ts`) — pure `fs` read/write/lock. Throws `EROFS` on every checkout attempt. 2. **Cart backend** — `MemoryCartStore` default. Per-isolate Map: cart state is nondurably tied to the isolate instance. Because Cloudflare spins multiple isolates and doesn't guarantee routing to the same one, add-to-cart and subsequent checkout requests will often hit di",
+    "goals": [
+      "Replace fs-based idempotency store with a Workers-compatible backend.",
+      "Replace per-isolate `MemoryCartStore` with a persistent, Workers-compatible backend for Caryina.",
+      "Both replacements must preserve existing function signatures and not alter public API contracts.",
+      "Preserve existing test mock shapes (no test breakage)."
+    ],
+    "non_goals": [
+      "Changing the `CartStore` interface.",
+      "Adding Workers-compatible backends to other shops.",
+      "Migrating the Redis/DO cart backends already in `platform-core`.",
+      "Changing the checkout API contracts or cart cookie scheme."
+    ],
+    "constraints": [
+      "Prisma/Neon is already active. `DATABASE_URL` Worker secret is configured.",
+      "Schema additions go to `packages/platform-core/prisma/schema.prisma`; migrations checked in to `packages/platform-core/prisma/migrations/`.",
+      "`MemoryCartStore`, `RedisCartStore`, `CloudflareDurableObjectCartStore` must continue working for other shops/tests."
+    ],
+    "assumptions": [
+      "No production checkout records exist in the JSON file (Worker has never succeeded — fs crashes on first attempt).",
+      "Cart loss during migration is acceptable (MemoryCartStore already offers zero persistence).",
+      "Caryina traffic volume does not require sub-5ms cart latency (hostel boutique, not high-volume SaaS)."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Workers runtime compatibility",
+        "Why it matters": "Non-negotiable — must work in Cloudflare Workers with `nodejs_compat` flag",
+        "Weight/priority": "Must-have"
+      },
+      {
+        "Criterion": "Consistency with existing Caryina data layer",
+        "Why it matters": "Adding a new binding or service means new secrets/config/ops overhead; Prisma is already there",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Idempotency atomicity",
+        "Why it matters": "Double-charge prevention requires mutual exclusion — weak atomicity is unacceptable",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation effort",
+        "Why it matters": "Team size is small; prefer smallest safe delta",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Cart data durability",
+        "Why it matters": "Cart survives isolate recycles; 30-day TTL acceptable",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test seam quality",
+        "Why it matters": "Existing tests must remain valid; new implementations need unit coverage",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Rollback simplicity",
+        "Why it matters": "Caryina is not yet in production on Workers; rollback is code revert",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Prisma/Neon",
+        "Description": "Replace `withStoreLock`+fs with Prisma `create`/`upsert` + unique constraint on `(shopId, idempotencyKey)`. Use `prisma.$transaction` for `beginStripeCheckoutFinalization` finalizing state.",
+        "Upside": "Uses existing DB; no new infrastructure; ACID transactions; full query capability (stale scan, status lookup by sessionId).",
+        "Downside": "Adds ~5-15ms latency per idempotency operation vs. fs (fs was sequential and slow anyway at 50ms retry loops).",
+        "Key risks": "Prisma connection pool exhaustion under burst load; unique constraint collision handling must cover P2002.",
+        "Viable?": "Yes — **recommended**"
+      },
+      {
+        "Option": "B — Cloudflare KV",
+        "Description": "Store each attempt as a KV entry keyed by `{shopId}:{idempotencyKey}`. Use `ifMatch` conditional put for optimistic locking.",
+        "Upside": "Native Workers primitive; very low latency reads.",
+        "Downside": "KV is eventually consistent (up to 60s propagation delay across regions). \"acquired\" status written in one isolate may not be visible to another for up to 60s — double-charge window exists. No atomic read-modify-write.",
+        "Key risks": "Eventual consistency is a fatal flaw for payment idempotency.",
+        "Viable?": "No — eliminated"
+      },
+      {
+        "Option": "C — Cloudflare Durable Objects",
+        "Description": "Per-key or per-shop DO handles the lock and store.",
+        "Upside": "Strongly consistent per DO; zero cross-isolate state issues.",
+        "Downside": "Requires declaring a DO class and binding in `wrangler.toml`. DO class must be deployed as part of the Worker. Adds significant infra complexity. Overkill when Neon is already available and strongly consistent.",
+        "Key risks": "New DO binding = new deployment surface; DO storage is not queryable (no `listStaleInProgress` scan equivalent without extra design).",
+        "Viable?": "No — eliminated"
+      },
+      {
+        "Option": "D — Upstash Redis",
+        "Description": "Use Redis with `SET NX` for lock + Redis hash for record.",
+        "Upside": "Strongly consistent; fast.",
+        "Downside": "Requires new `UPSTASH_REDIS_REST_URL`/`TOKEN` secrets; new infrastructure to provision and pay for. Zero existing Redis configuration in Caryina.",
+        "Key risks": "Adding new infrastructure when Neon is already available and sufficient.",
+        "Viable?": "No — eliminated"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "A — Prisma/Neon",
+        "Description": "Add a `Cart` model to the schema. `PrismaCartStore` implements `CartStore` interface. Activated via `CART_STORE_PROVIDER=prisma` env var in `wrangler.toml`.",
+        "Upside": "Consistent with all other Caryina data; no new bindings; cart data queryable; TTL via `expiresAt` column checked on read.",
+        "Downside": "~5-15ms per cart operation (already paid for checkout context). Cart CRUD is called per user interaction (add-to-cart, view cart) — latency is perceptible but within acceptable range for boutique volume.",
+        "Key risks": "N+1 risk on cart page if multiple reads occur per render — mitigated by single `getCart` call pattern.",
+        "Viable?": "Yes — **recommended**"
+      },
+      {
+        "Option": "B — Cloudflare Durable Objects",
+        "Description": "Use `CloudflareDurableObjectCartStore` (already implemented in `platform-core`). Bind `CART_DO` namespace in `wrangler.toml`. Deploy `CartDurableObject` class.",
+        "Upside": "Zero latency vs. network DB; per-cart DO isolation; TTL handled in DO storage.",
+        "Downside": "Requires new DO binding in `wrangler.toml` + deploying `CartDurableObject` class. DO storage has per-key limits; not queryable. `CartDurableObject` class must be exported from Worker bundle. More complex deployment. Already implemented but not battle-tested for Caryina.",
+        "Key risks": "Two-class Worker deployment (Worker + DO); new billing surface; cannot query \"all carts for a shop\".",
+        "Viable?": "No — viable but not recommended. Prisma is simpler and already present; DO adds operational overhead for no material gain at Caryina's scale."
+      },
+      {
+        "Option": "C — Upstash Redis",
+        "Description": "Use `RedisCartStore` (already implemented in `platform-core`). Add `UPSTASH_REDIS_REST_URL`/`TOKEN` env vars.",
+        "Upside": "Good latency; TTL built-in via Redis `EXPIRE`.",
+        "Downside": "Requires new infrastructure, new secrets. `.env.example` has no Redis vars for Caryina. Zero existing Redis config.",
+        "Key risks": "New service dependency for a shop that already has Neon; ongoing Redis subscription cost; more secrets to manage.",
+        "Viable?": "No — eliminated"
+      },
+      {
+        "Option": "D — Remain on MemoryCartStore",
+        "Description": "Status quo — accept that cart is per-isolate.",
+        "Upside": "No change required.",
+        "Downside": "Cart is lost between most requests. \"Add to cart\" and \"checkout\" hit different isolates. Checkout always fails with \"Cart is empty\".",
+        "Key risks": "This is the bug. Not viable.",
+        "Viable?": "No — eliminated"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Prisma/Neon for both stores (single unified approach).",
+      "**Why this wins": "**",
+      "Test seams": "Prisma mock is standard in this codebase; DO/KV would require Miniflare mock harness.",
+      "Single deployment model": "one DB, one connection, consistent error handling.",
+      "**What it depends on": "**",
+      "**KV for idempotency** — eliminated": "KV is eventually consistent. A double-write window exists where two concurrent checkout attempts with the same `idempotencyKey` could both be told \"acquired,\" leading to double-charging. Fatal for a payment idempotency gate.",
+      "**Durable Objects for cart** — viable but not recommended": "`CloudflareDurableObjectCartStore` is already implemented and would work. However, it requires a new `CART_DO` binding in `wrangler.toml`, deploying a `CartDurableObject` class alongside the Worker, and adds ongoing operational complexity. The DO approach buys sub-ms cart reads at the cost of deployment complexity — an unnecessary trade for Caryina's boutique traffic volume where Neon latency is acceptable.",
+      "**Upstash Redis** — eliminated for both stores": "requires new infrastructure, new secrets (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`), and a new external service dependency. No existing Redis configuration exists for Caryina. Adding it when Neon is already present and sufficient adds cost and operational overhead.",
+      "**MemoryCartStore (status quo)** — eliminated": "this is the bug. Cart state is lost between requests in Workers.",
+      "Q": "Should `checkout-idempotency.json` data be migrated to the new `CheckoutAttempt` table on first deploy?",
+      "Why operator input required": "This depends on whether any outstanding `needs_review` records in the local JSON file require continuity. The agent's default is no backfill (the Worker has never succeeded in production, so there are no production records).",
+      "Planning impact": "If operator confirms no backfill needed, no data migration script is required. Plan proceeds with schema-only migration.",
+      "Default assumption (safe to proceed with)": "No backfill required. Planning will proceed with schema-only migration unless operator specifies otherwise before build begins."
+    },
+    "rejected_approaches": [
+      "**KV for idempotency** — eliminated: KV is eventually consistent. A double-write window exists where two concurrent checkout attempts with the same `idempotencyKey` could both be told \"acquired,\" leading to double-charging. Fatal for a payment idempotency gate.",
+      "**Durable Objects for cart** — viable but not recommended: `CloudflareDurableObjectCartStore` is already implemented and would work. However, it requires a new `CART_DO` binding in `wrangler.toml`, deploying a `CartDurableObject` class alongside the Worker, and adds ongoing operational complexity. The DO approach buys sub-ms cart reads at the cost of deployment complexity — an unnecessary trade for Caryina's boutique traffic volume where Neon latency is acceptable.",
+      "**Upstash Redis** — eliminated for both stores: requires new infrastructure, new secrets (`UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN`), and a new external service dependency. No existing Redis configuration exists for Caryina. Adding it when Neon is already present and sufficient adds cost and operational overhead.",
+      "**MemoryCartStore (status quo)** — eliminated: this is the bug. Cart state is lost between requests in Workers."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "`pnpm typecheck && pnpm lint` must pass (CI gate).",
+        "CI Jest tests must pass (existing checkout route and reconciliation tests remain valid — they mock both stores entirely).",
+        "New unit tests for `PrismaCheckoutIdempotencyStore` and `PrismaCartStore` added in this migration.",
+        "No E2E test changes required."
+      ],
+      "sequencing_constraints": [
+        "Schema migration → code deploy. `runtime = \"nodejs\"` override removal is **descoped from this migration** (checkout-session still depends on `sendSystemEmail` → `emailService.ts` → `createRequire`, a Node.js-only API). Do not include override removal as a plan task.",
+        "`PrismaCartStore` must be in `packages/platform-core` (not `apps/caryina`) to follow the existing `cartStore/` pattern. `CART_STORE_PROVIDER=prisma` activates it.",
+        "The Prisma client import in `PrismaCheckoutIdempotencyStore` must use the existing platform-core Prisma client singleton (same client used by inventory, orders — avoids connection pool exhaustion)."
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Cart CRUD (`/api/cart`)",
+          "current": "`MemoryCartStore` — per-isolate Map, lost between requests",
+          "trigger": "User adds/removes item",
+          "future": "`PrismaCartStore.incrementQty` → Prisma `upsert` on `Cart` row (keyed by cart UUID) with `expiresAt` TTL check. Cart persists across isolate recycles for 30 days.",
+          "steady": "Cart cookie scheme, cart UUID generation, `CartStore` interface, all other shops",
+          "seams": "Prisma connection latency (~5-15ms) is new per cart CRUD call; acceptable at boutique volume"
+        },
+        {
+          "id": null,
+          "label": "Cart read at checkout",
+          "current": "`getCart(cartId)` → `MemoryCartStore.getCart` → empty `{}` (usually — nondeterministic per-isolate)",
+          "trigger": "Customer submits checkout",
+          "future": "`getCart(cartId)` → `PrismaCartStore.getCart` → DB read → returns populated `CartState`",
+          "steady": "No change to `cartId` cookie or cart parsing logic",
+          "seams": "If `DATABASE_URL` not set and `CART_STORE_PROVIDER=prisma`, `db.ts` returns `missingPrismaClient()` proxy which throws on first DB call — no automatic fallback to memory. Dev `.env.local` must include `DATABASE_URL` or `CART_STORE_PROVIDER` must not be set in dev."
+        },
+        {
+          "id": null,
+          "label": "Cart delete on success",
+          "current": "`deleteCart(cartId)` → no-op (MemoryCartStore already empty)",
+          "trigger": "Payment succeeds",
+          "future": "`deleteCart(cartId)` → `PrismaCartStore.deleteCart` → DB delete of Cart row",
+          "steady": "No change to checkout success response",
+          "seams": "None — additive improvement"
+        },
+        {
+          "id": null,
+          "label": "Checkout idempotency gate",
+          "current": "`beginCheckoutAttempt` → `withStoreLock` → `fs.open` → crash (`EROFS` on Workers)",
+          "trigger": "Every checkout POST",
+          "future": "`beginCheckoutAttempt` → Prisma `create` with `@@unique([shopId, idempotencyKey])` → on `P2002` violation, read existing record and return `in_progress` or `conflict` result. Semantics identical to file lock.",
+          "steady": "Public function signatures unchanged; all 4 caller files unchanged",
+          "seams": "Must catch `P2002` (Prisma unique constraint error) in `beginCheckoutAttempt` and map to correct `BeginCheckoutAttemptResult` variant"
+        },
+        {
+          "id": null,
+          "label": "Checkout idempotency updates",
+          "current": "All `markCheckoutAttempt*` / `recordCheckoutAttempt*` functions → `withStoreLock` → fs → crash",
+          "trigger": "Mid-checkout state transitions",
+          "future": "Prisma `update` on `CheckoutAttempt` row filtered by `idempotencyKey` and `shopId`. No locking needed for updates (record already exists; individual field updates are atomic enough).",
+          "steady": "All callers in `checkoutSession.server.ts`, `stripeCheckout.server.ts`, `checkoutReconciliation.server.ts` unchanged",
+          "seams": "Missing record (record not found) must be handled gracefully — same as current fs behaviour where missing record returns silently"
+        },
+        {
+          "id": null,
+          "label": "Stripe finalization locking",
+          "current": "`beginStripeCheckoutFinalization` → `withStoreLock` → sets `status = \"finalizing\"` atomically",
+          "trigger": "`checkout.session.completed` webhook",
+          "future": "`prisma.$transaction` to SELECT + UPDATE `status` = `\"finalizing\"` atomically on the row matching `stripeSessionId`. Returns `acquired`/`busy`/`already_finalized`/`no_match` variants.",
+          "steady": "`stripeCheckout.server.ts` caller unchanged; same 4-variant result type",
+          "seams": "`prisma.$transaction` adds one more round-trip; acceptable for webhook path"
+        },
+        {
+          "id": null,
+          "label": "Stale checkout reconciliation",
+          "current": "`listStaleInProgressCheckoutAttempts` → fs read → scan array",
+          "trigger": "Cron POST `/api/cron/checkout-reconciliation`",
+          "future": "`prisma.checkoutAttempt.findMany` where `status IN (\"in_progress\", \"finalizing\") AND updatedAt < staleCutoff` — direct DB query.",
+          "steady": "`checkoutReconciliation.server.ts` caller unchanged",
+          "seams": "`runtime = \"nodejs\"` on cron route must be removed as part of this migration"
+        },
+        {
+          "id": null,
+          "label": "Route runtime overrides",
+          "current": "3 routes have `export const runtime = \"nodejs\"` (checkout-session, stripe-webhook, cron)",
+          "trigger": "These routes currently declare Node.js runtime (works with OpenNext + `nodejs_compat`; not itself a Workers blocker)",
+          "future": "After fs dependency removed, `node:fs` is no longer a reason for the override. However, `checkout-session` also depends on `sendSystemEmail` → `emailService.ts` → `createRequire` (Node.js-only). Removing overrides from checkout routes is **out of scope** for this migration. Cron (`checkout-reconciliation`) and stripe-webhook routes do not use email in their main paths and may be safe to update, but this should be verified separately.",
+          "steady": "Public behaviour unchanged; overrides are not the root cause of checkout breakage",
+          "seams": "Override removal is descoped; plan should not include it as a task unless email path is independently verified."
+        },
+        {
+          "id": null,
+          "label": "Config schema",
+          "current": "`CART_STORE_PROVIDER` Zod enum is `[\"redis\", \"cloudflare\", \"memory\"]`",
+          "trigger": "`wrangler.toml` sets `CART_STORE_PROVIDER=prisma`",
+          "future": "Enum extended to `[\"redis\", \"cloudflare\", \"memory\", \"prisma\"]` in `packages/config/src/env/auth.ts`. Factory reads the value and routes to `PrismaCartStore`.",
+          "steady": "Other shops not affected (they do not use `prisma` value)",
+          "seams": "Must ship enum extension before or with the `wrangler.toml` var change — sequencing constraint"
+        }
+      ]
+    }
+  }
+}

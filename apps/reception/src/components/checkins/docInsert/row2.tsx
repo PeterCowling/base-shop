@@ -6,6 +6,8 @@ import React, {
   useState,
 } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
 
@@ -213,7 +215,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
   );
 
   return (
-    <div className="flex flex-wrap gap-12 mb-75px">
+    <Inline gap={12} className="mb-75px">
       {/* Place of Birth */}
       <div className="flex flex-col w-300px">
         <AutoComplete
@@ -273,7 +275,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           }`}
         />
       </div>
-    </div>
+    </Inline>
   );
 }
 

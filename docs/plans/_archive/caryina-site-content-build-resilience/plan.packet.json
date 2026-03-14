@@ -1,0 +1,256 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "caryina-site-content-build-resilience",
+  "source_artifact_path": "docs/plans/caryina-site-content-build-resilience/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/caryina-site-content-build-resilience/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Fresh deployments and CI builds fail silently (500 on every page) when the content generation step is skipped. The materializer warning also means even manual re-runs are unsafe without the trustStrip fix.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The Caryina app builds and serves content on fresh checkout without a separate manual generation step; all pages fall back to hardcoded safe content rather than throwing a 500 when the file is absent or malformed.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no visual change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Content is copy/text; no rendering change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Fallback returns safe defaults on missing/malformed file; shop renders degraded but functional",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "`console.warn` makes degraded state visible in logs",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — file is static JSON, no auth",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No secrets in content file",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`console.warn` when falling back to defaults",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "CI logs capture prebuild materializer run output",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for missing-file and malformed-JSON fallback paths",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Uses `jest.resetModules()` + `jest.mock(\"node:fs\", ...)`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Materializer schema extended with `trustStrip`; stale copy removed; single canonical path",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "Schema drift resolved",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Single point of failure eliminated; prebuild ensures fresh content before build",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "Fallback is hot-path safe (returns constant, no I/O after first success)",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Committed JSON is rollback baseline; materializer change is additive",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No migration needed; revert JSON commit to roll back",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The Caryina shop crashes (500) on every page when `data/shops/caryina/site-content.generated.json` is absent. This plan fixes that in three layers: (1) port `productPage.trustStrip` into the materializer so regeneration can run safely; (2) add a `prebuild` script that auto-generates the file before `next build`; and (3) add a runtime fallback in `readPayload()` so the app serves safe hardcoded copy rather than throwing when the file is missing or malformed. A stale second tracked copy of the file is also removed, and unit tests are added for the new fallback paths.",
+    "goals": [
+      "App never crashes with 500 when content file is absent or malformed",
+      "Fresh checkout builds and serves content without a manual generation step",
+      "Single authoritative copy of the generated content file",
+      "Unit tests cover fallback paths"
+    ],
+    "non_goals": [
+      "Migrating content to a DB/CMS",
+      "Internationalising fallback copy",
+      "Runtime content hot-reload",
+      "Changing the `compile-website-content-packet` pipeline"
+    ],
+    "constraints": [
+      "`trustStrip` must not be dropped; it is customer-visible on every PDP",
+      "`prebuild` in `apps/caryina/package.json` runs with `cwd = apps/caryina/` — materializer must be invoked with `--repo-root ../..`",
+      "CI `caryina.yml` build command is unchanged (no workflow file PR needed — prebuild runs automatically as part of `next build`)"
+    ],
+    "assumptions": [
+      "`## Reusable Trust Blocks` section in `HBAG/content-packet.md` provides the 3 trust bullet texts (confirmed)",
+      "Committed `data/shops/caryina/site-content.generated.json` at repo root is the authoritative copy",
+      "`cachedPayload` module-level cache in `contentPacket.ts` requires `jest.resetModules()` between tests testing the missing/malformed paths"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Port `productPage.trustStrip` to `materializeSiteContentPayload()` using a new `extractH2BulletList()` function",
+      "Add `prebuild` script in `apps/caryina/package.json` with `--repo-root ../..`",
+      "Replace hard throws in `readPayload()` with `console.warn` + return of `SAFE_DEFAULTS`",
+      "`git rm` the stale `apps/caryina/data/shops/caryina/site-content.generated.json`",
+      "Add unit tests using `jest.resetModules()` + `jest.mock(\"node:fs\", ...)`",
+      "Why planning is not reopening option selection:",
+      "Analysis settled the trustStrip porting decision, the prebuild cwd constraint, and the h2-extractor requirement with direct code evidence"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Port trustStrip to materializer",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `scripts/src/startup-loop/website/materialize-site-content-payload.ts`",
+        "affects": "`scripts/src/startup-loop/website/materialize-site-content-payload.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add runtime fallback in contentPacket.ts",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/caryina/src/lib/contentPacket.ts`",
+        "affects": "`apps/caryina/src/lib/contentPacket.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add prebuild script to apps/caryina/package.json",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/caryina/package.json`",
+        "affects": "`apps/caryina/package.json`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Remove stale app-local content file",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — remove `apps/caryina/data/shops/caryina/site-content.generated.json` from git",
+        "affects": "`apps/caryina/data/shops/caryina/site-content.generated.json` (deleted)"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Add unit tests for fallback paths",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/caryina/src/lib/contentPacket.test.ts`",
+        "affects": "`apps/caryina/src/lib/contentPacket.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-04"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Content generation",
+          "trigger": "`pnpm build` or CI push to `caryina.yml`",
+          "flow": "(1) `prebuild` runs materializer `--business HBAG --shop caryina --repo-root ../..`; (2) materializer reads `HBAG/content-packet.md`; (3) writes `data/shops/caryina/site-content.generated.json`; (4) `next build` consumes freshly-written file",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "If content-packet is missing (corrupt checkout), materializer fails `ok:false` → prebuild exits non-zero → build fails with diagnostic (correct failure mode)"
+        },
+        {
+          "id": null,
+          "label": "Runtime resilience",
+          "trigger": "SSR page render when file absent or malformed",
+          "flow": "`readPayload()` logs warning, returns `SAFE_DEFAULTS`; all `get*Content()` exports return safe brand copy; pages render without crashing",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "Fallback copy must be real brand copy (not generator placeholders) — TASK-02 responsibility"
+        },
+        {
+          "id": null,
+          "label": "Stale copy removal",
+          "trigger": "PR merge",
+          "flow": "`apps/caryina/data/shops/caryina/site-content.generated.json` removed from git; candidate resolution unchanged (repo-root copy is still candidate 1)",
+          "task_ids": [
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Test coverage",
+          "trigger": "CI test run",
+          "flow": "New describe block in `contentPacket.test.ts`: missing-file case returns `SAFE_DEFAULTS`; malformed-JSON case returns `SAFE_DEFAULTS`; existing chrome tests unaffected",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Must use `jest.resetModules()` to clear module cache between tests"
+        }
+      ]
+    }
+  }
+}

@@ -268,8 +268,7 @@ const OriginButton: FC<{
     <button
       type="button"
       onClick={onClick}
-      // eslint-disable-next-line ds/min-tap-size -- BRIK-3 full-row control exceeds mobile tap target.
-      className="h-11 w-full rounded-xl border bg-card p-4 text-start transition-all hover:border-primary/30 hover:shadow-sm"
+      className="min-h-11 min-w-11 w-full rounded-xl border bg-card p-4 text-start transition-all hover:border-primary/30 hover:shadow-sm"
     >
       <div className="inline-block">
         <div className="inline-block h-10 w-10 rounded-full bg-muted text-center align-middle text-muted-foreground">

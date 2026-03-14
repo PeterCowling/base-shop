@@ -96,7 +96,7 @@ function decodeBase64UrlSegment(segment: string): string | null {
       return atob(padded);
     }
 
-    const maybeBuffer = (globalThis as { Buffer?: any }).Buffer;
+    const maybeBuffer = (globalThis as { Buffer?: { from(s: string, enc: string): { toString(enc: string): string } } }).Buffer;
     if (maybeBuffer) {
       return maybeBuffer.from(padded, 'base64').toString('utf8');
     }

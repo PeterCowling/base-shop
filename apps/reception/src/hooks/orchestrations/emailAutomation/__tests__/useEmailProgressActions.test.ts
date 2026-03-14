@@ -62,15 +62,18 @@ describe("useEmailProgressActions", () => {
     expect(addActivityMock).toHaveBeenCalledTimes(3);
     expect(addActivityMock).toHaveBeenCalledWith(
       "occ1",
-      ActivityCode.FIRST_REMINDER
+      ActivityCode.FIRST_REMINDER,
+      { skipEmailSend: true }
     );
     expect(addActivityMock).toHaveBeenCalledWith(
       "occ2",
-      ActivityCode.SECOND_REMINDER
+      ActivityCode.SECOND_REMINDER,
+      { skipEmailSend: true }
     );
     expect(addActivityMock).toHaveBeenCalledWith(
       "occ3",
-      ActivityCode.AUTO_CANCEL_NO_TNC
+      ActivityCode.AUTO_CANCEL_NO_TNC,
+      { skipEmailSend: true }
     );
     expect(addActivityMock).not.toHaveBeenCalledWith("occ4", expect.anything());
     expect(addActivityMock).not.toHaveBeenCalledWith("occ5", expect.anything());
@@ -86,15 +89,18 @@ describe("useEmailProgressActions", () => {
     expect(addActivityMock).toHaveBeenCalledTimes(3);
     expect(addActivityMock).toHaveBeenCalledWith(
       "occ1",
-      ActivityCode.AGREED_NONREFUNDABLE_TNC
+      ActivityCode.AGREED_NONREFUNDABLE_TNC,
+      { skipEmailSend: true }
     );
     expect(addActivityMock).toHaveBeenCalledWith(
       "occ2",
-      ActivityCode.AGREED_NONREFUNDABLE_TNC
+      ActivityCode.AGREED_NONREFUNDABLE_TNC,
+      { skipEmailSend: true }
     );
     expect(addActivityMock).toHaveBeenCalledWith(
       "occ3",
-      ActivityCode.AGREED_NONREFUNDABLE_TNC
+      ActivityCode.AGREED_NONREFUNDABLE_TNC,
+      { skipEmailSend: true }
     );
     expect(addActivityMock).not.toHaveBeenCalledWith("occ4", expect.anything());
     expect(addActivityMock).not.toHaveBeenCalledWith("occ5", expect.anything());

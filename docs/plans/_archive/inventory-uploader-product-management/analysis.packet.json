@@ -1,0 +1,250 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "inventory-uploader-product-management",
+  "source_artifact_path": "docs/plans/inventory-uploader-product-management/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/inventory-uploader-product-management/fact-find.md",
+    "plan": "docs/plans/inventory-uploader-product-management/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Caryina product and stock data is saved in files that do not work on the Cloudflare Workers hosting platform — the shop is silently broken in production for any data write. No operator tool exists to add, edit, or remove products across any shop. Fixing this gives caryina reliable database storage and gives all shops a product management screen in the inventory tool.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Inventory-uploader has a working Products tab for all shops. Caryina products and inventory are stored in PostgreSQL. The caryina admin panel is removed. Product data is no longer stored in flat files for any shop.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "New Products tab in inventory-uploader using established tab/panel pattern",
+      "current_or_option_state": "Option B: no UI needed; Option C: major rebuild; Option D: preserves existing broken UI",
+      "gap_or_implication": "Build Products tab against `gate-*` tokens; follow existing `RightPanelTab` extension pattern in `InventoryConsole.client.tsx`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Full create/edit/delete flows; empty-catalogue state; delete-confirmation; success/error feedback",
+      "current_or_option_state": "Option B: read-only static display; others N/A",
+      "gap_or_implication": "Define empty-catalogue state, delete-confirmation modal, success/error inline feedback",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "New product routes auto-protected by existing inventory-uploader middleware; Zod validation on all inputs including refunds route",
+      "current_or_option_state": "Option D: caryina admin security debt persists; Option B/C: no auth improvement",
+      "gap_or_implication": "Refunds endpoint must carry over the existing `refundRequestSchema` Zod validation from `apps/caryina/src/lib/adminSchemas.ts`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`console.info` on product write/update/delete routes; full audit trail (InventoryAuditEvent-style) deferred as future work",
+      "current_or_option_state": "Other options: no improvement",
+      "gap_or_implication": "Log `shopId`, `productId`/`sku`, action at `console.info` on each mutation; no new `AuditEvent` model in this delivery",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for new `prismaProductsRepository` methods; unit tests for new inventory-uploader routes including refunds; dry-run assertion on migration script",
+      "current_or_option_state": "Option B/D: fewer new tests but also less coverage",
+      "gap_or_implication": "Caryina admin test files deleted; new tests added for each new route and each new Prisma method",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Additive schema migration (`Product` model only); no existing models changed; `@@unique([shopId, sku])` (conventional) + `@@unique([shopId, id])` (code-required); data migration: 3 products + 4 inventory rows",
+      "current_or_option_state": "Option C: full D1 schema rewrite; Option B/D: no schema change",
+      "gap_or_implication": "Migration is additive — no destructive SQL. Run `prisma migrate deploy` against staging before production.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Product catalogues 3–100 items; no hot-path concern; Prisma connection pooling via platform-core singleton",
+      "current_or_option_state": "N/A across all options",
+      "gap_or_implication": "N/A — no performance work required",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Order: (1) schema migration, (2) `prisma generate`, (3) data migration, (4) deploy caryina with `DB_MODE=prisma`, (5) delete admin panel. Rollback: remove `DB_MODE` var → JSON fallback restores (silent-failure state — acceptable short-term)",
+      "current_or_option_state": "Option B: no deployment risk; Option C: no safe rollback",
+      "gap_or_implication": "Migration-first ordering is a hard sequencing constraint. Plan must enforce this order. Staging validation of schema + data migration before production cutover.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Caryina's product and inventory data is stored in flat JSON files that cannot be read or written on the Cloudflare Workers runtime — the shop silently returns zero products in production. No operator tool exists to add, edit, or remove products across any shop in the platform. The decision is: **which approach should deliver both product management capability for all shops and reliable PostgreSQL-backed storage for caryina**? The operator has already selected the full Prisma path at ideas stage. This analysis validates that selection against the alternatives, confirms there are no viable compe",
+    "goals": [
+      "Add `Product` model to Prisma schema; complete `prismaProductsRepository` write/update/delete/duplicate methods.",
+      "Add product CRUD API routes and Products tab UI to inventory-uploader.",
+      "Migrate caryina products and inventory from JSON files to PostgreSQL.",
+      "Wire caryina wrangler.toml with `DATABASE_URL` + `DB_MODE=prisma`.",
+      "Move refunds endpoint from caryina admin to inventory-uploader.",
+      "Delete the caryina admin panel."
+    ],
+    "non_goals": [
+      "Multi-locale product editing UI (single-value for all locales, matching existing caryina behaviour).",
+      "Product image upload (media URLs provided as strings).",
+      "Per-shop role-based access control.",
+      "Migrating other shops to Prisma in this delivery."
+    ],
+    "constraints": [
+      "Cloudflare Workers with `nodejs_compat` — no filesystem. PostgreSQL must be reachable.",
+      "Prisma schema uses `provider = \"postgresql\"` — no D1.",
+      "`adminSchemas.ts` (caryina) must be promoted before admin panel can be deleted."
+    ],
+    "assumptions": [
+      "Same `DATABASE_URL` covers caryina (same PostgreSQL cluster, different `shopId`).",
+      "`prisma generate` runs in caryina's CI/deployment pipeline.",
+      "Refunds endpoint move includes all payment credentials (`AXERVE_SHOP_LOGIN`, `AXERVE_API_KEY`, `STRIPE_SECRET_KEY`) being added to inventory-uploader wrangler secrets."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Workers runtime compatibility",
+        "Why it matters": "Caryina is already broken on Workers with fs-backed data — fixing this is not optional",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Platform reuse (all shops benefit)",
+        "Why it matters": "Product management tool should serve all shops, not just caryina",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Build effort and risk",
+        "Why it matters": "Additive schema change vs invasive re-architecting",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Data migration safety",
+        "Why it matters": "3 products + 4 inventory rows — must not lose or corrupt",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Rollback clarity",
+        "Why it matters": "Must be able to revert without losing data if deployment fails",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Operational tooling continuity",
+        "Why it matters": "Refunds endpoint must stay functional throughout the transition",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Full Prisma path (chosen)",
+        "Description": "Add `Product` model, complete Prisma repo, add inventory-uploader product CRUD + UI, migrate 3 products + 4 inventory rows to PostgreSQL, wire caryina env vars, move refunds, delete admin panel",
+        "Upside": "Fixes Workers runtime incompatibility permanently; gives all shops product management; uses existing Prisma/PostgreSQL infrastructure already proven in prod; clean deletion of unprotected caryina admin",
+        "Downside": "Requires schema migration (low risk, additive only); requires data migration (3 products — minimal risk); requires deployment ordering discipline",
+        "Key risks": "Data migration runs after env var cutover (storefront briefly empty) — mitigated by explicit sequencing",
+        "Viable?": "**Yes**"
+      },
+      {
+        "Option": "B — Static bundle workaround",
+        "Description": "Embed caryina products as a hardcoded JS array in the Workers build; bypass filesystem entirely",
+        "Upside": "Zero schema changes; instant fix for the read path",
+        "Downside": "Write path (product CRUD) still impossible; product management goal unmet; creates a maintenance anti-pattern (code changes required for every product edit); doesn't help other shops",
+        "Key risks": "Forever workaround — no path to product management",
+        "Viable?": "**No — rejected**"
+      },
+      {
+        "Option": "C — Cloudflare D1 (SQLite)",
+        "Description": "Replace PostgreSQL with Cloudflare D1 for product/inventory storage",
+        "Upside": "Native Workers database with no TCP connectivity concerns",
+        "Downside": "Entire Prisma schema and all existing inventory data would require D1 migration; Prisma D1 adapter is experimental; inventory-uploader already uses PostgreSQL in production; breaks the unified platform schema",
+        "Key risks": "Massive scope expansion; no evidence D1 is planned for the platform; breaks existing inventory tooling",
+        "Viable?": "**No — rejected**"
+      },
+      {
+        "Option": "D — Fix caryina admin panel (keep it)",
+        "Description": "Add `middleware.ts` to caryina, fix filesystem issue (e.g. force JSON reads at build time), preserve the admin panel",
+        "Upside": "No new app surface",
+        "Downside": "Doesn't solve the platform gap (all shops still have no product management tool); caryina admin remains a separate auth domain (CARYINA_ADMIN_KEY) inconsistent with inventory-uploader; duplicates operator tooling",
+        "Key risks": "Security debt remains (separate, weaker auth); product management fragmented across apps",
+        "Viable?": "**No — rejected**"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Full Prisma path.",
+      "Why this wins": "It is the only option that simultaneously resolves the Workers runtime incompatibility (making caryina functional in production), delivers platform-level product management capability (all shops benefit), and uses the existing proven PostgreSQL/Prisma infrastructure. The rejected options either leave the product management goal unmet (B, C, D), introduce new infrastructure risk (C), or preserve security technical debt (D). The scope is bounded — all implementation patterns are established, the data migration is tiny (3 products, 4 rows), and the schema change is additive only.",
+      "**What it depends on": "**",
+      "**Option B (static bundle workaround)** — Rejected": "doesn't solve the write-path failure or the product management goal. Trades a runtime bug for a maintenance anti-pattern.",
+      "**Option C (Cloudflare D1)** — Rejected": "major scope expansion with no existing D1 infrastructure; Prisma D1 adapter is experimental; breaks existing inventory tooling.",
+      "**Option D (fix caryina admin panel)** — Rejected": "preserves security debt (weaker auth model), fragments operator tooling across two apps, and doesn't give other shops product management capability.",
+      "**Q": "Should the refunds endpoint transition happen in the same delivery as the admin panel deletion, or as a separate follow-on delivery?**",
+      "Why operator input is required": "Both approaches work technically. Same-delivery increases scope but ships everything at once. Separate-delivery allows faster admin panel deletion if refunds are rarely used. Default assumption (same delivery) is safe but adds ~1 task of scope.",
+      "Planning impact": "If separate delivery, task 9 (admin panel deletion) must be scoped to preserve only the refunds endpoint in caryina; full admin panel deletion deferred to a follow-on.",
+      "Default (applied if no input)": "Same delivery — refunds ported in this plan before admin panel is deleted."
+    },
+    "rejected_approaches": [
+      "**Option B (static bundle workaround)** — Rejected: doesn't solve the write-path failure or the product management goal. Trades a runtime bug for a maintenance anti-pattern.",
+      "**Option C (Cloudflare D1)** — Rejected: major scope expansion with no existing D1 infrastructure; Prisma D1 adapter is experimental; breaks existing inventory tooling.",
+      "**Option D (fix caryina admin panel)** — Rejected: preserves security debt (weaker auth model), fragments operator tooling across two apps, and doesn't give other shops product management capability."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Product CRUD (caryina + all shops)",
+          "current": "No operator tool exists. Caryina admin at `/admin/products` is unprotected and non-functional on Workers.",
+          "trigger": "Operator opens inventory-uploader → navigates to Products tab → selects shop",
+          "future": "Operator logs into inventory-uploader → selects shop → opens Products tab → creates/edits/deletes product via form → PATCH/POST/DELETE to `/api/inventory/[shop]/products/[id]` → `prismaProductsRepository.update/write/delete` → PostgreSQL write. All shops supported by same routes.",
+          "steady": "Auth model (HMAC cookie, middleware) unchanged. Route pattern unchanged.",
+          "seams": "New Products tab UI must be built against existing tab pattern. Empty-catalogue UX state needed."
+        },
+        {
+          "id": null,
+          "label": "Storefront product reads (caryina)",
+          "current": "`readRepo(\"caryina\")` → JSON fallback → `fs.readFile` on Workers → catches → silent `[]`. Shop shows zero products in production.",
+          "trigger": "Storefront request to `/shop` or `/product/[slug]`",
+          "future": "`readRepo(\"caryina\")` → `repoResolver` detects `DB_MODE=prisma` + valid `DATABASE_URL` → `prismaProductsRepository.read()` → `prisma.product.findMany({ where: { shopId: \"caryina\" } })` → returns 3 products. Storefront renders normally.",
+          "steady": "`readRepo` interface unchanged. Storefront page components unchanged.",
+          "seams": "`DB_MODE=prisma` must not be deployed before data migration runs. Staging validation required."
+        },
+        {
+          "id": null,
+          "label": "Inventory update (caryina)",
+          "current": "Admin panel at `/admin/api/inventory/[sku]` — unprotected, non-functional on Workers. Inventory-uploader already serves inventory management for all shops via Prisma.",
+          "trigger": "Operator adjusts stock in inventory-uploader",
+          "future": "Inventory-uploader already covers this path via `/api/inventory/[shop]/adjustments`. No change needed for inventory writes.",
+          "steady": "InventoryItem model, inventory routes, and UI are unchanged.",
+          "seams": "Confirm caryina's `InventoryItem` rows migrate cleanly with the inventory data migration script."
+        },
+        {
+          "id": null,
+          "label": "Refunds",
+          "current": "`/admin/api/refunds` in caryina — unprotected, handles Axerve + Stripe.",
+          "trigger": "Operator issues a refund",
+          "future": "Operator logs into inventory-uploader → POST to `/api/inventory/[shop]/refunds` → `resolveRefundProvider` → Axerve or Stripe refund call. Credentials (`AXERVE_SHOP_LOGIN`, `AXERVE_API_KEY`, `STRIPE_SECRET_KEY`) in inventory-uploader wrangler secrets.",
+          "steady": "Payment provider logic (`callRefund`, `refundStripePayment`) unchanged — ported directly. Zod validation (`refundRequestSchema`) preserved.",
+          "seams": "All three credentials must be in inventory-uploader wrangler secrets before caryina admin is deleted."
+        },
+        {
+          "id": null,
+          "label": "Caryina admin panel",
+          "current": "`/admin/*` routes in `apps/caryina` — auth guard never invoked (no `middleware.ts`). Security liability.",
+          "trigger": "N/A (to be deleted)",
+          "future": "All files under `src/app/admin/`, `src/proxy.ts`, `src/lib/adminAuth.ts`, `src/lib/adminSchemas.ts` deleted. Related test files deleted. `inventoryBackend.ts` constant deleted.",
+          "steady": "Everything outside the admin subtree in caryina unchanged.",
+          "seams": "Delete order: after refunds are confirmed working in inventory-uploader and caryina DB_MODE switch is confirmed working."
+        }
+      ]
+    }
+  }
+}

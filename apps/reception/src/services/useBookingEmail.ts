@@ -19,6 +19,11 @@
 import { useCallback, useState } from "react";
 import { z } from "zod";
 
+import {
+  bookingRootPath,
+  guestDetailsBookingPath,
+} from "@acme/lib/hospitality";
+
 import { firebaseBookingSchema } from "../schemas/bookingsSchema";
 import { GuestEmailRecord } from "../schemas/guestEmailSchema";
 import {
@@ -98,7 +103,7 @@ export async function fetchGuestEmails(
   bookingRef: string
 ): Promise<Record<string, string>> {
   const firebaseBaseUrl = requireFirebaseBaseUrl();
-  const url = `${firebaseBaseUrl}/guestsDetails/${bookingRef}.json`;
+  const url = `${firebaseBaseUrl}/${guestDetailsBookingPath(bookingRef)}.json`;
   const resp = await fetch(url);
   if (resp.ok === false) {
     throw new Error(
@@ -161,7 +166,7 @@ export default function useBookingEmail() {
         const { firebaseBaseUrl, occupantLinkPrefix } = requireBookingEmailConfig(
           emailTestMode,
         );
-        const bookingUrl = `${firebaseBaseUrl}/bookings/${bookingRef}.json`;
+        const bookingUrl = `${firebaseBaseUrl}/${bookingRootPath(bookingRef)}.json`;
         const bookingResp = await fetch(bookingUrl);
         if (bookingResp.ok === false) {
           throw new Error(
@@ -232,15 +237,15 @@ export default function useBookingEmail() {
           messageId: json?.messageId,
         };
 
-        setMessage(json?.draftId ?? json?.messageId ?? "draft-created");
+        setMessage(json?.messageId ?? "sent");
         return successResult;
       } catch (err) {
         const error = err as Error;
         console.error("❌ sendBookingEmail failed", error);
-        setMessage(error.message || "Failed to create email draft");
+        setMessage(error.message || "Failed to send email");
         return {
           ...emptyResult,
-          error: error.message || "Failed to create email draft",
+          error: error.message || "Failed to send email",
         };
       } finally {
         setLoading(false);

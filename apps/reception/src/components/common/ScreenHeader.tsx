@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { Cluster, Inline } from "@acme/design-system/primitives";
+
 export interface ScreenHeaderProps {
   title: string;
   /** Optional right-side slot — e.g., role-gated action buttons via ActionRail, status badge */
@@ -24,18 +26,19 @@ export const ScreenHeader = memo(function ScreenHeader({
   className,
 }: ScreenHeaderProps) {
   return (
-    <div
-      className={`mb-6 flex items-center justify-between${className ? ` ${className}` : ""}`}
+    <Cluster
+      justify="between"
+      className={`mb-6${className ? ` ${className}` : ""}`}
     >
-      <div className="flex items-center gap-3">
+      <Inline gap={3}>
         <div className="h-7 w-1 rounded-full bg-primary-main" aria-hidden="true" />
         <h1 className="text-2xl font-heading font-semibold text-foreground">
           {title}
         </h1>
-      </div>
+      </Inline>
       {children && (
-        <div className="flex items-center">{children}</div>
+        <Inline>{children}</Inline>
       )}
-    </div>
+    </Cluster>
   );
 });

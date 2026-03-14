@@ -1,0 +1,225 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "mcp-server-reply",
+  "source_artifact_path": "docs/plans/mcp-server-reply/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/mcp-server-reply/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When a guest asks about something the AI has not seen before, instead of flagging it as",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "(1) Composite-path template selection applies hinted-first logic —",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI surface; MCP tool layer only",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "`followUpRequired: true` path exists; escalation fallback sentence appended",
+      "gap_or_implication": "Composite path may still send wrong template instead of follow_up",
+      "carry_forward_or_notes": "Yes — verify composite follow_up state"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth or data-exposure change; `deliveryStatus` is caller-supplied, not verified",
+      "gap_or_implication": "Caller could lie about status; acceptable given belt-and-suspenders design",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`email_fallback_detected` telemetry fires via `usedTemplateFallback` (draft-generate.ts:1502) and existing emission at line 1695; applies to composite path already",
+      "gap_or_implication": "Regression check: verify composite follow_up path continues to emit after TASK-01 change",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "TC-01–TC-06 + SIM-02 exist; gaps noted above",
+      "gap_or_implication": "3 new test cases needed (composite gate, gmail reject, synonyms regression)",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`createDraftSchema` in gmail-handlers.ts has no `deliveryStatus` field",
+      "gap_or_implication": "Additive schema change required; downstream callers unaffected (optional field)",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Changes are pure logic, no I/O or hot-path change",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Single package; no migration; rollback = revert commit",
+      "gap_or_implication": "`TOPIC_SYNONYMS` tightening could increase \"partial\" rate — monitor for regression in ops-inbox quality stats",
+      "carry_forward_or_notes": "Yes"
+    }
+  ],
+  "open_operator_questions": [
+    "Should `gmail_create_draft` silently reject (return error) or raise a loud error when"
+  ],
+  "stage_payload": {
+    "scope_summary": "Two related gaps in the Brikette AI email-reply pipeline remain partially unaddressed after recent confidence-floor and booking-trigger fixes (commit 5eae09457f). This fact-find maps what is already fixed, what is not, and what needs to be built. **Gap 1 (Dispatch 0002):** The composite-path template selector (`selectQuestionTemplateCandidate`) applies a flat 70% confidence floor but lacks the hinted/unhinted category distinction that the single-question path (`selectSingleQuestionTemplate`) already has. A generic \"faq\" template (e.g., \"Hostel Facilities and Services\") can score ≥70% for an un",
+    "goals": [
+      "Apply hinted/unhinted category distinction to `selectQuestionTemplateCandidate` (composite path),",
+      "Enforce `delivery_status: \"blocked\"` at the `gmail_create_draft` tool boundary (reject the call,",
+      "Tighten `TOPIC_SYNONYMS` in `coverage.ts` to prevent generic facility terms (\"amenity\", \"facility\")"
+    ],
+    "non_goals": [
+      "Rewriting the BM25 index or `rankTemplates` / `rankTemplatesPerQuestion` (working correctly for",
+      "Semantic/LLM-based question understanding.",
+      "Changing the `PER_QUESTION_FLOOR = 25` constant (already appropriate for candidate pre-filtering).",
+      "Fixing the separate `booking_context` broadness beyond what commit 5eae09457f already did."
+    ],
+    "constraints": [
+      "All changes must stay within `packages/mcp-server`; no app-layer changes required.",
+      "`gmail_create_draft` schema change must be backward-compatible (new field optional with safe default).",
+      "Tests run in CI only (no local jest)."
+    ],
+    "assumptions": [
+      "The `UNHINTED_TEMPLATE_CONFIDENCE_FLOOR = 70` constant is the correct shared threshold; no new",
+      "`deliveryStatus` passed into `gmail_create_draft` is self-reported by the caller (not looked up);"
+    ],
+    "key_entry_points": [
+      "`packages/mcp-server/src/tools/draft-generate.ts` — orchestrates full draft pipeline; calls template",
+      "`packages/mcp-server/src/tools/gmail-handlers.ts` — `handleCreateDraft` accepts `emailId`,"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none (open question on error-handling style is advisory; default stated)",
+      "Recommended next step": "`/lp-do-analysis mcp-server-reply`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Composite template selector (`selectQuestionTemplateCandidate`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Missing hinted/unhinted distinction vs single-question path",
+        "Resolution Required": "No — identified as primary task"
+      },
+      {
+        "Scope Area": "Single-question path (`selectSingleQuestionTemplate`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Already fixed in 5eae09457f",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Coverage scoring TOPIC_SYNONYMS",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "\"pool\" → \"amenity\"/\"facility\" causes false covered for unknown topics",
+        "Resolution Required": "No — identified as TASK-03"
+      },
+      {
+        "Scope Area": "`delivery_status` computation",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Computed correctly by `computeDeliveryStatus`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`gmail_create_draft` gate",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No code enforcement; SKILL.md only",
+        "Resolution Required": "No — identified as TASK-02"
+      },
+      {
+        "Scope Area": "Email template data",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "\"Hostel Facilities and Services\" confirmed as false-match candidate",
+        "Resolution Required": "No — fixed by TASK-01+TASK-03"
+      },
+      {
+        "Scope Area": "Test coverage for new paths",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "3 gaps identified (composite gate, gmail reject, synonyms regression)",
+        "Resolution Required": "No — captured in TASK seeds"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Incoming guest email picked up by ops-inbox skill (`gmail_list_pending`).",
+      "end_condition": "Gmail draft created (`gmail_create_draft`) and presented to staff for review/send.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Interpretation",
+          "flow": "`draft_interpret` → `EmailActionPlan` (scenario, intents, workflow_triggers)",
+          "owners": "MCP tool",
+          "evidence": "`tools/draft-interpret.ts`",
+          "issues": "`booking_context` still broad (acceptable per 5eae09457f)"
+        },
+        {
+          "id": null,
+          "label": "Single-question template selection",
+          "flow": "`rankTemplates` → `selectSingleQuestionTemplate` → hinted-first (any confidence) + unhinted ≥70%",
+          "owners": "`tools/draft-generate.ts:1331–1348`",
+          "evidence": "`tools/draft-generate.ts`",
+          "issues": "Fixed in 5eae09457f"
+        },
+        {
+          "id": null,
+          "label": "Composite template selection",
+          "flow": "`rankTemplatesPerQuestion` → `selectQuestionTemplateCandidate` → flat ≥70% floor, no hinted/unhinted",
+          "owners": "`tools/draft-generate.ts:1321–1328`",
+          "evidence": "`tools/draft-generate.ts`",
+          "issues": "**BUG**: faq templates score ≥70% for unknown topics via synonym expansion"
+        },
+        {
+          "id": null,
+          "label": "Coverage scoring",
+          "flow": "`evaluateQuestionCoverage` in `draft_quality_check` uses `TOPIC_SYNONYMS` (pool→amenity etc)",
+          "owners": "`utils/coverage.ts`",
+          "evidence": "`utils/coverage.ts:20–35`",
+          "issues": "False-positive \"covered\" for unknown-topic questions; false-partial for paraphrased answers"
+        },
+        {
+          "id": null,
+          "label": "Quality gate (in-process)",
+          "flow": "`handleDraftQualityTool` → `quality.passed`, `failed_checks`, `warnings` → `computeDeliveryStatus` → `delivery_status` in output",
+          "owners": "`tools/draft-generate.ts:1603–1610`",
+          "evidence": "`tools/draft-generate.ts`",
+          "issues": "`delivery_status` is computed and returned but not enforced downstream"
+        },
+        {
+          "id": null,
+          "label": "Draft creation gate",
+          "flow": "ops-inbox SKILL.md step 7: \"Do not call `gmail_create_draft` while `delivery_status === \"blocked\"`\"",
+          "owners": "`.claude/skills/ops-inbox/SKILL.md:256–266`",
+          "evidence": "SKILL.md only",
+          "issues": "**BUG**: gate is advisory text, not code; `gmail_create_draft` handler accepts any call"
+        },
+        {
+          "id": null,
+          "label": "Gmail draft creation",
+          "flow": "`gmail_create_draft` → Gmail API",
+          "owners": "`tools/gmail-handlers.ts:375+`",
+          "evidence": "`tools/gmail-handlers.ts`",
+          "issues": "No delivery_status check"
+        }
+      ]
+    }
+  }
+}

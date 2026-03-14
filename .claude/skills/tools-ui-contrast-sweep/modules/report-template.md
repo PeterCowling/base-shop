@@ -10,6 +10,7 @@ Write report to:
 ---
 Type: Contrast-Uniformity-Report
 Status: Complete
+Business: <BIZ>
 Audit-Date: YYYY-MM-DD
 Target-URL: <https://...>
 Standard: <WCAG-2.x-AA | WCAG-2.x-AAA>

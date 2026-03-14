@@ -9,6 +9,7 @@ import {
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -56,36 +57,38 @@ export const PasswordReauthInline = memo(function PasswordReauthInline({
   );
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
-      <label className="text-sm font-medium text-foreground">
-        Enter your password to confirm
-      </label>
-      <Input
-        compatibilityMode="no-wrapper"
-        ref={inputRef}
-        type="password"
-        autoComplete="current-password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        disabled={isSubmitting}
-        className="w-full rounded-lg border border-border-2 px-4 py-2 text-center disabled:opacity-50"
-      />
-      {error && (
-        <p role="alert" className="text-sm font-medium text-error-main">
-          {error}
-        </p>
-      )}
-      <Button
-        type="submit"
-        disabled={!password.trim() || isSubmitting}
-        color="primary"
-        tone="solid"
-        size="lg"
-        className="min-h-11 min-w-11 w-full"
-      >
-        {isSubmitting ? "Verifying..." : submitLabel}
-      </Button>
+    <form onSubmit={handleSubmit}>
+      <Stack align="center" gap={3}>
+        <label className="text-sm font-medium text-foreground">
+          Enter your password to confirm
+        </label>
+        <Input
+          compatibilityMode="no-wrapper"
+          ref={inputRef}
+          type="password"
+          autoComplete="current-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          disabled={isSubmitting}
+          className="w-full rounded-lg border border-border-2 px-4 py-2 text-center disabled:opacity-50"
+        />
+        {error && (
+          <p role="alert" className="text-sm font-medium text-error-main">
+            {error}
+          </p>
+        )}
+        <Button
+          type="submit"
+          disabled={!password.trim() || isSubmitting}
+          color="primary"
+          tone="solid"
+          size="lg"
+          className="min-h-11 min-w-11 w-full"
+        >
+          {isSubmitting ? "Verifying..." : submitLabel}
+        </Button>
+      </Stack>
     </form>
   );
 });

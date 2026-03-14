@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "9ff83101-b4d9-48d6-8e79-e0af0a04ca97",
+  "feature_slug": "xa-b-draft-product-storefront-visibility",
+  "emitted_at": "2026-03-12T21:18:40.462Z",
+  "why": "Products can go live on the XA store without photos, breaking the shopping experience. P1 priority — store not ready for real customers until resolved.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "The xa-b storefront only displays products that are publishable (live or out_of_stock with complete images); draft products with missing images never appear in any listing.",
+    "source": "operator"
+  }
+}

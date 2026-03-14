@@ -1,0 +1,227 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "caryina-runtime-state-workers-compat",
+  "source_artifact_path": "docs/plans/caryina-runtime-state-workers-compat/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Two pieces of Caryina checkout state use the file system for storage, which is incompatible with Cloudflare Workers. Every checkout attempt currently throws on the idempotency store, and cart state is lost between requests.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Both the checkout idempotency store and the cart backend are migrated to Workers-compatible Prisma/Neon storage; no fs calls remain in either checkout path; deployed Worker can complete a checkout end-to-end without a runtime exception.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI changes — pure server-side storage layer swap",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "Cart reads and checkout responses do not change shape; customers see no different error messages",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "`CheckoutAttemptRecord` stores `buyerName`, `buyerEmail`, `cardNumber` hash (hash only, not raw PAN), `responseBody` (may contain transaction IDs). These move from a local file (file-level access) to Neon DB (network-accessible). Access control for DB is via `DATABASE_URL` secret (same as current inventory/products). No new surface.",
+      "gap_or_implication": "Row-level security not implemented — all platform-core code runs under the same DB user. `buyerEmail` in `CheckoutAttempt` table needs same care as `Order` table.",
+      "carry_forward_or_notes": "Confirm no new PII exposure beyond current `Order` model."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Current: `recordMetric` calls exist in `checkoutSession.server.ts` for idempotency outcomes. Reconciliation sends alert emails. No cart-store observability.",
+      "gap_or_implication": "New Prisma backends should preserve existing `recordMetric` call sites. Add error logging for DB failures (Prisma throws on connection failure).",
+      "carry_forward_or_notes": "Preserve all existing `recordMetric` calls; log Prisma errors at same severity as current fs errors."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing checkout route and reconciliation tests mock the idempotency store entirely. Zero direct unit tests for `checkoutIdempotency.server.ts`.",
+      "gap_or_implication": "New Prisma implementations need unit tests. Opportunity to add direct idempotency store tests.",
+      "carry_forward_or_notes": "Add unit tests for both new backends as part of migration."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Two new Prisma models needed: `CheckoutAttempt` (maps `CheckoutAttemptRecord`), `Cart` (maps `CartState` as JSON). Schema in `packages/platform-core/prisma/schema.prisma`. Migration required (Neon DB). `responseBody` → `Json` column.",
+      "gap_or_implication": "Migration must be safe to apply on live DB (additive-only). Cart data is ephemeral — loss during migration acceptable. Idempotency records should be preserved if possible (data migration from JSON file).",
+      "carry_forward_or_notes": "Migration strategy: additive schema only; optional one-time data backfill from JSON file."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "fs lock: sequential, single-process, up to 5s timeout. Prisma/Neon: network call per idempotency operation. Cart: MemoryCartStore is zero-latency; Prisma/Neon is ~5-15ms per call.",
+      "gap_or_implication": "Prisma introduces network latency per cart operation and per idempotency gate. `beginCheckoutAttempt` must be atomic to prevent double-charging — Prisma transactions / upsert with unique constraint handles this. Cart per-request latency increase: 2-3 Neon calls per checkout (get, delete).",
+      "carry_forward_or_notes": "Use DB unique constraint + upsert for idempotency atomicity. Cart TTL via `expiresAt` column + background cleanup. Accept latency increase for correctness over Workers."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flags currently. Caryina is currently not deployable to Workers anyway (fs throws). This is a pre-deploy requirement.",
+      "gap_or_implication": "No existing production data to protect for idempotency (Worker has never succeeded). Cart data: MemoryCartStore has no persistence to migrate. Rollback: revert to fs-based code + redeploy.",
+      "carry_forward_or_notes": "Clean cutover. No flag needed — this unblocks Workers deployment entirely."
+    }
+  ],
+  "open_operator_questions": [
+    "Should old `checkout-idempotency.json` file data be migrated to the new DB table on first deploy?"
+  ],
+  "stage_payload": {
+    "scope_summary": "Caryina is deployed as a Cloudflare Worker (confirmed: `wrangler.toml` exists, `DB_MODE = \"prisma\"`, `INVENTORY_BACKEND = \"prisma\"` vars set). Two runtime state stores depend on the filesystem and will fail in production: 1. **Checkout idempotency store** (`apps/caryina/src/lib/checkoutIdempotency.server.ts`) — uses `fs.readFile`, `fs.writeFile`, `fs.open` with a file lock. Workers have no writable filesystem. 2. **Cart backend** — `createCartStore()` in `packages/platform-core/src/cartStore.ts` defaults to `MemoryCartStore` when `CART_STORE_PROVIDER` / `UPSTASH_REDIS_REST_URL` / `CART_DO` bin",
+    "goals": [],
+    "non_goals": [
+      "Adding Durable Object or KV backing to any other shop.",
+      "Changing the `CartStore` abstraction interface.",
+      "Migrating the Upstash Redis or Durable Object backends already coded in `platform-core`.",
+      "Replacing the cart cookie or idempotency key generation logic."
+    ],
+    "constraints": [
+      "Prisma/Neon is already the active DB for Caryina (inventory, products, orders, StripeWebhookEvent). New models must be added to the same `packages/platform-core/prisma/schema.prisma`.",
+      "No file system access in any Cloudflare Workers runtime path after this change.",
+      "Tests run in CI only (per testing-policy.md). Never run Jest locally.",
+      "Must not break the existing `MemoryCartStore` or Redis/DO cart backends (used by other shops or tests)."
+    ],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/caryina/src/app/api/cart/route.ts` — Cart CRUD endpoint; delegates to `createShopCartApi` from `@acme/platform-core/cartApiForShop`.",
+      "`apps/caryina/src/app/api/checkout-session/route.ts` (POST handler) — Primary checkout entry point; reads cart, calls `beginCheckoutAttempt`, processes payment, calls `markCheckoutAttemptResult`.",
+      "`apps/caryina/src/app/api/stripe-webhook/route.ts` — Stripe webhook; calls `finalizeStripeSession` and `expireStripeSession` (both use idempotency store).",
+      "`apps/caryina/src/app/api/cron/checkout-reconciliation/route.ts` — Authenticated cron; calls `reconcileStaleCheckoutAttempts` (uses idempotency store for reads and writes)."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis caryina-runtime-state-workers-compat`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Cart store abstraction (factory + backends)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Idempotency store — all exported functions",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "All callers of idempotency store",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all 4 caller files read, all call sites identified",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Prisma schema — existing models, gaps",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — no Cart or CheckoutAttempt model; schema pattern clear",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "wrangler.toml — existing bindings and vars",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — no DO/KV; confirms `prisma` is the right addition",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "runtime = \"nodejs\" overrides",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Minor: 3 checkout routes have `runtime = \"nodejs\"` (checkout-session, stripe-webhook, cron) — not 2 as initially noted; must all be removed as plan task",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape — mock shapes and breakage risk",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — both stores are fully mocked in all tests",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Data/contracts — lock semantics to DB translation",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Minor: upsert + unique constraint vs file lock is conceptually different but functionally equivalent for this use case",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "PII / security surface",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Minor: `buyerEmail` moves from local file to Neon DB — no new access control surface beyond existing `Order` table",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Missing Prisma migrations path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `prisma db push` or migration file both viable; additive-only schema",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Customer submits checkout form (Axerve or Stripe provider).",
+      "end_condition": "Order confirmed or error returned; cart cleared on success.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Cart read at checkout",
+          "flow": "`handleCheckoutSessionRequest` reads cart via `getCart(cartId)` from `@acme/platform-core/cartStore` → defaults to `MemoryCartStore` (no env var set in wrangler.toml)",
+          "owners": "`checkoutSession.server.ts`, `cartStore.ts`, `cartApiForShop.ts`",
+          "evidence": "`wrangler.toml` (no CART_STORE_PROVIDER), `cartStore.ts` L83-120",
+          "issues": "`MemoryCartStore` is per-isolate; cart is empty on every new isolate invocation — checkout always fails with \"Cart is empty\""
+        },
+        {
+          "id": null,
+          "label": "Cart write at API",
+          "flow": "Cart CRUD via `/api/cart` route (`createShopCartApi` → calls `createCart`, `incrementQty`, etc. from `cartStore`)",
+          "owners": "`apps/caryina/src/app/api/cart/route.ts`, `cartApiForShop.ts`",
+          "evidence": "Same as above",
+          "issues": "Same memory isolation problem — add-to-cart and checkout hit different isolates"
+        },
+        {
+          "id": null,
+          "label": "Checkout idempotency",
+          "flow": "`beginCheckoutAttempt` → `withStoreLock` → `fs.open` (exclusive lock), `fs.readFile` (read store), `fs.writeFile` (write store), `fs.unlink` (release lock)",
+          "owners": "`checkoutIdempotency.server.ts`",
+          "evidence": "Lines 73-167",
+          "issues": "Throws `EROFS` or similar on Workers; all checkout attempts fail at idempotency gate"
+        },
+        {
+          "id": null,
+          "label": "Idempotency updates",
+          "flow": "`markCheckoutAttemptReservation`, `recordCheckoutAttemptStripeSession`, `markCheckoutAttemptPaymentAttempted`, `markCheckoutAttemptResult`, `beginStripeCheckoutFinalization` — all go through `withStoreLock` → fs",
+          "owners": "`checkoutIdempotency.server.ts`, `checkoutSession.server.ts`, `stripeCheckout.server.ts`",
+          "evidence": "All callers listed in Evidence Audit",
+          "issues": "Same crash on any write"
+        },
+        {
+          "id": null,
+          "label": "Stale checkout reconciliation",
+          "flow": "`reconcileStaleCheckoutAttempts` calls `listStaleInProgressCheckoutAttempts` (fs read) and `markCheckoutAttemptResult` (fs write)",
+          "owners": "`checkoutReconciliation.server.ts`, `/api/cron/checkout-reconciliation/route.ts`",
+          "evidence": "Reconciliation cron uses `runtime = \"nodejs\"` override — currently Node-only, but still depends on fs-based idempotency store",
+          "issues": "Cron has `export const runtime = \"nodejs\"` — runs fine today in local/Node environment; will crash in Worker"
+        },
+        {
+          "id": null,
+          "label": "Stripe webhook finalization",
+          "flow": "`finalizeStripeSession` → `beginStripeCheckoutFinalization` (fs lock) + `markCheckoutAttemptResult` (fs write)",
+          "owners": "`stripeCheckout.server.ts`, `/api/stripe-webhook/route.ts`",
+          "evidence": "Stripe webhook route has `export const runtime = \"nodejs\"` override",
+          "issues": "Same — will crash if Worker runtime used"
+        }
+      ]
+    }
+  }
+}

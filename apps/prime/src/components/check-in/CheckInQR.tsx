@@ -1,4 +1,3 @@
-/* eslint-disable ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 /**
  * CheckInQR.tsx
  *
@@ -112,7 +111,7 @@ export const CheckInQR: FC<CheckInQRProps> = memo(function CheckInQR({
         <button
           type="button"
           onClick={handleCopyCode}
-          className="group flex items-center gap-3 rounded-xl bg-muted px-6 py-3 transition-colors hover:bg-muted/80"
+          className="group flex min-h-11 min-w-11 items-center gap-3 rounded-xl bg-muted px-6 py-3 transition-colors hover:bg-muted/80"
         >
           <span className="font-mono text-2xl font-bold tracking-wider text-foreground">
             {code}

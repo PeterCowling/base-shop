@@ -4,6 +4,7 @@ import Link from "next/link";
 import { resolveLocale } from "@acme/i18n/locales";
 
 import { getSeoKeywords } from "@/lib/contentPacket";
+import { CONTACT_EMAIL } from "@/lib/legalContent";
 import { finalizeStripeSession } from "@/lib/payments/stripeCheckout.server";
 
 import SuccessAnalytics from "./SuccessAnalytics.client";
@@ -95,11 +96,52 @@ export default async function SuccessPage({
       <SuccessAnalytics locale={lang} />
       <section className="space-y-6 text-center">
         <h1 className="text-4xl font-display">Order confirmed</h1>
+        <p className="mx-auto max-w-xl text-sm text-muted-foreground">
+          A confirmation email has been sent to your email address.
+        </p>
         <p className="mx-auto max-w-xl text-muted-foreground">
           {amountLabel
             ? `Thank you for shopping Caryina. Your payment of ${amountLabel} was received.`
             : "Thank you for shopping Caryina. Your order has been logged and support can help with any follow-up requests."}
         </p>
+        {stripeResult?.shopTransactionId ? (
+          <p className="text-sm text-muted-foreground">
+            Order reference: <span className="font-medium text-foreground">{stripeResult.shopTransactionId}</span>
+          </p>
+        ) : null}
+        <div className="mx-auto max-w-xl rounded border bg-muted/30 p-4 text-start text-sm text-muted-foreground">
+          <p className="font-medium text-foreground">Tracking your order</p>
+          <p className="mt-1">
+            We ship via DHL. You will receive a tracking link by email once your order is dispatched.
+            {/* TODO: PLACEHOLDER — operator to confirm typical dispatch window, e.g. 2 business days */}
+            {" "}If you don&apos;t receive it within 2 business days, check your spam folder or contact us using the link below.
+          </p>
+        </div>
+        <p className="mx-auto max-w-2xl text-sm text-muted-foreground">
+          For cancellations, returns, exchange requests, faulty-item claims, or privacy requests,
+          contact{" "}
+          <a
+            className="inline-flex min-h-11 min-w-11 items-center underline underline-offset-4"
+            href={`mailto:${CONTACT_EMAIL}`}
+          >
+            {CONTACT_EMAIL}
+          </a>{" "}
+          or use the linked policy pages below.
+        </p>
+        <div className="flex flex-wrap justify-center gap-3 text-sm">
+          <Link href={`/${lang}/returns`} className="rounded-full border px-4 py-2 hover:underline">
+            Returns policy
+          </Link>
+          <Link href={`/${lang}/terms`} className="rounded-full border px-4 py-2 hover:underline">
+            Terms
+          </Link>
+          <Link href={`/${lang}/privacy`} className="rounded-full border px-4 py-2 hover:underline">
+            Privacy
+          </Link>
+          <Link href={`/${lang}/support`} className="rounded-full border px-4 py-2 hover:underline">
+            Support
+          </Link>
+        </div>
         <div>
           <Link href={`/${lang}/shop`} className="text-sm hover:underline">
             Continue shopping

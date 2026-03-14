@@ -1,7 +1,7 @@
 import {
   IDEAS_LIVE_QUEUE_STATE_PATH,
   IDEAS_TRIAL_QUEUE_STATE_PATH,
-} from "../../../../../scripts/src/startup-loop/ideas/lp-do-ideas-paths.js";
+} from "../../../../../scripts/src/startup-loop/ideas/lp-do-ideas-paths";
 
 export const PROCESS_IMPROVEMENTS_QUEUE_MODE_ENV_VAR =
   "BUSINESS_OS_PROCESS_IMPROVEMENTS_QUEUE_MODE";

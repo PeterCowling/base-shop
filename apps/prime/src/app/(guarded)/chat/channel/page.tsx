@@ -6,10 +6,12 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { ArrowLeft, Send, Users } from 'lucide-react';
 
+import { Grid, Inline } from '@acme/design-system/primitives';
+
 import { useChat } from '@/contexts/messaging/ChatProvider';
 import { useGuestProfiles } from '@/hooks/data/useGuestProfiles';
 import { readGuestSession } from '@/lib/auth/guestSessionGuard';
-import { buildDirectMessageChannelId } from '@/lib/chat/directMessageChannel';
+import { buildDirectMessageChannelId, WHOLE_HOSTEL_BROADCAST_CHANNEL_ID } from '@/lib/chat/directMessageChannel';
 import { canSendDirectMessage } from '@/lib/chat/messagingPolicy';
 import { get, ref } from '@/services/firebase';
 import { useFirebaseDatabase } from '@/services/useFirebase';
@@ -17,7 +19,7 @@ import type { ActivityInstance } from '@/types/messenger/activity';
 import { MSG_ROOT } from '@/utils/messaging/dbRoot';
 
 type ActivityLifecycle = 'upcoming' | 'live' | 'ended';
-type ChannelMode = 'activity' | 'direct';
+type ChannelMode = 'activity' | 'broadcast' | 'direct';
 
 function formatAudienceLabel(audience: string): string {
   switch (audience) {
@@ -43,7 +45,8 @@ function formatDraftStatusLabel(status: string): string {
 
 function resolveLifecycle(activity: ActivityInstance, now: number): ActivityLifecycle {
   const start = activity.startTime;
-  const end = start + 2 * 60 * 60 * 1000;
+  // Math.max(1, ...) guards against durationMinutes: 0 causing immediate-end
+  const end = start + Math.max(1, activity.durationMinutes ?? 120) * 60 * 1000;
   if (now >= end || activity.status === 'archived') {
     return 'ended';
   }
@@ -66,7 +69,12 @@ export default function ChannelPage() {
   const modeParam = searchParams.get('mode');
   const rawChannelId = searchParams.get('id');
   const peerUuid = searchParams.get('peer');
-  const channelMode: ChannelMode = modeParam === 'direct' ? 'direct' : 'activity';
+  const channelMode: ChannelMode =
+    modeParam === 'direct'
+      ? 'direct'
+      : modeParam === 'broadcast'
+        ? 'broadcast'
+        : 'activity';
   const db = useFirebaseDatabase();
   const { messages, activities, setCurrentChannelId, sendMessage } = useChat();
   const { profiles, isLoading: isProfilesLoading } = useGuestProfiles();
@@ -78,6 +86,10 @@ export default function ChannelPage() {
   const channelId = useMemo(() => {
     if (channelMode === 'activity') {
       return rawChannelId;
+    }
+
+    if (channelMode === 'broadcast') {
+      return WHOLE_HOSTEL_BROADCAST_CHANNEL_ID;
     }
 
     if (!currentGuestUuid || !peerUuid || currentGuestUuid === peerUuid) {
@@ -130,7 +142,7 @@ export default function ChannelPage() {
   const activity = channelId ? activities[channelId] : undefined;
   const channelMessages = useMemo(() => channelId ? messages[channelId] ?? [] : [], [channelId, messages]);
   const lifecycle =
-    channelMode === 'direct'
+    channelMode === 'direct' || channelMode === 'broadcast'
       ? 'live'
       : activity
         ? resolveLifecycle(activity, Date.now())
@@ -188,6 +200,7 @@ export default function ChannelPage() {
   const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (channelMode === 'broadcast') return;
     if (!channelId || !messageInput.trim() || isSending) return;
 
     setIsSending(true);
@@ -276,14 +289,18 @@ export default function ChannelPage() {
   const headerTitle =
     channelMode === 'direct'
       ? t('chat.directory.guestLabel', { id: peerUuid?.substring(0, 8) ?? '...' })
-      : activity?.title || t('channelTitle', 'Activity Chat');
+      : channelMode === 'broadcast'
+        ? t('staffMessages', 'Staff messages')
+        : activity?.title || t('channelTitle', 'Activity Chat');
 
   const statusLabel =
     channelMode === 'direct'
       ? t('statusDirect', 'Direct chat')
-      : isLive
-        ? t('statusLive', 'Live now')
-        : t('statusUpcoming', 'Starts soon');
+      : channelMode === 'broadcast'
+        ? t('statusBroadcast', 'Whole hostel')
+        : isLive
+          ? t('statusLive', 'Live now')
+          : t('statusUpcoming', 'Starts soon');
 
   return (
     <main className="flex min-h-dvh flex-col bg-muted">
@@ -291,7 +308,7 @@ export default function ChannelPage() {
       <div className="bg-card border-b border-border px-4 py-3">
         <div className="mx-auto flex w-full items-center gap-3">
           <Link
-            href={channelMode === 'direct' ? '/chat' : '/activities'}
+            href={channelMode === 'broadcast' ? '/chat' : channelMode === 'direct' ? '/chat' : '/activities'}
             className="text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -363,7 +380,7 @@ export default function ChannelPage() {
                     </div>
                   )}
                   {hasBadges && (
-                    <div className="mb-2 flex flex-wrap gap-1.5">
+                    <Inline gap={1} className="mb-2 flex-wrap gap-1.5">
                       {msg.kind === 'promotion' && (
                         <span className="rounded-full bg-warning-soft px-2 py-0.5 text-xs font-medium text-warning-foreground">
                           {t('promotionMessage', 'Promotion')}
@@ -384,11 +401,11 @@ export default function ChannelPage() {
                           {`${msg.draft.source === 'agent' ? t('agentDraft', 'Agent draft') : t('staffDraft', 'Staff draft')} · ${formatDraftStatusLabel(msg.draft.status)}`}
                         </span>
                       )}
-                    </div>
+                    </Inline>
                   )}
                   {textContent && <div className="text-sm whitespace-pre-wrap">{textContent}</div>}
                   {msg.links && msg.links.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
+                    <Inline gap={2} className="mt-3 flex-wrap">
                       {msg.links.map((linkItem, index) => (
                         <a
                           key={linkItem.id ?? `link-${index}`}
@@ -406,17 +423,17 @@ export default function ChannelPage() {
                           {linkItem.label}
                         </a>
                       ))}
-                    </div>
+                    </Inline>
                   )}
                   {imagePreviews.length > 0 && (
-                    <div className="mt-3 grid gap-2">
+                    <Grid gap={2} className="mt-3">
                       {imagePreviews.map((image) => (
                         <a
                           key={image.id}
                           href={image.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="block overflow-hidden rounded-xl border border-border/60"
+                          className="block min-h-11 min-w-11 overflow-hidden rounded-xl border border-border/60"
                         >
                           <div
                             className="h-40 w-full bg-cover bg-center"
@@ -426,10 +443,10 @@ export default function ChannelPage() {
                           />
                         </a>
                       ))}
-                    </div>
+                    </Grid>
                   )}
                   {msg.cards && msg.cards.length > 0 && (
-                    <div className="mt-3 grid gap-2">
+                    <Grid gap={2} className="mt-3">
                       {msg.cards.map((card, index) => (
                         <div
                           key={card.id ?? `card-${index}`}
@@ -467,10 +484,10 @@ export default function ChannelPage() {
                           </div>
                         </div>
                       ))}
-                    </div>
+                    </Grid>
                   )}
                   {fileAttachments.length > 0 && (
-                    <div className="mt-3 grid gap-2">
+                    <Grid gap={2} className="mt-3">
                       {fileAttachments.map((attachment, index) => (
                         <a
                           key={attachment.id ?? `file-${index}`}
@@ -486,7 +503,7 @@ export default function ChannelPage() {
                           {attachment.title || attachment.url}
                         </a>
                       ))}
-                    </div>
+                    </Grid>
                   )}
                   <div
                     className={`mt-1 text-xs ${
@@ -504,7 +521,7 @@ export default function ChannelPage() {
       </div>
 
       {/* Composer */}
-      {isLive && (
+      {isLive && channelMode !== 'broadcast' && (
         <div className="border-t border-border bg-card px-4 py-3">
           <div className="mx-auto w-full">
             {channelMode === 'activity' && !isPresent ? (

@@ -11,7 +11,7 @@ import { DayPicker } from "react-day-picker";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { Cluster, Inline } from "@acme/design-system/primitives";
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 import { canAccess, isPrivileged, Permissions } from "../../lib/roles";
@@ -387,29 +387,29 @@ function DateSelector({
 
   if (isInlineCalendar) {
     return (
-      <div className="flex flex-col gap-3 px-4 py-3 bg-surface-2 rounded-lg border border-border-strong">
-        <div className="flex items-center justify-between gap-4">
+      <Stack gap={3} className="px-4 py-3 bg-surface-2 rounded-lg border border-border-strong">
+        <Cluster justify="between" gap={4}>
           <Cluster gap={2}>{quickButtons}</Cluster>
           <Inline gap={2} alignY="center">
             {calendarToggle}
             {testModeToggle}
           </Inline>
-        </div>
+        </Cluster>
         {inlineCalendar}
-      </div>
+      </Stack>
     );
   }
 
   return (
     <div className="relative pb-5">
       {showTestModeToggle ? (
-        <div className="flex items-center justify-between gap-2">
+        <Cluster justify="between">
           <Inline wrap={false} gap={2}>
             <Cluster gap={2}>{quickButtons}</Cluster>
             {calendarToggle}
           </Inline>
           {testModeToggle}
-        </div>
+        </Cluster>
       ) : (
         <Inline wrap={false} gap={2}>
           <Cluster gap={2}>{quickButtons}</Cluster>

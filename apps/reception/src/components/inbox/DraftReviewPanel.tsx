@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { CheckCircle, RefreshCw, Save, Send, ShieldAlert, XCircle } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Grid, Inline } from "@acme/design-system/primitives";
 
 import ConfirmModal from "@/components/common/ConfirmModal";
 import type { InboxThreadDetail } from "@/services/useInbox";
@@ -37,6 +38,12 @@ interface DraftReviewPanelProps {
 
 type DraftConfirmDialog = "none" | "regenerate" | "send" | "resolve" | "dismiss";
 
+function buildRegenerateConfirmMessage(hasUnsavedChanges: boolean, status: string | undefined): string {
+  return hasUnsavedChanges || status === "edited" || status === "under_review"
+    ? "This will overwrite the current draft with a fresh agent-generated reply."
+    : "Generate a fresh agent draft for this thread?";
+}
+
 function parseRecipientEmails(input: string): string[] {
   return input
     .split(",")
@@ -51,6 +58,7 @@ function isValidEmail(value: string): boolean {
     && !value.includes("..");
 }
 
+// eslint-disable-next-line complexity -- BOS-PI-104 pre-existing high-complexity component; refactor tracked separately
 export default function DraftReviewPanel({
   threadDetail,
   savingDraft,
@@ -185,6 +193,11 @@ export default function DraftReviewPanel({
   const requiresManualDraft = threadDetail.thread.needsManualDraft && !currentDraft;
   const actionsDisabled = savingDraft || regeneratingDraft || sendingDraft || resolvingThread || dismissingThread;
 
+  const hasNoReplyRecipient = useMemo(() => {
+    if (!channelCapabilities.supportsRecipients) return false;
+    return parsedRecipients.some((email) => /^no[-.]?reply@/i.test(email) || /\bnoreply\b/i.test(email));
+  }, [channelCapabilities.supportsRecipients, parsedRecipients]);
+
   async function handleSave() {
     if (!canSaveDraft) {
       throw new Error("Draft actions are not available for this channel yet.");
@@ -259,14 +272,19 @@ export default function DraftReviewPanel({
     <>
       <section className="rounded-2xl border border-border-1 bg-surface-2 shadow-sm">
         {/* Header with badges */}
-        <div className="flex items-center justify-between gap-3 px-5 py-3">
+        <Inline gap={3} className="justify-between px-5 py-3">
           <h3 className="text-sm font-semibold text-foreground">
             {channelCapabilities.bodyLabel}
           </h3>
-          <div className="flex items-center gap-2">
+          <Inline gap={2}>
             {currentDraft?.templateUsed && (
               <span className="rounded-full bg-surface-3 px-2 py-0.5 text-xs font-medium text-foreground/60">
                 {currentDraft.templateUsed}
+              </span>
+            )}
+            {currentDraft?.quality?.deliveryStatus === "needs_follow_up" && (
+              <span className="rounded-full bg-warning-light px-2 py-0.5 text-xs font-medium text-warning-main">
+                Needs follow-up
               </span>
             )}
             {qualityBadge && (
@@ -274,8 +292,8 @@ export default function DraftReviewPanel({
                 {qualityBadge.label}
               </span>
             )}
-          </div>
-        </div>
+          </Inline>
+        </Inline>
 
         <div className="space-y-3 px-5 pb-4">
           {requiresManualDraft && (
@@ -307,13 +325,14 @@ export default function DraftReviewPanel({
           )}
 
           {(channelCapabilities.supportsSubject || channelCapabilities.supportsRecipients) && (
-            <div className="grid gap-3 sm:grid-cols-2">
+            <Grid gap={3} className="sm:grid-cols-2">
               {channelCapabilities.supportsSubject && (
                 <div>
-                  <label className="mb-1 block text-xs font-semibold text-foreground/70">
+                  <label htmlFor="draft-subject" className="mb-1 block text-xs font-semibold text-foreground/70">
                     {channelCapabilities.subjectLabel}
                   </label>
                   <input
+                    id="draft-subject"
                     value={subject}
                     onChange={(event) => setSubject(event.target.value)}
                     disabled={!canSaveDraft}
@@ -324,10 +343,11 @@ export default function DraftReviewPanel({
               )}
               {channelCapabilities.supportsRecipients && (
                 <div>
-                  <label className="mb-1 block text-xs font-semibold text-foreground/70">
+                  <label htmlFor="draft-recipient" className="mb-1 block text-xs font-semibold text-foreground/70">
                     {channelCapabilities.recipientLabel}
                   </label>
                   <input
+                    id="draft-recipient"
                     value={recipientInput}
                     onChange={(event) => {
                       setRecipientInput(event.target.value);
@@ -345,9 +365,14 @@ export default function DraftReviewPanel({
                   {recipientBlurError && (
                     <p className="mt-1 text-xs text-error-main">{recipientBlurError}</p>
                   )}
+                  {hasNoReplyRecipient && !recipientBlurError && (
+                    <p className="mt-1 text-xs text-warning-main">
+                      This address looks like a no-reply address — sending here will not reach anyone.
+                    </p>
+                  )}
                 </div>
               )}
-            </div>
+            </Grid>
           )}
 
           {/* Message body */}
@@ -375,7 +400,7 @@ export default function DraftReviewPanel({
 
         {/* Action bar — clear visual hierarchy */}
         {showActionBar && (
-          <div className="flex items-center gap-2 border-t border-border-1 px-5 py-3">
+          <Inline gap={2} className="border-t border-border-1 px-5 py-3">
             {canSaveDraft && (
               <>
                 <Button
@@ -451,7 +476,7 @@ export default function DraftReviewPanel({
                 {sendingDraft ? "Sending..." : channelCapabilities.sendLabel}
               </Button>
             )}
-          </div>
+          </Inline>
         )}
       </section>
 
@@ -461,11 +486,7 @@ export default function DraftReviewPanel({
             <ConfirmModal
               isOpen={confirmDialog === "regenerate"}
               title="Regenerate draft?"
-              message={
-                hasUnsavedChanges || currentDraft?.status === "edited" || currentDraft?.status === "under_review"
-                  ? "This will overwrite the current draft with a fresh agent-generated reply."
-                  : "Generate a fresh agent draft for this thread?"
-              }
+              message={buildRegenerateConfirmMessage(hasUnsavedChanges, currentDraft?.status)}
               confirmLabel="Regenerate"
               onCancel={() => setConfirmDialog("none")}
               onConfirm={handleConfirmRegenerate}

@@ -4,11 +4,12 @@ Used by `lp-do-build/SKILL.md` (Executor Dispatch), `modules/build-code.md`, `mo
 
 ## Current Status
 
-This protocol is not an active default today.
+**Patch-return pilot: active for `build-biz` tasks.**
 
-- Shared-checkout mutable Codex offload is disabled as a normal workflow.
-- Active build execution defaults to the inline executor modules.
-- Reactivate this protocol only after the patch-return pilot tracked in `docs/plans/writer-lock-patch-return-offload/plan.md` produces a validated artifact-return path.
+- Shared-checkout mutable Codex offload (`workspace-write`) remains disabled as a default workflow.
+- The patch-return pilot contract (see `## Patch-Return Pilot Contract` below) is validated and active for business-artifact tasks routed through `modules/build-biz.md`.
+- All other executor modules (`build-code.md`, `build-spike.md`, `build-investigate.md`) continue to execute inline. Extend pilot coverage only after per-track validation.
+- Evidence base: `docs/plans/writer-lock-patch-return-offload/spike-11-artifact-emission.md` (2026-03-12).
 
 > **Reference pattern:** `_shared/critique-loop-protocol.md` (established). Key divergence: critique uses `codemoot review` which returns structured text parsed to JSON; build offload uses `codex exec` which writes files to disk via tool-calling. Do NOT substitute `codemoot run` for file-writing tasks — `codemoot run` is a text-generation pipeline only and does not write files.
 
@@ -16,21 +17,153 @@ This protocol is not an active default today.
 
 Before routing to any executor module, check whether codex is available under Node 22:
 
-```
+```bash
 nvm exec 22 codex --version >/dev/null 2>&1 && CODEX_OK=1 || CODEX_OK=0
 ```
 
-If `CODEX_OK=0` (nvm unavailable, Node 22 not installed, or codex not installed): use **inline route** — fall through to the existing executor module workflow unchanged.
+If `CODEX_OK=0`: use **inline route** — fall through to the existing executor module workflow unchanged.
 
-If `CODEX_OK=1`: keep using the inline route unless the active task explicitly enables a validated patch-return pilot. CLI availability alone is not enough to authorize shared-checkout mutable offload.
+If `CODEX_OK=1` and executor is `build-biz`: use the **patch-return pilot** described in `## Patch-Return Pilot Contract` below.
+
+If `CODEX_OK=1` and executor is anything else (`build-code`, `build-spike`, `build-investigate`): keep using the inline route. CLI availability alone does not authorize offload for unvalidated tracks.
 
 > **Note on CODEMOOT_OK vs CODEX_OK:** The critique loop uses `CODEMOOT_OK` (checks for `codemoot` availability). The build offload uses `CODEX_OK` (checks for `codex` directly). These are separate checks for separate features. When both are needed in the same skill, run each check independently — they are not interchangeable.
 
 > **Why `nvm exec 22` for invocation:** codex uses `#!/usr/bin/env node`. Running the binary path directly may pick up the shell's default Node (which may be older than v22). Always invoke via `nvm exec 22 codex` to guarantee the correct runtime.
 
-## Offload Invocation
+## Patch-Return Pilot Contract
 
-### Fail-closed rule
+Active for `build-biz` tasks when `CODEX_OK=1`. Evidence base: `docs/plans/writer-lock-patch-return-offload/spike-11-artifact-emission.md`.
+
+### 1. Runner setup (isolated CODEX_HOME)
+
+Create a temporary isolated Codex home per offload run. Never reuse the shared `~/.codex` runtime.
+
+```bash
+TMPROOT=/tmp/codex-patch-return-$(date +%s)
+ISOHOME=$TMPROOT/codex-home
+PACKET_REPO=$TMPROOT/packet-repo
+mkdir -p "$ISOHOME" "$PACKET_REPO"
+
+# Required: auth + minimal config. Do NOT copy state_5.sqlite*, archived_sessions/, shell_snapshots/, or mcp_servers entries.
+cp ~/.codex/auth.json "$ISOHOME/auth.json"
+cat > "$ISOHOME/config.toml" <<'EOF'
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+personality = "pragmatic"
+EOF
+```
+
+> **Model note**: `gpt-5.4` is the only verified working model for ChatGPT-account-backed Codex runs. Other model names (e.g. `gpt-4.1`) produce a "not supported" error. Always use this value — do not guess. See `memory/reference_codex_isolated_runner.md`.
+
+### 2. Task packet (prompt construction)
+
+The prompt must be self-contained. Three required properties (failure to follow any one will cause the runner to hang in an agentic tool-call loop and emit nothing):
+
+1. **Supply file content inline** — paste the actual content into the prompt. Do not reference files by name as things to read or inspect. The model will call `cat` or `git` if it thinks it needs to check a file.
+2. **No tool-constraint language** — do not write "do not write files" or "do not run commands". These phrases signal tool use is in scope. Omit them entirely.
+3. **Pure text-transformation framing** — state the input, state the output format, ask for the output. The task must be answerable from model weights alone.
+
+Example structure:
+```
+The content of <filename> is:
+
+<paste file content verbatim>
+
+Produce a unified diff in standard format that would change the above content to:
+
+<paste target content verbatim>
+
+Output only the unified diff, nothing else.
+```
+
+Write the prompt to a temp file:
+```bash
+cat > "$TMPROOT/prompt.txt" <<'EOF'
+<assembled self-contained prompt>
+EOF
+```
+
+### 3. Patch artifact (invocation + capture)
+
+```bash
+PATCH_FILE="$TMPROOT/patch.diff"
+
+CODEX_HOME="$ISOHOME" nvm exec 22 -- codex exec \
+  --sandbox read-only \
+  -C "$PACKET_REPO" \
+  -o "$PATCH_FILE" \
+  "$(cat "$TMPROOT/prompt.txt")" \
+  > "$TMPROOT/exec-stdout.txt" \
+  2> "$TMPROOT/exec-stderr.txt"
+
+PILOT_EXIT=$?
+```
+
+The `-o` (`--output-last-message`) flag writes the model's final response to `$PATCH_FILE`. This is the patch artifact.
+
+Expected artifact format: standard unified diff (suitable for `git apply`).
+
+### 4. Apply window
+
+Validated by TASK-05 (2026-03-12). Evidence: `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md`.
+
+The writer lock is acquired **before** the Codex run (step 3) and held continuously through apply and commit. No release/reacquire is needed.
+
+Apply sequence (orchestrator-side, while writer lock is held):
+
+```bash
+# 1. Verify patch is non-empty
+if [[ ! -s "$PATCH_FILE" ]]; then
+  echo "ERROR: empty patch artifact — falling back to inline" >&2
+  # trigger fallback per § 5
+fi
+
+# 2. Verify patch is parseable (try standard format first, then --no-index fallback)
+#    Note: Codex may emit diff -u headers without the a/b/ prefix convention.
+#    git apply --check catches this before any mutation.
+git apply --check "$PATCH_FILE" \
+  || git apply --check --no-index "$PATCH_FILE" \
+  || { echo "ERROR: git apply --check failed — falling back to inline" >&2; }
+
+# 3. Capture fingerprint before apply
+FINGERPRINT_BEFORE=$(git rev-parse HEAD)
+
+# 4. Apply (same --no-index fallback)
+git apply "$PATCH_FILE" \
+  || git apply --no-index "$PATCH_FILE"
+
+# 5. Fingerprint after — verify containment
+CHANGED=$(git diff --name-only)
+# Cross-check $CHANGED against task Affects list.
+# If any file in $CHANGED is outside the Affects list: treat as allowlist violation.
+# Run `git restore <changed-files>` and fall back to inline.
+
+# 6. Commit task-scoped files (lock already held — no second acquire)
+git add <task-affects-files>
+git commit -m "..."
+# Then run git diff --check -- to confirm no whitespace errors in staged diff.
+```
+
+Fingerprint summary: `git rev-parse HEAD` (pre-apply) and `git diff --name-only` (post-apply) are the two sufficient signals. Pre-apply HEAD identifies the exact tree state; post-apply name-only diff is the containment check.
+
+### 5. Fallback policy
+
+On any pilot failure (non-zero exit, empty `$PATCH_FILE`, `git apply --check` failure): fall back to inline execution via `modules/build-biz.md`. Record the failure reason and pilot exit code in the plan build evidence block. Do not retry the pilot more than once per task cycle.
+
+---
+
+## Legacy Offload Invocation (disabled — migration context only)
+
+The sections below document the old shared-checkout mutable offload pattern. **Do not use these as the active default.** They are retained for migration reference only.
+
+### Why the legacy path is disabled
+
+- current `codex exec` help does not expose `-a never`
+- shared-checkout mutable route (`workspace-write`) holds the writer lock for the full Codex session
+- patch-return pilot replaces this route for build-biz tasks
+
+### Legacy fail-closed rule
 
 Do not run the legacy shared-checkout command below as a normal default:
 

@@ -1,0 +1,175 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-prime-outbound-messaging",
+  "source_artifact_path": "docs/plans/reception-prime-outbound-messaging/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": null,
+    "intended_outcome_type": null,
+    "intended_outcome_statement": null,
+    "source": null
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`PrimeColumn.tsx` shows thread list, no compose affordance. `DraftReviewPanel.tsx` handles existing draft editing. `InboxWorkspace.tsx` has 3-col layout.",
+      "gap_or_implication": "No compose button, no audience picker, no compose modal. Design must fit 3-col constraint.",
+      "carry_forward_or_notes": "Yes — design for compose trigger + modal/drawer."
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Thread list empty state exists. Draft panel has loading/error/sending states.",
+      "gap_or_implication": "Compose flow has no error state, no loading indicator, no confirmation step.",
+      "carry_forward_or_notes": "Yes — compose loading, send-error, confirmation, audience selection UX."
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "`enforceStaffOwnerApiGate` on all Prime staff routes. Reception proxy uses `RECEPTION_PRIME_ACCESS_TOKEN` static token. Reception staff auth: `requireStaffAuth` verifies Firebase ID token + role check.",
+      "gap_or_implication": "New endpoint must use same gate. Audience validation on server (cannot trust client-supplied audience). Rate limit needed (broadcast is high-impact).",
+      "carry_forward_or_notes": "Yes — require gate token + rate limit on new endpoint."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`recordPrimeMessageAdmission` used in send flow. `recordDirectTelemetry` for DM sends.",
+      "gap_or_implication": "New broadcast initiation path needs admission record with `actorUid` and `actorSource`.",
+      "carry_forward_or_notes": "Yes — admission log entry on new thread creation and send."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing tests: `__tests__/messaging-dispatcher.test.ts`, `prime-messaging-repositories.test.ts`, `review-threads.test.ts`, `ChatProvider.direct-message.test.tsx`.",
+      "gap_or_implication": "No tests for: new staff-initiate-thread endpoint, guest broadcast-mode channel page (new `mode=broadcast` branch or separate page), guest-post-disabled guard, Reception compose API route.",
+      "carry_forward_or_notes": "Yes — unit tests for new endpoint, new proxy function, broadcast channel page mode (including send-disabled guard)."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "D1 schema is fully migration-ready (0001–0004 applied). `upsertPrimeMessageThread` handles idempotent creation. `message_threads.audience` and `channel_type` already typed.",
+      "gap_or_implication": "Whole-hostel broadcast is the simplest v1 target (fixed thread ID = `broadcast_whole_hostel`). Per-booking/room initiation requires Firebase occupancy lookup — not needed for v1.",
+      "carry_forward_or_notes": "Yes — v1 scoped to `whole_hostel` only."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Direct message writes are rate-limited (KV). Firebase projection is synchronous in `projectPrimeThreadMessageToFirebase`.",
+      "gap_or_implication": "Broadcast writes to a shared Firebase channel that all guests listen to — no fan-out needed (single RTDB node). Risk is stale guest listener if ChatProvider only subscribes on `setCurrentChannelId`.",
+      "carry_forward_or_notes": "Yes — analyze pull model (polling vs real-time subscription)."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "`enforceStaffOwnerApiGate` guards all staff endpoints. Gate passes via token match (`PRIME_STAFF_OWNER_GATE_TOKEN`) — flag not strictly required for proxied Reception calls. Reception proxy gracefully returns `null` if Prime config absent.",
+      "gap_or_implication": "New endpoint uses same gate. Reception compose UI can be gated by an env variable to prevent showing UI until confirmed. No DB migrations needed.",
+      "carry_forward_or_notes": "Yes — note rollout path in plan."
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "**V1 scope (this plan):** - New Prime CF Pages Function endpoint: `POST /api/staff-initiate-thread` — calls `upsertPrimeMessageThread` to create the `broadcast_whole_hostel` thread if absent, then calls `savePrimeReviewDraft` (which succeeds once the thread exists). These are sequential D1 writes within one HTTP request but are NOT transactional (no rollback if draft creation fails after thread creation). The plan must decide whether to add error-recovery logic or accept partial-completion as an acceptable failure mode (thread created, no draft). - Prime guest app: (a) new `broadcast` mode in ",
+    "goals": [],
+    "non_goals": [],
+    "constraints": [],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/prime/functions/api/review-thread-draft.ts` — `PUT /api/review-thread-draft?threadId=` — saves a staff draft to an EXISTING thread (returns `not_found` if thread absent). Guarded by `enforceStaffOwnerApiGate`.",
+      "`apps/prime/functions/api/review-thread-send.ts` — `POST /api/review-thread-send?threadId=` — sends the current draft of an existing thread. Calls `sendPrimeReviewThread`.",
+      "`apps/prime/functions/api/review-campaign-send.ts` — `POST /api/review-campaign-send?campaignId=` — sends the draft for a specific campaign (broadcast path). Calls `sendPrimeReviewCampaign`.",
+      "`apps/prime/functions/api/staff-auth-session.ts` — `POST /api/staff-auth-session` — PIN-based Firebase custom token for staff.",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts` — PUT saves draft to Prime via proxy.",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts` — POST sends thread/campaign via proxy.",
+      "`apps/reception/src/app/api/mcp/inbox/route.ts` — GET lists both email and Prime threads.",
+      "`apps/prime/src/contexts/messaging/ChatProvider.tsx` — polls `GET /api/direct-messages` for `dm_*` channels (3 s interval). For any channel ID that is NOT a `dm_*` direct-message channel, it falls through to the Firebase RTDB `onChildAdded`/`onChildChanged`/`onChildRemoved` listener path (lines 437–494). `setCurrentChannelId` accepts any string.",
+      "**The ChatProvider listener mechanism already works for broadcast channels.** If `setCurrentChannelId('broadcast_whole_hostel')` were called, the RTDB listeners would correctly subscribe to `messaging/channels/broadcast_whole_hostel/messages`. The RTDB listener gap is not the issue.",
+      "**However, the existing channel page (`apps/prime/src/app/(guarded)/chat/channel/page.tsx`) cannot be reused as-is.** At line 248, when `channelMode === 'activity' && !activity`, the page renders a \"Loading activity...\" spinner indefinitely — the `activities` context map is populated from `messaging/activities/*` (activity instances), not from broadcast message channels. A broadcast channel has no entry in `activities`. If a guest is linked to `/chat/channel?mode=activity&id=broadcast_whole_hostel`, they see \"Loading activity...\" forever. Additionally, the page's `handleSendMessage` path (line",
+      "**The gap on the guest side is therefore:** (a) a new broadcast-mode UI or screen is needed (not just a navigation link), OR the existing channel page must gain a `mode=broadcast` branch that omits the activity requirement and blocks guest posting; and (b) a guest entry point (navigation tab, badge, or deep-link from notification) must link to the broadcast view."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {},
+    "rehearsal_issues": [
+      {
+        "Scope Area": "MessageAudience type system (Prime)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`buildBroadcastChannelId` / channel naming",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "D1 schema: thread + campaign + delivery tables",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Staff auth gate pattern (Prime functions)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`sendPrimeReviewThread` / `projectPrimeThreadMessageToFirebase` send path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "ChatProvider subscription model",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Coverage] ChatProvider ALREADY handles any non-dm_ channel via RTDB onChildAdded (lines 437-494). Gap is not the listener itself — it is the guest-side display and entry point. Additional finding: existing channel page (`chat/channel/page.tsx`) requires an `activity` object for non-direct mode; `activities['broadcast_whole_hostel']` is never populated, causing indefinite \"Loading activity...\" state. Guest channel page needs a new `broadcast` mode or a separate screen. Guest send form must be disabled for broadcast channels.",
+        "Resolution Required": "Yes — plan must define a new broadcast-mode view (not just channel selection)"
+      },
+      {
+        "Scope Area": "Reception proxy layer (`prime-review.server.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Reception compose UI (new capability)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Coverage] No existing compose affordance. Capabilities contract (`InboxChannelCapabilities`) has no `supportsCompose` flag.",
+        "Resolution Required": "Yes — plan must define flag and UI location"
+      },
+      {
+        "Scope Area": "Reception auth (staff → Reception API → Prime proxy)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Rate limiting for broadcast",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "No rate limiting on the send path for staff endpoints. The harmful action is repeated sends (not thread creation) — `review-thread-send` and `review-campaign-send` are both ungated beyond auth. The new `staff-initiate-thread` endpoint also has no rate limit.",
+        "Resolution Required": "Yes — plan must include rate limit on the SEND path (not just initiation). Thread creation is idempotent (upsert) so rate limiting initiation is lower priority than rate limiting sends."
+      },
+      {
+        "Scope Area": "Audience scope for v1",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Whole-hostel is simplest (fixed thread ID). Booking/room requires Firebase occupancy lookup — excluded from v1.",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

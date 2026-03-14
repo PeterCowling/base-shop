@@ -1,5 +1,9 @@
 import type { D1Database } from '@acme/platform-core/d1';
 
+import {
+  isActorClaimsResponse,
+  resolveActorClaimsWithCompat,
+} from '../lib/actor-claims-resolver';
 import { errorResponse, jsonResponse } from '../lib/firebase-rest';
 import { getPrimeMessagingDb, hasPrimeMessagingDb } from '../lib/prime-messaging-db';
 import { savePrimeReviewDraft } from '../lib/prime-review-drafts';
@@ -10,6 +14,7 @@ interface Env {
   PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;
   PRIME_STAFF_OWNER_GATE_TOKEN?: string;
   PRIME_MESSAGING_DB?: D1Database;
+  PRIME_ACTOR_CLAIMS_SECRET?: string;
 }
 
 interface ReviewThreadDraftRequestBody {
@@ -21,6 +26,12 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env }) => {
   if (gateResponse) {
     return gateResponse;
   }
+
+  const claimsResult = await resolveActorClaimsWithCompat(request, env);
+  if (isActorClaimsResponse(claimsResult)) {
+    return claimsResult;
+  }
+  const { uid: actorUid } = claimsResult;
 
   const threadId = new URL(request.url).searchParams.get('threadId')?.trim() ?? '';
   if (!threadId) {
@@ -46,7 +57,7 @@ export const onRequestPut: PagesFunction<Env> = async ({ request, env }) => {
   try {
     const result = await savePrimeReviewDraft(getPrimeMessagingDb(env), {
       threadId,
-      actorUid: request.headers.get('x-prime-actor-uid')?.trim() || 'prime-owner',
+      actorUid,
       content: plainText,
     });
 

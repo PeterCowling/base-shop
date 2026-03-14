@@ -1,0 +1,256 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "startup-loop-ui-audit-integration",
+  "source_artifact_path": "docs/plans/startup-loop-ui-audit-integration/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-ui-contrast-sweep"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/startup-loop-ui-audit-integration/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The startup loop has no step that requires checking how every screen in the app actually looks when rendered — both in light and dark mode. Issues like invisible text in dark mode, clashing colours, and text that is too small are only caught by doing this audit manually. Adding a screen-by-screen rendered audit to the loop means these problems get found automatically for every product, every time, before launch.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The startup loop includes a required rendered UI screen audit at S9B that covers every screen in both light and dark mode, with findings saved as an artifact and blocking issues preventing advance.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no rendered UI change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Gate enforces external UI quality; does not change rendered output",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "3 block message cases defined in TASK-02 with exact remediation instructions",
+      "current_or_option_state": "TASK-02, TASK-04",
+      "gap_or_implication": "Block messages must tell operator exactly what to run",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — filesystem-only read; no auth, no untrusted input",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Same security posture as GATE-LAUNCH-SEC",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Gate result added to advance packet: `ui_sweep_gate`, `ui_sweep_gate_status`, `ui_sweep_report` fields",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Advance packet is the audit trail",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "9-case unit tests for gate logic using filesystem fixtures",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Covers: no artifact, wrong business, stale, missing Business field, Routes-Tested=0, Modes-Tested missing dark, S1-Blockers>0, Status=In-progress, clean pass",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`report-template.md` gains `Business: <BIZ>` field; gate block/pass packet schema defined",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Template change is prerequisite; existing artifacts block until re-run",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — trivially fast (glob + file read)",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Same perf posture as GATE-LAUNCH-SEC",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Immediate hard gate. Rollback = revert `s9b-gates.md` edits. No data migration.",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Block messages explain remediation for operators encountering the gate for the first time",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "This plan integrates `tools-ui-contrast-sweep` into the S9B stage of the startup loop by: 1. Adding a `Business: <BIZ>` frontmatter field to the sweep report template (prerequisite for business-scoped gate logic). 2. Implementing `GATE-UI-SWEEP-01` in `s9b-gates.md` — a hard gate that blocks S9B→SIGNALS advance when no recent, rendered, business-scoped sweep artifact exists or when the artifact contains unresolved S1 blockers. 3. Updating `loop-spec.yaml` to spec_version 3.16.0 with the new secondary skill and gate comment block. 4. Aligning documentation in `startup-loop/SKILL.md`, `cmd-advan",
+    "goals": [
+      "Add `tools-ui-contrast-sweep` as a required step in S9B, covering all routes in both light and dark mode.",
+      "Add a hard gate `GATE-UI-SWEEP-01` to `s9b-gates.md` blocking S9B→SIGNALS advance when no recent sweep exists or when the artifact has unresolved S1 blockers.",
+      "Record this gate in `loop-spec.yaml` with a spec_version bump to 3.16.0.",
+      "Update all alignment docs to reflect the new secondary skill and gate."
+    ],
+    "non_goals": [
+      "Redesigning the `/tools-ui-contrast-sweep` workflow.",
+      "Changing `lp-launch-qa` or `lp-design-qa` skills.",
+      "Adding a new loop stage (S9C).",
+      "Automating sweep execution.",
+      "Adding a CLI `--business` flag to `tools-ui-contrast-sweep`."
+    ],
+    "constraints": [
+      "Gate must remain filesystem-only at advance time (no HTTP calls).",
+      "`loop-spec.yaml` is runtime-authoritative; spec_version bump required."
+    ],
+    "assumptions": [
+      "30-day staleness window matches `GATE-LAUNCH-SEC`.",
+      "S1 blockers = hard block; S2/S3 = advisory warn only."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Add `Business: <BIZ>` field to sweep report frontmatter template as a required manual field.",
+      "Gate reads this field to scope the artifact to the correct business.",
+      "Missing or wrong Business field = hard block.",
+      "Routes-Tested = 0 = hard block (degraded/non-rendered sweep does not satisfy the requirement).",
+      "S1-Blockers > 0 = hard block.",
+      "Status not `Complete` = hard block.",
+      "Staleness > 30 days = hard block.",
+      "Immediate hard gate from merge — no grace period.",
+      "Why planning is not reopening option selection:",
+      "Analysis resolved all three decisions with no remaining operator-only forks."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add `Business:` field to sweep report template",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `report-template.md` with `Business: <BIZ>` field in frontmatter",
+        "affects": "`.claude/skills/tools-ui-contrast-sweep/modules/report-template.md`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Implement GATE-UI-SWEEP-01 in s9b-gates.md",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `GATE-UI-SWEEP-01` section appended to `.claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md`",
+        "affects": "`.claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Bump loop-spec.yaml to v3.16.0 and update S9B stage",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `loop-spec.yaml` with spec_version 3.16.0, S9B secondary skills list updated, GATE-UI-SWEEP-01 comment block added to S9B stage",
+        "affects": "`docs/business-os/startup-loop/specifications/loop-spec.yaml`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Update alignment docs",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `startup-loop/SKILL.md`, `cmd-advance.md`, and `tools-ui-contrast-sweep/SKILL.md` to reflect the new secondary skill and gate",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Add unit tests for GATE-UI-SWEEP-01",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New self-contained test file `scripts/src/startup-loop/__tests__/s9b-ui-sweep-gate.test.ts` covering 9 gate scenarios; gate-parsing helpers defined inline within the test file (no separate `s9b-gates.ts` module)",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "S9B stage execution",
+          "trigger": "`startup-loop advance --business <BIZ>` at S9B",
+          "flow": "1. Operator runs `/tools-ui-contrast-sweep`, sets `Business: <BIZ>` in report frontmatter manually. 2. Operator runs `/lp-launch-qa --business <BIZ>`. 3. Operator optionally runs `/lp-design-qa`. 4. Operator runs `startup-loop advance`. Gate checks GATE-LAUNCH-SEC then GATE-UI-SWEEP-01. Both must pass.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Ordering is operator-driven; gate doesn't enforce which step runs first. No CLI flag enforces Business field population — operator must remember."
+        },
+        {
+          "id": null,
+          "label": "S9B→SIGNALS advance gate",
+          "trigger": "S9B→SIGNALS advance attempt",
+          "flow": "GATE-LAUNCH-SEC runs (unchanged). GATE-UI-SWEEP-01 runs 6 checks: (a) globs artifacts, reads `Business:` field to filter for current BIZ, (b) parses `Audit-Date:` for staleness (≤30 days), (c) checks `Status: Complete`, (d) parses `Routes-Tested` leading integer (must be > 0), (e) checks `Modes-Tested` includes both `light` and `dark`, (f) checks `S1-Blockers = 0`. Pass or block with specific message.",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "Rollback: revert `s9b-gates.md`. Operator facing a new block must run the sweep with `Business:` field set."
+        },
+        {
+          "id": null,
+          "label": "Sweep artifact schema",
+          "trigger": "Gate implementation requires `Business: <BIZ>`",
+          "flow": "`report-template.md` gains `Business: <BIZ>`. Future sweeps produce artifacts with this field. Gate reads it.",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "Legacy artifacts (19) lack the field. Any business currently at S9B with an existing sweep must re-run before advancing. Block message explains this."
+        }
+      ]
+    }
+  }
+}

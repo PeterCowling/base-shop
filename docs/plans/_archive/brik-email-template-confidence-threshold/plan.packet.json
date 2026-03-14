@@ -1,0 +1,177 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "brik-email-template-confidence-threshold",
+  "source_artifact_path": "docs/plans/brik-email-template-confidence-threshold/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/brik-email-template-confidence-threshold/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When a guest asks about something the hostel has no template for, the system selects the closest BM25 match and sends it as if it were correct. Staff should only see genuinely tricky cases — not false alarms from a missing threshold gate or spurious reference-link failures on routine FAQ emails.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Per-question confidence floor and category-compatibility check gate template block acceptance in `draft-generate`; below-threshold single-question emails emit `follow_up_required` with the escalation fallback sentence and no template text. `booking-issues` removed from `STRICT_REFERENCE_CATEGORIES` to eliminate false reference-link quality failures on FAQ drafts.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UI changes; backend MCP tools only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "`follow_up_required = true` in draft output for below-threshold single-Q emails; quality check no longer fails FAQ + `booking-issues` drafts",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Staff-visible: escalation sentence instead of wrong template",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No auth, PII, or exposure changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`usedTemplateFallback = true` fires `email_fallback_detected` telemetry and writes learning ledger for below-threshold single-Q emails",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Telemetry gap closed for \"suggest-but-wrong\" case",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New unit tests: TC-01-01–TC-01-05 (single-Q gate rejection, category mismatch, confidence floor, hinted-best-pick, unhinted-floor-pass), TC-02-01–TC-02-03 (booking-issues false reference regression, booking-action enforcement, other strict categories unchanged)",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "CI-only per testing policy; 8 new test cases total",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`TemplateRankResult` unchanged; `usedTemplateFallback` semantics unchanged (`!selectedTemplate`); no schema changes",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No downstream consumer contract changes required",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Gate is a single conditional on already-resolved `policyCandidates[0]` — negligible latency impact",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Backwards-compatible; no deploy flag; rollback is revert of `draft-generate.ts` + `draft-quality-check.ts`",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Clean rollback",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Two independent code gaps allow the Brikette draft pipeline to produce misleading outputs. The single-question template selection path lacks the category-compatibility gate and confidence floor that the composite (multi-question) path already applies. Separately, `booking-issues` membership in `STRICT_REFERENCE_CATEGORIES` causes false reference-link quality failures on plain FAQ drafts. This plan closes both gaps in two small, independent tasks. TASK-01 mirrors `selectQuestionTemplateCandidate` semantics into the single-question path of `handleDraftGenerateTool`. TASK-02 removes `booking-issu",
+    "goals": [
+      "Gate single-question template acceptance: category-compatibility check first, then `UNHINTED_TEMPLATE_CONFIDENCE_FLOOR = 70` as fallback, mirroring `selectQuestionTemplateCandidate` semantics exactly.",
+      "Emit `follow_up_required` with escalation fallback sentence for below-threshold single-question emails; no template text in draft body.",
+      "Remove false reference-link quality failures for FAQ drafts that incidentally mention a booking."
+    ],
+    "non_goals": [
+      "Changing the BM25 algorithm, synonym table, or phrase expansions.",
+      "Altering the multi-question composite path — it already gates correctly.",
+      "Changing the `booking_action_required` trigger.",
+      "Adding new email templates."
+    ],
+    "constraints": [
+      "Tests run in CI only per `docs/testing-policy.md`. No local Jest runs.",
+      "All changes confined to `packages/mcp-server/src/`. No schema migrations, environment variables, or data files required.",
+      "The composite path (`buildCompositeQuestionBlocks` / `selectQuestionTemplateCandidate`) must remain behaviourally unchanged."
+    ],
+    "assumptions": [],
+    "selected_approach": [
+      "What was chosen:",
+      "TASK-01: inline gate in `handleDraftGenerateTool` mirroring `selectQuestionTemplateCandidate` (lines 1307–1329) using `resolveScenarioCategoryHints` and `candidateConfidence` helpers already in scope.",
+      "TASK-02: remove `\"booking-issues\"` from `STRICT_REFERENCE_CATEGORIES` Set (draft-quality-check.ts:92).",
+      "Why planning is not reopening option selection:",
+      "Analysis confirmed both options with code evidence; no operator-only forks remain."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add category-compatibility gate + confidence floor to single-question path",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `packages/mcp-server/src/tools/draft-generate.ts` + new unit tests in `packages/mcp-server/src/__tests__/draft-generate.test.ts`",
+        "affects": "`packages/mcp-server/src/tools/draft-generate.ts`, `packages/mcp-server/src/__tests__/draft-generate.test.ts`, `[readonly] packages/mcp-server/src/utils/template-ranker.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Remove `booking-issues` from `STRICT_REFERENCE_CATEGORIES`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `packages/mcp-server/src/tools/draft-quality-check.ts` + new unit test",
+        "affects": "`packages/mcp-server/src/tools/draft-quality-check.ts`, `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Single-question draft generation",
+          "trigger": "Guest asks about topic with no matching template (e.g. rooftop pool)",
+          "flow": "(1) `rankTemplates` returns `selection: \"suggest\"`, `policyCandidates[0]` with category `check-in`, confidence 45; (2) gate calls `resolveScenarioCategoryHints(actionPlan)` → `{\"faq\"}`; (3) `policyCandidates[0].template.category === \"check-in\"` not in hints; (4) `candidateConfidence(policyCandidates[0]) = 45 < 70`; (5) `selectedTemplate = undefined`; (6) `usedTemplateFallback = true`; (7) escalation fallback sentence in body; (8) `email_fallback_detected` telemetry emitted; (9) learning ledger written",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "Gate must mirror `selectQuestionTemplateCandidate` exactly; unit tests are primary correctness signal"
+        },
+        {
+          "id": null,
+          "label": "FAQ draft quality check",
+          "trigger": "Guest FAQ email with \"booking inquiry\" phrasing",
+          "flow": "(1) classifier assigns `booking-issues` tag at 0.74; (2) `requiresReferenceForActionPlan` checks `STRICT_REFERENCE_CATEGORIES`; (3) `booking-issues` no longer present; (4) reference check skipped since `bookingActionRequired = false`; (5) quality check passes; (6) `booking_action_required` enforcement at line 517 unchanged",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "None — `booking_action_required` confirmed to cover all booking-action cases"
+        }
+      ]
+    }
+  }
+}

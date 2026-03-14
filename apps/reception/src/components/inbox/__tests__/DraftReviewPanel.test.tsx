@@ -84,6 +84,117 @@ function buildThreadDetail(
   };
 }
 
+// TC-05 (TASK-03): deliveryStatus badge rendering
+describe("DraftReviewPanel — Needs follow-up badge (TC-05)", () => {
+  it("TC-05a: renders Needs follow-up badge when deliveryStatus === needs_follow_up", () => {
+    const threadDetail = buildThreadDetail({
+      currentDraft: {
+        ...buildThreadDetail().currentDraft!,
+        quality: { passed: true, deliveryStatus: "needs_follow_up" },
+      },
+    });
+
+    render(
+      <DraftReviewPanel
+        threadDetail={threadDetail}
+        savingDraft={false}
+        regeneratingDraft={false}
+        sendingDraft={false}
+        resolvingThread={false}
+        dismissingThread={false}
+        onSave={jest.fn()}
+        onRegenerate={jest.fn()}
+        onSend={jest.fn()}
+        onResolve={jest.fn()}
+        onDismiss={jest.fn()}
+      />,
+    );
+
+    expect(screen.getByText("Needs follow-up")).toBeInTheDocument();
+  });
+
+  it("TC-05b: does not render Needs follow-up badge when deliveryStatus is absent", () => {
+    const threadDetail = buildThreadDetail({
+      currentDraft: {
+        ...buildThreadDetail().currentDraft!,
+        quality: { passed: true },
+      },
+    });
+
+    render(
+      <DraftReviewPanel
+        threadDetail={threadDetail}
+        savingDraft={false}
+        regeneratingDraft={false}
+        sendingDraft={false}
+        resolvingThread={false}
+        dismissingThread={false}
+        onSave={jest.fn()}
+        onRegenerate={jest.fn()}
+        onSend={jest.fn()}
+        onResolve={jest.fn()}
+        onDismiss={jest.fn()}
+      />,
+    );
+
+    expect(screen.queryByText("Needs follow-up")).not.toBeInTheDocument();
+  });
+
+  it("TC-05c: does not render Needs follow-up badge when quality is null (legacy draft)", () => {
+    const threadDetail = buildThreadDetail({
+      currentDraft: {
+        ...buildThreadDetail().currentDraft!,
+        quality: null,
+      },
+    });
+
+    render(
+      <DraftReviewPanel
+        threadDetail={threadDetail}
+        savingDraft={false}
+        regeneratingDraft={false}
+        sendingDraft={false}
+        resolvingThread={false}
+        dismissingThread={false}
+        onSave={jest.fn()}
+        onRegenerate={jest.fn()}
+        onSend={jest.fn()}
+        onResolve={jest.fn()}
+        onDismiss={jest.fn()}
+      />,
+    );
+
+    expect(screen.queryByText("Needs follow-up")).not.toBeInTheDocument();
+  });
+
+  it("TC-05d: does not render Needs follow-up badge when deliveryStatus is ready", () => {
+    const threadDetail = buildThreadDetail({
+      currentDraft: {
+        ...buildThreadDetail().currentDraft!,
+        quality: { passed: true, deliveryStatus: "ready" },
+      },
+    });
+
+    render(
+      <DraftReviewPanel
+        threadDetail={threadDetail}
+        savingDraft={false}
+        regeneratingDraft={false}
+        sendingDraft={false}
+        resolvingThread={false}
+        dismissingThread={false}
+        onSave={jest.fn()}
+        onRegenerate={jest.fn()}
+        onSend={jest.fn()}
+        onResolve={jest.fn()}
+        onDismiss={jest.fn()}
+      />,
+    );
+
+    expect(screen.queryByText("Needs follow-up")).not.toBeInTheDocument();
+  });
+});
+
 describe("DraftReviewPanel", () => {
   it("dismisses an email thread without opening Gmail in a new tab", async () => {
     const user = userEvent.setup();

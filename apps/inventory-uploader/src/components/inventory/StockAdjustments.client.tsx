@@ -1,7 +1,7 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { getApiErrorMessage } from "../../lib/api-helpers";
 import {
@@ -16,6 +16,7 @@ import {
   itemKey,
   itemLabel,
   parseIntQuantity,
+  variantLabel,
 } from "../../lib/inventory-utils";
 
 const REASONS = [
@@ -28,6 +29,21 @@ const REASONS = [
 
 type Reason = (typeof REASONS)[number]["value"];
 
+type BatchAdjRow = {
+  key: string;
+  selectedKey: string;
+  delta: string;
+  reason: Reason;
+};
+
+type AdjResultItem = {
+  sku: string;
+  previousQuantity: number;
+  nextQuantity: number;
+  delta: number;
+  variantAttributes: Record<string, string>;
+};
+
 type AdjResult =
   | {
       ok: true;
@@ -36,10 +52,14 @@ type AdjResult =
         dryRun: boolean;
         created: number;
         updated: number;
-        items: Array<{ sku: string; previousQuantity: number; nextQuantity: number; delta: number }>;
+        items: AdjResultItem[];
       };
     }
   | { ok: false; code: string; message: string };
+
+function makeBlankRow(): BatchAdjRow {
+  return { key: createKey(), selectedKey: "", delta: "", reason: "correction" };
+}
 
 export type StockAdjustmentsProps = {
   shop: string;
@@ -50,9 +70,7 @@ export type StockAdjustmentsProps = {
 export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [history, setHistory] = useState<AuditEntry[]>([]);
-  const [selectedKey, setSelectedKey] = useState("");
-  const [delta, setDelta] = useState("");
-  const [reason, setReason] = useState<Reason>("correction");
+  const [rows, setRows] = useState<BatchAdjRow[]>([makeBlankRow()]);
   const [note, setNote] = useState("");
   const [idempotencyKey, setIdempotencyKey] = useState(() => createKey());
   const [result, setResult] = useState<AdjResult | null>(null);
@@ -85,26 +103,60 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
     return () => controller.abort();
   }, [shop]);
 
-  const selectedItem = useMemo(
-    () => inventory.find((item) => itemKey(item) === selectedKey),
-    [inventory, selectedKey],
-  );
+  function updateRow(rowKey: string, patch: Partial<BatchAdjRow>) {
+    setRows((prev) => prev.map((r) => (r.key === rowKey ? { ...r, ...patch } : r)));
+    setResult(null);
+    setError(null);
+  }
+
+  function addRow() {
+    setRows((prev) => [...prev, makeBlankRow()]);
+  }
+
+  function removeRow(rowKey: string) {
+    setRows((prev) => (prev.length > 1 ? prev.filter((r) => r.key !== rowKey) : prev));
+  }
 
   const submit = useCallback(
     async (dryRun: boolean) => {
       setError(null);
       setBusy(true);
       try {
-        if (!selectedItem) {
-          setError("Select an inventory row.");
+        // Validate all rows
+        const filledRows = rows.filter((r) => r.selectedKey !== "");
+        if (filledRows.length === 0) {
+          setError("Add at least one item.");
           return;
         }
-        const parsed = parseIntQuantity(delta, "nonzero");
-        if (parsed.ok === false) {
-          setError(parsed.error);
-          return;
+        const items: Array<{
+          sku: string;
+          productId: string;
+          quantity: number;
+          reason: Reason;
+          variantAttributes?: Record<string, string>;
+        }> = [];
+        for (const row of filledRows) {
+          const parsed = parseIntQuantity(row.delta, "nonzero");
+          if (parsed.ok === false) {
+            setError(`Row "${row.selectedKey}": ${parsed.error}`);
+            return;
+          }
+          const item = inventory.find((i) => itemKey(i) === row.selectedKey);
+          if (!item) {
+            setError(`Inventory item not found for row.`);
+            return;
+          }
+          items.push({
+            sku: item.sku,
+            productId: item.productId,
+            quantity: parsed.qty,
+            reason: row.reason,
+            ...(Object.keys(item.variantAttributes).length
+              ? { variantAttributes: item.variantAttributes }
+              : {}),
+          });
         }
-        const d = parsed.qty;
+
         const url = `${inventoryApiUrl(shop, "adjustments")}${dryRun ? "?dryRun=true" : ""}`;
         const resp = await fetch(url, {
           method: "POST",
@@ -113,17 +165,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
             idempotencyKey,
             dryRun,
             ...(note.trim() ? { note: note.trim() } : {}),
-            items: [
-              {
-                sku: selectedItem.sku,
-                productId: selectedItem.productId,
-                quantity: d,
-                reason,
-                ...(Object.keys(selectedItem.variantAttributes).length
-                  ? { variantAttributes: selectedItem.variantAttributes }
-                  : {}),
-              },
-            ],
+            items,
           }),
         });
         const json = (await resp.json().catch(() => null)) as AdjResult | null;
@@ -145,12 +187,11 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
         setBusy(false);
       }
     },
-    [selectedItem, delta, reason, note, idempotencyKey, shop, onSaved, refreshHistory],
+    [rows, inventory, note, idempotencyKey, shop, onSaved, refreshHistory],
   );
 
   function startNew() {
-    setSelectedKey("");
-    setDelta("");
+    setRows([makeBlankRow()]);
     setNote("");
     setIdempotencyKey(createKey());
     setResult(null);
@@ -165,105 +206,110 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
     <div className="space-y-4">
       <h3 className="text-sm font-semibold text-gate-ink">Stock adjustment</h3>
 
-      {/* Form */}
-      <div className="space-y-2">
-        <label className="block space-y-0.5">
-          <span className="text-2xs text-gate-muted">Inventory row</span>
-          <select
-            value={selectedKey}
-            onChange={(e) => setSelectedKey(e.target.value)}
-
-            className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
-          >
-            <option value="">— select SKU —</option>
-            {inventory.map((item) => (
-              <option key={itemKey(item)} value={itemKey(item)}>
-                {itemLabel(item)} (qty: {item.quantity})
-              </option>
-            ))}
-          </select>
-        </label>
-
-        {selectedItem && (
-          <p className="text-2xs text-gate-muted">
-            Current stock: <span className="font-medium text-gate-ink">{selectedItem.quantity}</span>
-            {delta && Number.isInteger(Number(delta)) && Number(delta) !== 0
-              ? ` → ${selectedItem.quantity + Number(delta)}`
-              : null}
-          </p>
-        )}
-
-        <div className="grid grid-cols-2 gap-2">
-          <label className="block space-y-0.5">
-            <span className="text-2xs text-gate-muted">Qty delta (+/−)</span>
-            <input
-              type="number"
-              value={delta}
-              onChange={(e) => setDelta(e.target.value)}
-              placeholder="+5 or −3"
-
-              className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
-            />
-          </label>
-          <label className="block space-y-0.5">
-            <span className="text-2xs text-gate-muted">Reason</span>
-            <select
-              value={reason}
-              onChange={(e) => setReason(e.target.value as Reason)}
-
-              className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
-            >
-              {REASONS.map((r) => (
-                <option key={r.value} value={r.value}>
-                  {r.label}
-                </option>
-              ))}
-            </select>
-          </label>
+      {/* Rows */}
+      <div className="space-y-1.5">
+        {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- INV-0001 operator-tool: fixed-column grid for dense console table */}
+        <div className="grid grid-cols-[1fr_80px_120px_24px] gap-1 text-2xs text-gate-muted">
+          <span>Inventory row</span>
+          <span>Qty delta</span>
+          <span>Reason</span>
+          <span />
         </div>
-
-        <label className="block space-y-0.5">
-          <span className="text-2xs text-gate-muted">Note (optional)</span>
-          <input
-            type="text"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Context or ticket…"
-
-            className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
-          />
-        </label>
-
-        {error && <p className="text-xs text-gate-status-incomplete">{error}</p>}
-
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => void submit(true)}
-            disabled={busy}
-
-            className="rounded px-3 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink disabled:opacity-40"
-          >
-            Preview
-          </button>
-          <button
-            type="button"
-            onClick={() => void submit(false)}
-            disabled={busy}
-
-            className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
-          >
-            {busy ? "Saving…" : "Apply"}
-          </button>
-          <button
-            type="button"
-            onClick={startNew}
-
-            className="ms-auto rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
-          >
-            Reset
-          </button>
+        <div className="max-h-64 overflow-y-auto space-y-1">
+          {rows.map((row) => (
+            // eslint-disable-next-line ds/no-arbitrary-tailwind -- INV-0001 operator-tool: fixed-column grid for dense console table
+            <div key={row.key} className="grid grid-cols-[1fr_80px_120px_24px] gap-1 items-center">
+              <select
+                value={row.selectedKey}
+                onChange={(e) => updateRow(row.key, { selectedKey: e.target.value })}
+                className="rounded border border-gate-border bg-gate-input-bg px-1.5 py-0.5 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
+              >
+                <option value="">— select SKU —</option>
+                {inventory.map((item) => (
+                  <option key={itemKey(item)} value={itemKey(item)}>
+                    {itemLabel(item)} (qty: {item.quantity})
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                value={row.delta}
+                onChange={(e) => updateRow(row.key, { delta: e.target.value })}
+                placeholder="+5 or −3"
+                className="rounded border border-gate-border bg-gate-input-bg px-1.5 py-0.5 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
+              />
+              <select
+                value={row.reason}
+                onChange={(e) => updateRow(row.key, { reason: e.target.value as Reason })}
+                className="rounded border border-gate-border bg-gate-input-bg px-1.5 py-0.5 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
+              >
+                {REASONS.map((r) => (
+                  <option key={r.value} value={r.value}>
+                    {r.label}
+                  </option>
+                ))}
+              </select>
+              {/* eslint-disable ds/enforce-layout-primitives -- INV-0001 operator-tool: compact icon button in dense console table row */}
+              <button
+                type="button"
+                onClick={() => removeRow(row.key)}
+                disabled={rows.length === 1}
+                className="flex items-center justify-center rounded text-gate-muted hover:text-gate-status-incomplete disabled:opacity-30 focus-visible:ring-1 focus-visible:ring-gate-border"
+                aria-label="Remove row"
+              >
+                ×
+              </button>
+              {/* eslint-enable ds/enforce-layout-primitives */}
+            </div>
+          ))}
         </div>
+        <button
+          type="button"
+          onClick={addRow}
+          className="rounded px-2 py-0.5 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
+        >
+          + Add row
+        </button>
+      </div>
+
+      {/* Note */}
+      <label className="block space-y-0.5">
+        <span className="text-2xs text-gate-muted">Note (optional)</span>
+        <input
+          type="text"
+          value={note}
+          onChange={(e) => { setNote(e.target.value); setResult(null); }}
+          placeholder="Context or ticket…"
+          className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
+        />
+      </label>
+
+      {error && <p className="text-xs text-gate-status-incomplete">{error}</p>}
+
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => void submit(true)}
+          disabled={busy}
+          className="rounded px-3 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink disabled:opacity-40"
+        >
+          Preview
+        </button>
+        <button
+          type="button"
+          onClick={() => void submit(false)}
+          disabled={busy}
+          className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
+        >
+          {busy ? "Saving…" : "Apply"}
+        </button>
+        <button
+          type="button"
+          onClick={startNew}
+          className="ms-auto rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
+        >
+          Reset
+        </button>
       </div>
 
       {/* Result */}
@@ -276,16 +322,21 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
                 ? "Already applied"
                 : "Applied"}
           </p>
-          {result.report.items.map((item) => (
-            <p key={item.sku} className="text-xs text-gate-muted">
-              {item.sku}: {item.previousQuantity} →{" "}
-              <span className="font-medium text-gate-ink">{item.nextQuantity}</span>
-              {" "}
-              <span className={item.delta > 0 ? "text-gate-status-ready" : "text-gate-status-incomplete"}>
-                ({formatQuantityDelta(item.delta)})
-              </span>
-            </p>
-          ))}
+          {result.report.items.map((item) => {
+            const attrs = item.variantAttributes ?? {};
+            const label = variantLabel(attrs);
+            const rowKey = `${item.sku}:${JSON.stringify(attrs)}`;
+            return (
+              <p key={rowKey} className="text-xs text-gate-muted">
+                {item.sku}{label ? ` (${label})` : ""}: {item.previousQuantity} →{" "}
+                <span className="font-medium text-gate-ink">{item.nextQuantity}</span>
+                {" "}
+                <span className={item.delta > 0 ? "text-gate-status-ready" : "text-gate-status-incomplete"}>
+                  ({formatQuantityDelta(item.delta)})
+                </span>
+              </p>
+            );
+          })}
         </div>
       )}
 

@@ -25,7 +25,7 @@ function getVarianceClass(diff: number | undefined): string {
   const abs = Math.abs(diff);
   if (abs < 1) return "bg-success-light text-success-fg";
   if (abs < 5) return "bg-warning-light text-warning-fg";
-  return "bg-error-light text-danger-fg";
+  return "bg-error-light text-error-main";
 }
 
 export default function VarianceHeatMap() {

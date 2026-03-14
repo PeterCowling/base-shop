@@ -1,4 +1,3 @@
-/* eslint-disable ds/container-widths-only-at, ds/enforce-layout-primitives, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 /**
@@ -13,6 +12,9 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Calendar, Clock, MapPin, MessageCircle, Users } from 'lucide-react';
 
+import { Inline } from '@acme/design-system/primitives';
+
+import { Container } from '@/components/layout/Container';
 import { useChat } from '@/contexts/messaging/ChatProvider';
 import useUuid from '@/hooks/useUuid';
 import { readGuestSession } from '@/lib/auth/guestSessionGuard';
@@ -54,8 +56,10 @@ function formatRelativeTime(
   return t('time.startingNow');
 }
 
-function formatFinishTime(startTime: number): string {
-  const finish = new Date(startTime + 2 * 60 * 60 * 1000);
+function formatFinishTime(activity: ActivityInstance): string {
+  // Math.max(1, ...) guards against durationMinutes: 0 causing immediate-end
+  const durationMs = Math.max(1, activity.durationMinutes ?? 120) * 60 * 1000;
+  const finish = new Date(activity.startTime + durationMs);
   return new Intl.DateTimeFormat(undefined, {
     hour: 'numeric',
     minute: '2-digit',
@@ -66,7 +70,8 @@ type ActivityLifecycle = 'upcoming' | 'live' | 'ended';
 
 function resolveLifecycle(activity: ActivityInstance, now: number): ActivityLifecycle {
   const start = activity.startTime;
-  const end = start + 2 * 60 * 60 * 1000;
+  // Math.max(1, ...) guards against durationMinutes: 0 causing immediate-end
+  const end = start + Math.max(1, activity.durationMinutes ?? 120) * 60 * 1000;
   if (now >= end || activity.status === 'archived') {
     return 'ended';
   }
@@ -98,8 +103,8 @@ function ActivityCard({
   return (
     <div className="rounded-xl bg-card p-4 shadow-sm border border-border">
       <div className="mb-3 flex items-center justify-between">
-        <div
-          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
+        <Inline
+          className={`items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
             isLive
               ? 'bg-success-soft text-success-foreground'
               : isEnded
@@ -115,7 +120,7 @@ function ActivityCard({
             : isEnded
               ? t('status.ended')
               : t('status.upcoming')}
-        </div>
+        </Inline>
         <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
           <Users className="h-3.5 w-3.5" />
           {presenceCount}
@@ -136,7 +141,7 @@ function ActivityCard({
           <span>
             {new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date(activity.startTime))}
             {' - '}
-            {formatFinishTime(activity.startTime)}
+            {formatFinishTime(activity)}
           </span>
         </div>
         {!isLive && (
@@ -165,14 +170,14 @@ function ActivityCard({
           type="button"
           onClick={() => void onMarkPresent(activity.id)}
           disabled={!isLive || isPresent}
-          className="w-full rounded-lg border border-success bg-success-soft px-4 py-2.5 text-sm font-medium text-success-foreground disabled:opacity-60 disabled:cursor-not-allowed"
+          className="min-h-11 min-w-11 w-full rounded-lg border border-success bg-success-soft px-4 py-2.5 text-sm font-medium text-success-foreground disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {isPresent ? t('presence.markedPresent') : isLive ? t('presence.markPresent') : t('presence.availableOnceLive')}
         </button>
 
         <Link
           href={`/chat/channel?id=${activity.id}`}
-          className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors ${
+          className={`min-h-11 min-w-11 flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium text-primary-foreground transition-colors ${
             isEnded
               ? 'bg-muted-foreground pointer-events-none'
               : 'bg-success hover:bg-success/90'
@@ -211,7 +216,7 @@ export default function ActivitiesClient() {
   if (!sdkDecision.allowed) {
     return (
       <main className="min-h-svh bg-muted p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+        <Container className="max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-xl font-semibold text-foreground">
             {t('title')}
           </h1>
@@ -221,7 +226,7 @@ export default function ActivitiesClient() {
           <Link href="/" className="mt-4 inline-block text-primary hover:underline">
             {t('sdkUnavailable.returnHome')}
           </Link>
-        </div>
+        </Container>
       </main>
     );
   }
@@ -300,7 +305,7 @@ export default function ActivitiesClient() {
     <main className="min-h-svh bg-muted pb-24">
       {/* Header */}
       <div className="bg-success px-4 pb-6 pt-8">
-        <div className="mx-auto max-w-md">
+        <Container className="max-w-md">
           <div className="mb-2 flex items-center gap-2">
             <Users className="h-6 w-6 text-success-foreground/80" />
             <h1 className="text-2xl font-bold text-success-foreground">
@@ -310,10 +315,10 @@ export default function ActivitiesClient() {
           <p className="text-sm text-success-foreground/80">
             {t('subtitle')}
           </p>
-        </div>
+        </Container>
       </div>
 
-      <div className="mx-auto max-w-md px-4">
+      <Container className="max-w-md px-4">
         {hasActivities ? (
           <div className="space-y-6">
             {/* Live activities */}
@@ -387,7 +392,7 @@ export default function ActivitiesClient() {
                   type="button"
                   onClick={loadMoreActivities}
                   disabled={isMarkingPresent !== null}
-                  className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm transition-colors hover:bg-muted"
+                  className="min-h-11 min-w-11 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm transition-colors hover:bg-muted"
                 >
                   {t('actions.loadMore')}
                 </button>
@@ -406,7 +411,7 @@ export default function ActivitiesClient() {
             </p>
             <Link
               href="/positano-guide"
-              className="inline-flex items-center gap-2 rounded-lg bg-success px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-success/90"
+              className="rounded-lg bg-success px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-success/90"
             >
               {t('empty.exploreGuide')}
             </Link>
@@ -422,7 +427,7 @@ export default function ActivitiesClient() {
             {t('actions.backHome')}
           </Link>
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

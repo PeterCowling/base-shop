@@ -90,6 +90,7 @@ For token drift triage, run static scans in affected app paths (examples):
 2. Resolve route list from operator surfaces (or infer best-effort routes and mark assumptions).
 3. Set stable viewport height (default `900`).
 4. Prepare artifact folder and screenshot naming convention.
+5. **Detect JS theme toggle** — scan page source for `localStorage` + `data-theme` (or equivalent cookie/class-based toggle). If found, expand the test matrix (see step 2a below).
 
 ### 2) Breakpoint Sweep Execution
 
@@ -104,6 +105,36 @@ For each breakpoint `W` and each mode:
    - `focus-visible` via keyboard tab flow
    - modal/drawer/popover open states
    - form error states (if low-friction to trigger)
+
+### 2a) Split-State Testing (mandatory when JS theme toggle detected)
+
+A JS toggle (localStorage, cookie, or `data-theme` attribute) and `prefers-color-scheme` are independent systems. They can disagree — e.g. OS in light mode but toggle previously set to dark. CSS variables controlled only by `@media(prefers-color-scheme)` are invisible to the toggle, causing broken mixed states that `emulateMedia` alone can never reproduce.
+
+**Always test all four combinations when a toggle exists:**
+
+| `emulateMedia` | localStorage/toggle | Scenario label |
+|---|---|---|
+| light | light | `media-light/toggle-light` (clean) |
+| dark | dark | `media-dark/toggle-dark` (clean) |
+| **light** | **dark** | `media-light/toggle-dark` ← most common user-facing breakage |
+| **dark** | **light** | `media-dark/toggle-light` |
+
+**How to inject localStorage state in Playwright:**
+```js
+await page.goto(url, { waitUntil: 'load' });
+await page.evaluate(() => localStorage.setItem('sl-theme', 'dark')); // or whatever key
+await page.reload({ waitUntil: 'load' });
+// confirm: await page.evaluate(() => document.documentElement.getAttribute('data-theme'))
+```
+
+**What to check in split states:**
+- CSS custom properties that appear in `@media(prefers-color-scheme)` but NOT in `html[data-theme]` — these will hold stale values in the mismatched state
+- Text colour vars (`--text`, `--text-muted`) that come from `data-theme` paired against background/surface vars that come from `@media` only (or vice versa)
+- Any component that hardcodes `color:#fff` or `color:#000` while its background var is theme-switched
+
+**Flag as S1** if any split state produces unreadable text. The root cause is always: CSS variables split across two theming systems that don't fully overlap.
+
+**Recommended fix pattern:** Make `html[data-theme="dark/light"]` the single authoritative source for ALL CSS vars. Keep `@media(prefers-color-scheme)` only as a FOUC fallback (it fires before JS runs). Since `html[data-theme]` has higher specificity than `:root` inside `@media`, it will always win once JS sets it.
 
 ### 3) Contrast Checks (priority order)
 
@@ -188,7 +219,9 @@ Return:
 If no issues are found, state exactly:
 
 `No contrast or visual-uniformity failures detected across the tested breakpoint/mode matrix.`
+
 - If issues were found and fixed via `/lp-do-build`: **re-run this sweep** to confirm findings are resolved before routing to `tools-refactor`.
+- If the page has a JS theme toggle: re-run must include all four split-state combinations, not just clean `emulateMedia` states. A fix that only passes clean states may still fail in the mismatched case.
 
 ## Guardrails
 
@@ -201,4 +234,5 @@ If no issues are found, state exactly:
 
 - **Upstream:** `lp-design-qa` (optional trigger — contrast-sweep is often invoked after lp-design-qa flags color or accessibility concerns); `lp-do-build` (direct invocation for pre-launch QA pass).
 - **Downstream:** `tools-refactor` (contrast and token findings feed the refactor entry criteria); `lp-do-build` (issues returned as structured findings for fix tasks).
-- **Loop position:** S9C (Parallel Sweep) — runs alongside `tools-ui-breakpoint-sweep` after UI build and static QA, before refactor.
+- **Loop position:** S9B secondary skill, required before S9B→SIGNALS advance (`GATE-UI-SWEEP-01`). Also runs alongside `tools-ui-breakpoint-sweep` at S9C for ongoing quality passes.
+- **S9B advance requirement:** When running this sweep for S9B→SIGNALS advance, the operator must manually set `Business: <BIZ>` in the report frontmatter (the template includes a placeholder — replace it with the actual business identifier). All application routes must be covered; `Routes-Tested: 0` will block the advance gate. Both light and dark modes must be tested. All S1 blockers must be resolved before advancing.

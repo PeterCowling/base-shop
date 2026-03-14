@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { Stack } from "@acme/design-system/primitives";
+import { Inline, Stack } from "@acme/design-system/primitives";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import type {
@@ -67,7 +67,9 @@ function TenderRemovalModalBase({
           <Button
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-0 top-0 h-7 w-7 rounded-full bg-error-main text-danger-fg transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-error-main"
+            color="danger"
+            tone="solid"
+            className="absolute right-0 top-0 h-7 w-7 rounded-full"
           >
             &times;
           </Button>
@@ -78,18 +80,18 @@ function TenderRemovalModalBase({
           </h2>
 
           {/* Form row */}
-          <div className="flex flex-wrap text-center items-center justify-center gap-12 mb-12">
+          <Inline gap={12} className="justify-center text-center mb-12">
             <Input
               compatibilityMode="no-wrapper"
               type="number"
               inputMode="decimal"
-              className="w-32 rounded-lg border px-3 py-2 text-sm"
+              className="w-32 rounded-lg border border-border-2 bg-surface px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary-main"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
             <select
-              className="w-36 rounded-lg border px-2 py-2 text-sm"
+              className="w-36 rounded-lg border border-border-2 bg-surface px-2 py-2 text-sm text-foreground focus:outline-none focus:border-primary-main"
               value={removalType}
               onChange={(e) => setRemovalType(e.target.value as RemovalType)}
             >
@@ -110,7 +112,7 @@ function TenderRemovalModalBase({
                 <option value="BANK">Bank</option>
               </select>
             )}
-          </div>
+          </Inline>
 
           {/* Confirmation */}
           <Stack gap={4} align="center" className="mt-6">

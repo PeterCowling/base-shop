@@ -65,7 +65,7 @@ function PrepaymentsContainer({
         method: "CARD",
         timestamp: nowISO,
         type: "PAYMENT",
-        user_name: "System",
+        user_name: user?.displayName ?? user?.email ?? "System",
         nonRefundable: true,
       });
 
@@ -92,7 +92,7 @@ function PrepaymentsContainer({
         );
       }
     },
-    [addToAllTransactions, saveFinancialsRoom, addActivity]
+    [addToAllTransactions, saveFinancialsRoom, addActivity, user]
   );
 
   // Filter data by bookingRef or occupantName

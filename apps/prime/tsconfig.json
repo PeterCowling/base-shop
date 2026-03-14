@@ -35,7 +35,6 @@
     "next-env.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    ".next/types/**/*.ts",
     "cypress/**/*.ts",
     "cypress.config.ts"
   ],

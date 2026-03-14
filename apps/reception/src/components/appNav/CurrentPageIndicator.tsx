@@ -4,6 +4,8 @@ import { memo, useMemo } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Home } from "lucide-react";
 
+import { Inline } from "@acme/design-system/primitives";
+
 import { navSections } from "./navConfig";
 
 interface RouteInfo {
@@ -66,10 +68,10 @@ function CurrentPageIndicatorComponent({ pathname }: CurrentPageIndicatorProps) 
   }, [pathname]);
 
   return (
-    <div className="flex items-center gap-2 text-sm">
+    <Inline gap={2} className="text-sm">
       <span className="text-muted-foreground">{routeInfo.section}</span>
       <span className="text-muted-foreground">/</span>
-      <div className="flex items-center gap-2 font-semibold text-primary-main">
+      <Inline gap={2} className="font-semibold text-primary-main">
         <routeInfo.icon size={16} />
         <span>{routeInfo.label}</span>
         {routeInfo.shortcut && (
@@ -77,8 +79,8 @@ function CurrentPageIndicatorComponent({ pathname }: CurrentPageIndicatorProps) 
             {routeInfo.shortcut}
           </kbd>
         )}
-      </div>
-    </div>
+      </Inline>
+    </Inline>
   );
 }
 

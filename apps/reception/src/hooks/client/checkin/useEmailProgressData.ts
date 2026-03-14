@@ -12,6 +12,7 @@ import { type Activity } from "../../../types/hooks/data/activitiesData";
 import {
   computeHoursElapsed,
   findTimestampForCode,
+  toEpochMillis,
 } from "../../../utils/dateUtils";
 import useActivitiesByCodeData from "../../data/useActivitiesByCodeData";
 import useActivitiesData from "../../data/useActivitiesData";
@@ -23,6 +24,26 @@ export type { EmailProgressData } from "../../../schemas/emailProgressDataSchema
 
 // Precompute codes 1 through 25 and ensure stable reference across renders.
 const CODES_1_TO_25 = Array.from({ length: 25 }, (_, i) => i + 1);
+
+function findAttributionForCode(
+  activityList: Activity[],
+  code: number
+): { who: string | undefined; timestamp: string | undefined } {
+  let earliest: number | null = null;
+  let who: string | undefined;
+  let timestamp: string | undefined;
+  for (const act of activityList) {
+    if (act.code === code && act.timestamp) {
+      const t = toEpochMillis(act.timestamp);
+      if (earliest === null || t < earliest) {
+        earliest = t;
+        who = act.who;
+        timestamp = act.timestamp;
+      }
+    }
+  }
+  return { who, timestamp };
+}
 
 export interface UseEmailProgressDataResult {
   emailData: EmailProgressData[];
@@ -118,6 +139,7 @@ export default function useEmailProgressData(): UseEmailProgressDataResult {
               output[occupantId].push({
                 code: codeNum,
                 who: item.who,
+                timestamp: item.timestamp,
               });
             }
           );
@@ -203,6 +225,8 @@ export default function useEmailProgressData(): UseEmailProgressDataResult {
               : "Unknown Guest";
             const occupantEmail = detailsObj.email ?? "";
 
+            const attribution = findAttributionForCode(activityList, currentCode);
+
             const candidate = {
               occupantId,
               bookingRef,
@@ -210,6 +234,8 @@ export default function useEmailProgressData(): UseEmailProgressDataResult {
               occupantEmail,
               currentCode,
               hoursElapsed,
+              lastActionedBy: attribution.who,
+              lastActionedAt: attribution.timestamp,
             };
 
             try {

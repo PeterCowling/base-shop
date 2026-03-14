@@ -16,6 +16,11 @@ export interface GuestSessionSnapshot {
 
 export type TokenValidationResult = 'valid' | 'expired' | 'invalid' | 'network_error';
 
+export interface GuestTokenValidationResult {
+  status: TokenValidationResult;
+  guestUuid: string | null;
+}
+
 function toTrimmed(value: string | null): string | null {
   const trimmed = value?.trim() ?? '';
   return trimmed.length > 0 ? trimmed : null;
@@ -46,25 +51,30 @@ export function buildGuestHomeUrl(session: GuestSessionSnapshot): string {
 
 export async function validateGuestToken(
   fetchImpl: typeof fetch = fetch,
-): Promise<TokenValidationResult> {
+): Promise<GuestTokenValidationResult> {
   try {
     // prime_session HttpOnly cookie is sent automatically on this same-origin request
     const response = await fetchImpl('/api/guest-session');
 
     if (response.ok) {
-      return 'valid';
+      try {
+        const data = (await response.json()) as { guestUuid?: string | null };
+        return { status: 'valid', guestUuid: data.guestUuid ?? null };
+      } catch {
+        return { status: 'valid', guestUuid: null };
+      }
     }
 
     if (response.status === 410) {
-      return 'expired';
+      return { status: 'expired', guestUuid: null };
     }
 
     if (response.status === 400 || response.status === 401 || response.status === 403 || response.status === 404) {
-      return 'invalid';
+      return { status: 'invalid', guestUuid: null };
     }
 
-    return 'network_error';
+    return { status: 'network_error', guestUuid: null };
   } catch {
-    return 'network_error';
+    return { status: 'network_error', guestUuid: null };
   }
 }

@@ -273,7 +273,10 @@ async function recoverSingleThread(
         plainText: draftResult.plainText ?? "",
         html: draftResult.html,
         templateUsed: draftResult.templateUsed?.subject ?? null,
-        quality: draftResult.qualityResult as Record<string, unknown>,
+        quality: {
+          ...(draftResult.qualityResult as Record<string, unknown>),
+          deliveryStatus: draftResult.status,
+        },
         interpret: draftResult.interpretResult as Record<string, unknown> | undefined,
         recipientEmails: latestInbound.from ? [latestInbound.from] : [],
         subject: latestInbound.subject ? `Re: ${latestInbound.subject.replace(/^Re:\s*/i, "")}` : "Re: Guest inquiry",
@@ -350,6 +353,27 @@ async function flagForManualDraft(
     },
     db,
   );
+
+  // Emit alert event immediately after flagging so operators are notified without
+  // waiting for the next recovery cron pass. Wrapped in try/catch so that a
+  // failure here does not unwind the flag write — the thread is still visible
+  // in the inbox via the needs_manual_draft column.
+  try {
+    await recordInboxEvent({
+      threadId: thread.id,
+      eventType: "needs_manual_draft_alert",
+      metadata: {
+        outcome,
+        attempts: existingMetadata.recoveryAttempts ?? 0,
+        failureCode: failureCode ?? null,
+      },
+    });
+  } catch (alertError) {
+    console.warn("[recovery] needs_manual_draft_alert event write failed", {
+      threadId: thread.id,
+      error: alertError instanceof Error ? alertError.message : String(alertError),
+    });
+  }
 
   await recordInboxEvent({
     threadId: thread.id,

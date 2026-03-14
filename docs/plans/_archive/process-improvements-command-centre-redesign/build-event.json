@@ -1,0 +1,13 @@
+{
+  "event_type": "build_complete",
+  "feature_slug": "process-improvements-command-centre-redesign",
+  "completed_at": "2026-03-13",
+  "outcome_type": "UI improvement",
+  "outcome_statement": "The /process-improvements operator UI now shows live, accurate counts and an urgency-tiered spatial layout (Overdue → Operator Actions → Ideas Queue → Deferred collapsed → Done collapsed) with a dark command-centre theme and a live sub-nav that pulses when an agent is active.",
+  "why": "The process-improvements pages were the operator's daily triage surface but showed stale counts (SSR-locked), used a flat undifferentiated list with no urgency hierarchy, and had a static sub-nav with no live feedback.",
+  "source": "operator",
+  "plan_path": "docs/plans/process-improvements-command-centre-redesign/plan.md",
+  "build_record_path": "docs/plans/process-improvements-command-centre-redesign/build-record.user.md",
+  "tasks_completed": ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05", "TASK-06", "TASK-07a", "TASK-07b", "TASK-08", "TASK-09"],
+  "business": "BRIK"
+}

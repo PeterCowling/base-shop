@@ -1,0 +1,33 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-gap-highlight/fact-find.md",
+      "line": "169",
+      "message": "The chosen synthetic-period approach is not compatible with the current grid renderer as described. `dateUtils.getDayParams()` maps `date === period.start` to `single.start`, `date === period.end` to `single.end`, and overlapping matches to `intersection`, so injecting `{ start: date, end: nextDay, status: \"gap\" }` will not \"just render a gap color\" for the free cell; it will also distort adjacent booking cells."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-gap-highlight/fact-find.md",
+      "line": "174",
+      "message": "This leaves occupancy impact as an unresolved question, but the current code already proves the issue: `computeOccupancyCount()` treats every status except `\"free\"`, `\"disabled\"`, and `\"16\"` as occupied. A new `\"gap\"` status would therefore inflate the occupancy strip unless explicitly excluded, so this is a known blocker, not a low-risk unknown."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-gap-highlight/fact-find.md",
+      "line": "127",
+      "message": "The test coverage claim is incorrect. `RoomGrid.test.tsx` mocks `ReservationGrid`, so `RowCell`, `dateUtils.getDayParams()`, and the actual day-shape/color rendering pipeline are not indirectly covered today. That leaves the proposed rendering seam much less validated than the brief states."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-roomgrid-gap-highlight/fact-find.md",
+      "line": "119",
+      "message": "The test command guidance should use the governed runner consistently with repo policy (`pnpm -w run test:governed -- jest -- --config=apps/reception/jest.config.cjs`), not the package-local `pnpm --filter @apps/reception test` form."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 6,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1"
+}

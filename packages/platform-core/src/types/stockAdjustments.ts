@@ -34,6 +34,7 @@ export type StockAdjustmentRequest = z.infer<typeof stockAdjustmentRequestSchema
 export type StockAdjustmentActor = {
   customerId?: string;
   role?: string;
+  ip?: string;
 };
 
 export type StockAdjustmentItemResult = {

@@ -5,8 +5,8 @@
  * Includes basic rate limiting via KV.
  */
 
-import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
-import { generateToken, computeTokenExpiry, type GuestSessionToken } from '../lib/guest-token';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
+import { computeTokenExpiry, generateToken, type GuestSessionToken } from '../lib/guest-token';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -101,19 +101,15 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       return errorResponse('Booking not found', 404);
     }
 
-    // Resolve lead guest for token issuance
-    const leadOccupantId =
-      occupantKeys.find((id) => booking[id]?.leadGuest) || occupantKeys[0] || matchedOccupantId;
-    const leadOccupant = booking[leadOccupantId];
-
-    // Issue a new guest session token
+    // Issue a new guest session token scoped to the matched occupant (not the lead guest)
+    const matchedOccupant = booking[matchedOccupantId];
     const now = new Date();
     const token = generateToken();
     const tokenData: GuestSessionToken = {
       bookingId: normalizedRef,
-      guestUuid: leadOccupantId,
+      guestUuid: matchedOccupantId,
       createdAt: now.toISOString(),
-      expiresAt: computeTokenExpiry(leadOccupant?.checkOutDate || '', now),
+      expiresAt: computeTokenExpiry(matchedOccupant?.checkOutDate || '', now),
     };
 
     await firebase.set(`guestSessionsByToken/${token}`, tokenData);

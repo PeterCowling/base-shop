@@ -1,0 +1,31 @@
+{
+  "round": 3,
+  "mode": "file",
+  "artifact": "docs/plans/reception-roomgrid-unallocated-panel/plan.md",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-unallocated-panel/plan.md",
+      "line": "242",
+      "message": "The bag-drop status contract is still inconsistent and too weak. TASK-02 says TC-08 should explicitly assert that activity code \"23\" collapses to status \"1\", but TASK-05 later downgrades the same case to it.skip. More importantly, the live type/color system already supports \"23\" in MyLocalStatus.ts and statusColors, while the omission lives in the same file this plan is already editing at useGridData.ts:172. Shipping a new staff panel with a known wrong status and memorializing it with a skipped test is not a solid execution contract."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-roomgrid-unallocated-panel/plan.md",
+      "line": "245",
+      "message": "TASK-02 still has no deterministic sort for unallocatedOccupants. The planned memo iterates raw Object.entries(bookingsData) and returns the collected array directly, while the existing room-row path deliberately normalizes order via sortByDateAsc in useGridData.ts:113. Without an explicit sort key, panel order and RTL assertions will depend on Firebase insertion order."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-roomgrid-unallocated-panel/plan.md",
+      "line": "264",
+      "message": "The scout note still says hasBookingDateRange is 'already exported' from useGridData.ts, but the helper is file-local today at useGridData.ts:39. This does not block the task because the new memo lives in the same module."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "durationMs": 144194,
+  "round3_lp_score": 4.0,
+  "post_loop_gate": "credible"
+}

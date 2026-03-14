@@ -52,6 +52,9 @@ Runs GATE-BD-07 pre-flight for the business unit without producing a feature des
 |--------|------|---------|
 | Business registry | `docs/business-os/strategy/businesses.json` | Resolve app → business unit → theme package |
 | Brand language | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | Per-business visual identity, tone, audience |
+| Design profile | `packages/themes/<theme>/src/design-profile.ts` | Art-direction defaults and guidance for the brand |
+| Theme assets | `packages/themes/<theme>/src/assets.ts` | Available fonts, gradients, shadows, keyframes, brand colors |
+| Recipe catalogue | `packages/themes/<theme>/src/recipes.ts` | Branded surface compositions and page motifs |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Concrete token values for the target app |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Default token system (overridden by theme) |
 | Design system handbook | `docs/design-system-handbook.md` | Component catalog, atomic design layers |
@@ -77,8 +80,11 @@ Use `businesses.json` to resolve which business owns the target app, then locate
 3. **Load brand language** doc. If it doesn't exist or Status ≠ Active:
    - **STOP.** Emit GATE-BD-07 error (see Step 6).
    - Do NOT offer to proceed without brand language.
-4. **Load theme tokens** for the target app's theme package.
-5. **Load fact-find** if a feature slug was provided.
+4. **Load design profile** from `packages/themes/<theme>/src/design-profile.ts` — art-direction defaults and guidance for the brand. If the file does not exist, note that the theme has no design profile (use base defaults).
+5. **Load theme assets** from `packages/themes/<theme>/src/assets.ts` — available fonts, gradients, shadows, keyframes, brand colors. If the file does not exist or exports empty collections, note that the brand has no custom assets.
+6. **Load recipe catalogue** from `packages/themes/<theme>/src/recipes.ts` — branded surface compositions. If the file does not exist or is empty, note that no recipes exist yet.
+7. **Load theme tokens** for the target app's theme package.
+8. **Load fact-find** if a feature slug was provided.
 
 ### Step 1: Audience and Intent
 
@@ -196,6 +202,7 @@ Business-Unit: {BIZ}
 Target-App: {app-name}
 Theme-Package: {theme-package}
 Brand-Language: docs/business-os/strategy/{BIZ}/<YYYY-MM-DD>-brand-identity-dossier.user.md | None — base theme
+Surface-Mode: {marketing | editorial | operations | campaign}
 Created: {DATE}
 Updated: {DATE}
 Owner: {operator}
@@ -209,14 +216,50 @@ Owner: {operator}
 **App:** {app name}
 **Audience:** {from brand language}
 **Device:** {mobile-only | responsive | desktop-first}
+**Surface Mode:** {marketing | editorial | operations | campaign} — {one sentence justification}
 
 **Feature goal:** {one sentence — what the user accomplishes}
 
 **Fact-find:** `docs/plans/{slug}-fact-find.md` _(or "standalone spec")_
 
+## Design Character
+
+Baseline profile for this brand (from `design-profile.ts`):
+
+- **Radius:** {defaultRadius value, e.g., "sm — small corners"}
+- **Elevation:** {defaultElevation value, e.g., "flat — no shadows on surfaces"}
+- **Border:** {defaultBorder value, e.g., "subtle — light borders on containers"}
+- **Color strategy:** {colorStrategy value, e.g., "restrained — primary + one accent, used sparingly"}
+- **Whitespace:** {whitespace value, e.g., "generous — breathing room between sections"}
+- **Typography scale:** {scaleRatio value, e.g., "1.25 — moderate size contrast"}
+- **Motion:** {motionPersonality value, e.g., "precise — ease-out, no bounce"}
+
+_{If design-profile.ts does not exist for this theme, state "No design profile — using base defaults."}_
+
+## Available Assets
+
+From `assets.ts` for this theme:
+
+- **Fonts:** {list heading and body fonts, or "None — using base font stack"}
+- **Gradients:** {list named gradients, or "None"}
+- **Shadows:** {list brand shadows, or "None — using token shadow scale"}
+- **Keyframes:** {list named animations, or "None"}
+- **Brand colors:** {list named brand colors beyond semantic palette, or "None"}
+
+_{If assets.ts does not exist or is empty, state "No custom assets — using base tokens."}_
+
+## Applicable Recipes
+
+From `recipes.ts` for this theme, filtered by surface mode ({mode}):
+
+- {recipe name}: {description} — {usage context}
+- ...
+
+_{If no recipes match the surface mode or recipes.ts is empty, state "No applicable recipes — compose from profile defaults and tokens."}_
+
 ## Visual Intent
 
-{2-3 sentences describing the desired look and feel, referencing brand language personality and any specific inspiration. Not a mockup — a north star for implementation decisions.}
+{2-3 sentences describing the desired look and feel, referencing brand language personality, design character from profile, and any specific inspiration. Not a mockup — a north star for implementation decisions.}
 
 ## Component Map
 
@@ -323,6 +366,10 @@ Pre-populate from the Token Binding and Layout sections above.
 - [ ] Brand Dossier Active (GATE-BD-07 pre-flight passed: Status == Active in <YYYY-MM-DD>-brand-identity-dossier.user.md)
 - [ ] Token bindings match actual values in theme package (not invented)
 - [ ] Prerequisites list is complete — no hidden assumptions for `/lp-do-plan`
+- [ ] `Surface-Mode` field is set in frontmatter with justification in Context section
+- [ ] Design Character section populated from design profile (or noted as absent)
+- [ ] Available Assets section populated from assets.ts (or noted as absent)
+- [ ] Applicable Recipes section populated from recipes.ts filtered by surface mode (or noted as empty)
 
 ## Integration
 

@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 import { prisma } from "@acme/platform-core/db";
 import { validateShopName } from "@acme/platform-core/shops";
@@ -8,6 +9,9 @@ import { type LedgerEvent } from "../../../../../lib/inventory-utils";
 
 export const runtime = "nodejs";
 
+const ledgerEventTypeSchema = z.enum(["adjustment", "inflow", "sale"]);
+const skuParamSchema = z.string().min(1);
+
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> },
@@ -16,15 +20,31 @@ export async function GET(
   const safeShop = validateShopName(shop);
   const { searchParams } = new URL(req.url);
 
-  const sku = searchParams.get("sku") ?? undefined;
-  const type = searchParams.get("type") as LedgerEvent["type"] | null;
+  const rawSku = searchParams.get("sku");
+  const rawType = searchParams.get("type");
   const cursor = searchParams.get("cursor") ?? undefined;
   const limit = parseSafeLimit(searchParams);
+
+  // Validate optional query params
+  const skuResult = rawSku != null ? skuParamSchema.safeParse(rawSku) : null;
+  if (skuResult && !skuResult.success) {
+    return NextResponse.json({ ok: false, error: "Invalid sku parameter" }, { status: 400 });
+  }
+  const sku = skuResult?.data;
+
+  const typeResult = rawType != null ? ledgerEventTypeSchema.safeParse(rawType) : null;
+  if (typeResult && !typeResult.success) {
+    return NextResponse.json(
+      { ok: false, error: `Invalid type parameter. Must be one of: adjustment, inflow, sale` },
+      { status: 400 },
+    );
+  }
+  const type = typeResult?.data ?? null;
 
   try {
     const where: Record<string, unknown> = { shopId: safeShop };
     if (sku) where.sku = sku;
-    if (type && (type === "adjustment" || type === "inflow")) where.type = type;
+    if (type) where.type = type;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- INV-0001 prisma client type varies by generated schema
     const rows: any[] = await (prisma as any).inventoryAuditEvent.findMany({
@@ -47,6 +67,7 @@ export async function GET(
       quantityDelta: r.quantityDelta as number,
       referenceId: (r.referenceId as string | null) ?? null,
       note: (r.note as string | null) ?? null,
+      operatorId: (r.operatorId as string | null) ?? null,
     }));
 
     return NextResponse.json({ ok: true, events, nextCursor });

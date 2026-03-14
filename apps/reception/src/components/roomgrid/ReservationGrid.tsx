@@ -2,8 +2,6 @@ import "./rvg.css";
 
 import type { ReactElement } from "react";
 import { memo } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
 import type { TGridProps } from "./components/Grid";
 import { Grid } from "./components/Grid";
@@ -26,11 +24,7 @@ type ReservationGridProps<TCustomStatus extends string = never> = TGridProps<TCu
 function ReservationGridInner<TCustomStatus extends string = never>(
   props: TGridProps<TCustomStatus>
 ): ReactElement {
-  return (
-    <DndProvider backend={HTML5Backend}>
-      <Grid<TCustomStatus> {...props} />
-    </DndProvider>
-  );
+  return <Grid<TCustomStatus> {...props} />;
 }
 
 const ReservationGrid = memo(ReservationGridInner) as typeof ReservationGridInner;

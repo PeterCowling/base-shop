@@ -23,7 +23,6 @@ interface Env {
 }
 
 interface AssistantQueryBody {
-  token?: string;
   query?: string;
   history?: Array<{ role: 'user' | 'assistant'; content: string }>;
 }
@@ -106,6 +105,16 @@ function buildSystemPrompt(
   });
 }
 
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const { t } = createFunctionTranslator(request, 'AssistantApi');
 
@@ -123,8 +132,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const history = Array.isArray(body.history) ? body.history : [];
 
+  // Extract prime_session cookie — do not pass null to validateGuestSessionToken
+  const cookieToken = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session');
+  if (!cookieToken) {
+    return errorResponse('Unauthorized', 401); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
+  }
+
   try {
-    const authResult = await validateGuestSessionToken(body.token ?? null, env);
+    const authResult = await validateGuestSessionToken(cookieToken, env);
     if (authResult instanceof Response) {
       return authResult;
     }

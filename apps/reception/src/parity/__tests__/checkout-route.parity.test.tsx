@@ -16,6 +16,8 @@ var activitiesByCodeDataMock: jest.Mock;
 var checkoutsMock: jest.Mock;
 var guestByRoomMock: jest.Mock;
 var bagStorageDataMock: jest.Mock;
+var fridgeStorageDataMock: jest.Mock;
+var setFridgeUsedMock: jest.Mock;
 var removeLoanItemMock: jest.Mock;
 var saveActivityMock: jest.Mock;
 var removeLastActivityMock: jest.Mock;
@@ -83,6 +85,16 @@ jest.mock("../../hooks/data/useGuestByRoom", () => {
 jest.mock("../../hooks/data/useBagStorageData", () => {
   bagStorageDataMock = jest.fn();
   return { __esModule: true, default: () => bagStorageDataMock() };
+});
+
+jest.mock("../../hooks/data/useFridgeStorageData", () => {
+  fridgeStorageDataMock = jest.fn();
+  return { __esModule: true, default: () => fridgeStorageDataMock() };
+});
+
+jest.mock("../../hooks/mutations/useSetFridgeUsedMutation", () => {
+  setFridgeUsedMock = jest.fn().mockResolvedValue(undefined);
+  return { __esModule: true, default: () => ({ setFridgeUsed: setFridgeUsedMock }) };
 });
 
 jest.mock("../../hooks/mutations/useActivitiesMutations", () => {
@@ -191,6 +203,7 @@ function setAllHooks({
   checkoutsMock.mockReturnValue({ checkouts: null, loading, error });
   guestByRoomMock.mockReturnValue({ guestByRoom: null, loading, error });
   bagStorageDataMock.mockReturnValue({ bagStorage, loading, error });
+  fridgeStorageDataMock.mockReturnValue({ fridgeStorage: {}, loading, error });
   checkoutClientMock.mockReturnValue(rows);
 }
 

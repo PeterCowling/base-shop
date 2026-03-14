@@ -1,0 +1,222 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "prime-activity-duration",
+  "source_artifact_path": "docs/plans/prime-activity-duration/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/prime-activity-duration/fact-find.md",
+    "plan": "docs/plans/prime-activity-duration/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Guests can be sent links to activity events that appear to end after exactly 2 hours regardless of how long the activity actually runs. Staff have no way to adjust this without a code change. Adding a duration field to the staff activity form means new activities will display accurate end times.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can create and edit activity instances via the Prime app UI, setting a custom duration in minutes. Activity cards show accurate end times derived from data, not a hardcoded default.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Same — form needed in both",
+      "current_or_option_state": "Same — form needed in both",
+      "gap_or_implication": "Staff form at `/owner/activities`; list + create + edit; design system components",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Same",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Loading/saving/error/success states in form; optimistic update optional",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Requires Firebase rules permitting client writes from staff auth; rules not versioned",
+      "current_or_option_state": "Validates staff session at function layer; service account write; no client rule change needed",
+      "gap_or_implication": "Staff session validated server-side before any write; aligns with existing function auth pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Client write has no audit log unless manually added",
+      "current_or_option_state": "Function layer can emit structured log + telemetry event on create/edit",
+      "gap_or_implication": "Add `direct-telemetry` event from function on successful write; provides audit trail",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Client write in Jest needs Firebase emulator or mock; achievable but harder",
+      "current_or_option_state": "Function is a plain async handler; easy to unit-test with mock `FirebaseRest`",
+      "gap_or_implication": "Mock `FirebaseRest.set()` in Jest; assert correct path + payload",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Same — `ActivityInstance` already typed",
+      "current_or_option_state": "Same — validate payload against type before write",
+      "gap_or_implication": "Server function validates `durationMinutes >= 1`, required fields present; returns error 400 otherwise",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Same — low-frequency write",
+      "current_or_option_state": "Same — low-frequency write",
+      "gap_or_implication": "N/A; infrequent staff-only operation",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Same",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "New pages/function additive; rollback = revert form to redirect stub",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Staff cannot set custom durations on activity instances in the Prime guest app without directly editing Firebase RTDB via the console. `durationMinutes` is already defined in the `ActivityInstance` type and RTDB schema, but is optional with a silent 120-minute hardcoded fallback. No admin UI or API endpoint exists for activity CRUD. The decision is which approach to use to expose duration management to staff.",
+    "goals": [
+      "Staff can create and edit activity instances (including `durationMinutes`) through an in-app UI.",
+      "Activity cards display accurate end times derived from data, not the silent 2-hour default."
+    ],
+    "non_goals": [
+      "Guest-facing UI changes.",
+      "Type changes to `ActivityInstance` (field already present).",
+      "Migration of existing Firebase records.",
+      "Full activity management dashboard with analytics or bulk operations."
+    ],
+    "constraints": [
+      "Activity management must be staff-only; must not be accessible from the guest session.",
+      "Firebase RTDB is the persistence layer.",
+      "Cloudflare Pages Functions (`functions/api/`) are the established server-side layer for privileged operations."
+    ],
+    "assumptions": [
+      "`PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` and `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` are set in the CF Pages environment (same env vars used by `aggregate-kpis.ts`).",
+      "`durationMinutes` remains optional in the type for backward compatibility with existing records."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Auth correctness",
+        "Why it matters": "Write access to `messaging/activities/instances` is a privileged operation; must be gated to authenticated staff only",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Firebase security rule impact",
+        "Why it matters": "Modifying Firebase security rules is a console-only operation, not versioned in repo; changes carry a risk of misconfiguration",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation effort",
+        "Why it matters": "Plan scope should stay bounded; both options must be achievable in one small plan",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Testability",
+        "Why it matters": "The write path must be unit-testable without a live Firebase connection",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Established pattern fit",
+        "Why it matters": "New code should follow existing patterns to minimize maintenance surface",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Client-side RTDB write",
+        "Description": "Staff form in owner area writes directly to Firebase RTDB via the browser client SDK (same pattern as presence marking)",
+        "Upside": "Simpler implementation; no new Cloudflare function needed",
+        "Downside": "Client writes require Firebase security rules covering `messaging/activities/instances` specifically. The presence write pattern (`messaging/activities/presence`) confirms rules exist for some paths; coverage of the `instances` path is unconfirmed and unversioned in repo",
+        "Key risks": "Rules for `instances` may not permit client writes; misconfiguration could expose RTDB to broader writes",
+        "Viable?": "Viable but riskier"
+      },
+      {
+        "Option": "B — Server-side Cloudflare Function",
+        "Description": "New `functions/api/activity-manage.ts` validates staff session, then writes to RTDB via `FirebaseRest.set()` using service account credentials",
+        "Upside": "Privileged write stays server-side; same pattern as `aggregate-kpis.ts`; no Firebase security rule change needed for client-side; fully unit-testable",
+        "Downside": "One additional file (function) + form must `fetch()` to endpoint",
+        "Key risks": "Service account env vars must be set (already required for aggregate-kpis)",
+        "Viable?": "Yes — chosen"
+      },
+      {
+        "Option": "C — Type tightening + documentation",
+        "Description": "Make `durationMinutes` required in type; document Firebase console process",
+        "Upside": "Zero UI code",
+        "Downside": "Does not solve the operational problem; staff still need Firebase console access",
+        "Key risks": "N/A",
+        "Viable?": "No — rejected"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option B — Server-side Cloudflare Function for RTDB writes.",
+      "**Why this wins": "**",
+      "**What it depends on": "**",
+      "**Option A (client-side direct write)** — Viable but rejected": "requires unversioned Firebase security rule changes in the console; unclear if current rules allow it; risk of misconfiguration. The server-side approach is marginally more code but much safer.",
+      "**Option C (type tightening + docs)** — Rejected": "does not give staff any UI. The operational problem (no in-app creation flow) remains unsolved. Type tightening alone would break any existing Firebase records that lack `durationMinutes`."
+    },
+    "rejected_approaches": [
+      "**Option A (client-side direct write)** — Viable but rejected: requires unversioned Firebase security rule changes in the console; unclear if current rules allow it; risk of misconfiguration. The server-side approach is marginally more code but much safer.",
+      "**Option C (type tightening + docs)** — Rejected: does not give staff any UI. The operational problem (no in-app creation flow) remains unsolved. Type tightening alone would break any existing Firebase records that lack `durationMinutes`."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Function (server-side write) before form integration — form depends on the function for real responses.",
+        "Form component and owner page scaffold can be built in parallel with the function (using a mock endpoint); integration is the final step.",
+        "Owner activities page depends on the form component.",
+        "Redirect is independent; can be TASK-01."
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Staff creates an activity",
+          "current": "Staff uses Firebase console → manual JSON",
+          "trigger": "Staff navigates to `/owner/activities` → taps \"Create activity\"",
+          "future": "Staff fills form (title, startTime, durationMinutes ≥ 1, status, optional: description/meetUpPoint/meetUpTime) → POSTs to `POST /api/activity-manage` → function validates staff session + payload → `FirebaseRest.set()` writes to `messaging/activities/instances/[newId]` → function returns 200 → form shows success",
+          "steady": "Guest-facing read path unchanged; `ChatProvider` real-time listener already picks up new instances automatically",
+          "seams": "Service account env vars must be verified in CF Pages; planning must include wrangler.toml secrets confirmation"
+        },
+        {
+          "id": null,
+          "label": "Staff edits an activity",
+          "current": "Staff uses Firebase console → direct JSON edit",
+          "trigger": "Staff navigates to `/owner/activities` → taps \"Edit\" on an existing instance",
+          "future": "Form pre-populated with existing data → staff edits → POSTs to `PATCH /api/activity-manage` → function validates session + payload → `FirebaseRest.update()` on existing path → 200",
+          "steady": "Guest-facing real-time subscription propagates update automatically",
+          "seams": "Edit must not allow changing `id`; function must reject id mismatch"
+        },
+        {
+          "id": null,
+          "label": "Guest views activity",
+          "current": "`ActivitiesClient.tsx` renders `startTime + (durationMinutes ?? 120)`",
+          "trigger": "Guest loads `/activities`",
+          "future": "Same rendering — no change. For instances created via new form, `durationMinutes` will be present; guest sees accurate end time",
+          "steady": "Fallback `?? 120` remains for legacy instances",
+          "seams": "None; fully backward-compatible"
+        },
+        {
+          "id": null,
+          "label": "`/chat/activities/manage` route",
+          "current": "Redirect stub → `/activities`",
+          "trigger": "Staff navigates to old URL",
+          "future": "Permanent redirect to `/owner/activities`",
+          "steady": "N/A",
+          "seams": "Ensure redirect doesn't break any existing staff bookmark"
+        }
+      ]
+    }
+  }
+}

@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 
 import { type Locale, LOCALES, resolveLocale } from "@acme/i18n/locales";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import { StockBadge } from "@acme/ui/components/molecules/StockBadge";
 
 import { NotifyMeForm } from "@/components/catalog/NotifyMeForm.client";
 import { ProductGallery } from "@/components/catalog/ProductGallery.client";
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
-import { StockBadge } from "@/components/catalog/StockBadge";
 import ShippingReturnsTrustBlock from "@/components/ShippingReturnsTrustBlock";
 import {
   getChromeContent,
@@ -21,6 +21,8 @@ import {
 import {
   buildCatalogCardMedia,
   buildProductGalleryItems,
+  classifySkuFamily,
+  getFamilySpec,
   getSkuFamilyLabel,
 } from "@/lib/launchMerchandising";
 import {
@@ -81,6 +83,8 @@ export default async function ProductDetailPage({
   const galleryItems = buildProductGalleryItems(product);
   const productIndex = allProducts.findIndex((s) => s.id === product.id);
   const familyLabel = getSkuFamilyLabel(product, Math.max(0, productIndex), familyCopy);
+  const familyKey = classifySkuFamily(product, Math.max(0, productIndex));
+  const familySpec = getFamilySpec(familyKey);
   const relatedProducts = allProducts
     .filter((sku) => sku.id !== product.id)
     .slice(0, 8);
@@ -123,13 +127,17 @@ export default async function ProductDetailPage({
             </div>
 
             <div className="space-y-4">
-              <p className="text-xl font-medium">{formatMoney(product.price, currency)}</p>
+              <div>
+                <p className="text-xl font-medium">{formatMoney(product.price, currency, lang)}</p>
+                {/* VAT-inclusive label — locale-specific */}
+                <p className="text-xs text-muted-foreground">{lang === "it" ? "Prezzo IVA inclusa" : lang === "de" ? "Preis inkl. MwSt." : "Price includes VAT"}</p>
+              </div>
               <StockBadge stock={product.stock} lowStockThreshold={lowStockThreshold} />
               <div data-cy="pdp-checkout">
                 <AddToCartButton sku={product} disabled={product.stock === 0} />
               </div>
               <StickyCheckoutBar
-                priceLabel={formatMoney(product.price, currency)}
+                priceLabel={formatMoney(product.price, currency, lang)}
                 sku={product}
                 trustLine={trustStrip?.exchange}
               />
@@ -144,13 +152,8 @@ export default async function ProductDetailPage({
 
             <NotifyMeForm productSlug={product.slug} strings={chrome.notifyMe} />
 
-            <section
-              className="space-y-3 border-t pt-5"
-              aria-label="Product proof points"
-            >
-              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
-                {productPageContent.proofHeading}
-              </h2>
+            <section className="space-y-3 border-t pt-5" aria-label="Product proof points">
+              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">{productPageContent.proofHeading}</h2>
               <ul className="list-none space-y-2 text-sm text-muted-foreground">
                 {productPageContent.proofBullets.map((bullet) => (
                   <li key={bullet} className="flex items-start gap-2">
@@ -159,6 +162,21 @@ export default async function ProductDetailPage({
                   </li>
                 ))}
               </ul>
+              <p className="text-xs text-muted-foreground"><Link href={`/${lang}/returns`} className="underline underline-offset-2 hover:text-foreground">See our returns policy</Link></p>
+            </section>
+
+            <section className="space-y-3 border-t pt-5" aria-label="Product specifications">
+              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Specifications</h2>
+              <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+                <dt className="shrink-0 font-medium text-foreground">Dimensions</dt>
+                <dd className="text-muted-foreground">{familySpec.dimensions}</dd>
+                <dt className="shrink-0 font-medium text-foreground">Material</dt>
+                <dd className="text-muted-foreground">{familySpec.bodyMaterial}</dd>
+                <dt className="shrink-0 font-medium text-foreground">Hardware</dt>
+                <dd className="text-muted-foreground">{familySpec.hardwareMetal}</dd>
+                <dt className="shrink-0 font-medium text-foreground">Attachment</dt>
+                <dd className="text-muted-foreground">{familySpec.attachment}</dd>
+              </dl>
             </section>
 
             {product.materials && product.dimensions && product.weight ? (
@@ -199,6 +217,9 @@ export default async function ProductDetailPage({
           </div>
         </div>
 
+        {/* UK import VAT notice — en locale only */}
+        {lang === "en" ? <p className="rounded border bg-muted/30 p-3 text-sm text-muted-foreground">UK orders may incur import VAT and customs fees on delivery, charged by the carrier. These are not included in the price shown.</p> : null}
+
         {relatedProducts.length > 0 ? (
           <section className="space-y-5" aria-label="Related products">
             <div className="flex items-center justify-between gap-3">
@@ -218,7 +239,7 @@ export default async function ProductDetailPage({
                       href={`/${lang}/product/${relatedSku.slug}`}
                       category={getSkuFamilyLabel(relatedSku, idx, familyCopy)}
                       title={relatedSku.title}
-                      priceLabel={formatMoney(relatedSku.price, currency)}
+                      priceLabel={formatMoney(relatedSku.price, currency, lang)}
                       primarySrc={media.primarySrc}
                       primaryAlt={media.primaryAlt}
                       secondarySrc={media.secondarySrc}

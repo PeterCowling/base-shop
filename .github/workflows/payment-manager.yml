@@ -1,0 +1,62 @@
+name: Deploy Payment Manager
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - "apps/payment-manager/**"
+      - "packages/next-config/**"
+      - "packages/platform-core/**"
+      - "packages/themes/**"
+      - "packages/types/**"
+      - ".github/workflows/payment-manager.yml"
+      - ".github/workflows/reusable-app.yml"
+  pull_request:
+    paths:
+      - "apps/payment-manager/**"
+      - "packages/next-config/**"
+      - "packages/platform-core/**"
+      - "packages/themes/**"
+      - "packages/types/**"
+      - ".github/workflows/payment-manager.yml"
+      - ".github/workflows/reusable-app.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: payment-manager-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  production:
+    name: Deploy (production)
+    if: >-
+      ${{
+        github.event_name != 'pull_request' ||
+        github.base_ref != 'main' ||
+        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+        contains(github.event.pull_request.labels.*.name, 'promote-app:payment-manager')
+      }}
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@acme/payment-manager"
+      jest-force-coverage: true
+      build-cmd: >
+        pnpm exec turbo run build --filter=@acme/payment-manager^... &&
+        if [ "${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}" = "true" ]; then
+          cd apps/payment-manager &&
+          pnpm exec opennextjs-cloudflare build;
+        else
+          echo "Skipping OpenNext build because deploy is disabled for this event/ref.";
+        fi
+      artifact-path: "apps/payment-manager/.open-next"
+      deploy_cmd: >
+        cd apps/payment-manager &&
+        pnpm exec wrangler deploy
+      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
+      project-name: "payment-manager"
+      environment-name: "production"
+      environment-url: ""
+      healthcheck-base-url: ""
+    secrets: inherit

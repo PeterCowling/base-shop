@@ -1,0 +1,35 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-owner-dashboard-pipeline",
+  "business": "BRIK",
+  "build_date": "2026-03-13T00:00:00.000Z",
+  "status": "partial_complete",
+  "outcome_contract": {
+    "why": "The owner dashboard was built in prime wave 1 but the aggregation writer was never implemented. The dashboard returned zeros permanently.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Owner dashboard shows non-zero, real guest KPI data after the aggregation writer runs for the first time. The ownerKpis/{date} nodes in Firebase RTDB are populated for recent dates.",
+    "source": "auto"
+  },
+  "tasks_complete": ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05"],
+  "tasks_blocked": ["TASK-06"],
+  "tasks_pending_operator": ["TASK-07"],
+  "deliverables": [
+    "apps/prime/functions/lib/kpi-projection.ts",
+    "apps/prime/functions/lib/__tests__/kpi-projection.test.ts",
+    "apps/prime/functions/api/aggregate-kpis.ts",
+    "apps/prime/functions/api/__tests__/aggregate-kpis.test.ts",
+    "apps/prime/functions/__tests__/helpers.ts",
+    ".github/workflows/prime-kpi-aggregation.yml",
+    "apps/prime/wrangler.toml"
+  ],
+  "test_evidence": {
+    "aggregate_kpis": "8/8 pass",
+    "kpi_projection": "7/7 pass",
+    "kpi_aggregation_daily": "9/9 pass (unchanged)"
+  },
+  "validation_gates": {
+    "validate_engineering_coverage": "pass",
+    "typecheck": "clean",
+    "lint": "0 errors"
+  }
+}

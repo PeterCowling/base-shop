@@ -1,0 +1,25 @@
+{
+  "event_type": "build_complete",
+  "emitted_at": "2026-03-14T12:54:12.315Z",
+  "feature_slug": "reception-roomgrid-unallocated-panel",
+  "business": "BRIK",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "completed_date": "2026-03-14",
+  "outcome_contract": {
+    "why": "Guests with confirmed bookings arrive at the hostel with no bed assigned because staff cannot see unallocated occupants anywhere on the rooms grid. The data exists but is hidden from the staff view.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can identify all unallocated occupants directly from the rooms-grid page before guests arrive, eliminating the failure mode where guests arrive with no room assignment.",
+    "source": "operator",
+    "why_source": "operator"
+  },
+  "tasks_completed": 5,
+  "commits": [
+    "1f0fa08abe",
+    "fd9826a6a5",
+    "5005a893b2",
+    "e5ddbd5634",
+    "a8b74fe2b7"
+  ],
+  "dispatch_id": "IDEA-DISPATCH-20260314190000-BRIK-001"
+}

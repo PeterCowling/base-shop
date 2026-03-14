@@ -19,7 +19,7 @@ const TicketItems: FC<Props> = memo(({ order, removeSingleItem }) => {
     <ul className="divide-y divide-border-1 px-2 py-2">
       {order.items.map((it, i) => (
         <li
-          key={it.id ?? crypto.randomUUID()}
+          key={it.id ?? i}
           className="cursor-pointer rounded-md px-2 py-1 font-medium text-foreground transition hover:bg-primary-soft active:bg-primary-active"
           onDoubleClick={() => removeLine(i)}
         >

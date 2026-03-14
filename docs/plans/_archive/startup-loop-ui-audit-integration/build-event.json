@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "startup-loop-ui-audit-integration-2026-03-14",
+  "feature_slug": "startup-loop-ui-audit-integration",
+  "emitted_at": "2026-03-14T06:21:00.000Z",
+  "why": "The startup loop has no step that requires checking how every screen in the app actually looks when rendered — both in light and dark mode. Adding a screen-by-screen rendered audit to the loop means these problems get found automatically for every product, every time, before launch.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "The startup loop includes a required rendered UI screen audit at S9B that covers every screen in both light and dark mode, with findings saved as an artifact and blocking issues preventing advance.",
+    "source": "operator"
+  }
+}

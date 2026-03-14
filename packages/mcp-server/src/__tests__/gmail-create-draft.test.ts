@@ -418,3 +418,96 @@ describe("gmail_create_draft", () => {
     expect(draftStore).toHaveLength(1);
   });
 });
+
+describe("gmail_create_draft — deliveryStatus gate", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  // TC-gmail-blocked: deliveryStatus === "blocked" → rejected at tool boundary before any Gmail API call
+  it("rejects draft creation when deliveryStatus is blocked", async () => {
+    const { gmail } = buildGmailStub({
+      labels: [],
+      originalMessage: {
+        id: "msg-blocked-1",
+        threadId: "thread-blocked-1",
+        payload: { headers: [] },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_create_draft", {
+      emailId: "msg-blocked-1",
+      subject: "RE: Blocked draft",
+      bodyPlain: "Should not be sent.",
+      deliveryStatus: "blocked",
+    });
+
+    expect(result).toHaveProperty("isError", true);
+    expect(result.content[0].text).toContain("Draft creation blocked");
+    expect(result.content[0].text).toContain("quality.failed_checks");
+    // Gmail API must not be called when blocked
+    expect(gmail.users.messages.get).not.toHaveBeenCalled();
+    expect(gmail.users.drafts.create).not.toHaveBeenCalled();
+  });
+
+  // TC-gmail-absent: deliveryStatus field absent → proceeds normally (backward-compatible)
+  it("creates draft normally when deliveryStatus is absent", async () => {
+    const { gmail, draftStore } = buildGmailStub({
+      labels: [],
+      originalMessage: {
+        id: "msg-absent-1",
+        threadId: "thread-absent-1",
+        payload: {
+          headers: [
+            createHeader("From", "Guest <guest@example.com>"),
+            createHeader("Message-ID", "<msg-absent-1@gmail.com>"),
+            createHeader("References", ""),
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_create_draft", {
+      emailId: "msg-absent-1",
+      subject: "RE: No status field",
+      bodyPlain: "Should proceed with no deliveryStatus field.",
+      // deliveryStatus intentionally omitted
+    });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.success).toBe(true);
+    expect(draftStore).toHaveLength(1);
+  });
+
+  // TC-gmail-ready: deliveryStatus === "ready" → proceeds normally
+  it("creates draft normally when deliveryStatus is ready", async () => {
+    const { gmail, draftStore } = buildGmailStub({
+      labels: [],
+      originalMessage: {
+        id: "msg-ready-1",
+        threadId: "thread-ready-1",
+        payload: {
+          headers: [
+            createHeader("From", "Guest <guest@example.com>"),
+            createHeader("Message-ID", "<msg-ready-1@gmail.com>"),
+            createHeader("References", ""),
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_create_draft", {
+      emailId: "msg-ready-1",
+      subject: "RE: Ready draft",
+      bodyPlain: "Quality checks passed.",
+      deliveryStatus: "ready",
+    });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.success).toBe(true);
+    expect(draftStore).toHaveLength(1);
+  });
+});

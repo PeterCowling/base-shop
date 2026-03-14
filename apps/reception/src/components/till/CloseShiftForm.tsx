@@ -5,6 +5,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { z } from "zod";
 
 import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { settings } from "../../constants/settings";
@@ -260,13 +261,15 @@ export const CloseShiftForm = memo(function CloseShiftForm({
       <StepProgress step={step} onStepChange={setStep} user={user} />
       {step === 0 && (
         <div className="relative">
-          <Button
-            onClick={onCancel}
-            aria-label="Close"
-            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full ${styles.closeBtnBg} ${styles.closeBtnFg}`}
-          >
-            <span aria-hidden="true">&times;</span>
-          </Button>
+          <Inline asChild gap={0}>
+            <Button
+              onClick={onCancel}
+              aria-label="Close"
+              className={`absolute right-2 top-2 h-6 w-6 justify-center rounded-full ${styles.closeBtnBg} ${styles.closeBtnFg}`}
+            >
+              <span aria-hidden="true">&times;</span>
+            </Button>
+          </Inline>
           <CashCountingForm
             idPrefix={isReconcile ? "denomRecon_" : "denomClose_"}
             title={isReconcile ? "Reconcile Shift - Cash" : "Close Shift - Cash"}
@@ -352,13 +355,15 @@ export const CloseShiftForm = memo(function CloseShiftForm({
 
       {step === 2 && !showReauthModal && (
         <div className="relative">
-          <Button
-            onClick={onCancel}
-            aria-label="Close"
-            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full ${styles.closeBtnBg} ${styles.closeBtnFg}`}
-          >
-            <span aria-hidden="true">&times;</span>
-          </Button>
+          <Inline asChild gap={0}>
+            <Button
+              onClick={onCancel}
+              aria-label="Close"
+              className={`absolute right-2 top-2 h-6 w-6 justify-center rounded-full ${styles.closeBtnBg} ${styles.closeBtnFg}`}
+            >
+              <span aria-hidden="true">&times;</span>
+            </Button>
+          </Inline>
             <KeycardCountForm
               expectedCount={expectedKeycardsAtClose}
               showExpected={showKeycardExpected}

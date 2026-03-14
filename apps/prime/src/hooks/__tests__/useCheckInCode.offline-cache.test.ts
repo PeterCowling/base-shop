@@ -136,6 +136,40 @@ describe('useCheckInCode offline cache', () => {
     });
   });
 
+  describe('TC-04: getCachedCheckInCode returns null for expired entries', () => {
+    it('should return null and remove entry when cachedAt is older than 24 hours', () => {
+      const uuid = 'occ_1234567890123';
+      const code = 'BRK-A7K9M';
+      const TWENTY_FIVE_HOURS_MS = 25 * 60 * 60 * 1000;
+      const expiredAt = Date.now() - TWENTY_FIVE_HOURS_MS;
+      const cachedData = JSON.stringify({ code, cachedAt: expiredAt });
+
+      localStorageGetItemSpy.mockReturnValue(cachedData);
+
+      const result = getCachedCheckInCode(uuid);
+
+      expect(result).toBeNull();
+      expect(localStorageRemoveItemSpy).toHaveBeenCalledWith(
+        `prime_checkin_code_${uuid}`
+      );
+    });
+
+    it('should return the entry when cachedAt is within 24 hours', () => {
+      const uuid = 'occ_1234567890123';
+      const code = 'BRK-FRESH1';
+      const ONE_HOUR_MS = 60 * 60 * 1000;
+      const recentAt = Date.now() - ONE_HOUR_MS;
+      const cachedData = JSON.stringify({ code, cachedAt: recentAt });
+
+      localStorageGetItemSpy.mockReturnValue(cachedData);
+
+      const result = getCachedCheckInCode(uuid);
+
+      expect(result).not.toBeNull();
+      expect(result?.code).toBe(code);
+    });
+  });
+
   describe('clearCachedCheckInCode removes cached data', () => {
     it('should remove cached code from localStorage', () => {
       const uuid = 'occ_1234567890123';

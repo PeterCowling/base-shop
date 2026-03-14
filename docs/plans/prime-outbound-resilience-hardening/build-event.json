@@ -1,0 +1,15 @@
+{
+  "event_type": "build_complete",
+  "feature_slug": "prime-outbound-resilience-hardening",
+  "business": "BRIK",
+  "dispatch_id": "IDEA-DISPATCH-20260314160002-BRIK-005",
+  "completed_at": "2026-03-14T11:02:00Z",
+  "outcome_type": "operational",
+  "outcome_statement": "KV rate limiter absences are surfaced in Cloudflare logs; Reception API routes to Prime are protected by a 10-second timeout; broadcast initiation is durably recorded as a critical telemetry event.",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "items_delivered": ["M-01", "M-02", "H-01", "H-02", "H-03"],
+  "items_skipped": ["H-04"],
+  "typecheck_status": "passed",
+  "commit": "e120e97f13"
+}

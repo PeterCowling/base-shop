@@ -2,6 +2,8 @@
 
 import React, { type FC } from "react";
 
+import { Stack } from "@acme/design-system/primitives";
+
 import {
   type AggregatedOrder,
   type CategoryType,
@@ -48,7 +50,7 @@ const OrderTakingScreen: FC<OrderTakingScreenProps> = ({
   <>
     <div className="flex w-full h-auto font-body gap-3 p-3">
       {/* LEFT panel */}
-      <div className="flex-1 flex flex-col bg-surface rounded-lg overflow-hidden">
+      <Stack gap={0} className="flex-1 bg-surface rounded-lg overflow-hidden">
         <CategoryHeader
           categories={categories}
           selectedCategory={selectedCategory}
@@ -56,10 +58,10 @@ const OrderTakingScreen: FC<OrderTakingScreenProps> = ({
         />
         <ProductGrid products={products} onAddProduct={onAddProduct} />
         <PreorderButtons />
-      </div>
+      </Stack>
 
       {/* RIGHT panel */}
-      <div className="w-1/3 flex flex-col border border-border-2 rounded-lg shadow-md bg-surface overflow-hidden">
+      <Stack gap={0} className="w-1/3 border border-border-2 rounded-lg shadow-md bg-surface overflow-hidden">
         <OrderList
           orders={orders}
           onRemoveItem={onRemoveItem}
@@ -71,7 +73,7 @@ const OrderTakingScreen: FC<OrderTakingScreenProps> = ({
           onBleepNumberChange={onBleepNumberChange}
           totalPrice={totalPrice}
         />
-      </div>
+      </Stack>
     </div>
     {children}
   </>

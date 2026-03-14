@@ -1,4 +1,3 @@
-/* eslint-disable ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 /**
  * ChatOptInControls.tsx
  *
@@ -70,7 +69,7 @@ export default function ChatOptInControls({ profile }: ChatOptInControlsProps) {
               checked={profile.chatOptIn}
               onChange={handleToggle}
               disabled={isUpdating}
-              className="h-5 w-5 rounded border-border text-primary focus-visible:ring-primary/30 disabled:opacity-50"
+              className="min-h-11 min-w-11 rounded border-border text-primary focus-visible:ring-primary/30 disabled:opacity-50"
             />
           </label>
 

@@ -398,4 +398,109 @@ describe('Channel Page (TASK-45)', () => {
       expect(screen.queryByPlaceholderText(/type.*message/i)).not.toBeInTheDocument();
     });
   });
+
+  describe('TC-05: Broadcast channel (TASK-04) — read-only staff message view', () => {
+    it('renders "Staff messages" header and suppresses composer in broadcast mode', async () => {
+      const broadcastChannelId = 'broadcast_whole_hostel';
+
+      (useSearchParams as jest.Mock).mockReturnValue({
+        get: (param: string) => {
+          if (param === 'mode') return 'broadcast';
+          return null;
+        },
+      });
+
+      (useChat as jest.Mock).mockReturnValue({
+        messages: {
+          [broadcastChannelId]: [
+            {
+              id: 'msg_broadcast_1',
+              content: 'Welcome to Brikette!',
+              senderId: 'staff-uid-123',
+              senderRole: 'staff' as const,
+              senderName: 'Staff',
+              createdAt: Date.now() - 1000,
+            },
+          ],
+        },
+        activities: {},
+        currentChannelId: broadcastChannelId,
+        setCurrentChannelId: jest.fn(),
+        loadOlderMessages: jest.fn(),
+        loadMoreActivities: jest.fn(),
+        hasMoreActivities: false,
+        sendMessage: jest.fn(),
+      });
+
+      render(<ChannelPage />);
+
+      await waitFor(() => {
+        expect(screen.getByText(/staff messages/i)).toBeInTheDocument();
+      });
+
+      // Message content visible
+      expect(screen.getByText('Welcome to Brikette!')).toBeInTheDocument();
+
+      // No composer input
+      expect(screen.queryByPlaceholderText(/type.*message/i)).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /send/i })).not.toBeInTheDocument();
+    });
+
+    it('TC-06: broadcast mode sets current channel to WHOLE_HOSTEL_BROADCAST_CHANNEL_ID', async () => {
+      const broadcastChannelId = 'broadcast_whole_hostel';
+      const mockSetCurrentChannelId = jest.fn();
+
+      (useSearchParams as jest.Mock).mockReturnValue({
+        get: (param: string) => {
+          if (param === 'mode') return 'broadcast';
+          return null;
+        },
+      });
+
+      (useChat as jest.Mock).mockReturnValue({
+        messages: { [broadcastChannelId]: [] },
+        activities: {},
+        currentChannelId: null,
+        setCurrentChannelId: mockSetCurrentChannelId,
+        loadOlderMessages: jest.fn(),
+        loadMoreActivities: jest.fn(),
+        hasMoreActivities: false,
+        sendMessage: jest.fn(),
+      });
+
+      render(<ChannelPage />);
+
+      await waitFor(() => {
+        expect(mockSetCurrentChannelId).toHaveBeenCalledWith(broadcastChannelId);
+      });
+    });
+
+    it('TC-07: broadcast mode shows "Whole hostel" status label', async () => {
+      const broadcastChannelId = 'broadcast_whole_hostel';
+
+      (useSearchParams as jest.Mock).mockReturnValue({
+        get: (param: string) => {
+          if (param === 'mode') return 'broadcast';
+          return null;
+        },
+      });
+
+      (useChat as jest.Mock).mockReturnValue({
+        messages: { [broadcastChannelId]: [] },
+        activities: {},
+        currentChannelId: broadcastChannelId,
+        setCurrentChannelId: jest.fn(),
+        loadOlderMessages: jest.fn(),
+        loadMoreActivities: jest.fn(),
+        hasMoreActivities: false,
+        sendMessage: jest.fn(),
+      });
+
+      render(<ChannelPage />);
+
+      await waitFor(() => {
+        expect(screen.getByText(/whole hostel/i)).toBeInTheDocument();
+      });
+    });
+  });
 });

@@ -35,32 +35,18 @@ describe("booking email tool", () => {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
-  it("creates booking email draft with occupant links", async () => {
+  it("sends booking email immediately and emits email_sent telemetry", async () => {
     const createDraftMock = jest
       .fn()
       .mockResolvedValue({ data: { id: "draft-1", message: { id: "msg-1" } } });
-    const modifyMessageMock = jest.fn().mockResolvedValue({});
-    const listLabelsMock = jest.fn().mockResolvedValue({
-      data: {
-        labels: [
-          { id: "lbl-ready", name: "Brikette/Drafts/Ready-For-Review" },
-          { id: "lbl-drafted", name: "Brikette/Outcome/Drafted" },
-          { id: "lbl-human", name: "Brikette/Agent/Human" },
-          { id: "lbl-pre-arrival", name: "Brikette/Outbound/Pre-Arrival" },
-        ],
-      },
-    });
+    const sendDraftMock = jest
+      .fn()
+      .mockResolvedValue({ data: { id: "msg-sent-1" } });
     const gmail = {
       users: {
         drafts: {
           create: createDraftMock,
-        },
-        messages: {
-          modify: modifyMessageMock,
-        },
-        labels: {
-          list: listLabelsMock,
-          create: jest.fn(),
+          send: sendDraftMock,
         },
       },
     };
@@ -80,17 +66,9 @@ describe("booking email tool", () => {
         message: { raw: expect.any(String) },
       },
     });
-    expect(modifyMessageMock).toHaveBeenCalledWith({
+    expect(sendDraftMock).toHaveBeenCalledWith({
       userId: "me",
-      id: "msg-1",
-      requestBody: {
-        addLabelIds: expect.arrayContaining([
-          "lbl-ready",
-          "lbl-drafted",
-          "lbl-human",
-          "lbl-pre-arrival",
-        ]),
-      },
+      requestBody: { id: "draft-1" },
     });
 
     const raw = createDraftMock.mock.calls[0][0].requestBody.message.raw as string;
@@ -108,55 +86,34 @@ describe("booking email tool", () => {
     };
     expect(payload.success).toBe(true);
     expect(payload.draftId).toBe("draft-1");
-    expect(payload.messageId).toBe("msg-1");
+    expect(payload.messageId).toBe("msg-sent-1");
 
     const rawLog = fs.readFileSync(auditLogPath, "utf-8");
     const telemetryLines = rawLog
       .split("\n")
       .filter((line) => line.trim() !== "")
       .map((line) => JSON.parse(line) as { event_key?: string; source_path?: string; tool_name?: string });
-    const draftCreatedEvent = telemetryLines.find((line) => line.event_key === "email_draft_created");
-    const outcomeLabeledEvent = telemetryLines.find((line) => line.event_key === "email_outcome_labeled");
-    expect(draftCreatedEvent).toMatchObject({
-      event_key: "email_draft_created",
+    const sentEvent = telemetryLines.find((line) => line.event_key === "email_sent");
+    expect(sentEvent).toMatchObject({
+      event_key: "email_sent",
       source_path: "reception",
       tool_name: "mcp_send_booking_email",
     });
-    expect(outcomeLabeledEvent).toMatchObject({
-      event_key: "email_outcome_labeled",
-      source_path: "reception",
-      tool_name: "mcp_send_booking_email",
-      action: "drafted",
-    });
+    expect(telemetryLines.find((line) => line.event_key === "email_draft_created")).toBeUndefined();
   });
 
-  it("TC-09-03: returns actionable error when drafted outcome labels cannot be applied", async () => {
+  it("TC-09-03: returns success and calls send even when draft.send returns minimal data", async () => {
     const createDraftMock = jest
       .fn()
       .mockResolvedValue({ data: { id: "draft-2", message: { id: "msg-2" } } });
-    const modifyMessageMock = jest
+    const sendDraftMock = jest
       .fn()
-      .mockRejectedValue(new Error("label mutation failed"));
+      .mockResolvedValue({ data: { id: "msg-sent-2" } });
     const gmail = {
       users: {
         drafts: {
           create: createDraftMock,
-        },
-        messages: {
-          modify: modifyMessageMock,
-        },
-        labels: {
-          list: jest.fn().mockResolvedValue({
-            data: {
-              labels: [
-                { id: "lbl-ready", name: "Brikette/Drafts/Ready-For-Review" },
-                { id: "lbl-drafted", name: "Brikette/Outcome/Drafted" },
-                { id: "lbl-human", name: "Brikette/Agent/Human" },
-                { id: "lbl-pre-arrival", name: "Brikette/Outbound/Pre-Arrival" },
-              ],
-            },
-          }),
-          create: jest.fn(),
+          send: sendDraftMock,
         },
       },
     };
@@ -169,9 +126,10 @@ describe("booking email tool", () => {
       occupantLinks: ["https://example.com/occ1"],
     });
 
-    expect(result).toMatchObject({ isError: true });
-    expect(result.content[0].text).toContain("Failed to apply draft outcome labels");
-    expect(createDraftMock).toHaveBeenCalledTimes(1);
+    expect(result).not.toMatchObject({ isError: true });
+    expect(sendDraftMock).toHaveBeenCalledTimes(1);
+    const payload = JSON.parse(result.content[0].text) as { success: boolean };
+    expect(payload.success).toBe(true);
   });
 
   it("returns validation error when occupant links are not URL formatted", async () => {

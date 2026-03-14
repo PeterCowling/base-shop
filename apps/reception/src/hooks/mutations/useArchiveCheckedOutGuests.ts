@@ -1,6 +1,11 @@
 import { useCallback, useState } from "react";
 import { get, ref, update } from "firebase/database";
 
+import {
+  roomsByDateGuestIdsPath,
+  roomsByDateRoomPath,
+} from "@acme/lib/hospitality";
+
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { getLocalToday } from "../../utils/dateUtils";
 
@@ -226,11 +231,10 @@ export default function useArchiveCheckedOutGuests() {
             updates[`checkouts/${dateKey}/${occupantId}`] = null;
           }
 
-          // roomByDate guestIds cleanup
+          // roomsByDate guestIds cleanup
           if (checkInDate && roomNumbers.length) {
             for (const roomNumber of roomNumbers) {
-              const roomIndex = `index_${roomNumber}`;
-              const rbdPath = `roomByDate/${checkInDate}/${roomIndex}/${roomNumber}`;
+              const rbdPath = roomsByDateRoomPath(checkInDate, roomNumber);
               const rbdSnap = await get(ref(database, rbdPath));
               if (rbdSnap.exists()) {
                 const data = rbdSnap.val() as { guestIds?: string[] };
@@ -241,7 +245,7 @@ export default function useArchiveCheckedOutGuests() {
                   const filtered = data.guestIds.filter(
                     (id) => id !== occupantId
                   );
-                  updates[`${rbdPath}/guestIds`] = filtered.length
+                  updates[roomsByDateGuestIdsPath(checkInDate, roomNumber)] = filtered.length
                     ? filtered
                     : null;
                 }
@@ -295,6 +299,19 @@ export default function useArchiveCheckedOutGuests() {
             updates[`archive/bagStorage/${occupantId}`] = bagStorageData;
           }
           updates[`bagStorage/${occupantId}`] = null;
+
+          // fridgeStorage
+          const fridgeStorageSnap = await get(
+            ref(database, `fridgeStorage/${occupantId}`)
+          );
+          const fridgeStorageData = fridgeStorageSnap.exists()
+            ? fridgeStorageSnap.val()
+            : null;
+
+          if (fridgeStorageData !== null) {
+            updates[`archive/fridgeStorage/${occupantId}`] = fridgeStorageData;
+          }
+          updates[`fridgeStorage/${occupantId}`] = null;
 
           if (preorderData !== null) {
             updates[`archive/preorder/${occupantId}`] = preorderData;

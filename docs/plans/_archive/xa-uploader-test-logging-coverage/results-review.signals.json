@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-12T21:10:38.821Z",
+  "plan_slug": "xa-uploader-test-logging-coverage",
+  "review_cycle_key": "xa-uploader-test-logging-coverage",
+  "source_path": "docs/plans/xa-uploader-test-logging-coverage/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

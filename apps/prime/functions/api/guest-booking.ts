@@ -5,8 +5,19 @@
  * This endpoint is the server-mediated source for booking details/status.
  */
 
+import {
+  bagStorageOccupantPath,
+  bookingRootPath,
+  checkinOccupantPath,
+  guestByRoomOccupantPath,
+  guestDetailsOccupantPath,
+  preorderOccupantPath,
+  primeRequestByGuestPath,
+  primeRequestByIdPath,
+} from '@acme/lib/hospitality';
+
 import type { PrimeRequestRecord, PrimeRequestSummaryByGuest } from '../../src/types/primeRequests';
-import { FirebaseRest, errorResponse, jsonResponse } from '../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
 
 interface Env {
@@ -86,14 +97,14 @@ async function getGuestRequestSummary(
     meal_change_exception: null,
   };
 
-  const byGuest = await firebase.get<Record<string, boolean>>(`primeRequests/byGuest/${guestUuid}`);
+  const byGuest = await firebase.get<Record<string, boolean>>(primeRequestByGuestPath(guestUuid));
   if (!byGuest) {
     return summary;
   }
 
   const requestIds = Object.keys(byGuest);
   const records = await Promise.all(
-    requestIds.map((requestId) => firebase.get<PrimeRequestRecord>(`primeRequests/byId/${requestId}`)),
+    requestIds.map((requestId) => firebase.get<PrimeRequestRecord>(primeRequestByIdPath(requestId))),
   );
 
   for (const record of records) {
@@ -124,7 +135,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 
     const firebase = new FirebaseRest(env);
     const booking = await firebase.get<Record<string, BookingOccupantRecord>>(
-      `bookings/${authResult.session.bookingId}`,
+      bookingRootPath(authResult.session.bookingId),
     );
 
     if (!booking) {
@@ -132,9 +143,22 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     }
 
     const occupantKeys = Object.keys(booking).filter((key) => key.startsWith('occ_'));
-    const guestUuid = authResult.session.guestUuid && booking[authResult.session.guestUuid]
-      ? authResult.session.guestUuid
-      : occupantKeys[0] ?? null;
+
+    let guestUuid: string | null;
+    if (authResult.session.guestUuid) {
+      if (!booking[authResult.session.guestUuid]) {
+        // Session carries a guestUuid but it is not present in this booking.
+        // Do not silently fall back to another occupant — return a clear error.
+        console.warn(
+          `[guest-booking] guestUuid mismatch: session uuid not found in booking ${authResult.session.bookingId}`,
+        );
+        return errorResponse('Guest not found in booking', 404);
+      }
+      guestUuid = authResult.session.guestUuid;
+    } else {
+      // No guestUuid in session (legacy/anonymous): use first occupant as fallback.
+      guestUuid = occupantKeys[0] ?? null;
+    }
 
     if (!guestUuid) {
       return errorResponse('Booking occupant not found', 404);
@@ -146,11 +170,11 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     }
 
     const [guestDetails, guestByRoom, bagStorage, preorders, checkins, requestSummary] = await Promise.all([
-      firebase.get<GuestDetailsRecord>(`guestsDetails/${authResult.session.bookingId}/${guestUuid}`),
-      firebase.get<GuestByRoomRecord>(`guestByRoom/${guestUuid}`),
-      firebase.get<BagStorageRecord>(`bagStorage/${guestUuid}`),
-      firebase.get<Record<string, unknown>>(`preorder/${guestUuid}`),
-      firebase.get<Record<string, unknown>>(`checkins/${occupant.checkInDate}/${guestUuid}`),
+      firebase.get<GuestDetailsRecord>(guestDetailsOccupantPath(authResult.session.bookingId, guestUuid)),
+      firebase.get<GuestByRoomRecord>(guestByRoomOccupantPath(guestUuid)),
+      firebase.get<BagStorageRecord>(bagStorageOccupantPath(guestUuid)),
+      firebase.get<Record<string, unknown>>(preorderOccupantPath(guestUuid)),
+      firebase.get<Record<string, unknown>>(checkinOccupantPath(occupant.checkInDate, guestUuid)),
       getGuestRequestSummary(firebase, guestUuid),
     ]);
 

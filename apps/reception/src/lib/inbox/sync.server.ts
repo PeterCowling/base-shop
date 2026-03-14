@@ -735,7 +735,10 @@ async function processThread(
         plainText: draftResult.plainText ?? "",
         html: draftResult.html,
         templateUsed: draftResult.templateUsed?.subject ?? null,
-        quality: draftResult.qualityResult as Record<string, unknown>,
+        quality: {
+          ...(draftResult.qualityResult as Record<string, unknown>),
+          deliveryStatus: draftResult.status,
+        },
         interpret: draftResult.interpretResult as Record<string, unknown> | undefined,
       };
       draftTemplateSubject = draftResult.templateUsed?.subject ?? null;
@@ -846,6 +849,7 @@ async function processThread(
         latestInboundMessageId: latestInbound.id,
         draftId,
         templateUsed: draftTemplateSubject,
+        followUpRequired: draftPayload?.quality?.deliveryStatus === "needs_follow_up",
       },
     });
     counts.draftsCreated += 1;

@@ -18,15 +18,20 @@ import { useFirebaseDatabase } from "../../../services/useFirebase";
  *
  * {
  *   "<occupant_id>": {
- *     allocated: "<string>",
- *     booked: "<string>"
+ *     allocated?: "<string>",  // May be absent when occupant is unallocated
+ *     booked?: "<string>"      // May be absent for some occupants
  *   }
  * }
+ *
+ * Note: both fields are optional here to match the raw Firebase shape (confirmed
+ * in useGuestByRoom.ts FirebaseGuestRoom). The shared normalizer (useGuestByRoom.ts)
+ * coerces absent values to "" — this roomgrid-local interface reflects the raw data
+ * that useGuestByRoomData reads directly from Firebase.
  */
 export interface IGuestByRoomData {
   [occupantId: string]: {
-    allocated: string;
-    booked: string;
+    allocated?: string;
+    booked?: string;
   };
 }
 export interface UseGuestByRoomDataParams {

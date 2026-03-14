@@ -11,10 +11,33 @@ preview_id = "f49512da7ac246e7bac8d97375a42809"
 [[d1_databases]]
 binding = "PRIME_MESSAGING_DB"
 database_name = "prime-messaging"
-database_id = "00000000000000000000000000000000" # replace with real D1 id
+database_id = "23db01e1-8e9a-4e0d-9ce4-2f46bb32df70"
 
 [vars]
 CF_FIREBASE_DATABASE_URL = "https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app"
 
-# API key is set as a Cloudflare Pages secret (not in source control):
+# ============================================================================
+# REQUIRED SECRETS — never put values in this file.
+# Set via `wrangler pages secret put` before deploying.
+#
+# Firebase:
 #   wrangler pages secret put CF_FIREBASE_API_KEY --project-name prime
+#   wrangler pages secret put PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL --project-name prime
+#   wrangler pages secret put PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY --project-name prime
+#
+# Staff owner gateway token (required for staff-owner-gated routes):
+#   wrangler pages secret put PRIME_STAFF_OWNER_GATE_TOKEN --project-name prime
+#
+# Actor claims HMAC secret (required — all 8 Prime mutation endpoints use this):
+#   wrangler pages secret put PRIME_ACTOR_CLAIMS_SECRET --project-name prime
+#
+#   Rules:
+#     - Must be ≥32 characters (shorter values cause all mutation endpoints to return 503)
+#     - Must NOT equal PRIME_STAFF_OWNER_GATE_TOKEN (distinct secret independence)
+#   Generate: openssl rand -base64 48 | tr -d '\n'
+#   Both Prime (verifier) and Reception (signer) must share this value.
+#   See: docs/plans/prime-outbound-auth-hardening/plan.md
+#
+# KPI aggregation (optional):
+#   wrangler pages secret put PRIME_KPI_AGGREGATION_SECRET --project-name prime
+# ============================================================================

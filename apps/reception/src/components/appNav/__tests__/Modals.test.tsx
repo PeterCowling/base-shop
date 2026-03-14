@@ -96,26 +96,20 @@ describe("AppNav modals — config shape assertions", () => {
     expect(onLogout).toHaveBeenCalled();
   });
 
-  // TC-03: ManModal — Admin section includes Manager Audit, EOD Checklist, Staff Accounts
-  it("ManModal includes Manager Audit, EOD Checklist, and Staff Accounts", () => {
+  // TC-03: ManModal — Admin section includes Manager Audit, Analytics, Staff Accounts
+  it("ManModal includes Manager Audit, Analytics, and Staff Accounts", () => {
     const routes = capturedRoutes("MAN");
     expect(routes).toContain("/manager-audit");
-    expect(routes).toContain("/eod-checklist");
+    expect(routes).toContain("/analytics");
     expect(routes).toContain("/staff-accounts");
     expect(routes).toContain("/alloggiati");
-    expect(routes).toContain("/menu-performance");
+    expect(routes).toContain("/stock");
   });
 
-  it("ManModal EOD Checklist item has correct label (not 'End of Day')", () => {
+  it("ManModal Analytics item has correct label", () => {
     const actions = capturedConfig("MAN").actions;
-    const eodItem = actions.find((a) => a.route === "/eod-checklist");
-    expect(eodItem?.label).toBe("EOD Checklist");
-  });
-
-  it("ManModal Menu Performance item has full label", () => {
-    const actions = capturedConfig("MAN").actions;
-    const menuItem = actions.find((a) => a.route === "/menu-performance");
-    expect(menuItem?.label).toBe("Menu Performance");
+    const analyticsItem = actions.find((a) => a.route === "/analytics");
+    expect(analyticsItem?.label).toBe("Analytics");
   });
 
   it("ManModal logout button works", async () => {
@@ -129,15 +123,11 @@ describe("AppNav modals — config shape assertions", () => {
     expect(config.permissionKey).toEqual(Permissions.TILL_ACCESS);
   });
 
-  it("TillModal includes all 6 Till & Safe items", () => {
+  it("TillModal includes Cash and EOD items", () => {
     const routes = capturedRoutes("TILL");
-    expect(routes).toHaveLength(6);
-    expect(routes).toContain("/till-reconciliation");
-    expect(routes).toContain("/safe-reconciliation");
-    expect(routes).toContain("/reconciliation-workbench");
-    expect(routes).toContain("/live");
-    expect(routes).toContain("/variance-heatmap");
-    expect(routes).toContain("/end-of-day");
+    expect(routes).toHaveLength(2);
+    expect(routes).toContain("/cash");
+    expect(routes).toContain("/eod");
   });
 
   it("TillModal logout button works", async () => {

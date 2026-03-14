@@ -7,7 +7,7 @@
  * GET ?code=BRK-XXXXX
  */
 
-import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
+import { errorResponse,FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { enforceStaffAuthTokenGate } from '../lib/staff-auth-token-gate';
 
 interface Env {

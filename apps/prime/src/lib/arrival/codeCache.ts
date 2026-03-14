@@ -5,6 +5,7 @@
  */
 
 const CACHE_KEY_PREFIX = 'prime_checkin_code_';
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 export interface CachedCode {
   code: string;
@@ -22,13 +23,19 @@ export function cacheCheckInCode(code: string, uuid: string): void {
 
 /**
  * Retrieve a cached check-in code from localStorage.
+ * Returns null if the entry is absent or older than CACHE_TTL_MS (24 hours).
  */
 export function getCachedCheckInCode(uuid: string): CachedCode | null {
   const key = `${CACHE_KEY_PREFIX}${uuid}`;
   const raw = localStorage.getItem(key);
   if (!raw) return null;
   try {
-    return JSON.parse(raw) as CachedCode;
+    const entry = JSON.parse(raw) as CachedCode;
+    if (Date.now() - entry.cachedAt > CACHE_TTL_MS) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return entry;
   } catch {
     return null;
   }

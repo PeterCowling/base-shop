@@ -150,4 +150,13 @@ describe('ChatOptInControls', () => {
       expect(screen.getByRole('checkbox', { name: /chat.optIn.label/i })).toBeDefined();
     });
   });
+
+  describe('TC-TAP-01: Tap target compliance', () => {
+    it('chat opt-in checkbox meets minimum 40px tap target (min-h-11 min-w-11)', () => {
+      render(<ChatOptInControls profile={mockProfile} />);
+      const toggle = screen.getByRole('checkbox', { name: /chat.optIn.label/i });
+      expect(toggle.className).toContain('min-h-11');
+      expect(toggle.className).toContain('min-w-11');
+    });
+  });
 });

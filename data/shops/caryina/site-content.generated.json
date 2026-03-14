@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-02-28",
-  "_manualExtension": "trustStrip added manually 2026-02-28; chrome section added manually 2026-03-12 — materializer update pending. Do not run materializer without porting productPage.trustStrip and chrome blocks first.",
+  "_manualExtension": "trustStrip added manually 2026-02-28; chrome translations moved to contentPacket.ts CHROME_DEFAULTS 2026-03-12 — do NOT add chrome key back to this file. Materializer update still pending for productPage.trustStrip. Do not run materializer without porting productPage.trustStrip first.",
   "sourcePacketPath": "docs/business-os/startup-baselines/HBAG-content-packet.md",
   "sourceHash": "05fbd6c15750221375db8edb71215911c9d3386808a7f35a3c2ab33d764f0fb1",
   "sourcePaths": [
@@ -62,6 +62,78 @@
         "answer": {
           "en": "Every Caryina charm is a proper little bag -- structured body, turn-lock closure, polished hardware. They're designed to look like a tiny version of your favourite handbag, not a keyring novelty."
         }
+      },
+      {
+        "question": {
+          "en": "How big are the charms?",
+          "de": "Wie groß sind die Anhänger?",
+          "it": "Quanto sono grandi i charm?"
+        },
+        "answer": {
+          "en": "TODO: PLACEHOLDER — operator must fill in actual dimensions per family. Example: 'The Top Handle is approximately H 8cm × W 6cm × D 3cm. The Shoulder is slightly more compact. The Mini is our smallest, at approximately H 5cm × W 4cm × D 2cm. All measurements are approximate.'",
+          "de": "TODO: PLACEHOLDER — Betreiber muss die tatsächlichen Maße je Familie eintragen. Beispiel: 'Der Top Handle ist ca. H 8 cm × B 6 cm × T 3 cm. Der Shoulder ist etwas kompakter. Das Mini ist unser kleinster Anhänger, ca. H 5 cm × B 4 cm × T 2 cm. Alle Maße sind ungefähre Angaben.'",
+          "it": "TODO: PLACEHOLDER — l'operatore deve inserire le dimensioni effettive per famiglia. Esempio: 'Il Top Handle è circa H 8 cm × L 6 cm × P 3 cm. Il Shoulder è leggermente più compatto. Il Mini è il nostro più piccolo, circa H 5 cm × L 4 cm × P 2 cm. Tutte le misure sono indicative.'"
+        }
+      },
+      {
+        "question": {
+          "en": "What bag does it clip onto?",
+          "de": "An welcher Tasche befestigt man den Anhänger?",
+          "it": "A quale borsa si aggancia?"
+        },
+        "answer": {
+          "en": "TODO: PLACEHOLDER — describe attachment mechanism. Example: 'Each charm attaches via a lobster clasp. It clips onto a bag strap, D-ring, or handle in seconds — no tools needed. It fits most standard handbag hardware.'",
+          "de": "TODO: PLACEHOLDER — Befestigungsmechanismus beschreiben. Beispiel: 'Jeder Anhänger wird mit einem Karabinerverschluss befestigt. Er lässt sich in Sekunden an einem Taschenriemen, D-Ring oder Griff befestigen — kein Werkzeug erforderlich. Er passt auf die meisten gängigen Taschenhalterungen.'",
+          "it": "TODO: PLACEHOLDER — descrivere il meccanismo di aggancio. Esempio: 'Ogni charm si aggancia tramite un moschettone. Si attacca a un cinturino, anello a D o manico in pochi secondi — senza strumenti. È compatibile con la maggior parte delle borse standard.'"
+        }
+      },
+      {
+        "question": {
+          "en": "What is it made from?",
+          "de": "Woraus ist der Anhänger gefertigt?",
+          "it": "Di cosa è fatto?"
+        },
+        "answer": {
+          "en": "TODO: PLACEHOLDER — operator must specify body material. Example: 'The body is [PU leather / vegan leather / fabric — operator to confirm]. Hardware is [zinc alloy with a polished gold-tone finish — operator to confirm]. No genuine leather is used.'",
+          "de": "TODO: PLACEHOLDER — Betreiber muss das Körpermaterial angeben. Beispiel: 'Der Körper besteht aus [PU-Leder / Veganleder / Stoff — Betreiber bestätigen]. Beschläge aus [Zinklegierung mit polierter Goldoptik — Betreiber bestätigen]. Kein Echtleder verwendet.'",
+          "it": "TODO: PLACEHOLDER — l'operatore deve specificare il materiale del corpo. Esempio: 'Il corpo è in [ecopelle / pelle vegana / tessuto — da confermare]. La ferramenta è in [lega di zinco con finitura dorata lucida — da confermare]. Non viene utilizzata pelle animale.'"
+        }
+      },
+      {
+        "question": {
+          "en": "How do I care for it?",
+          "de": "Wie pflege ich den Anhänger?",
+          "it": "Come si cura?"
+        },
+        "answer": {
+          "en": "Wipe the body with a dry or slightly damp cloth. Avoid prolonged exposure to water, direct sunlight, or heat. The hardware is polished — use a soft cloth to buff if needed. Do not submerge.",
+          "de": "Den Körper mit einem trockenen oder leicht feuchten Tuch abwischen. Längere Exposition gegenüber Wasser, direktem Sonnenlicht oder Hitze vermeiden. Die Beschläge sind poliert — bei Bedarf mit einem weichen Tuch aufpolieren. Nicht eintauchen.",
+          "it": "Pulire il corpo con un panno asciutto o leggermente inumidito. Evitare l'esposizione prolungata ad acqua, luce solare diretta o calore. La ferramenta è lucida — se necessario, lucidare con un panno morbido. Non immergere in acqua."
+        }
+      },
+      {
+        "question": {
+          "en": "Can I wash it?",
+          "de": "Kann ich ihn waschen?",
+          "it": "Si può lavare?"
+        },
+        "answer": {
+          "en": "No — do not machine wash, submerge, or steam clean. Wipe gently with a damp cloth if needed and allow to air dry.",
+          "de": "Nein — nicht in der Waschmaschine waschen, nicht eintauchen und nicht mit Dampf reinigen. Bei Bedarf vorsichtig mit einem feuchten Tuch abwischen und an der Luft trocknen lassen.",
+          "it": "No — non lavare in lavatrice, non immergere e non pulire a vapore. Se necessario, pulire delicatamente con un panno umido e lasciare asciugare all'aria."
+        }
+      },
+      {
+        "question": {
+          "en": "When will out-of-stock items be restocked?",
+          "de": "Wann werden nicht vorrätige Artikel wieder aufgefüllt?",
+          "it": "Quando verranno riforniti gli articoli esauriti?"
+        },
+        "answer": {
+          "en": "Sign up for restock notifications using the 'Notify me' button on the product page. We will email you as soon as the item is available again. Restock timelines vary depending on production.",
+          "de": "Melden Sie sich mit dem Button 'Benachrichtigen' auf der Produktseite für Nachbestandsbenachrichtigungen an. Wir informieren Sie per E-Mail, sobald der Artikel wieder verfügbar ist. Die Wiederbeschaffungszeiten variieren je nach Produktion.",
+          "it": "Iscriviti alle notifiche di disponibilità tramite il pulsante 'Avvisami' sulla pagina del prodotto. Ti invieremo un'e-mail non appena l'articolo sarà di nuovo disponibile. I tempi di rifornimento variano in base alla produzione."
+        }
       }
     ]
   },
@@ -80,10 +152,10 @@
         "en": "Designed in Positano, Italy with polished hardware and textured finishes."
       },
       {
-        "en": "30-day free exchange and 90-day hardware guarantee on every order."
+        "en": "Eligible online orders normally include a 14-day cancellation right, and unused-item exchange requests may be handled within 30 days where stock allows."
       },
       {
-        "en": "Secure checkout with tracked shipping across the EU."
+        "en": "Secure checkout with delivery timing shown before payment."
       }
     ]
   },
@@ -131,7 +203,7 @@
         "en": "Textured finishes across colorways — metallic reptile emboss, croc emboss, pebbled grain. Selected colorways include a stitched building facade applique."
       },
       {
-        "en": "30-day free exchange, 90-day hardware guarantee. Change of mind — exchange within 30 days. Hardware fails within 90 days: replacement, no forms."
+        "en": "Eligible online orders normally include a 14-day cancellation right. Unused-item exchange requests may be handled within 30 days after delivery if replacement stock is available."
       }
     ],
     "relatedHeading": {
@@ -139,10 +211,10 @@
     },
     "trustStrip": {
       "delivery": {
-        "en": "Usually ships in 2–5 business days (EU)"
+        "en": "Delivery estimate shown at checkout"
       },
       "exchange": {
-        "en": "30-day exchange"
+        "en": "Unused-item exchange requests up to 30 days"
       },
       "origin": {
         "en": "Designed in Positano, Italy"
@@ -157,18 +229,18 @@
       "en": "Support"
     },
     "summary": {
-      "en": "Need a hand? We're here to help with orders, exchanges, or anything else."
+      "en": "Need a hand? We help with orders, delivery questions, statutory cancellations, exchange requests, faulty-item claims, and privacy requests."
     },
     "channels": [
       {
-        "en": "Email us directly -- include your order number and we'll get back to you faster."
+        "en": "Email us directly at hostelpositano@gmail.com and include your order number for faster support."
       },
       {
-        "en": "Bought on Etsy? Message us through the Etsy conversation thread for the quickest reply."
+        "en": "Use the Caryina support route for cancellation, delivery, exchange, faulty-item, and privacy requests."
       }
     ],
     "responseSla": {
-      "en": "Within 48 hours"
+      "en": "Usually within 48 hours"
     }
   },
   "policies": {
@@ -177,7 +249,7 @@
         "en": "Privacy"
       },
       "summary": {
-        "en": "We only collect what we need to fulfil your order and help if something goes wrong."
+        "en": "Caryina explains what personal data is used, why it is used, and the rights available to customers and website visitors."
       },
       "bullets": [
         {
@@ -191,7 +263,7 @@
         }
       ],
       "notice": {
-        "en": "This is a summary of our privacy practices. A full privacy policy will be published soon."
+        "en": "See the full Privacy Policy for complete details."
       }
     },
     "shipping": {
@@ -199,14 +271,14 @@
         "en": "Shipping"
       },
       "summary": {
-        "en": "Delivery times are estimated at checkout based on your location."
+        "en": "Dispatch and delivery timing shown on the website or at checkout is estimated and may change because of carrier or customs handling."
       },
       "bullets": [
         {
-          "en": "Delivery estimated at checkout"
+          "en": "Delivery timing is estimated and not guaranteed unless Caryina states otherwise in writing."
         },
         {
-          "en": "International buyers are responsible for applicable customs duties and import taxes"
+          "en": "UK deliveries may involve import VAT, customs duties, or carrier handling charges unless checkout says they are included."
         }
       ]
     },
@@ -215,14 +287,14 @@
         "en": "Returns & Exchanges"
       },
       "summary": {
-        "en": "Changed your mind? Exchange any charm within 30 days, free of charge."
+        "en": "Eligible online orders normally include a 14-day cancellation right, and Caryina may also accommodate unused-item exchanges requested within 30 days where stock allows."
       },
       "bullets": [
         {
-          "en": "30-day free exchange on any order"
+          "en": "14-day statutory cancellation rights apply to eligible online consumer orders."
         },
         {
-          "en": "Exchange includes all colorways; original accessories should be included where applicable"
+          "en": "Unused-item exchange requests may be handled up to 30 days after delivery, subject to stock availability."
         }
       ]
     },
@@ -243,41 +315,38 @@
       ]
     }
   },
-  "chrome": {
-    "header": {
-      "shop": { "en": "Shop" },
-      "support": { "en": "Support" },
-      "navAriaLabel": { "en": "Primary" }
+  "about": {
+    "title": {
+      "en": "About Caryina",
+      "de": "Über Caryina",
+      "it": "Chi siamo"
     },
-    "footer": {
-      "terms": { "en": "Terms" },
-      "privacy": { "en": "Privacy" },
-      "returnsRefunds": { "en": "Returns & Refunds" },
-      "shipping": { "en": "Shipping" },
-      "support": { "en": "Support" },
-      "copyright": { "en": "All rights reserved." },
-      "sectionAriaLabel": { "en": "Footer" }
+    "eyebrow": {
+      "en": "Designed in Positano, Italy",
+      "de": "Entworfen in Positano, Italien",
+      "it": "Progettato a Positano, Italia"
     },
-    "consent": {
-      "message": { "en": "We use analytics cookies to understand how visitors interact with our site. See our" },
-      "privacyLink": { "en": "privacy policy" },
-      "decline": { "en": "Decline" },
-      "accept": { "en": "Accept" },
-      "ariaLabel": { "en": "Cookie consent" }
+    "summary": {
+      "en": "Caryina designs bag charms in Positano on the Amalfi Coast — small accessories that turn a simple bag into something personal.",
+      "de": "Caryina entwirft Taschenanhänger in Positano an der Amalfiküste — kleine Accessoires, die eine schlichte Tasche zu etwas Persönlichem machen.",
+      "it": "Caryina progetta ciondoli per borse a Positano, sulla Costiera Amalfitana — piccoli accessori che trasformano una borsa semplice in qualcosa di personale."
     },
-    "trust": {
-      "summary": { "en": "Free exchange within 30 days · Delivery estimated at checkout" },
-      "shippingLink": { "en": "Shipping policy" },
-      "returnsLink": { "en": "Returns & exchanges" }
-    },
-    "notifyMe": {
-      "consent": { "en": "I agree to receive a one-time reminder email about this product" },
-      "genericError": { "en": "Something went wrong — please try again." },
-      "validation": { "en": "Please enter your email and consent to receive the reminder." },
-      "emailLabel": { "en": "Email" },
-      "submit": { "en": "Notify me" },
-      "submitting": { "en": "Submitting..." },
-      "success": { "en": "Thank you. We'll email you when this product is available." }
-    }
+    "paragraphs": [
+      {
+        "en": "Caryina is a collection of bag charms designed in Positano on the Amalfi Coast. Each piece is created to turn a simple bag into something personal — a small detail that's entirely your own.",
+        "de": "Caryina ist eine Kollektion von Taschenanhängern, die in Positano an der Amalfiküste entworfen wurden. Jedes Stück wurde geschaffen, um eine schlichte Tasche zu etwas Persönlichem zu machen — ein kleines Detail, das ganz dir gehört.",
+        "it": "Caryina è una collezione di ciondoli per borse progettati a Positano, sulla Costiera Amalfitana. Ogni pezzo è stato creato per trasformare una borsa semplice in qualcosa di personale — un piccolo dettaglio che è interamente tuo."
+      },
+      {
+        "en": "We work with one carefully chosen supplier to bring our designs to life. Every hardware finish, material, and proportion is specified by us. Nothing reaches the collection that we wouldn't carry ourselves.",
+        "de": "Wir arbeiten mit einem sorgfältig ausgewählten Lieferanten zusammen, um unsere Entwürfe zum Leben zu erwecken. Jede Hardwareoberfläche, jedes Material und jede Proportion wird von uns festgelegt. Nichts gelangt in die Kollektion, was wir nicht selbst tragen würden.",
+        "it": "Lavoriamo con un unico fornitore scelto con cura per dare vita ai nostri design. Ogni finitura hardware, materiale e proporzione viene specificata da noi. Niente raggiunge la collezione che non porteremmo noi stessi."
+      },
+      {
+        "en": "Caryina is a brand of Skylar SRL, registered in Positano, Italy.",
+        "de": "Caryina ist eine Marke der Skylar SRL mit Sitz in Positano, Italien.",
+        "it": "Caryina è un marchio di Skylar SRL, registrata a Positano, Italia."
+      }
+    ]
   }
 }

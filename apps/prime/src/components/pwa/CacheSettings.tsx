@@ -114,7 +114,7 @@ export const CacheSettings: FC<CacheSettingsProps> = memo(function CacheSettings
           onClick={handleClearCache}
           disabled={isClearing}
           className={`
-            px-4 py-2 text-sm font-medium rounded-lg
+            min-h-11 min-w-11 px-4 py-2 text-sm font-medium rounded-lg
             transition-colors
             ${
               clearSuccess
@@ -133,7 +133,7 @@ export const CacheSettings: FC<CacheSettingsProps> = memo(function CacheSettings
 
         <button
           onClick={refreshCacheSize}
-          className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          className="min-h-11 min-w-11 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           title={t('cache.refresh', 'Refresh')}
         >
           <svg

@@ -52,6 +52,12 @@ export function Header({ lang }: { lang: string }) {
             {chrome.header.shop}
           </Link>
           <Link
+            href={`/${lang}/about`}
+            className="text-xs font-medium tracking-widest uppercase text-fg-muted transition-colors duration-200 hover:text-fg"
+          >
+            {chrome.header.about}
+          </Link>
+          <Link
             href={`/${lang}/support`}
             className="text-xs font-medium tracking-widest uppercase text-fg-muted transition-colors duration-200 hover:text-fg"
           >

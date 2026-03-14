@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T21:03:24.560Z",
+  "plan_slug": "reception-design-system-compliance",
+  "review_cycle_key": "reception-design-system-compliance",
+  "source_path": "docs/plans/reception-design-system-compliance/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

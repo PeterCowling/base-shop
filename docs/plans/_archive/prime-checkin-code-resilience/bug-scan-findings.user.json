@@ -1,0 +1,47 @@
+{
+  "scan_date": "2026-03-13",
+  "feature_slug": "prime-checkin-code-resilience",
+  "business": "BRIK",
+  "scope": "changed files",
+  "findings_in_scope": 0,
+  "total_findings": 3,
+  "note": "All 3 critical findings are pre-existing in packages/mcp-server/__tests__ — unrelated to this build. No findings in apps/prime/src/hooks/__tests__/useCheckInCode.offline-cache.test.ts or docs/plans/prime-checkin-code-resilience/micro-build.md.",
+  "raw": {
+    "scanned_files": 188,
+    "finding_count": 3,
+    "suppressed_count": 0,
+    "critical_count": 3,
+    "warning_count": 0,
+    "baseline_path": null,
+    "baseline_written_to": null,
+    "findings": [
+      {
+        "ruleId": "hardcoded-secret-object-property",
+        "severity": "critical",
+        "message": "Object property contains suspicious hardcoded secret literal.",
+        "suggestion": "Load secret from environment/secret manager instead of source.",
+        "file": "packages/mcp-server/src/__tests__/bos-tools-write.test.ts",
+        "line": 377,
+        "column": 9
+      },
+      {
+        "ruleId": "hardcoded-secret-object-property",
+        "severity": "critical",
+        "message": "Object property contains suspicious hardcoded secret literal.",
+        "suggestion": "Load secret from environment/secret manager instead of source.",
+        "file": "packages/mcp-server/src/__tests__/bos-tools.test.ts",
+        "line": 68,
+        "column": 11
+      },
+      {
+        "ruleId": "hardcoded-secret-object-property",
+        "severity": "critical",
+        "message": "Object property contains suspicious hardcoded secret literal.",
+        "suggestion": "Load secret from environment/secret manager instead of source.",
+        "file": "packages/mcp-server/src/__tests__/bos-tools.test.ts",
+        "line": 227,
+        "column": 11
+      }
+    ]
+  }
+}

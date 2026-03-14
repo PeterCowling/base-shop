@@ -66,18 +66,18 @@ function EmailBookingButton({
 
     const result = await sendBookingEmail(bookingRef, emailMap);
     if (!result.success) {
-      showToast(result.error ?? "Failed to create email draft", "error");
+      showToast(result.error ?? "Failed to send email", "error");
       return;
     }
     try {
-      // Log activity 26 for each occupant confirmed in the generated draft payload.
+      // Log activity 26 for each occupant confirmed in the sent email payload.
       await Promise.all(
         result.occupantIds.map((occId) => logActivity(occId, 26))
       );
-      showToast("Email draft created", "success");
+      showToast("Email sent", "success");
     } catch {
       showToast(
-        "Email draft created, but activity logging failed. Please check history.",
+        "Email sent, but activity logging failed. Please check history.",
         "error"
       );
     }
@@ -103,7 +103,7 @@ function EmailBookingButton({
         onClick={handleClick}
         disabled={loading}
         className="h-9 w-9 bg-primary-main text-primary-fg rounded-md hover:opacity-90 transition-colors"
-        title="Create booking email draft"
+        title="Send booking email"
       >
         {loading ? "..." : <LayoutGrid size={20} />}
       </Button>

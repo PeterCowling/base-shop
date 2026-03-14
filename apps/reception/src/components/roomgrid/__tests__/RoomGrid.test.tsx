@@ -128,7 +128,7 @@ beforeEach(() => {
 
 describe("RoomGrid", () => {
 
-  it("opens modal with booking info on double click", async () => {
+  it("opens modal with booking info on single click", async () => {
     render(<RoomGrid {...baseProps} />);
 
     mockEvent = {
@@ -138,7 +138,7 @@ describe("RoomGrid", () => {
       dayStatus: "12",
     };
 
-    await userEvent.dblClick(screen.getByTestId("reservation-grid"));
+    await userEvent.click(screen.getByTestId("reservation-grid"));
 
     expect(screen.getByText(/Booking Details/)).toBeInTheDocument();
     expect(screen.getByText("bed-1")).toBeInTheDocument();
@@ -173,7 +173,7 @@ describe("RoomGrid", () => {
       dayStatus: "free",
     };
 
-    await userEvent.dblClick(screen.getByTestId("reservation-grid"));
+    await userEvent.click(screen.getByTestId("reservation-grid"));
 
     expect(screen.getByText(/Booking Details/)).toBeInTheDocument();
     expect(screen.getByText("bed-1")).toBeInTheDocument();
@@ -197,7 +197,7 @@ describe("RoomGrid", () => {
       dayStatus: "12",
     };
 
-    await userEvent.dblClick(screen.getByTestId("reservation-grid"));
+    await userEvent.click(screen.getByTestId("reservation-grid"));
 
     expect(screen.getByText("BR1")).toBeInTheDocument();
     expect(screen.getByText("Alice")).toBeInTheDocument();

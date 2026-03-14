@@ -1,0 +1,201 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "xa-uploader-image-required-for-publish",
+  "source_artifact_path": "docs/plans/xa-uploader-image-required-for-publish/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/xa-uploader-image-required-for-publish/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When staff add products using the main upload workflow, products can appear live in the store without images, which looks unprofessional and loses sales — shoppers browsing a luxury fashion brand expect visuals for everything.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Products cannot go live without at least one image.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Inline `imageFiles` field error via `setFieldErrors`; existing error rendering in `CatalogProductForm`",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No new UI component; re-uses existing field-error display path",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Hard block before save; autosave skipped via `suppressUiBusy` check; \"Add at least one image before publishing\" message",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Server `would_unpublish` dialog remains as last-resort fallback",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — admin-only tool; no auth surface change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No change to auth or session handling",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`uploaderLog(\"warn\", \"publish_blocked_no_images\", { slug })` added in guard branch",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Follows existing `uploaderLog` pattern in `catalogConsoleActions.ts`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "TC-01 (server regression, already passes), TC-02 (happy path), TC-03 (client gate Red→Green), TC-04 (autosave skips gate)",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "TC-01/TC-02 in `route.test.ts`; TC-03/TC-04 in `catalogConsoleActions.test.ts` B4 suite",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — no schema, API contract, or server changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Server normalization at `route.ts:286` unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — single synchronous `splitList` check before fetch",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Negligible overhead; `splitList` is a string split utility",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single function change; clean `git revert`",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No migration; no feature flag needed",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Adds a hard pre-save client-side gate in `handleSaveImpl` (`catalogConsoleActions.ts`) that blocks a \"publish without images\" save attempt with an inline field error. The server already normalizes `publishState` via `deriveCatalogPublishState()` at persist time (`route.ts:286`), so the data integrity case is handled — the remaining gap is UX clarity. Two tasks: (1) add the guard (~5 lines), (2) add four tests: TC-01/TC-02 are regression guards for the existing server behaviour; TC-03 is the Red→Green test for the new client gate; TC-04 confirms the autosave path skips the gate. All test infras",
+    "goals": [
+      "Block a \"publish without images\" save attempt with an inline `imageFiles` field error before any POST is made.",
+      "Skip the gate for autosave calls (`suppressUiBusy: true`) to avoid noisy background errors during editing.",
+      "Add regression tests for the existing server normalization behaviour (TC-01, TC-02).",
+      "Add a gate test (TC-03) that fails before TASK-01 and passes after.",
+      "Add an autosave pass-through test (TC-04) confirming the gate is skipped when `suppressUiBusy: true`."
+    ],
+    "non_goals": [
+      "Server-side changes — `route.ts:286` already calls `deriveCatalogPublishState()`.",
+      "Storefront no-image fallback rendering.",
+      "Image upload UI, R2 endpoint, or CDN changes.",
+      "Any other xa-uploader feature work."
+    ],
+    "constraints": [
+      "Tests run in CI only (`docs/testing-policy.md`). Do not run `pnpm test` locally.",
+      "`splitList` is already imported in `catalogConsoleActions.ts` at line 6; no new imports needed.",
+      "`suppressUiBusy` is already a parameter of `handleSaveImpl` (line 408) defaulting to `false`; autosave passes `true`."
+    ],
+    "assumptions": [
+      "Staff can always save a product as \"draft\" regardless of image state.",
+      "A live product with images being saved normally never triggers the gate (`splitList` would return ≥1 element)."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Add a guard in `handleSaveImpl` after the schema parse check and before `tryBeginBusyAction`: if `!suppressUiBusy && draft.publishState === \"live\" && splitList(draft.imageFiles ?? \"\").length === 0` → call `setFieldErrors({ imageFiles: \"Add at least one image before publishing\" })`, log `uploaderLog(\"warn\", \"publish_blocked_no_images\", { slug: draft.slug })`, and return `{ status: \"error\" }`.",
+      "Why planning is not reopening option selection:",
+      "Analysis decisively selected Option A; blast radius confirmed minimal; autosave scope resolved."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add pre-save image gate to `handleSaveImpl`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts`",
+        "affects": "`apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add TC-01/TC-02 regression + TC-03/TC-04 gate tests",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New test cases in `apps/xa-uploader/src/app/api/catalog/products/__tests__/route.test.ts` (TC-01, TC-02) and `apps/xa-uploader/src/components/catalog/__tests__/catalogConsoleActions.test.ts` (TC-03, TC-04)",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/products/__tests__/route.test.ts`, `apps/xa-uploader/src/components/catalog/__tests__/catalogConsoleActions.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Save attempt — imageless publish",
+          "trigger": "Staff sets `publishState: \"live\"`, `imageFiles: \"\"`, clicks Save",
+          "flow": "1. `handleSaveImpl` schema check passes. 2. Guard fires: `!suppressUiBusy && publishState === \"live\" && splitList(imageFiles).length === 0`. 3. `setFieldErrors({ imageFiles: \"Add at least one image before publishing\" })`. 4. `uploaderLog(\"warn\", \"publish_blocked_no_images\", {...})`. 5. Returns `{ status: \"error\" }` — no POST made.",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "None — purely additive check"
+        },
+        {
+          "id": null,
+          "label": "Save attempt — autosave with imageless draft",
+          "trigger": "Autosave fires with `suppressUiBusy: true`, `publishState: \"live\"`, `imageFiles: \"\"`",
+          "flow": "Guard condition `!suppressUiBusy` is `false` → gate skipped. Proceeds to `tryBeginBusyAction` and POST. Server normalizes to \"draft\" at `route.ts:286`.",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Save attempt — live product with images",
+          "trigger": "Staff saves with `publishState: \"live\"` and images present",
+          "flow": "`splitList(imageFiles).length >= 1` → gate does not fire. Proceeds normally.",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Server persist normalization (defence-in-depth)",
+          "trigger": "Any POST to `/api/catalog/products`",
+          "flow": "`route.ts:286` calls `deriveCatalogPublishState(productInput)` — saves as \"draft\" if no images regardless of `confirmUnpublish`.",
+          "task_ids": [],
+          "dependency_note": "Unchanged",
+          "seams": "None"
+        }
+      ]
+    }
+  }
+}

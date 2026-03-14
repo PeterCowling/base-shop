@@ -374,6 +374,7 @@ describe("inbox draft route", () => {
       "prime:dm_occ_aaa_occ_bbb",
       { plainText: "Manual reply draft" },
       "staff-1",
+      ["staff"],
     );
     expect(payload.data.draft).toEqual(expect.objectContaining({
       id: "draft-1",

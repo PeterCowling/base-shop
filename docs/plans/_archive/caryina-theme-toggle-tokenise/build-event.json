@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "caryina-theme-toggle-tokenise",
+  "business": "CARY",
+  "dispatch_id": "IDEA-DISPATCH-20260313163000-0001",
+  "completed_at": "2026-03-13T16:45:00.000Z",
+  "outcome_type": "operational",
+  "outcome_statement": "All theme toggle glow and shadow values reference CSS tokens. Confirmed working in both light and dark modes with no visual regression.",
+  "outcome_source": "operator",
+  "track": "code",
+  "deliverable_type": "code-change"
+}

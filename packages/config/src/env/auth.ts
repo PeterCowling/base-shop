@@ -92,7 +92,7 @@ const booleanFromString = z.preprocess((v) => {
   return v;
 }, z.boolean());
 
-const storeProviderSchema = z.enum(["redis", "cloudflare", "memory"]);
+const storeProviderSchema = z.enum(["redis", "cloudflare", "memory", "prisma"]);
 const rateLimitProviderSchema = z.enum(["redis", "kv"]);
 
 const baseSchema = z.object({

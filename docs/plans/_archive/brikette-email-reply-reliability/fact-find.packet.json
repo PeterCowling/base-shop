@@ -1,0 +1,217 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "brikette-email-reply-reliability",
+  "source_artifact_path": "docs/plans/brikette-email-reply-reliability/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Three confirmed failure modes in the guest email pipeline risk silent failures (no reply ever sent), duplicate guest replies, and confidently wrong AI responses reaching guests. These directly harm guest experience and hostel reputation, and are surfaced by operational observation with >85% confidence estimates.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Code fixes deployed for stuck emails, duplicate replies, and AI overconfidence; stuck admitted threads surface for manual action within 2 hours; duplicate sends prevented at the send route level; AI uncertainty routes to manual-review flag rather than confident-guess delivery.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "Reception inbox shows thread status and `needs_manual_draft` flag; no confidence indicator for `needs_follow_up` drafts",
+      "gap_or_implication": "No visual distinction between a confident draft and a draft with unanswered questions",
+      "carry_forward_or_notes": "Analyse where in the inbox card/list view a confidence flag would render"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Thread status lifecycle well-defined; `needs_manual_draft = 1` threads visible in inbox; but no distinct state for \"partial draft — follow-up required\"",
+      "gap_or_implication": "`deliveryStatus: \"needs_follow_up\"` state is computed but silently dropped; operator may send a mixed-confidence draft without realising",
+      "carry_forward_or_notes": "Define a new thread/draft UI state for follow-up-required drafts"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A (local code change — no new data exposure, no auth changes)",
+      "current_or_option_state": "Staff auth required on all inbox API routes (`requireStaffAuth`); no new endpoints",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`thread_events` table records `admitted`, `drafted`, `sent`, `send_failed`, `inbox_recovery`; but `needs_follow_up` is not recorded; duplicate-send attempt would not be logged before the guard",
+      "gap_or_implication": "No observable signal when `needs_follow_up` draft is generated; no log entry when duplicate send is blocked",
+      "carry_forward_or_notes": "Add telemetry event for `needs_follow_up` draft creation; add audit entry for duplicate-send block"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Unit tests cover sync happy path, recovery, quality checks; send route optimistic-lock tested; no test for duplicate-send guard or `needs_follow_up` propagation",
+      "gap_or_implication": "Coverage gaps documented above",
+      "carry_forward_or_notes": "Add targeted unit tests per gap"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`InboxThreadStatus`, `InboxDraftStatus` schemas well-typed; `deliveryStatus` exists in `AgentDraftResult` but NOT in D1 or API response; no idempotency column on drafts for Gmail draft ID before send",
+      "gap_or_implication": "Need to propagate `deliveryStatus` to D1; need to check `gmail_draft_id` before creating Gmail draft",
+      "carry_forward_or_notes": "Determine whether a new column is needed or `quality_json` can carry `deliveryStatus`"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Recovery cron limited to 20 threads per run (hardcoded default limit in `findStaleAdmittedThreads`); no timeout on per-thread processing; send route has no retry timeout",
+      "gap_or_implication": "Recovery throughput may lag during email surges; duplicate-send risk is a reliability gap",
+      "carry_forward_or_notes": "Assess whether limit=20 is sufficient for expected volume"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Deployed via Cloudflare Worker + D1; D1 migrations are additive (ALTER TABLE ADD COLUMN); no feature flags currently",
+      "gap_or_implication": "Any new D1 column requires a migration run before code deploy; rollback would need column to remain (nullable)",
+      "carry_forward_or_notes": "Plan migration ordering: schema first, then code"
+    }
+  ],
+  "open_operator_questions": [
+    "Should threads flagged `needs_manual_draft = 1` generate a notification (e.g., a highlighted count in the reception UI header, a push notification, or an email alert to staff)?"
+  ],
+  "stage_payload": {
+    "scope_summary": "Three P1 problems in the Brikette guest email pipeline are bundled as one work package because they share infrastructure (the reception inbox sync → draft → send flow) and can be addressed by code changes within the same subsystem. **Problem 1 — Stuck emails (P1, 85%):** Guest emails admitted to the pipeline can stall in `pending` status indefinitely if draft generation fails and no staff alert fires. The recovery cron runs every 30 minutes and handles threads without drafts, but threads with `needs_manual_draft = 1` are excluded from recovery. There is no proactive staff notification when a t",
+    "goals": [
+      "Ensure admitted threads that fail draft generation or require follow-up are surfaced to staff within 2 hours.",
+      "Prevent the same email being sent twice to a guest when a retry occurs during the send sequence.",
+      "Surface AI uncertainty at the draft review stage so operators can identify low-confidence drafts before sending."
+    ],
+    "non_goals": [
+      "Rebuilding the admission/classification pipeline (out of scope).",
+      "Changing the AI model or prompt architecture.",
+      "Adding external alerting (e.g., SMS, PagerDuty) beyond the existing inbox UI."
+    ],
+    "constraints": [
+      "D1 (Cloudflare) — no `SELECT FOR UPDATE` / advisory locks; must use idempotency via unique constraints or conditional updates.",
+      "Reception app deploys as a Cloudflare Worker via OpenNext — no persistent in-memory state.",
+      "Cron triggers fire once per minute (inbox-sync) and once per 30 minutes (inbox-recovery); cannot reliably run faster.",
+      "Tests run in CI only per `docs/testing-policy.md`."
+    ],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/reception/worker-entry.ts:42-98` — Cloudflare Worker scheduled handler; cron `* * * * *` → inbox-sync; cron `*/30 * * * *` → inbox-recovery",
+      "`apps/reception/src/app/api/internal/inbox-sync/route.ts` — POST endpoint called by cron; delegates to `syncInbox()`",
+      "`apps/reception/src/app/api/internal/inbox-recovery/route.ts` — POST endpoint called by recovery cron; delegates to `recoverStaleThreads()`",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts` — POST: operator-triggered send action"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "`/lp-do-analysis` — analyse three implementation options for each problem": "(A) minimal code change, (B) full idempotency/flag propagation, (C) schema-first approach with D1 migration."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Email pipeline entry point (cron → sync)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Email state machine (D1 + thread status lifecycle)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Draft generation (generate.ts, quality-check.ts, draft-pipeline.server.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`deliveryStatus` computed but not stored or surfaced",
+        "Resolution Required": "Yes — propagate to D1"
+      },
+      {
+        "Scope Area": "Stuck email path (recovery.server.ts, findStaleAdmittedThreads)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No alert fires when `needs_manual_draft = 1`; recovery excludes these threads silently",
+        "Resolution Required": "Yes — add visibility"
+      },
+      {
+        "Scope Area": "Duplicate send path (send/route.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No idempotency check before `createGmailDraft()`",
+        "Resolution Required": "Yes — add guard"
+      },
+      {
+        "Scope Area": "AI confidence signal (escalation sentence, needs_follow_up)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`needs_follow_up` status dropped after compute; ESCALATION_FALLBACK_SENTENCE appended but does not prevent quality pass",
+        "Resolution Required": "Yes — propagate and surface"
+      },
+      {
+        "Scope Area": "Monitoring and alerting",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No proactive alert for stuck or low-confidence threads",
+        "Resolution Required": "Yes — add telemetry events"
+      },
+      {
+        "Scope Area": "Existing test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Three specific gaps identified (send duplicate, needs_follow_up storage, confidence display)",
+        "Resolution Required": "Yes — new tests required"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Cloudflare cron every minute → `POST /api/internal/inbox-sync` → `syncInbox()` → Gmail history API → per-thread processing",
+      "end_condition": "Thread reaches `sent` status after operator sends the draft from the reception inbox UI.",
+      "areas": [
+        {
+          "id": null,
+          "label": "**Inbox sync (triage)**",
+          "flow": "Cron fires every minute → `inbox-sync/route.ts` → `syncInbox()` → Gmail history API (incremental) or rescan → `processThread()` per thread → `classifyForAdmission()` → `admit` / `auto-archive` / `review-later`",
+          "owners": "`apps/reception/worker-entry.ts:42`, `apps/reception/src/app/api/internal/inbox-sync/route.ts`, `apps/reception/src/lib/inbox/sync.server.ts`",
+          "evidence": "Thread errors are caught and logged; `threadErrors` count incremented; checkpoint NOT advanced if any thread errors (`!hasErrors`)",
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "**Draft generation**",
+          "flow": "`generateAgentDraft()` → `interpretDraftMessage()` → `generateDraftCandidate()` → `runQualityChecks()` → if `qualityResult.passed`: create draft in D1; else: `needs_manual_draft = true`",
+          "owners": "`apps/reception/src/lib/inbox/draft-pipeline.server.ts`, `draft-core/generate.ts`, `draft-core/quality-check.ts`",
+          "evidence": "`needs_follow_up` status computed but not stored in D1 or used to route thread; ESCALATION_FALLBACK_SENTENCE appended but quality gate may still pass",
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "**Draft upsert guard**",
+          "flow": "`createDraftIfNotExists()` in sync pipeline uses `INSERT ... ON CONFLICT` guard against concurrent sync runs creating duplicate D1 drafts",
+          "owners": "`apps/reception/src/lib/inbox/sync.server.ts:325`, `repositories.server.ts`",
+          "evidence": "Guard covers D1 dedup but not Gmail send dedup",
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "**Recovery cron**",
+          "flow": "Fires every 30 minutes → `recoverStaleThreads()` → `findStaleAdmittedThreads()` queries: `status = 'pending' AND updated_at < staleThreshold AND EXISTS(admit decision) AND NOT EXISTS(draft) AND needs_manual_draft IS NULL OR != 1` → retry draft generation up to `maxRetries=3`",
+          "owners": "`apps/reception/src/lib/inbox/recovery.server.ts`, `apps/reception/src/app/api/internal/inbox-recovery/route.ts`",
+          "evidence": "Threads with `needs_manual_draft = 1` are excluded from recovery; no staff notification when a thread reaches that state or exhausts retries",
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "**Send path**",
+          "flow": "Operator reviews draft in reception inbox → clicks Send → `POST /api/mcp/inbox/[threadId]/send/route.ts` → `createGmailDraft()` → `sendGmailDraft()` → `updateDraft(status: \"approved\")` → `updateDraft(status: \"sent\")` → `updateThreadStatus(status: \"sent\")`",
+          "owners": "`apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts`",
+          "evidence": "No idempotency check before `createGmailDraft()` call — a retry after partial failure creates a second Gmail draft; optimistic lock exists (`expectedUpdatedAt`) but only applies to edit conflicts, not duplicate-send on retry",
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "**AI confidence surface**",
+          "flow": "`deliveryStatus: \"needs_follow_up\"` returned by `generateDraftCandidate()` when `followUpRequired` blocks exist → used in `AgentDraftResult.status` field → NOT written to D1 thread record → NOT displayed in reception inbox UI",
+          "owners": "`apps/reception/src/lib/inbox/draft-core/generate.ts:436-439`, `draft-pipeline.server.ts:299`",
+          "evidence": "`needs_follow_up` status is computed but silently dropped; only `qualityResult.passed` gate used for routing",
+          "issues": null
+        }
+      ]
+    }
+  }
+}

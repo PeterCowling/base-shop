@@ -1,0 +1,145 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-colour-system-direction",
+  "source_artifact_path": "docs/plans/reception-colour-system-direction/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-colour-system-direction/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The green + blue combination in the current interface creates visual clutter. The operator has identified this as a product quality issue — the interface does not feel coherent or professional, which matters for a POS used daily by front-of-house staff.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The reception app's interface uses green and amber as its two active colour families, with blue removed from bar product categorisation, analytics chart-1 (hsl 240), and analytics chart-6 (hsl 199). The booking status system (hospitality-info, rvg awaiting/confirmed) is preserved. Visual competition is eliminated.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Replace 5 warmGreenShades rows (hue 110, light+dark), update chart-1 (hsl 44 amber) and chart-6 (hsl 60 golden-yellow), reduce primary dark saturation. Post-build visual review in both light and dark mode.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Post-deploy visual review is the primary validation gate for this area",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Booking status colours (statusColors.ts, rvg.css, --hospitality-info in base/tokens.css) are out of scope and explicitly not touched. Post-build review of room grid booking states.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Explicit guard: do not edit packages/themes/base/tokens.css",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — pure CSS token value and name change; no auth or data exposure surface",
+      "current_or_option_state": "-",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no observability hooks involved in CSS token changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Existing theme-bridge.test.tsx checks CSS structure (not values) — passes unchanged. No new automated tests required. CI (lint + typecheck) must pass. Manual visual review is the validation gate.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Token snapshot test deferred — effort not justified for a purely visual change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Four-file lockstep: tokens.ts rename + value update → tailwind.config.mjs key rename → useProducts.ts class name string update → hsl-to-oklch.ts snapshot update. All executed atomically in TASK-01. Regenerate tokens.css via pnpm run build:tokens.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Must verify git diff of tokens.css shows no blue hsl values in warmGreenShades position; TC-01 grep confirms 0 blueShades in source tree",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — CSS custom property resolution; no hot path or caching concerns",
+      "current_or_option_state": "-",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Rollback: revert tokens.ts, tailwind.config.mjs, useProducts.ts, hsl-to-oklch.ts; re-run pnpm run build:tokens. No feature flag. No migration.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Fast rollback path; low risk",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The reception POS app carries competing blue tones (hsl 210/240/199) alongside its green primary, creating visual clutter. This plan removes blue from three surfaces: the bar product category shade palette (`blueShades-rowN` tokens → renamed `warmGreenShades-rowN` at hue 110), and two chart tokens (`--chart-1` hsl 240 → amber hsl 44; `--chart-6` hsl 199 → golden-yellow hsl 60). Additionally, the electric-green dark mode feel is softened by reducing saturation on `--color-primary`, `--color-primary-hover`, and `--color-primary-active` dark values from 70% to 55%. The change touches five files a",
+    "goals": [
+      "Remove visual competition between blue and green in the bar POS product grid.",
+      "Redirect the mixed-drinks category colour coding to green-family shades (warmGreenShades, hue 110).",
+      "Replace blue chart tokens (chart-1 hsl 240, chart-6 hsl 199) with warm amber/golden tones.",
+      "Reduce dark-mode primary saturation to soften the electric-green feel.",
+      "Preserve `--hospitality-info` and `--color-info` booking status colours unchanged."
+    ],
+    "non_goals": [
+      "Redesigning the booking status colour system.",
+      "Changes outside the reception app.",
+      "Replacing or rebranding the primary green.",
+      "Typography, layout, or spacing changes.",
+      "Adding new automated tests for token values."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Hue 110 (chartreuse/lime) at raised saturation (~46% row1) provides sufficient 30-degree visual separation from the existing greenShades (hue 140).",
+      "chart-1 → hsl 44 (amber, 19 deg from chart-3 hsl 25) and chart-6 → hsl 60 (golden-yellow, 35 deg from chart-3, 16 deg from chart-1) are sufficiently differentiated in the chart components.",
+      "The chart-6/chart-3 warm-vs-warm pairing in the MenuPerformanceDashboard doughnut (line 180) is a deliberate accepted tradeoff; post-deploy visual review required."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Rename token family: `blueShades-rowN` → `warmGreenShades-rowN`. Update HSL values to hue 110 (5 rows × light+dark as per value table in analysis). Update `tailwind.config.mjs` keys. Update 28 class name strings in `useProducts.ts`.",
+      "Chart tokens: `--chart-1` → `44 85% 48%` light / `44 85% 65%` dark (amber). `--chart-6` → `60 80% 44%` light / `60 80% 62%` dark (golden-yellow).",
+      "Primary dark saturation: `--color-primary` → `142 55% 48%`, `--color-primary-hover` → `142 55% 54%`, `--color-primary-active` → `142 55% 58%` (dark variants only; light variants unchanged).",
+      "Regenerate `tokens.css` via `pnpm run build:tokens`.",
+      "Why planning is not reopening option selection:",
+      "Analysis resolved all operator questions decisively. No open forks remain. The value table is specified in analysis to 5-row resolution."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Update reception colour tokens and class references",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — updated `packages/themes/reception/src/tokens.ts`, regenerated `packages/themes/reception/tokens.css`, updated `apps/reception/tailwind.config.mjs`, updated `apps/reception/src/hooks/data/bar/useProducts.ts`, updated `scripts/src/themes/hsl-to-oklch.ts`",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. This is a CSS token value and naming change with no multi-step workflow, CI/deploy/release lane, approval path, feature flag, or operator runbook affected. The `pnpm run build:tokens` regeneration step is part of normal development; it is not a new process.",
+      "areas": []
+    }
+  }
+}

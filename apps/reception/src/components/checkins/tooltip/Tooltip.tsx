@@ -56,7 +56,6 @@ function TooltipComponent({ booking, onDoubleClick }: TooltipComponentProps) {
   const tooltipContent = (
     <div
       className="text-sm z-50"
-      style={{ zIndex: 9999 }} // Ensure the tooltip appears on top
     >
       <p>
         <strong>Booking Ref: {reservationCode || "N/A"}</strong>
@@ -96,27 +95,29 @@ function TooltipComponent({ booking, onDoubleClick }: TooltipComponentProps) {
   return (
     <>
       {/* A container ensuring the tooltip can float above other elements */}
-      <div className="relative z-50" style={{ zIndex: 9999 }}>
-        {/* eslint-disable-next-line ds/no-raw-spacing -- internal POS layout spacing [DS-06] */}
-        <CustomTooltip title={tooltipContent} style={{ marginLeft: "100px" }}>
-          {/* The name with potential highlight on hover */}
-          <span
-            tabIndex={0}
-            role="button"
-            className="
-              inline-block
-              cursor-pointer
-              px-2 py-1
-              rounded-lg
-              hover:bg-foreground
-              hover:bg-opacity-5
-              focus:outline-none
-            "
-            onDoubleClick={onDoubleClick}
-          >
-            {displayName}
-          </span>
-        </CustomTooltip>
+      <div className="relative z-50">
+        {/* eslint-disable-next-line ds/no-raw-spacing, ds/no-arbitrary-tailwind -- 100px has no DS spacing token; value carried over from original inline style [DS-06] */}
+        <div className="ml-[100px]">
+          <CustomTooltip title={tooltipContent}>
+            {/* The name with potential highlight on hover */}
+            <span
+              tabIndex={0}
+              role="button"
+              className="
+                inline-block
+                cursor-pointer
+                px-2 py-1
+                rounded-lg
+                hover:bg-foreground
+                hover:bg-opacity-5
+                focus:outline-none
+              "
+              onDoubleClick={onDoubleClick}
+            >
+              {displayName}
+            </span>
+          </CustomTooltip>
+        </div>
       </div>
     </>
   );

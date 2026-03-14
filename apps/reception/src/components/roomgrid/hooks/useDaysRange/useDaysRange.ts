@@ -1,5 +1,3 @@
-// src/libs/reservation-grid/src/lib/hooks/useDaysRange/useDaysRange.ts
-
 import { useMemo } from "react";
 
 // Use centralised date utilities for generating ranges

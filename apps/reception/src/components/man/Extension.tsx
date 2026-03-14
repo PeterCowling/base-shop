@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from "react";
 
 import { Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
@@ -384,11 +385,12 @@ function Extension() {
                             />
                           </TableCell>
                           <TableCell className="p-2 border-b text-center">
-                            <div className="flex gap-2 justify-center">
+                            <Cluster gap={2} justify="center">
                               <Button
                                 color={availabilityMap[r.occupantId] ? "primary" : "default"}
                                 tone={availabilityMap[r.occupantId] ? "solid" : "soft"}
                                 size="sm"
+                                title={availabilityMap[r.occupantId] ? undefined : "Room unavailable for these dates"}
                                 onClick={() => {
                                   if (availabilityMap[r.occupantId]) {
                                     setSelectedNights(getNights(r.occupantId));
@@ -396,16 +398,17 @@ function Extension() {
                                     setModalExtendType("single");
                                   }
                                 }}
-                                disabled={!availabilityMap[r.occupantId]}
+                                disabled={!availabilityMap[r.occupantId] || Number.isNaN(nightsMap[r.occupantId])}
                               >
                                 {availabilityMap[r.occupantId] ? "Guest" : "N/A"}
                               </Button>
-                              {r.occupantId === r.occupantIds[0] &&
+                              {filteredRows.find((row) => row.bookingRef === r.bookingRef) === r &&
                                 r.occupantCount > 1 && (
                                   <Button
                                     color={availabilityMap[r.occupantId] ? "primary" : "default"}
                                     tone={availabilityMap[r.occupantId] ? "solid" : "soft"}
                                     size="sm"
+                                    title={availabilityMap[r.occupantId] ? undefined : "Room unavailable for these dates"}
                                     onClick={() => {
                                       if (availabilityMap[r.occupantId]) {
                                         setSelectedNights(
@@ -415,14 +418,14 @@ function Extension() {
                                         setModalExtendType("all");
                                       }
                                     }}
-                                    disabled={!availabilityMap[r.occupantId]}
+                                    disabled={!availabilityMap[r.occupantId] || Number.isNaN(nightsMap[r.occupantId])}
                                   >
                                     {availabilityMap[r.occupantId]
                                       ? "Booking"
                                       : "N/A"}
                                   </Button>
                                 )}
-                            </div>
+                            </Cluster>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -438,7 +441,7 @@ function Extension() {
       {selectedRow && (
         <ExtensionPayModal
           fullName={selectedRow.fullName}
-          nightlyRate={selectedRow.nightlyRate}
+          nightlyRate={roundDownTo50Cents(selectedRow.nightlyRate)}
           occupantCount={selectedRow.occupantCount}
           nights={selectedNights}
           bookingRef={selectedRow.bookingRef}

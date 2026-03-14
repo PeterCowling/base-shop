@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-12T16:45:44.882Z",
+  "plan_slug": "bos-process-improvements-page-split",
+  "review_cycle_key": "bos-process-improvements-page-split",
+  "source_path": "docs/plans/bos-process-improvements-page-split/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

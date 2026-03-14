@@ -1,0 +1,135 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-roomgrid-occupancy-strip",
+  "source_artifact_path": "docs/plans/reception-roomgrid-occupancy-strip/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-roomgrid-occupancy-strip/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff using the rooms grid have no at-a-glance view of how many rooms are occupied tonight. They must count occupied cells manually when deciding whether to push discounts, adjust minimum stays, or block availability.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A compact occupancy count strip appears on the rooms-grid page showing the number of occupied rooms vs total rooms for the current date, derived from existing booking data without additional network requests.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "New `OccupancyStrip` component using DS primitives only; token-based colors",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No raw flex. Strip renders below StatusLegend.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Strip shows count, zero-occupied, full-house. Not rendered when loading, error, or today outside window.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "All states handled in component and test.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Internal staff tool, no new data pathway, no auth change.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Read-only derived UI, no mutations.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New `OccupancyStrip.test.tsx`; `RoomsGrid.test.tsx` updated to assert strip renders",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Tests in CI only.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No schema/type changes; uses existing `GridReservationRow[]` and `TBookingPeriod`; new `computeOccupancyCount` utility exported",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Pure function testable without React.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "`useMemo` for count derivation; O(rooms × bookings) — bounded",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No hot path risk.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive; git revert is rollback",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No feature flag needed.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add a compact occupancy count strip to the rooms-grid page showing \"Occupied tonight: X / 10 rooms\" derived from booking data already loaded by `useGridData`. The strip is a new props-driven `OccupancyStrip` component inserted between `<StatusLegend />` and `<DndProvider>` in `RoomsGrid.tsx`. Occupancy count is computed via a pure utility function `computeOccupancyCount` that iterates rooms, checks each room's booking periods for today overlap and an occupied status. No new Firebase queries. One task.",
+    "goals": [
+      "Display occupied room count vs total rooms for tonight on the rooms-grid page",
+      "Zero additional network requests",
+      "DS primitives only (no raw flex/inline styles)",
+      "Clean test seam via props-driven component and pure utility function"
+    ],
+    "non_goals": [
+      "Per-day occupancy heatmap or column grid (future iteration)",
+      "New API endpoints or server routes",
+      "Colour-coded occupancy spectrum"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "\"Tonight\" = today's date as `yyyy-MM-dd` string from `formatDateForInput(new Date())`"
+    ],
+    "selected_approach": [
+      "What was chosen: Client-side count derivation from `useGridData` data; props-driven `OccupancyStrip` leaf component; pure `computeOccupancyCount` utility function.",
+      "Why planning is not reopening option selection: Option B (new Firebase query) was clearly inferior — same data available, extra latency, extra test burden."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add OccupancyStrip component and wire into RoomsGrid",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/components/roomgrid/OccupancyStrip.tsx` (new), `apps/reception/src/components/roomgrid/RoomsGrid.tsx` (modified), `apps/reception/src/components/roomgrid/__tests__/OccupancyStrip.test.tsx` (new)",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change.",
+      "areas": []
+    }
+  }
+}

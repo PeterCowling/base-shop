@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline } from "@acme/design-system/primitives";
+
 import { useAuth } from "../../context/AuthContext";
 import { canAccess, Permissions } from "../../lib/roles";
 import { isStaffAccountsPeteIdentity } from "../../lib/staffAccountsAccess";
@@ -421,22 +424,26 @@ export default function StaffAccountsForm() {
                 {formState.setupEmailError}
               </p>
             ) : null}
-            <div className="flex gap-3">
-              <button
+            <Inline gap={3}>
+              <Button
                 type="button"
+                color="primary"
+                tone="solid"
                 onClick={handleResend}
                 className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-fg"
               >
                 Resend setup email
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                color="default"
+                tone="outline"
                 onClick={() => setFormState({ status: "idle" })}
                 className="rounded-md border border-border px-3 py-2 text-sm font-medium"
               >
                 Add another
-              </button>
-            </div>
+              </Button>
+            </Inline>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -483,7 +490,7 @@ export default function StaffAccountsForm() {
               <legend className="mb-2 block text-sm font-medium text-foreground">
                 Permissions
               </legend>
-              <div className="flex flex-wrap gap-4">
+              <Inline gap={4} className="flex-wrap">
                 {MANAGED_ROLES.map((role) => (
                   <label key={role} className="flex items-center gap-2 text-sm">
                     <input
@@ -496,18 +503,20 @@ export default function StaffAccountsForm() {
                     <span className="capitalize">{role}</span>
                   </label>
                 ))}
-              </div>
+              </Inline>
             </fieldset>
 
-            <button
+            <Button
               type="submit"
+              color="primary"
+              tone="solid"
               disabled={formState.status === "submitting"}
               className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-fg disabled:opacity-60"
             >
               {formState.status === "submitting"
                 ? "Creating account..."
                 : "Create account"}
-            </button>
+            </Button>
           </form>
         )}
       </section>
@@ -536,15 +545,17 @@ export default function StaffAccountsForm() {
                   key={account.uid}
                   className="rounded-md border border-border bg-surface-2 p-3"
                 >
-                  <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <Cluster gap={2} justify="between" className="mb-2">
                     <div>
                       <p className="text-sm font-medium text-foreground">
                         {account.displayName}
                       </p>
                       <p className="text-xs text-muted-foreground">{account.email}</p>
                     </div>
-                    <button
+                    <Button
                       type="button"
+                      color="danger"
+                      tone="outline"
                       onClick={() => void handleRemove(account)}
                       disabled={removingUid === account.uid}
                       className="rounded-md border border-danger px-3 py-1.5 text-xs font-medium text-danger disabled:opacity-60"
@@ -552,10 +563,10 @@ export default function StaffAccountsForm() {
                       {removingUid === account.uid
                         ? "Removing access..."
                         : "Remove staff access"}
-                    </button>
-                  </div>
+                    </Button>
+                  </Cluster>
 
-                  <div className="mb-3 flex flex-wrap gap-4">
+                  <Inline gap={4} className="mb-3 flex-wrap">
                     {MANAGED_ROLES.map((role) => (
                       <label key={role} className="flex items-center gap-2 text-sm">
                         <input
@@ -573,16 +584,18 @@ export default function StaffAccountsForm() {
                         <span className="capitalize">{role}</span>
                       </label>
                     ))}
-                  </div>
+                  </Inline>
 
-                  <button
+                  <Button
                     type="button"
+                    color="primary"
+                    tone="solid"
                     onClick={() => void handleSaveRoles(account)}
                     disabled={!canSave || editingUid === account.uid}
                     className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-fg disabled:opacity-60"
                   >
                     {editingUid === account.uid ? "Saving..." : "Save permissions"}
-                  </button>
+                  </Button>
                 </div>
               );
             })}

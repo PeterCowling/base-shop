@@ -10,7 +10,7 @@ import {
 } from "react";
 
 import { Input } from "@acme/design-system";
-import { Grid } from "@acme/design-system/primitives";
+import { Grid, Stack } from "@acme/design-system/primitives";
 
 export interface PinLoginInlineProps {
   onSubmit: (pin: string) => boolean | Promise<boolean>;
@@ -119,7 +119,7 @@ export const PinLoginInline = memo(function PinLoginInline({
   );
 
   return (
-    <div className="flex flex-col items-center">
+    <Stack align="center" gap={0}>
       <Grid cols={6} gap={4} className="justify-center">
         {Array.from({ length: PIN_LENGTH }, (_, i) => (
           <Input
@@ -144,7 +144,7 @@ export const PinLoginInline = memo(function PinLoginInline({
           Invalid PIN
         </p>
       )}
-    </div>
+    </Stack>
   );
 });
 

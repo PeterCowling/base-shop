@@ -2,6 +2,7 @@ import { type FormEvent, memo, type ReactNode, useCallback, useEffect, useRef, u
 
 import { Input, Textarea } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { getUserDisplayName } from "../../lib/roles";
@@ -112,7 +113,8 @@ function ManagerAuthModalBase({
     <ModalContainer widthClasses="w-96">
       <h2 className="mb-2 text-center text-xl font-semibold">{title}</h2>
       <p className="mb-4 text-center text-sm text-foreground">{description}</p>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <Stack asChild gap={3}>
+        <form onSubmit={handleSubmit}>
         <Input
           compatibilityMode="no-wrapper"
           ref={emailRef}
@@ -156,7 +158,9 @@ function ManagerAuthModalBase({
           <Button
             type="button"
             onClick={onCancel}
-            className="min-h-11 min-w-11 rounded-lg bg-surface-3 px-4 py-2 text-foreground"
+            color="default"
+            tone="outline"
+            className="min-h-11 min-w-11 rounded-lg px-4 py-2"
             {...cy("cancel")}
           >
             Cancel
@@ -170,7 +174,8 @@ function ManagerAuthModalBase({
             {isSubmitting ? "Verifying..." : submitLabel}
           </Button>
         </div>
-      </form>
+        </form>
+      </Stack>
     </ModalContainer>
   );
 }

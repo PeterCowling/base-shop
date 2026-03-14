@@ -1,4 +1,3 @@
-/* eslint-disable ds/min-tap-size, ds/enforce-layout-primitives -- BRIK-3 digital-assistant tap-size + layout-primitive deferred */
 'use client';
 
 import { useState } from 'react';
@@ -6,6 +5,9 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Bot, ExternalLink, Loader2, Sparkles } from 'lucide-react';
 
+import { Cluster, Inline } from '@acme/design-system/primitives';
+
+import { Container } from '../../../components/layout/Container';
 import { useUnifiedBookingData } from '../../../hooks/dataOrchestrator/useUnifiedBookingData';
 import { recordActivationFunnelEvent } from '../../../lib/analytics/activationFunnel';
 import { composeAssistantAnswer, validateAssistantLinks } from '../../../lib/assistant/answerComposer';
@@ -104,7 +106,6 @@ export default function DigitalAssistantPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          token: localStorage.getItem('prime_guest_token'),
           query: q,
           history,
         }),
@@ -212,8 +213,7 @@ export default function DigitalAssistantPage() {
 
   return (
     <main className="min-h-dvh bg-muted p-4 pb-20">
-      {/* eslint-disable-next-line ds/container-widths-only-at -- BRIK-3 pre-existing layout, no DS container primitives in Prime */}
-      <div className="mx-auto max-w-md space-y-4">
+      <Container className="max-w-md space-y-4">
         <div className="rounded-xl bg-card p-5 shadow-sm">
           <div className="mb-3 flex items-center gap-3">
             <div className="rounded-full bg-primary-soft p-2">
@@ -228,7 +228,7 @@ export default function DigitalAssistantPage() {
           </div>
 
           {/* Preset query buttons */}
-          <div className="mb-3 flex flex-wrap gap-1.5">
+          <Cluster className="mb-3 gap-1.5">
             {PRESET_QUERY_KEYS.map((key) => {
               const preset = t(key);
               return (
@@ -237,13 +237,13 @@ export default function DigitalAssistantPage() {
                   type="button"
                   onClick={() => void handleAsk(preset)}
                   disabled={isLoading}
-                  className="rounded-full border border-border bg-background px-2.5 py-1 text-xs text-foreground hover:bg-muted disabled:opacity-50"
+                  className="min-h-11 min-w-11 rounded-full border border-border bg-background px-2.5 py-1 text-xs text-foreground hover:bg-muted disabled:opacity-50"
                 >
                   {preset}
                 </button>
               );
             })}
-          </div>
+          </Cluster>
 
           <form onSubmit={handleFormSubmit}>
             <label htmlFor={ASSISTANT_QUESTION_FIELD_ID} className="text-xs font-medium text-muted-foreground">
@@ -260,13 +260,13 @@ export default function DigitalAssistantPage() {
             <button
               type="submit"
               disabled={!question.trim() || isLoading}
-              className="mt-3 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
+              className="mt-3 min-h-11 min-w-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
             >
               {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
+                <Inline className="items-center justify-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   {t('digitalAssistant.thinking')}
-                </span>
+                </Inline>
               ) : (
                 t('digitalAssistant.askButton')
               )}
@@ -292,7 +292,7 @@ export default function DigitalAssistantPage() {
                       {link.href.startsWith('/') ? (
                         <Link
                           href={link.href}
-                          className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                          className="inline-flex min-h-11 min-w-11 items-center gap-1 text-sm text-primary hover:underline"
                         >
                           {link.label}
                           <ExternalLink className="h-3.5 w-3.5" />
@@ -302,7 +302,7 @@ export default function DigitalAssistantPage() {
                           href={link.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                          className="inline-flex min-h-11 min-w-11 items-center gap-1 text-sm text-primary hover:underline"
                         >
                           {link.label}
                           <ExternalLink className="h-3.5 w-3.5" />
@@ -321,7 +321,7 @@ export default function DigitalAssistantPage() {
             {t('digitalAssistant.returnHome')}
           </Link>
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

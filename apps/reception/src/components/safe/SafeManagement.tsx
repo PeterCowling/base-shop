@@ -4,7 +4,7 @@ import { Fragment, memo, useEffect, useState } from "react";
 import { Key, Wallet } from "lucide-react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
-import { Cluster } from "@acme/design-system/primitives";
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 import { useSafeData } from "../../context/SafeDataContext";
@@ -31,6 +31,19 @@ import { SafeOpenForm } from "./SafeOpenForm";
 import { SafeReconcileForm } from "./SafeReconcileForm";
 import { SafeResetForm } from "./SafeResetForm";
 import { SafeWithdrawalForm } from "./SafeWithdrawalForm";
+
+const SAFE_TYPE_LABEL: Record<string, string> = {
+  deposit: "Deposit",
+  withdrawal: "Withdrawal",
+  pettyWithdrawal: "Petty Cash",
+  exchange: "Exchange",
+  bankDeposit: "Bank Deposit",
+  bankWithdrawal: "Bank Withdrawal",
+  opening: "Opening",
+  safeReset: "Safe Reset",
+  reconcile: "Reconcile",
+  safeReconcile: "Safe Reconcile",
+};
 
 type SafeModal =
   | "deposit"
@@ -67,7 +80,7 @@ function SafeManagement(): JSX.Element {
   const { returnKeycardsToSafe } = useTillShiftContext();
   const recordKeycardTransfer = useKeycardTransfer();
   const [activeModal, setActiveModal] = useState<SafeModal>(null);
-  const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const [expandedRows, setExpandedRows] = useState<string[]>([]);
 
   useEffect(() => {
     if (error) {
@@ -125,7 +138,7 @@ function SafeManagement(): JSX.Element {
           run: () => recordWithdrawal(amount, breakdown),
           rollback: () => recordDeposit(amount, 0, 0, breakdown),
         },
-        { run: () => recordFloatEntry(amount) },
+        { run: () => recordFloatEntry(amount), rollback: () => recordFloatEntry(-amount) },
       ],
       "Failed to record withdrawal."
     );
@@ -312,9 +325,9 @@ function SafeManagement(): JSX.Element {
     }
   };
 
-  const toggleDetails = (idx: number) => {
+  const toggleDetails = (rowKey: string) => {
     setExpandedRows((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(rowKey) ? prev.filter((k) => k !== rowKey) : [...prev, rowKey]
     );
   };
 
@@ -344,14 +357,14 @@ function SafeManagement(): JSX.Element {
 
     if (isExchangeBreakdown(breakdown)) {
       return (
-        <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+        <Stack gap={2} className="md:flex-row md:gap-4">
           <div>
             <strong>Outgoing:</strong> {renderLines(breakdown.outgoing)}
           </div>
           <div>
             <strong>Incoming:</strong> {renderLines(breakdown.incoming)}
           </div>
-        </div>
+        </Stack>
       );
     }
 
@@ -361,7 +374,7 @@ function SafeManagement(): JSX.Element {
   return (
     <PageShell title="SAFE MANAGEMENT">
       <div className="bg-surface rounded-lg shadow-lg p-6 space-y-4">
-        <div className="flex flex-wrap gap-4">
+        <Inline gap={4}>
           <StatPanel
             label="Safe Balance"
             value={formatEuro(safeBalance)}
@@ -372,9 +385,9 @@ function SafeManagement(): JSX.Element {
             value={safeKeycards}
             icon={<Key className="text-primary-main" size={24} />}
           />
-        </div>
+        </Inline>
         <div className="space-y-4">
-          <div className="flex gap-2 flex-wrap">
+          <Inline gap={2}>
             {canOpenSafe && (
               <Button
                 onClick={() => setActiveModal("open")}
@@ -401,8 +414,8 @@ function SafeManagement(): JSX.Element {
             >
               Exchange
             </Button>
-          </div>
-          <div className="flex gap-2 flex-wrap">
+          </Inline>
+          <Inline gap={2}>
             <Button
               onClick={() => setActiveModal("bankDeposit")}
               color="primary" tone="solid" size="sm"
@@ -433,7 +446,7 @@ function SafeManagement(): JSX.Element {
             >
               Reconcile
             </Button>
-          </div>
+          </Inline>
         </div>
         {activeModal === "open" && (
           <SafeOpenForm
@@ -516,8 +529,10 @@ function SafeManagement(): JSX.Element {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {safeCounts.map((s, idx) => (
-                  <Fragment key={s.id ?? `${s.timestamp}-${idx}`}>
+                {safeCounts.map((s, idx) => {
+                  const rowKey = s.id ?? s.timestamp;
+                  return (
+                  <Fragment key={rowKey}>
                     <TableRow
                       className={
                         idx % 2 === 0
@@ -528,7 +543,7 @@ function SafeManagement(): JSX.Element {
                       <TableCell className="p-2">
                         {formatEnGbDateTimeFromIso(s.timestamp)}
                       </TableCell>
-                      <TableCell className="p-2">{s.type}</TableCell>
+                      <TableCell className="p-2">{SAFE_TYPE_LABEL[s.type] ?? s.type}</TableCell>
                       <TableCell className="p-2">
                         {s.amount !== undefined
                           ? formatEuro(s.amount)
@@ -553,10 +568,10 @@ function SafeManagement(): JSX.Element {
                       <TableCell className="p-2">
                         {s.denomBreakdown ? (
                           <Button
-                            onClick={() => toggleDetails(idx)}
+                            onClick={() => toggleDetails(rowKey)}
                             className="text-primary-main underline"
                           >
-                            {expandedRows.includes(idx)
+                            {expandedRows.includes(rowKey)
                               ? "Hide Details"
                               : "View Details"}
                           </Button>
@@ -565,7 +580,7 @@ function SafeManagement(): JSX.Element {
                         )}
                       </TableCell>
                     </TableRow>
-                    {expandedRows.includes(idx) && s.denomBreakdown && (
+                    {expandedRows.includes(rowKey) && s.denomBreakdown && (
                       <TableRow
                         className={
                           idx % 2 === 0
@@ -579,7 +594,8 @@ function SafeManagement(): JSX.Element {
                       </TableRow>
                     )}
                   </Fragment>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
           )}

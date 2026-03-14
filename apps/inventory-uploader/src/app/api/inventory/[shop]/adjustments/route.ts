@@ -6,6 +6,7 @@ import {
 } from "@acme/platform-core/repositories/stockAdjustments.server";
 
 import { apiError, parseSafeLimit } from "../../../../../lib/api-helpers";
+import { getTrustedRequestIpFromHeaders } from "../../../../../lib/auth/requestIp";
 
 export const runtime = "nodejs";
 
@@ -34,10 +35,15 @@ export async function POST(
   const dryRunParam = url.searchParams.get("dryRun") === "true";
 
   try {
-    const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
+    const body: unknown = await req.json().catch(() => null);
+    const bodyObj: Record<string, unknown> = body !== null && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : {};
     // Allow ?dryRun=true to override body field
-    const payload = dryRunParam ? { ...(body ?? {}), dryRun: true } : (body ?? {});
-    const result = await applyStockAdjustment(shop, payload);
+    const payload = dryRunParam ? { ...bodyObj, dryRun: true } : bodyObj;
+    const ip = getTrustedRequestIpFromHeaders(req.headers);
+    const actor = ip ? { ip } : undefined;
+    const result = await applyStockAdjustment(shop, payload, { actor });
     if (!result.ok) {
       return NextResponse.json(result, { status: 400 });
     }

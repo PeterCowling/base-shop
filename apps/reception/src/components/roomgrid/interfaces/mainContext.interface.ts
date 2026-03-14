@@ -1,4 +1,3 @@
-// src/libs/reservation-grid/src/lib/interfaces/mainContext.interface.ts (or similar)
 // Import the payload type definition correctly
 import type { ReservationMovePayload } from "../../../types/dndTypes";
 

@@ -3,6 +3,10 @@ import type { ProductPublication } from "../products/index";
 export interface ProductsRepository {
   read<T = ProductPublication>(shop: string): Promise<T[]>;
   write<T = ProductPublication>(shop: string, catalogue: T[]): Promise<void>;
+  create<T extends ProductPublication = ProductPublication>(
+    shop: string,
+    product: T,
+  ): Promise<T>;
   getById<T extends { id: string } = ProductPublication>(
     shop: string,
     id: string,

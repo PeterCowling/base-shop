@@ -1,4 +1,3 @@
-/* eslint-disable ds/enforce-layout-primitives -- BRIK-3 prime DS rules deferred */
 /**
  * NextActionCard.tsx
  *
@@ -19,6 +18,8 @@ import {
   Navigation,
   Sparkles,
 } from 'lucide-react';
+
+import { Inline } from '@acme/design-system/primitives';
 
 import { getChecklistItemLabel, getNextChecklistItem } from '../../lib/preArrival';
 import type { ChecklistProgress } from '../../types/preArrival';
@@ -164,9 +165,9 @@ export const NextActionCard: FC<NextActionCardProps> = memo(function NextActionC
       <div className="relative">
         {/* Icon and title */}
         <div className="mb-3 flex items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-background/20">
+          <Inline className="h-14 w-14 items-center justify-center rounded-xl bg-background/20">
             {content.icon}
-          </div>
+          </Inline>
           <div className="flex-1">
             <h3 className="text-lg font-semibold">
               {content.title}

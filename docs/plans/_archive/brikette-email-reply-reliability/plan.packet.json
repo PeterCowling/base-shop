@@ -1,0 +1,250 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "brikette-email-reply-reliability",
+  "source_artifact_path": "docs/plans/brikette-email-reply-reliability/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/brikette-email-reply-reliability/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Three confirmed failure modes in the guest email pipeline risk silent failures (no reply ever sent), duplicate guest replies, and confidently wrong AI responses reaching guests. These directly harm guest experience and hostel reputation, and are surfaced by operational observation with >85% confidence estimates.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Code fixes deployed for stuck emails, duplicate replies, and AI overconfidence; stuck admitted threads surface for manual action within 2 hours; duplicate sends prevented at the send route level; AI uncertainty routes to manual-review flag rather than confident-guess delivery.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "New \"Needs follow-up\" badge on draft review card when `deliveryStatus === \"needs_follow_up\"`",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Problem 1 and 2 have no new UI. `manualDraftCount` badge in `InboxWorkspace.tsx` already exists for Problem 1.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "New visual draft state (\"Needs follow-up\") surfaced at review time; existing `needs_manual_draft` state unchanged",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Default graceful handling when `deliveryStatus` absent/null on legacy rows required",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no new endpoints, no auth changes, no new data exposure; `requireStaffAuth` continues to protect all routes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "All three fixes are internal to existing staff-authenticated routes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Three new telemetry event types: `send_duplicate_blocked` (TASK-01), `needs_manual_draft_alert` (TASK-02), `followUpRequired` metadata on `drafted` event (TASK-03)",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "All write to existing `thread_events` table; no new infrastructure",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for idempotency guard, alert event emission, `deliveryStatus` storage, and confidence badge rendering; all in CI only",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "Existing mock injection points cover all three; no new test seam needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`InboxDraftApiModel` gains `deliveryStatus` field; `quality_json` blob extended additively; three new `thread_events` event types (append-only, no migration)",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "No D1 schema migrations required for any task",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "At most one extra D1 write per operation path: TASK-01 adds pre-send gmailDraftId write; TASK-02 adds post-flag event write; TASK-03 adds deliveryStatus field to quality blob (negligible)",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "Recovery cron limit of 20 threads unchanged; make limit env-configurable noted as adjacent scope",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Each fix independently revertable with a single-file change; no migration to roll back",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "TASK-01 rollback: revert `send/route.ts`; TASK-02 rollback: remove alert event emission; TASK-03 rollback: UI stops reading `deliveryStatus` from quality blob",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Three confirmed P1 failure modes in the guest email reply pipeline require targeted code fixes: (1) stuck threads reaching `needs_manual_draft = 1` without any observable staff alert, (2) the send route creating a second Gmail draft on retry because `gmail_draft_id` is written only after send completes, and (3) AI-generated drafts with unanswered questions being delivered to operators without any confidence indicator. All three fixes are code-only — no D1 schema migrations required. TASK-01 and TASK-02 follow a strict deployment order (idempotency first, then alerting); TASK-03 is independent ",
+    "goals": [
+      "Ensure admitted threads that fail draft generation or require follow-up are surfaced to staff within 2 hours.",
+      "Prevent the same email being sent twice to a guest when a retry occurs during the send sequence.",
+      "Surface AI uncertainty at the draft review stage so operators can identify low-confidence drafts before sending."
+    ],
+    "non_goals": [
+      "Rebuilding the admission/classification pipeline.",
+      "Changing the AI model or prompt architecture.",
+      "Adding external alerting (SMS, PagerDuty) beyond the existing inbox UI."
+    ],
+    "constraints": [
+      "D1 (Cloudflare) has no `SELECT FOR UPDATE` or advisory locks; idempotency must use unique constraints or conditional updates.",
+      "Reception app deploys as a Cloudflare Worker — no persistent in-memory state.",
+      "Cron triggers are fixed at 1-minute (inbox-sync) and 30-minute (inbox-recovery) intervals.",
+      "Tests run in CI only per `docs/testing-policy.md`."
+    ],
+    "assumptions": [],
+    "selected_approach": [
+      "What was chosen:",
+      "TASK-01: Pre-send idempotency check in `send/route.ts` — check `currentDraft.gmail_draft_id` before `createGmailDraft()`, write `gmailDraftId` to D1 immediately after creation and before `sendGmailDraft()`, emit `send_duplicate_blocked` event when guard fires.",
+      "TASK-02: In-process alert in `flagForManualDraft()` (`recovery.server.ts`) — after writing `needs_manual_draft = 1`, emit a `needs_manual_draft_alert` event to `thread_events`.",
+      "TASK-03: Write `deliveryStatus` into `drafts.quality_json` in both sync (`upsertSyncDraft` / `createDraftIfNotExists`) and recovery (`createDraft`) draft creation paths; expose `deliveryStatus` in `serializeDraft()` / `InboxDraftApiModel`; render badge in draft review UI when value is `\"needs_follow_up\"`.",
+      "Why planning is not reopening option selection:",
+      "All three options were evaluated and decided in `analysis.md`. No new evidence from source code inspection contradicts the chosen approaches. The source reads confirm exact file paths, function signatures, and call sequences."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass — all three fixes are code-only; no D1 migrations; source file paths confirmed; test seams available.",
+      "Sequenced": "Yes — TASK-01 before TASK-02 (idempotency must land before alerting to avoid false alerts during deployment transitions); TASK-03 independent.",
+      "Edge-case review complete": "Yes — orphaned Gmail draft risk on crash documented; D1 double-write non-transactional risk documented; `quality_json` null-default handling required.",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Fix duplicate send risk — invert `gmailDraftId` write ordering in `send/route.ts`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts`; new test cases in `apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts`",
+        "affects": "`apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts`, `apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add stuck-email alert event in `flagForManualDraft()`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 87,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/lib/inbox/recovery.server.ts`; new/updated test cases in `apps/reception/src/lib/inbox/__tests__/recovery.server.test.ts`",
+        "affects": "`apps/reception/src/lib/inbox/recovery.server.ts`, `apps/reception/src/lib/inbox/__tests__/recovery.server.test.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Store AI confidence in `quality_json`; surface badge on draft review card",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 84,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code changes to `apps/reception/src/lib/inbox/sync.server.ts`, `apps/reception/src/lib/inbox/recovery.server.ts`, `apps/reception/src/lib/inbox/api-models.server.ts`; new badge in draft review UI component; new/updated tests",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Inbox sync (triage)",
+          "trigger": "Cron every minute",
+          "flow": "Unchanged — no modifications to admission or classification",
+          "task_ids": [],
+          "dependency_note": "None",
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Draft generation (sync path)",
+          "trigger": "Admitted thread, no prior draft",
+          "flow": "`syncInbox()` → `upsertSyncDraft()` → `createDraftIfNotExists()` — `deliveryStatus` from `draftResult.status` now merged into `quality_json` payload before insert; `drafted` event gains `followUpRequired` metadata",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "`quality_json` must default gracefully on legacy rows that lack `deliveryStatus` key"
+        },
+        {
+          "id": null,
+          "label": "Draft generation (recovery path)",
+          "trigger": "Recovery cron, stale admitted thread",
+          "flow": "`recoverStaleThreads()` → `recoverSingleThread()` → `createDraft()` — `deliveryStatus` from `draftResult.status` now merged into `quality` field before D1 insert",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Same null-default seam as sync path"
+        },
+        {
+          "id": null,
+          "label": "Recovery cron — manual flag",
+          "trigger": "Recovery exhausts retries OR draft fails quality gate",
+          "flow": "`flagForManualDraft()` → `updateThreadStatus(needs_manual_draft = 1)` → **NEW: `recordInboxEvent(needs_manual_draft_alert)`**",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "D1 double-write non-transactional: if event write fails, thread still flagged correctly; only telemetry entry is lost"
+        },
+        {
+          "id": null,
+          "label": "Send path",
+          "trigger": "Operator clicks Send",
+          "flow": "(1) check `currentDraft.gmail_draft_id`; (2) if already set → skip creation, emit `send_duplicate_blocked`, call `sendGmailDraft(existing id)`; (3) if null → `createGmailDraft()` → **write `gmailDraftId` to D1 immediately** → `sendGmailDraft()` → update status → record events",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "Window between `createGmailDraft()` and D1 write: crash here leaks an orphaned Gmail draft (never sent, never re-sent — safe)"
+        },
+        {
+          "id": null,
+          "label": "Draft review UI",
+          "trigger": "Operator opens draft for review",
+          "flow": "Draft card reads `quality.deliveryStatus` from API response; **NEW: \"Needs follow-up\" badge rendered** when value is `\"needs_follow_up\"`",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "`serializeDraft()` must expose `deliveryStatus` from `quality_json` in API response"
+        },
+        {
+          "id": null,
+          "label": "Telemetry / observability",
+          "trigger": "New events from fixed code",
+          "flow": "Three new event types now recorded in `thread_events`: `needs_manual_draft_alert`, `send_duplicate_blocked`, `followUpRequired` on `drafted` events",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "`send_duplicate_blocked` should fire at zero rate in normal operation; non-zero rate confirms crashes are occurring"
+        }
+      ]
+    }
+  }
+}

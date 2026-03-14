@@ -2,6 +2,7 @@
 import React, { useCallback } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
@@ -34,7 +35,7 @@ function WithMilkModalBase(props: WithMilkModalProps): JSX.Element {
       <h2 className="text-lg font-semibold mb-4 text-center">
         {productName}: Milk Option
       </h2>
-      <div className="flex flex-col space-y-3 mb-4">
+      <Stack gap={3} className="mb-4">
         <Button
           onClick={handleWithMilk}
           color="primary"
@@ -49,7 +50,7 @@ function WithMilkModalBase(props: WithMilkModalProps): JSX.Element {
         >
           Without Milk
         </Button>
-      </div>
+      </Stack>
       <Button
         onClick={onCancel}
         color="default"

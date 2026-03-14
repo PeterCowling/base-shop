@@ -24,12 +24,14 @@ const ArchiveButton: FC<ArchiveButtonProps> = ({ onClick, eligibleCount }) => {
     <Button
       type="button"
       onClick={onClick}
-      className="flex items-center justify-center border border-warning-main rounded-md p-1 hover:bg-warning-light active:bg-warning-light"
+      color="warning"
+      tone="solid"
+      className="flex items-center justify-center rounded-md p-1"
       aria-label="Archive"
     >
       {/* Archive icon (24x24) */}
       <svg
-        className="w-6 h-6 text-warning-main"
+        className="w-6 h-6"
         fill="none"
         stroke="currentColor"
         strokeWidth={2}
@@ -43,7 +45,7 @@ const ArchiveButton: FC<ArchiveButtonProps> = ({ onClick, eligibleCount }) => {
         />
       </svg>
       {typeof eligibleCount === "number" && (
-        <span className="ms-1 text-sm text-warning-main">{`Archive (${eligibleCount})`}</span>
+        <span className="ms-1 text-sm">{`Archive (${eligibleCount})`}</span>
       )}
     </Button>
   );

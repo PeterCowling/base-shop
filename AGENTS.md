@@ -30,6 +30,10 @@ Examples of prohibited shortcuts:
 
 When you identify that the "right" solution requires significantly more work, explain the tradeoff and let the user decide — don't silently choose the shortcut.
 
+## Persistent Context
+
+Operational facts (credentials, deployment details, app procedures, established decisions) live in `docs/agents/memory/INDEX.md`. Read the index at session start, then read specific file(s) relevant to your task. When you establish a new operational fact, add/update the relevant file and update the index.
+
 ## Commands
 
 | Task | Command |
@@ -180,13 +184,6 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
 For diagnostic and utility tool skills, see the index at `.claude/skills/tools-index.md`.
 For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
-
-## Skills
-
-Skills live in `.claude/skills/<name>/SKILL.md` (Claude Code auto-discovers; Codex discovers via `.agents/skills/` mirror).
-Discover all skills: `scripts/agents/list-skills` or Codex `/skills`.
-For tool/utility skill index: `.claude/skills/tools-index.md`.
-For workflow entrypoint: `docs/agents/feature-workflow-guide.md`.
 
 ## Plan Confidence Policy
 

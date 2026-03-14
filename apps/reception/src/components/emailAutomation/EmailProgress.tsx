@@ -65,7 +65,7 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
             <Spinner size="md" />
           </div>
         ) : error ? (
-          <div className="text-danger-fg font-semibold text-center mt-8 p-3 bg-danger-fg/10 rounded-lg border border-danger-fg/30">
+          <div className="text-error-main font-semibold text-center mt-8 p-3 bg-error-light rounded-lg border border-error-main/30">
             Error loading email progress data:{" "}
             {error instanceof Error ? error.message : String(error)}
           </div>

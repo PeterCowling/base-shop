@@ -4,7 +4,7 @@
  * Retrieves bookings for a guest by UUID.
  */
 
-import { FirebaseRest, jsonResponse, errorResponse } from '../../lib/firebase-rest';
+import { errorResponse,FirebaseRest, jsonResponse } from '../../lib/firebase-rest';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;

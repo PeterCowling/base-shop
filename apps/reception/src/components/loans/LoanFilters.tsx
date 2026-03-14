@@ -1,6 +1,7 @@
 import { memo, type ReactElement } from "react";
 
 import { Input } from "@acme/design-system";
+import { Inline } from "@acme/design-system/primitives";
 
 import DateSelector from "../common/DateSelector";
 
@@ -27,7 +28,7 @@ function LoanFiltersComponent({
         username={username}
         calendarColorVariant="warning"
       />
-      <div className="flex items-center gap-2">
+      <Inline gap={2}>
         <label htmlFor="guestFilter" className="font-semibold">
           Filter by guest name:
         </label>
@@ -39,7 +40,7 @@ function LoanFiltersComponent({
           className="border rounded-lg px-2 py-1"
           placeholder="Type a name..."
         />
-      </div>
+      </Inline>
     </div>
   );
 }

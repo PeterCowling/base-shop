@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { buildMcpAuthHeaders } from "@/services/mcpAuthHeaders";
 
 // ---------------------------------------------------------------------------
@@ -188,13 +190,15 @@ export default function AnalyticsSummary({ refreshKey }: AnalyticsSummaryProps) 
         <p className="text-xs text-warning-main">
           Analytics unavailable
         </p>
-        <button
+        <Button
           type="button"
+          color="default"
+          tone="ghost"
           onClick={handleRetry}
-          className="rounded-md px-2.5 py-1 text-xs font-medium text-warning-main transition hover:bg-warning-main/10"
+          className="rounded-md px-2.5 py-1 text-xs font-medium text-warning-main hover:bg-warning-main/10"
         >
           Tap to retry
-        </button>
+        </Button>
       </div>
     );
   }

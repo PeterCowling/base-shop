@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import ModalContainer from "../bar/orderTaking/modal/ModalContainer";
@@ -42,7 +43,7 @@ function PinEntryModalBase({
         <PinInput onChange={setPin} placeholder={title} />
       </div>
       {error && <div className="mb-2 text-error-main text-sm">{error}</div>}
-      <div className="flex justify-center gap-2 mt-4">
+      <Cluster justify="center" className="mt-4">
         {!hideCancel && (
           <Button
             onClick={onCancel}
@@ -59,7 +60,7 @@ function PinEntryModalBase({
         >
           Confirm
         </Button>
-      </div>
+      </Cluster>
     </ModalContainer>
   );
 }

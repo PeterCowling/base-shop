@@ -77,6 +77,14 @@ async function remove(shop: string, id: string): Promise<void> {
   await write(shop, next);
 }
 
+async function create<
+  T extends ProductPublication = ProductPublication,
+>(shop: string, product: T): Promise<T> {
+  const catalogue = await read<T>(shop);
+  await write<T>(shop, [product, ...catalogue]);
+  return product;
+}
+
 async function duplicate<
   T extends ProductPublication = ProductPublication,
 >(shop: string, id: string): Promise<T> {
@@ -100,6 +108,7 @@ async function duplicate<
 export const jsonProductsRepository: ProductsRepository = {
   read,
   write,
+  create,
   getById,
   update,
   delete: remove,

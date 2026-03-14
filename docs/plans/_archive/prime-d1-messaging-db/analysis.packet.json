@@ -1,0 +1,211 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "prime-d1-messaging-db",
+  "source_artifact_path": "docs/plans/prime-d1-messaging-db/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/prime-d1-messaging-db/fact-find.md",
+    "plan": "docs/plans/prime-d1-messaging-db/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The prime app includes a messaging database for storing guest messages. The database ID in the deployment config is a placeholder that was never replaced with a real one. Any feature that reads or writes messages will not work in production.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The real Cloudflare D1 database ID is in wrangler.toml, migrations have been applied, and the PRIME_MESSAGING_DB binding resolves correctly at runtime.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — infra only",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A — no UI affected",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — infra only",
+      "current_or_option_state": "Would change error states in messaging UI",
+      "gap_or_implication": "N/A — no user-facing state change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "D1 binding is server-side only; no new exposure",
+      "current_or_option_state": "Removes surface area",
+      "gap_or_implication": "No auth changes; server-side only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "No new metrics needed",
+      "current_or_option_state": "No new metrics",
+      "gap_or_implication": "No new metrics needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Existing tests with in-memory D1 mock continue to pass; no new tests needed",
+      "current_or_option_state": "Would require deleting test suite",
+      "gap_or_implication": "Existing tests pass; no new tests",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "New D1 schema via 4 migrations; well-defined contract",
+      "current_or_option_state": "Schema deleted",
+      "gap_or_implication": "Schema fully defined across 4 migrations; plan must apply all in order",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Standard D1 for this schema size; no concerns",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No performance concerns",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Create DB → apply migrations → update wrangler.toml; rollback = delete DB + revert wrangler.toml",
+      "current_or_option_state": "Revert = re-implement code",
+      "gap_or_implication": "Clear rollback path; DB deletion + wrangler.toml revert",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The prime guest app's messaging system has a fully-written application layer (repositories, API functions, type definitions, tests) but the backing Cloudflare D1 database was never created. The `wrangler.toml` has a placeholder `database_id = \"000...000\"`. The decision to make here is: how do we restore messaging functionality — create the real database, or remove/gate the dependency?",
+    "goals": [
+      "Messaging persistence operational in production (PRIME_MESSAGING_DB binding resolves)",
+      "All 4 existing migrations applied in order",
+      "wrangler.toml carries the real database ID",
+      "No application code changes required"
+    ],
+    "non_goals": [
+      "Changing any messaging application logic",
+      "Migrating existing data (database is new)",
+      "Changes to Cloudflare Pages dashboard binding (wrangler.toml is source of truth)"
+    ],
+    "constraints": [
+      "CF account `9e2c24d2db8e38f743f0ad6f9dfcfd65`; API token in `.env.local`",
+      "Cloudflare Pages deployment (`wrangler pages dev` picks up `[[d1_databases]]`)",
+      "Migration files are in `wrangler d1 migrations` format"
+    ],
+    "assumptions": [
+      "`wrangler` CLI is available locally",
+      "Account-scoped CF token has D1 create/migrate write permission"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Messaging operational in production",
+        "Why it matters": "Core goal — current state is broken",
+        "Weight/priority": "Must-pass"
+      },
+      {
+        "Criterion": "Zero application code changes",
+        "Why it matters": "Avoids scope creep and re-testing burden",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "Production infra changes should be reversible",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Effort / risk",
+        "Why it matters": "Bounded scope is preferred",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Create DB + apply migrations",
+        "Description": "Run `wrangler d1 create prime-messaging`, apply 4 migrations, write real ID to wrangler.toml",
+        "Upside": "Fully restores messaging; no app code changes; uses existing migration toolchain",
+        "Downside": "Requires CF token to have D1 create/migrate scope — same token manages Pages + DNS, so assumed sufficient (low risk)",
+        "Key risks": "Token scope assumed; if `wrangler d1 create` fails with auth error, elevate token scope or use CF dashboard",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Remove PRIME_MESSAGING_DB binding",
+        "Description": "Delete D1 binding from wrangler.toml and remove application code that references it",
+        "Upside": "Eliminates the broken binding immediately",
+        "Downside": "Destroys implemented messaging system; large code deletion; messaging functionality lost entirely",
+        "Key risks": "Permanent loss of delivered work; reversal would require re-implementing",
+        "Viable?": "No"
+      },
+      {
+        "Option": "C — Gate behind feature flag, defer DB creation",
+        "Description": "Add runtime feature flag; suppress all messaging errors",
+        "Upside": "No infra work now",
+        "Downside": "Hides a broken system behind a flag; adds flag debt; still requires DB creation before any real use; messaging remains non-functional in production",
+        "Key risks": "Increases technical debt; defers the same 4-step fix indefinitely",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Create the `prime-messaging` D1 database, apply all 4 migration files in order, and update `apps/prime/wrangler.toml` with the real database ID.",
+      "Why this wins": "All application code is already complete and tested. The only missing piece is the infrastructure. This is the minimal, reversible fix that makes messaging operational with zero application code changes. Option B destroys working code. Option C hides the problem without fixing it.",
+      "What it depends on": "CF API token having D1 create/migrate scope (same token manages Pages + DNS — low risk). `wrangler` CLI accessible in the build environment.",
+      "**Option B (remove binding)** — permanently destroys a fully-implemented messaging system. Rejection is unambiguous": "the application code is complete, tested, and waiting on infrastructure."
+    },
+    "rejected_approaches": [
+      "**Option B (remove binding)** — permanently destroys a fully-implemented messaging system. Rejection is unambiguous: the application code is complete, tested, and waiting on infrastructure.",
+      "**Option C (feature flag)** — adds flag debt without eliminating the broken state. The fix is the same 4 steps regardless; a flag only defers it. Rejected as wasteful."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "Existing unit tests pass without changes (in-memory D1 mock is unaffected)",
+        "CHECKPOINT verification is the primary acceptance signal",
+        "No new tests required"
+      ],
+      "sequencing_constraints": [
+        "TASK-01 must complete before TASK-02 (need DB to apply migrations)",
+        "TASK-03 must complete before TASK-04 (need real ID in wrangler.toml to verify binding)",
+        "TASK-02 and TASK-03 can be combined or run in either order after TASK-01"
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "PRIME_MESSAGING_DB binding",
+          "current": "`database_id = \"000...000\"` placeholder; binding does not resolve",
+          "trigger": "Any CF Pages deploy / local `wrangler pages dev`",
+          "future": "`wrangler d1 create` → real DB ID captured → written to wrangler.toml → `wrangler d1 migrations apply prime-messaging --remote` → all 4 migrations applied → binding resolves at runtime",
+          "steady": "All application code unchanged; existing tests unchanged",
+          "seams": "Token D1 write scope assumed; Pages project name match assumed"
+        },
+        {
+          "id": null,
+          "label": "Messaging API functions",
+          "current": "`getPrimeMessagingDb()` throws at runtime; `hasPrimeMessagingDb()` returns false",
+          "trigger": "Guest or staff request to any messaging endpoint",
+          "future": "`hasPrimeMessagingDb()` returns true; `getPrimeMessagingDb()` returns live D1 instance; repository functions execute against real SQLite",
+          "steady": "API function signatures, guards, and business logic unchanged",
+          "seams": "None — code is complete"
+        },
+        {
+          "id": null,
+          "label": "Migration state",
+          "current": "0 databases, 0 applied migrations",
+          "trigger": "DB creation completes",
+          "future": "Migrations 0001–0004 applied in sequence; all 8 tables + indexes present",
+          "steady": "Migration files unchanged",
+          "seams": "Migration ordering must be enforced; apply one-at-a-time or `--remote` applies all pending in order"
+        }
+      ]
+    }
+  }
+}

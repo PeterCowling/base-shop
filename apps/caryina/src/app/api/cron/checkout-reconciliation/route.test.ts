@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 
-import { GET } from "@/app/api/cron/checkout-reconciliation/route";
+import { POST } from "@/app/api/cron/checkout-reconciliation/route";
 
 jest.mock("@/lib/checkoutReconciliation.server", () => ({
   reconcileStaleCheckoutAttempts: jest.fn(),
@@ -12,7 +12,23 @@ const { reconcileStaleCheckoutAttempts } = jest.requireMock(
   reconcileStaleCheckoutAttempts: jest.Mock;
 };
 
-describe("GET /api/cron/checkout-reconciliation", () => {
+const URL = "http://localhost/api/cron/checkout-reconciliation";
+
+function makeReq(opts: {
+  auth?: string;
+  body?: Record<string, unknown>;
+}): NextRequest {
+  return new NextRequest(URL, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      ...(opts.auth ? { authorization: opts.auth } : {}),
+    },
+    body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+  });
+}
+
+describe("POST /api/cron/checkout-reconciliation", () => {
   const originalSecret = process.env.CRON_SECRET;
 
   beforeEach(() => {
@@ -36,25 +52,18 @@ describe("GET /api/cron/checkout-reconciliation", () => {
   });
 
   it("returns 401 when auth header is missing", async () => {
-    const req = new NextRequest("http://localhost/api/cron/checkout-reconciliation", {
-      method: "GET",
-    });
-
-    const res = await GET(req);
+    const res = await POST(makeReq({}));
     expect(res.status).toBe(401);
     expect(reconcileStaleCheckoutAttempts).not.toHaveBeenCalled();
   });
 
   it("returns reconciliation summary when authorized", async () => {
-    const req = new NextRequest(
-      "http://localhost/api/cron/checkout-reconciliation?staleMinutes=10&maxAttempts=5",
-      {
-        method: "GET",
-        headers: { authorization: "Bearer test-cron-secret" },
-      },
+    const res = await POST(
+      makeReq({
+        auth: "Bearer test-cron-secret",
+        body: { staleMinutes: 10, maxAttempts: 5 },
+      }),
     );
-
-    const res = await GET(req);
     expect(res.status).toBe(200);
     const body = (await res.json()) as {
       ok: boolean;
@@ -69,16 +78,23 @@ describe("GET /api/cron/checkout-reconciliation", () => {
     });
   });
 
-  it("returns 400 for invalid staleMinutes", async () => {
-    const req = new NextRequest(
-      "http://localhost/api/cron/checkout-reconciliation?staleMinutes=abc",
-      {
-        method: "GET",
-        headers: { authorization: "Bearer test-cron-secret" },
-      },
-    );
+  it("returns reconciliation summary with no params (uses defaults)", async () => {
+    const res = await POST(makeReq({ auth: "Bearer test-cron-secret" }));
+    expect(res.status).toBe(200);
+    expect(reconcileStaleCheckoutAttempts).toHaveBeenCalledWith({
+      shopId: "caryina",
+      staleMinutes: undefined,
+      maxAttempts: undefined,
+    });
+  });
 
-    const res = await GET(req);
+  it("returns 400 for invalid staleMinutes", async () => {
+    const res = await POST(
+      makeReq({
+        auth: "Bearer test-cron-secret",
+        body: { staleMinutes: "abc" },
+      }),
+    );
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({
       error: "staleMinutes must be a positive integer",
@@ -87,15 +103,12 @@ describe("GET /api/cron/checkout-reconciliation", () => {
   });
 
   it("returns 400 for invalid maxAttempts", async () => {
-    const req = new NextRequest(
-      "http://localhost/api/cron/checkout-reconciliation?maxAttempts=0",
-      {
-        method: "GET",
-        headers: { authorization: "Bearer test-cron-secret" },
-      },
+    const res = await POST(
+      makeReq({
+        auth: "Bearer test-cron-secret",
+        body: { maxAttempts: 0 },
+      }),
     );
-
-    const res = await GET(req);
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({
       error: "maxAttempts must be a positive integer",

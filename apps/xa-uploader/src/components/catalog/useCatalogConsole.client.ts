@@ -625,8 +625,12 @@ function useCatalogAuthHandlers(state: CatalogConsoleState) {
   return { handleLogin, handleLogout };
 }
 
-function createSaveAdvanceFeedbackHandler(state: CatalogConsoleState) {
+function createSaveAdvanceFeedbackHandler(
+  state: CatalogConsoleState,
+  handleNew: () => void,
+) {
   return () => {
+    handleNew();
     updateActionFeedback(state.setActionFeedback, "draft", {
       kind: "success",
       message: state.t("saveAndAdvanceFeedback"),
@@ -655,7 +659,6 @@ function useCatalogDraftHandlers(
   state: CatalogConsoleState,
   handleAutosync?: () => Promise<SyncActionResult>,
 ) {
-  const handleSaveAdvanceFeedback = createSaveAdvanceFeedbackHandler(state);
   const triggerAutosync = createAutosyncTrigger(state, handleAutosync);
 
   const handleSelect = (product: CatalogProductDraftInput) => {
@@ -704,6 +707,8 @@ function useCatalogDraftHandlers(
       setSyncOutput: state.setSyncOutput,
     });
   };
+
+  const handleSaveAdvanceFeedback = createSaveAdvanceFeedbackHandler(state, handleNew);
 
   async function flushAutosaveQueue(): Promise<void> {
     if (state.autosaveFlushInProgressRef.current) return;

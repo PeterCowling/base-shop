@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "HEAD-GATE-01",
+      "business": "HEAD",
+      "kind": "stage_gate",
+      "title": "DISCOVERY-04 Naming",
+      "summary": "Shortlist of 8 names is ready and Nidilo is the top recommendation. Operator naming decision is still pending.",
+      "owner": "Pete",
+      "state": "pending",
+      "source_path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-20-candidate-names.user.md"
+    },
+    {
+      "id": "HEAD-BLK-01",
+      "business": "HEAD",
+      "kind": "blocker",
+      "title": "Brand name decision from Nidilo shortlist (8 candidates)",
+      "summary": "Choose the launch brand name so identity, packaging, and storefront work can settle on one direction.",
+      "owner": "Pete",
+      "due_at": "2026-02-27",
+      "state": "open",
+      "source_path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-20-candidate-names.user.md"
+    },
+    {
+      "id": "HEAD-BLK-02",
+      "business": "HEAD",
+      "kind": "blocker",
+      "title": "Exact in-stock date and sellable units for launch",
+      "summary": "Lock the stock date and launch quantity so spend, conversion guardrails, and stockout risk can be planned correctly.",
+      "owner": "Pete",
+      "due_at": "2026-02-27",
+      "state": "open",
+      "source_path": "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md"
+    },
+    {
+      "id": "HEAD-BLK-03",
+      "business": "HEAD",
+      "kind": "blocker",
+      "title": "Processor compatibility matrix v1",
+      "summary": "Define supported processor families for launch to reduce wrong-buy and return risk.",
+      "owner": "Pete",
+      "due_at": "2026-02-27",
+      "state": "open",
+      "source_path": "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md"
+    },
+    {
+      "id": "HEAD-BLK-04",
+      "business": "HEAD",
+      "kind": "blocker",
+      "title": "Payment stack day-1 confirmation (Italy: cards + PayPal minimum)",
+      "summary": "Confirm the first payment method set so checkout confidence and launch-readiness assumptions are grounded.",
+      "owner": "Pete",
+      "due_at": "2026-03-03",
+      "state": "open",
+      "source_path": "docs/business-os/site-upgrades/HEAD/2026-02-12-upgrade-brief.user.md"
+    },
+    {
+      "id": "HEAD-BLK-05",
+      "business": "HEAD",
+      "kind": "blocker",
+      "title": "Product photography for site and social creative",
+      "summary": "Arrange launch photography for the top SKU lane so the site and paid/social creative can ship credibly.",
+      "owner": "Pete",
+      "due_at": "2026-03-03",
+      "state": "open",
+      "source_path": "docs/business-os/strategy/HEAD/assessment/launch-readiness-action-backlog.user.md"
+    },
+    {
+      "id": "HEAD-BLK-06",
+      "business": "HEAD",
+      "kind": "blocker",
+      "title": "Checkout reliability pack (20 or more end-to-end test orders)",
+      "summary": "Run the checkout reliability pack before launch so payment and fulfilment behavior are not assumed.",
+      "owner": "Growth",
+      "due_at": "2026-03-03",
+      "state": "open",
+      "source_path": "docs/business-os/strategy/HEAD/assessment/launch-readiness-action-backlog.user.md"
+    },
+    {
+      "id": "HEAD-72H-01",
+      "business": "HEAD",
+      "kind": "next_step",
+      "title": "Select brand name from naming shortlist",
+      "summary": "Nidilo is the top recommendation. Choosing the name closes the naming blocker and unlocks identity work.",
+      "owner": "Pete",
+      "state": "open",
+      "source_path": "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-20-candidate-names.user.md"
+    },
+    {
+      "id": "HEAD-72H-02",
+      "business": "HEAD",
+      "kind": "next_step",
+      "title": "Confirm stock date and sellable units",
+      "summary": "Publish the inventory cap rule once the stock date and launch quantity are confirmed.",
+      "owner": "Pete",
+      "state": "open",
+      "source_path": "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md"
+    },
+    {
+      "id": "HEAD-72H-03",
+      "business": "HEAD",
+      "kind": "next_step",
+      "title": "Lock compatibility matrix v1",
+      "summary": "Confirm the processor families supported at launch so fit/returns messaging can be finalised.",
+      "owner": "Pete",
+      "state": "open",
+      "source_path": "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md"
+    },
+    {
+      "id": "HEAD-72H-04",
+      "business": "HEAD",
+      "kind": "next_step",
+      "title": "Arrange product photography for the top-3 SKU lane",
+      "summary": "Capture images for the multi-pack headband, organiser pouch, and patch pack so the first storefront and creative can ship.",
+      "owner": "Pete",
+      "state": "open",
+      "source_path": "docs/business-os/strategy/HEAD/assessment/launch-readiness-action-backlog.user.md"
+    },
+    {
+      "id": "HEAD-72H-05",
+      "business": "HEAD",
+      "kind": "next_step",
+      "title": "Confirm day-1 payment method set and run checkout reliability pack",
+      "summary": "Lock the payment method set and complete the reliability pack before launch traffic is sent to the site.",
+      "owner": "Pete",
+      "state": "open",
+      "source_path": "docs/business-os/strategy/HEAD/assessment/launch-readiness-action-backlog.user.md"
+    },
+    {
+      "id": "DEC-HEAD-01",
+      "business": "HEAD",
+      "kind": "decision_waiting",
+      "title": "Scale paid expansion vs hold/fix",
+      "summary": "Do not reopen this decision until the week-2 gate has denominator-valid CVR, CAC, returns, and payment evidence.",
+      "owner": "Pete",
+      "state": "not_ready",
+      "source_path": "docs/business-os/startup-loop-output-registry.user.html"
+    }
+  ]
+}

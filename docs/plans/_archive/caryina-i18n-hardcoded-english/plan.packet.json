@@ -1,0 +1,158 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "caryina-i18n-hardcoded-english",
+  "source_artifact_path": "docs/plans/caryina-i18n-hardcoded-english/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/caryina-i18n-hardcoded-english/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "German and Italian visitors get a mixed-language experience — translated product pages but English navigation, consent banner, footer links, and trust strip. This undermines trust, especially on legal pages where language matters.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All persistent UI chrome (header, footer, consent banner, trust strip) displays in the visitor's selected language",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "DE/IT string values added to `CHROME_DEFAULTS` for all 4 chrome surfaces",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No component changes; translations live in `contentPacket.ts`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "All DE/IT chrome surfaces correct after deploy; `resolveLocale` fallback to EN still works",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "`localizedText(value, locale)` returns DE/IT when available",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No auth, session, or data exposure changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Static strings, no audit trail needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit test `getChromeContent` for all 5 groups × 3 locales",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "`contentPacket.test.ts` — pure function, no mocking needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Remove `chrome` from JSON; update `_manualExtension` note; `CHROME_DEFAULTS` becomes canonical",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "`LocalizedText` type change-free: `de?` and `it?` already optional",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "No change — additive object keys in cached constant",
+      "current_or_option_state": "-",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive constant change; rollback = revert `contentPacket.ts` diff",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No feature flag needed; safe to deploy",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "All four Caryina chrome components (Header, SiteFooter, ConsentBanner, ShippingReturnsTrustBlock) are already locale-wired via `getChromeContent(lang)`. The bug is that `CHROME_EN_DEFAULTS` and the JSON chrome section both have only English values — no German or Italian translations exist anywhere. The fix is: (1) rename the constant to `CHROME_DEFAULTS`, add 50 new translation values (25 strings × 2 locales), and atomically remove the `chrome` key from `site-content.generated.json` so the enriched code constant becomes the active source; (2) add a focused unit test confirming locale-correct o",
+    "goals": [
+      "Add DE/IT translations for all 25 chrome strings across 5 groups (header, footer, consent, trust, notifyMe)",
+      "Make `CHROME_DEFAULTS` the authoritative and durable source of truth for chrome translations",
+      "Remove the `chrome` key from the generated JSON to eliminate materializer durability risk",
+      "Add unit test coverage for `getChromeContent` locale resolution"
+    ],
+    "non_goals": [
+      "Translating product copy, policy body text, or SEO content",
+      "Adding new chrome components or changing chrome structure",
+      "Internationalising admin routes",
+      "Fixing the `productPage.trustStrip` materializer durability risk (separate concern, pre-existing)"
+    ],
+    "constraints": [
+      "Materializer (`materialize-site-content-payload.ts`) must not require changes",
+      "TASK-01 code change + JSON chrome removal must be a single atomic commit (JSON chrome wins over code if only one is done)",
+      "Translations must be natural DE/IT — not machine-literal"
+    ],
+    "assumptions": [
+      "`LocalizedText` type already has `de?` and `it?` optional keys — no type changes needed",
+      "`cachedPayload` in `readPayload()` is process-level — no runtime cache invalidation required for deploy"
+    ],
+    "selected_approach": [
+      "What was chosen: Enrich `CHROME_EN_DEFAULTS` (renamed `CHROME_DEFAULTS`) in `contentPacket.ts` with `de`/`it` keys for all 27 strings; remove `chrome` key from `data/shops/caryina/site-content.generated.json` atomically",
+      "Why planning is not reopening option selection: Analysis conclusively eliminated Options B and C (materializer responsibility mismatch; unnecessary merge complexity). Option A is fully determined."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add DE/IT translations to `CHROME_DEFAULTS` + remove JSON chrome",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 93,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/caryina/src/lib/contentPacket.ts` + `data/shops/caryina/site-content.generated.json`",
+        "affects": "`apps/caryina/src/lib/contentPacket.ts`, `data/shops/caryina/site-content.generated.json`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add `contentPacket.test.ts` locale resolution unit tests",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — new file `apps/caryina/src/lib/contentPacket.test.ts`",
+        "affects": "`apps/caryina/src/lib/contentPacket.test.ts` (new file), `[readonly] apps/caryina/src/lib/contentPacket.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change The runtime chrome-read path is unchanged. After TASK-01 lands, `getChromeContent(lang)` reads from `CHROME_DEFAULTS` (code constant) instead of `payload.chrome` (JSON), and `localizedText(value, locale)` returns the correct DE/IT string for each field. No new flows, no new components, no operator runbook changes. ---",
+      "areas": []
+    }
+  }
+}

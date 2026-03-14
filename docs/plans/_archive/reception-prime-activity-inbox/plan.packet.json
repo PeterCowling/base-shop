@@ -1,0 +1,278 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-activity-inbox",
+  "source_artifact_path": "/Users/petercowling/base-shop/docs/plans/reception-prime-activity-inbox/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-prime-activity-inbox/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff have no visibility into activity group chats. Guest questions or issues posted to activity channels go unnoticed. This creates a service gap for a running feature.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Activity channel messages appear in Reception's Prime inbox column within the same polling window as direct messages. Staff can read full conversation history and post replies that appear in the guest app.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "`prime_activity` adapter added to `channel-adapters.server.ts`; `guestBookingRef` guard in `mapPrimeSummaryToInboxThread`; activity thread appears in Reception inbox with `channelLabel: \"Activity chat\"`",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "No layout changes. `ThreadDetailPane` already conditionally renders `guestBookingRef`; guard prevents `#activity` display.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Guest activity send now calls server function; error state handled in ChatProvider activity branch (mirrors direct-message error surface); staff side unchanged",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Server function fail → guest sees send error (same UX as direct-message failure).",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Session token validated per send (same as `direct-message.ts`); rate limiting via `enforceKvRateLimit` on sender UUID; `enforceStaffOwnerApiGate` guards staff reply routes (unchanged)",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No new auth credentials. Activity channels are hostel-wide — no per-booking membership check required.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`recordDirectTelemetry(env, 'activity.write.success/error/rate_limited')` in new function; `recordPrimeMessageAdmission` records each shadow-written message",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "~5 new telemetry event paths following existing `recordDirectTelemetry` pattern.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "`__tests__/activity-message.test.ts` (mirror of `direct-message.test.ts`); `resolveChannel` activity branch test; `resolveSentAdmissionReason` activity branch test; `ensureActivityChannelMeta` tests; `channel-adapters.server.test.ts` `prime_activity` adapter test; `mapPrimeSummaryToInboxThread` sentinel guard test",
+      "current_or_option_state": "TASK-06",
+      "gap_or_implication": "~4 new test files, ~14 new test cases. All follow existing patterns.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`primeMessagingChannelTypes` union: add `'activity'`. `inboxChannels` array: add `'prime_activity'`. `resolveChannel` explicit activity branch. `resolveSentAdmissionReason` activity branch. No schema migration.",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "TypeScript-only contract changes. SQLite has no CHECK constraint on `channel_type`.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One extra server round-trip per activity message send (~100ms, identical to direct-message). D1 shadow-write is fire-and-forget (errors caught/logged, not surfaced to guest).",
+      "current_or_option_state": "TASK-02, TASK-05",
+      "gap_or_implication": "Acceptable latency.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Removing `'prime_activity'` from `inboxChannels` hides activity threads from Reception without removing D1 data. TypeScript union additions are additive. Shadow-write failure = graceful degradation (guest message still reaches Firebase).",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "No feature flag required. Additive changes throughout.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Activity channel messages sent in the Prime guest app currently bypass the server entirely — the guest browser pushes directly to Firebase RTDB with no shadow-write to D1. This means Reception has zero visibility into activity group chats. This plan delivers a new CF Pages Function `activity-message.ts` that intercepts guest activity sends, validates the session, writes to Firebase server-side, and shadow-writes to D1. Alongside the ingestion function, the plan adds `prime_activity` as a first-class channel type across the Prime Functions contract layer, the Reception inbox adapter layer, and ",
+    "goals": [
+      "Shadow-write inbound activity messages to `PRIME_MESSAGING_DB`.",
+      "Add `prime_activity` channel type across all layers where `prime_direct` and `prime_broadcast` exist.",
+      "Show activity threads in Reception's Prime inbox column alongside `prime_direct` threads.",
+      "Allow staff to reply to activity threads; reply projected back to Firebase via existing `projectPrimeThreadMessageToFirebase` path with new `ensureActivityChannelMeta` branch."
+    ],
+    "non_goals": [
+      "AI draft generation for activity channels.",
+      "Presence tracking changes or attendance lifecycle.",
+      "Firebase RTDB security rule modifications.",
+      "Reception displaying activity roster or RSVP data.",
+      "Historical backfill of activity messages sent before this feature deploys."
+    ],
+    "constraints": [
+      "`message_threads.channel_type TEXT NOT NULL` — no CHECK constraint; sentinel `'activity'` for `booking_id` is valid SQLite. TypeScript-only contract change.",
+      "`projectPrimeThreadMessageToFirebase` uses `CF_FIREBASE_API_KEY` REST auth (not service-account token exchange). Same auth model for the new function."
+    ],
+    "assumptions": [
+      "`ActivityInstance.id` (UUID from `crypto.randomUUID()`) is used verbatim as `channelId` in `messaging/channels/<id>`.",
+      "`CF_FIREBASE_API_KEY` env var is available in the Pages Function context (same project as `direct-message.ts`).",
+      "`RATE_LIMIT` KV and `PRIME_MESSAGING_DB` D1 bindings are available (both in `wrangler.toml`).",
+      "No PWA/service-worker constraint in Prime app prevents a server round-trip on activity sends."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "New server-side ingestion function (`activity-message.ts`) + shadow-write function.",
+      "TypeScript contract additions (channel type union, inbox channel array, adapter, `resolveChannel`, `resolveSentAdmissionReason`).",
+      "`ensureActivityChannelMeta` for staff reply projection.",
+      "ChatProvider activity send branch update.",
+      "Why planning is not reopening option selection:",
+      "Analysis decisively ruled out polling (security) and Durable Objects (infra cost). No operator questions remained open."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Extend TypeScript channel type contracts",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "TypeScript-only contract changes across Prime Functions and Reception",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add `activity-message.ts` CF Pages Function + shadow-write",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/prime/functions/api/activity-message.ts` + `apps/prime/functions/lib/prime-messaging-shadow-write.ts` (add `shadowWritePrimeInboundActivityMessage`)",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add `ensureActivityChannelMeta` to `prime-thread-projection.ts`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `ensureActivityChannelMeta` function in `apps/prime/functions/lib/prime-thread-projection.ts`; update `projectPrimeThreadMessageToFirebase` dispatch.",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Add `prime_activity` channel adapter in Reception + mapper guard",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`prime_activity` adapter in `channel-adapters.server.ts`; `guestBookingRef` sentinel guard in `prime-review.server.ts` `mapPrimeSummaryToInboxThread`.",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Update ChatProvider activity send branch",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Replace direct Firebase `push()` in `sendMessage` with `fetch('/api/activity-message', ...)` for non-direct-message channels.",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Tests (all new coverage)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New test files covering all new code paths.",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Guest sends activity message",
+          "trigger": "Guest taps Send in `/chat/channel?id=<activityId>`",
+          "flow": "1. ChatProvider calls `POST /api/activity-message` with `{activityId, channelId, content}` + `prime_session` cookie. 2. Server validates session token. 3. Rate-limit check (40 req/60s per sender UUID). 4. Server writes message to Firebase `messaging/channels/<channelId>/messages/<messageId>`. 5. Shadow-writes thread (`channel_type='activity'`, `booking_id='activity'`) + message to D1 (fire-and-forget catch). 6. Returns `{success, messageId}`. 7. Guest `onChildAdded` subscription reflects new message to all channel subscribers.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Shadow-write failure is silent to guest (fire-and-forget). Firebase write failure surfaced as send error. ChatProvider must not deploy before server-side is staging-verified."
+        },
+        {
+          "id": null,
+          "label": "Staff sees activity thread in Reception",
+          "trigger": "Reception inbox polls `GET /api/mcp/inbox`",
+          "flow": "`listPrimeReviewThreads` returns activity rows (new `channel_type='activity'` rows). `resolveChannel` maps to `prime_activity`. `mapPrimeSummaryToInboxThread` sets `guestBookingRef: null` for `prime_activity` (sentinel guard). Reception inbox merges into combined thread list. `PrimeColumn` renders activity thread with `channelLabel: \"Activity chat\"`.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "`resolveChannel` must be updated before or simultaneously with first shadow-write deployment — otherwise existing `else` branch maps activity rows to `prime_direct`."
+        },
+        {
+          "id": null,
+          "label": "Staff replies to activity thread",
+          "trigger": "Staff taps Send in `DraftReviewPanel`",
+          "flow": "`review-thread-send.ts` → `sendPrimeReviewThread` → `projectPrimeThreadMessageToFirebase`. New `ensureActivityChannelMeta` branch executes. Create-path: sets `{channelType:'activity', bookingId:'activity', audience:'whole_hostel', createdAt, updatedAt}`. Update-path: sets `{updatedAt}` only. Message written to `messaging/channels/<activityId>/messages/<messageId>` with `senderRole:'staff'`. All activity channel subscribers see reply. `resolveSentAdmissionReason` returns `'staff_activity_send'` (new branch).",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "`ensureActivityChannelMeta` must not validate against `direct` or `broadcast` meta shape. Guard with explicit `channel_type === 'activity'` check."
+        }
+      ]
+    }
+  }
+}

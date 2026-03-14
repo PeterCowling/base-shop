@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 
 import { useCreditSlipsMutations } from "../../hooks/data/till/useCreditSlipsMutations";
 
@@ -24,7 +25,7 @@ export const CreditSlipRegistry = memo(function CreditSlipRegistry() {
   return (
     <div className="mt-6 border border-info-light rounded-lg p-3">
       <h3 className="text-lg font-semibold mb-2">Credit Slip Registry</h3>
-      <div className="flex flex-wrap gap-2 mb-2">
+      <Inline alignY="start" className="mb-2">
         <Input
           compatibilityMode="no-wrapper"
           type="text"
@@ -41,7 +42,7 @@ export const CreditSlipRegistry = memo(function CreditSlipRegistry() {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
-      </div>
+      </Inline>
       <Button
         onClick={handleAdd}
         className="px-3 py-1 bg-primary-main text-primary-fg rounded-lg"

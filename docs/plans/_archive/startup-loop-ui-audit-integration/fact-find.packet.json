@@ -1,0 +1,212 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "startup-loop-ui-audit-integration",
+  "source_artifact_path": "docs/plans/startup-loop-ui-audit-integration/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "The startup loop has no step that requires checking how every screen in the app actually looks when rendered — both in light and dark mode. Issues like invisible text in dark mode, clashing colours, and text that is too small are only caught by doing this audit manually. Adding a screen-by-screen rendered audit to the loop means these problems get found automatically for every product, every time, before launch.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The startup loop includes a required rendered UI screen audit at S9B that covers every screen in both light and dark mode, with findings saved as an artifact and blocking issues preventing advance.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "This change is to orchestration/config files, not to any rendered UI",
+      "gap_or_implication": "No visual change; the gate enforces visual quality is checked externally",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Operator flow: advance command now blocks if sweep not run or has S1 blockers. Operator must know to run tools-ui-contrast-sweep first.",
+      "gap_or_implication": "Operator may be surprised by new block; documentation/next_action message must be clear",
+      "carry_forward_or_notes": "Yes — plan must define the exact block message and next_action string"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth, no untrusted input, no data exposure. Gate reads local files only.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Advance command already returns structured packet with gate status. New gate adds fields to this packet.",
+      "gap_or_implication": "Gate pass/fail is visible to operator via the advance packet. No separate logging needed.",
+      "carry_forward_or_notes": "No — same packet pattern as GATE-LAUNCH-SEC"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "s6b gate tests establish the pattern. No tests exist for s9b gates.",
+      "gap_or_implication": "New gate logic should have unit tests to prevent regression.",
+      "carry_forward_or_notes": "Yes — plan must include test task"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Sweep artifact frontmatter schema (S1-Blockers field). Gate pass/block packet schema.",
+      "gap_or_implication": "Frontmatter schema is currently undocumented as a contract. Gate is a new consumer.",
+      "carry_forward_or_notes": "Yes — plan must document the frontmatter contract"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Gate is filesystem glob + file read — trivially fast. No hot path risk.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "loop-spec.yaml version bump is irreversible (semantic). Gate is additive (new hard gate).",
+      "gap_or_implication": "Existing businesses mid-loop will encounter the new gate at next S9B advance. If no sweep artifact exists, they block. Mitigation: plan must define the grace-period strategy (if any).",
+      "carry_forward_or_notes": "Yes — plan must address existing-run impact"
+    }
+  ],
+  "open_operator_questions": [
+    "Should the new hard gate apply immediately to all businesses, or should there be a 30-day advisory window before it becomes a hard block?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The startup loop's S9B stage currently runs `/lp-launch-qa` (with `/lp-design-qa` as secondary). Neither skill performs a rendered, screen-by-screen visual audit in light and dark mode. `tools-ui-contrast-sweep` — the skill that does exactly this — is documented as sitting at \"S9C (Parallel Sweep)\" but S9C does not exist in `loop-spec.yaml`. There is no gate enforcing that a contrast-and-uniformity sweep has been run before S9B→SIGNALS advance. This change adds the rendered UI audit requirement to the S9B gate, including a hard gate enforcing that a sweep artifact exists and is unblocked (no u",
+    "goals": [
+      "Add `/tools-ui-contrast-sweep` as a required step in S9B, covering all routes in both light and dark mode.",
+      "Add a hard gate `GATE-UI-SWEEP-01` to `s9b-gates.md` that blocks S9B→SIGNALS advance when no recent sweep artifact exists or when the artifact contains unresolved S1 blockers.",
+      "Record this gate in `loop-spec.yaml` with a spec version bump.",
+      "Update the S9B stage entry in `loop-spec.yaml` to list `tools-ui-contrast-sweep` as a secondary skill alongside `/lp-design-qa`.",
+      "Update the startup-loop `SKILL.md` stage map table to reflect the new secondary skill and gate."
+    ],
+    "non_goals": [
+      "Redesigning the `/tools-ui-contrast-sweep` workflow — only the artifact schema and the SKILL.md loop-position label require changes as a direct consequence of this gate design.",
+      "Changing the `lp-launch-qa` or `lp-design-qa` skills.",
+      "Adding a new loop stage (S9C as a formal stage ID) — we integrate into the existing S9B stage.",
+      "Automating the sweep execution (it remains a skill invocation step; the gate only checks the artifact)."
+    ],
+    "constraints": [
+      "`loop-spec.yaml` is the runtime-authoritative source. All downstream docs (SKILL.md, workflow guide) must align after a spec version bump (VC-02).",
+      "Gate enforcement must remain filesystem-only at advance time (consistent with existing `GATE-LAUNCH-SEC` pattern)."
+    ],
+    "assumptions": [
+      "The gate checks for the most recent sweep artifact within a 30-day window (consistent with `GATE-LAUNCH-SEC`).",
+      "S1 blocker = advance-blocking; S2 and S3 are warning-only at the gate (consistent with the skill's own severity model)."
+    ],
+    "key_entry_points": [
+      "`.claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md` — gate enforcement module loaded during `startup-loop advance` when current transition is S9B→SIGNALS. This is the canonical location for the new gate.",
+      "`.claude/skills/startup-loop/modules/cmd-advance.md` — dispatch table that routes to `s9b-gates.md` (step 6 in the advance module). Will need a line item added for the new gate summary.",
+      "`docs/business-os/startup-loop/specifications/loop-spec.yaml` — runtime-authoritative spec. S9B stage definition at line 1214. Requires: secondary skill addition + version comment + spec_version bump.",
+      "`.claude/skills/startup-loop/SKILL.md` — stage map table at line 174. Requires update."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis startup-loop-ui-audit-integration` — primary question is the glob scoping approach (Option A / B / C); secondary is whether to add a grace period for existing runs."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "S9B stage definition in loop-spec.yaml",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Existing GATE-LAUNCH-SEC pattern (gate template)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "tools-ui-contrast-sweep artifact schema (frontmatter fields)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Minor — `Status: Complete` field assumed required; not explicitly tested across all existing artifacts",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "s9b-gates.md structure and append pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Glob scoping approach for artifact discovery",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Scope gap in investigation] Minor: whether artifact slug follows business-nameable pattern is unresolved",
+        "Resolution Required": "No (open question surfaced)"
+      },
+      {
+        "Scope Area": "Secondary skills YAML syntax in loop-spec",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Stage-operator-map.json regeneration requirement",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — secondary skills not reflected in generated map",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Downstream doc alignment (SKILL.md, cmd-advance.md)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape and seam availability",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Minor — no existing s9b gate test harness; seam must be created",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "`startup-loop advance --business <BIZ>` when current stage is S9B (DO complete, S9B→SIGNALS transition pending).",
+      "end_condition": "SIGNALS stage becomes active; loop operator begins weekly readout.",
+      "areas": [
+        {
+          "id": null,
+          "label": "S9B execution",
+          "flow": "Operator runs `/lp-launch-qa --business <BIZ>` (optionally with `--domain`), then `/lp-design-qa <feature-slug>`. Results are recorded in `launch-qa-report-YYYY-MM-DD.md`.",
+          "owners": "Operator / lp-launch-qa / lp-design-qa",
+          "evidence": "`loop-spec.yaml` lines 1214–1228",
+          "issues": "`/lp-design-qa` is listed as secondary but no gate enforces it ran. No rendered visual audit is required. Dark mode screen issues are invisible to both skills."
+        },
+        {
+          "id": null,
+          "label": "S9B→SIGNALS advance gate",
+          "flow": "`GATE-LAUNCH-SEC` (Hard): checks for a launch QA report ≤30 days old with security domain passing. No other gates at this transition.",
+          "owners": "startup-loop skill / s9b-gates.md",
+          "evidence": "`s9b-gates.md` full content",
+          "issues": "Only one gate. Visual/UI quality has zero gated enforcement."
+        },
+        {
+          "id": null,
+          "label": "Contrast/uniformity audit",
+          "flow": "`/tools-ui-contrast-sweep` exists as a standalone tool. Its own SKILL.md declares \"Loop position: S9C (Parallel Sweep)\" but S9C is not a stage in `loop-spec.yaml`. It is never invoked by the loop automatically and no gate checks for its artifact.",
+          "owners": "Operator (ad-hoc only)",
+          "evidence": "`tools-ui-contrast-sweep/SKILL.md` line 237",
+          "issues": "\"S9C\" is a stale self-declaration — the loop has no S9C stage. The skill's artifacts are stored in `docs/audits/contrast-sweeps/` but nothing reads them as a gate input."
+        },
+        {
+          "id": null,
+          "label": "Evidence from recent audit",
+          "flow": "A full screen audit was run for BRIK reception (2026-03-12) finding 2 S1 blockers, 7 S2 major issues, 5 S3 minor issues — all from a token-level analysis (auth-blocked from live rendering).",
+          "owners": "Agent / docs/audits/contrast-sweeps/",
+          "evidence": "`docs/audits/contrast-sweeps/2026-03-12-reception-remaining-theming/`",
+          "issues": "Demonstrates real issue class: invisible near-black text on dark shade swatches (~1.5:1 ratio against WCAG 4.5:1 threshold). This would have been missed by both lp-launch-qa and lp-design-qa."
+        }
+      ]
+    }
+  }
+}

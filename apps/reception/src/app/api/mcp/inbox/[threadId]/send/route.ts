@@ -66,7 +66,7 @@ export async function POST(
       const detailBeforeSend = await getPrimeInboxThreadDetail(params.threadId);
       const draftBeforeSend = detailBeforeSend?.currentDraft ?? null;
 
-      const result = await sendPrimeInboxThread(params.threadId, auth.uid);
+      const result = await sendPrimeInboxThread(params.threadId, auth.uid, auth.roles);
 
       // Log prime_manual_reply when a Prime draft is sent without a template
       if (!draftBeforeSend?.templateUsed) {
@@ -131,31 +131,61 @@ export async function POST(
   }
 
   try {
-    const created = await createGmailDraft({
-      to: recipientEmails,
-      subject: currentDraft.subject ?? record.thread.subject ?? "Re: Guest inquiry",
-      bodyPlain: currentDraft.plain_text,
-      bodyHtml: currentDraft.html ?? undefined,
-      threadId: params.threadId,
-    });
+    let gmailDraftId: string;
 
-    if (!created.id) {
-      throw new Error("Gmail draft creation did not return a draft id");
+    if (currentDraft.gmail_draft_id) {
+      // Idempotency guard: a previous attempt already created this Gmail draft.
+      // Skip creation and use the existing draft ID to avoid sending a duplicate.
+      // This fires when the route is retried after a crash between createGmailDraft
+      // and the D1 write below. The rate should be near zero in normal operation;
+      // a non-zero rate in production signals crash-retries are occurring.
+      gmailDraftId = currentDraft.gmail_draft_id;
+      void recordInboxEvent({
+        threadId: params.threadId,
+        eventType: "send_duplicate_blocked",
+        actorUid: auth.uid,
+        metadata: { emailId: params.threadId, gmailDraftId },
+      });
+    } else {
+      const created = await createGmailDraft({
+        to: recipientEmails,
+        subject: currentDraft.subject ?? record.thread.subject ?? "Re: Guest inquiry",
+        bodyPlain: currentDraft.plain_text,
+        bodyHtml: currentDraft.html ?? undefined,
+        threadId: params.threadId,
+      });
+
+      if (!created.id) {
+        throw new Error("Gmail draft creation did not return a draft id");
+      }
+
+      // Write gmailDraftId to D1 BEFORE sending. If the process crashes after
+      // this write but before sendGmailDraft completes, the next retry will
+      // detect the ID, skip creation, and proceed to send. If this D1 write
+      // fails, the retry will call createGmailDraft() again; the first draft
+      // is orphaned (never sent, never re-sent — safe).
+      await updateDraft({
+        draftId: currentDraft.id,
+        gmailDraftId: created.id,
+        createdByUid: auth.uid,
+      });
+
+      gmailDraftId = created.id;
     }
 
-    const sent = await sendGmailDraft(created.id);
+    const sent = await sendGmailDraft(gmailDraftId);
     const metadata = parseThreadMetadataFromRow(record.thread);
 
     const approvedDraft = await updateDraft({
       draftId: currentDraft.id,
-      gmailDraftId: created.id,
+      gmailDraftId,
       status: "approved",
       createdByUid: auth.uid,
     });
 
     const sentDraft = await updateDraft({
       draftId: currentDraft.id,
-      gmailDraftId: created.id,
+      gmailDraftId,
       status: "sent",
       createdByUid: auth.uid,
     });
@@ -185,7 +215,7 @@ export async function POST(
       actorUid: auth.uid,
       metadata: {
         draftId: sentDraft?.id ?? currentDraft.id,
-        gmailDraftId: created.id,
+        gmailDraftId,
         gmailMessageId: sent.id ?? null,
       },
     });

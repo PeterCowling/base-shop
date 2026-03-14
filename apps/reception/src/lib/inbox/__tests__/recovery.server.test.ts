@@ -428,7 +428,91 @@ describe("recoverStaleThreads", () => {
     });
   });
 
-  // TC-06: No Gmail thread found -> skipped gracefully
+  // TC-06 (TASK-02): flagForManualDraft emits needs_manual_draft_alert after D1 write
+  it("TC-06: flagForManualDraft emits needs_manual_draft_alert event with correct fields", async () => {
+    // Thread at max retries forces immediate flagForManualDraft call
+    const threadAtMaxRetries = {
+      ...mockStaleThread,
+      metadata_json: JSON.stringify({ recoveryAttempts: 3 }),
+    };
+
+    const capturedEvents: Array<Record<string, unknown>> = [];
+    (createEvent as jest.Mock).mockImplementation((args: Record<string, unknown>) => {
+      capturedEvents.push(args);
+      return Promise.resolve({
+        id: 1,
+        thread_id: threadAtMaxRetries.id,
+        event_type: args.eventType,
+        actor_uid: null,
+        timestamp: "2026-03-12T10:00:00.000Z",
+        metadata_json: null,
+      });
+    });
+
+    const mockAll = jest.fn().mockResolvedValue({ results: [threadAtMaxRetries] });
+    const mockFirst = jest.fn().mockResolvedValue(threadAtMaxRetries);
+    const mockRun = jest.fn().mockResolvedValue({ meta: {} });
+    const mockBind = jest.fn().mockReturnValue({ all: mockAll, first: mockFirst, run: mockRun });
+    const db = { prepare: jest.fn().mockReturnValue({ bind: mockBind }) } as unknown as D1Database;
+
+    await recoverStaleThreads({ db, staleThresholdMs: 2 * 60 * 60 * 1000, maxRetries: 3 });
+
+    const alertEvent = capturedEvents.find((e) => e.eventType === "needs_manual_draft_alert");
+    expect(alertEvent).toBeDefined();
+    expect(alertEvent).toMatchObject({
+      threadId: threadAtMaxRetries.id,
+      eventType: "needs_manual_draft_alert",
+      metadata: expect.objectContaining({ attempts: 3 }),
+    });
+  });
+
+  // TC-07 (TASK-02): alert event write failure does not prevent inbox_recovery event from being emitted
+  it("TC-07: needs_manual_draft_alert write failure does not suppress inbox_recovery event", async () => {
+    const threadAtMaxRetries = {
+      ...mockStaleThread,
+      metadata_json: JSON.stringify({ recoveryAttempts: 3 }),
+    };
+
+    let alertAttempted = false;
+    const capturedEvents: Array<Record<string, unknown>> = [];
+    (createEvent as jest.Mock).mockImplementation((args: Record<string, unknown>) => {
+      if (args.eventType === "needs_manual_draft_alert") {
+        alertAttempted = true;
+        return Promise.reject(new Error("D1 write failed"));
+      }
+      capturedEvents.push(args);
+      return Promise.resolve({
+        id: 1,
+        thread_id: threadAtMaxRetries.id,
+        event_type: args.eventType,
+        actor_uid: null,
+        timestamp: "2026-03-12T10:00:00.000Z",
+        metadata_json: null,
+      });
+    });
+
+    const consoleSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    const mockAll = jest.fn().mockResolvedValue({ results: [threadAtMaxRetries] });
+    const mockFirst = jest.fn().mockResolvedValue(threadAtMaxRetries);
+    const mockRun = jest.fn().mockResolvedValue({ meta: {} });
+    const mockBind = jest.fn().mockReturnValue({ all: mockAll, first: mockFirst, run: mockRun });
+    const db = { prepare: jest.fn().mockReturnValue({ bind: mockBind }) } as unknown as D1Database;
+
+    // Should not throw even though alert write fails
+    await expect(
+      recoverStaleThreads({ db, staleThresholdMs: 2 * 60 * 60 * 1000, maxRetries: 3 }),
+    ).resolves.toBeDefined();
+
+    expect(alertAttempted).toBe(true);
+    // inbox_recovery event must still be emitted despite alert failure
+    const recoveryEvent = capturedEvents.find((e) => e.eventType === "inbox_recovery");
+    expect(recoveryEvent).toBeDefined();
+
+    consoleSpy.mockRestore();
+  });
+
+  // TC-06 (original): No Gmail thread found -> skipped gracefully
   it("skips when Gmail thread is not found", async () => {
     (getGmailThread as jest.Mock).mockResolvedValue(null);
 

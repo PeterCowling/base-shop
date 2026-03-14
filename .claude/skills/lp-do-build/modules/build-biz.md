@@ -2,21 +2,26 @@
 
 ## Offload Route
 
-Current active policy: execute this task inline. A validated patch-return Codex lane does not exist yet, so shared-checkout mutable offload is disabled as a normal default. If a future task explicitly enables a validated pilot, load and follow `../../_shared/build-offload-protocol.md`.
+When `CODEX_OK=1`: load `../../_shared/build-offload-protocol.md` and follow the **Patch-Return Pilot Contract** section. The pilot is validated for business-artifact tasks in this lane. Evidence: `docs/plans/writer-lock-patch-return-offload/spike-11-artifact-emission.md` (artifact emission), `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md` (apply window).
 
-**Track-specific prompt additions for business-artifact tasks:**
+When `CODEX_OK=0`, or when the pilot exits non-zero, or when `$PATCH_FILE` is empty, or when `git apply --check` fails: execute this task inline using the workflow below. Inline execution is the fallback, not the default. Record the fallback reason in the plan build evidence block.
+
+Shared-checkout mutable offload (`workspace-write`) remains disabled regardless of `CODEX_OK`.
+
+**Track-specific prompt additions for business-artifact tasks (Codex offload path):**
 
 - Include the Red→Green→Refactor requirement verbatim: Red (falsification probes from VC checks), Green (minimum artifact that satisfies scoped VCs), Refactor (quality hardening + VC re-pass).
 - Include the full VC contract from the task (each VC check, pass criterion, deadline, sample).
 - State clearly that the approval gate remains Claude's responsibility — Codex produces the artifact; Claude reads it, verifies VCs, and records approval evidence. Codex cannot substitute for reviewer acknowledgement.
 - Reference: `../../_shared/subagent-dispatch-contract.md` for any parallelism the prompt may describe.
 
-**If a validated offload pilot is explicitly enabled later, Claude's post-execution verification steps remain:**
+**Post-execution verification steps (pilot path — Claude's responsibility):**
 
-1. Re-read all `Affects` files — confirm each file was written or modified as specified. If any required file is missing or empty: treat as task failure; do not proceed to commit.
-2. Run `modules/build-validate.md` (Mode 3 — Document Review) — this is Claude's gate, not Codex's.
-3. Commit gate — stage only task-scoped files (the `Affects` list). Run via `scripts/agents/with-writer-lock.sh`. Never commit broken artifacts as complete outputs.
-4. Post-task plan update — mark task status Complete with date; add build evidence block (exit code, Affects files verified, VC pass/fail, offload route used).
+1. Run apply window per `../../_shared/build-offload-protocol.md` § 4 — fingerprint before, `git apply`, containment check, commit under held lock.
+2. Re-read all `Affects` files — confirm each file was written or modified as specified. If any required file is missing or empty: treat as task failure; do not proceed.
+3. Run `modules/build-validate.md` (Mode 3 — Document Review) — this is Claude's gate, not Codex's.
+4. Commit gate — stage only task-scoped files (the `Affects` list). Run `git diff --check --` to confirm no whitespace errors. Never commit broken artifacts as complete outputs.
+5. Post-task plan update — mark task status Complete with date; add build evidence block (pilot exit code, Affects files verified, apply window outcome, VC pass/fail, offload route used).
 
 ## Objective
 

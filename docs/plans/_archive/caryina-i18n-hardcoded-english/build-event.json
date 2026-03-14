@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-1773349764569",
+  "feature_slug": "caryina-i18n-hardcoded-english",
+  "emitted_at": "2026-03-12T21:09:24.569Z",
+  "why": "German and Italian visitors get a mixed-language experience — translated product pages but English navigation, consent banner, footer links, and trust strip. This undermines trust, especially on legal pages where language matters.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All persistent UI chrome (header, footer, consent banner, trust strip) displays in the visitor's selected language",
+    "source": "operator"
+  }
+}

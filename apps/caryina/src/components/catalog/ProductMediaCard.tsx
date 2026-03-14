@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { StockBadge } from "./StockBadge";
+import { StockBadge } from "@acme/ui/components/molecules/StockBadge";
 
 interface ProductMediaCardProps {
   href: string;

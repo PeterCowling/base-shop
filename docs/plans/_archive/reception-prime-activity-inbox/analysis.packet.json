@@ -1,0 +1,226 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-prime-activity-inbox",
+  "source_artifact_path": "docs/plans/reception-prime-activity-inbox/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-prime-activity-inbox/fact-find.md",
+    "plan": "docs/plans/reception-prime-activity-inbox/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Staff have no visibility into activity group chats. Guest questions or issues posted to activity channels go unnoticed. This creates a service gap for a running feature.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Activity channel messages appear in Reception's Prime inbox column within the same polling window as direct messages. Staff can read full conversation history and post replies that appear in the guest app.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "`prime_activity` adapter added to `channel-adapters.server.ts`; activity title shown in thread list via `subject` field; `PrimeColumn` empty-state text updated. No layout changes.",
+      "current_or_option_state": "Same adapter work required regardless of trigger mechanism.",
+      "gap_or_implication": "Define adapter with `channelLabel: \"Activity chat\"`, `lane: \"support\"`, `reviewMode: \"message_draft\"`, `supportsSubject: false`, `supportsRecipients: false`, `supportsDraftSend: true`.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Guest send path changes: activity send goes through `POST /api/activity-message` then Firebase. Error state must be handled (server error before Firebase write). Staff side unchanged — same draft/send panel.",
+      "current_or_option_state": "No guest UX change (polling is server-only).",
+      "gap_or_implication": "ChatProvider activity branch shows send error if server function fails. Staff send path unchanged — `DraftReviewPanel` driven by capabilities.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Guest session token validated on every activity message send (same as `direct-message.ts`). Rate limiting via `enforceKvRateLimit` on sender UUID. `enforceStaffOwnerApiGate` guards staff reply routes.",
+      "current_or_option_state": "Cannot validate sender — any `auth != null` RTDB write is treated as genuine. Unacceptable for an operator-visible inbox.",
+      "gap_or_implication": "Session validation + rate limiting for inbound; staff gate for outbound. No new auth credentials required.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`recordDirectTelemetry(env, 'activity.write.success/error/rate_limited')` added to new function. `recordPrimeMessageAdmission` records each shadow-written message.",
+      "current_or_option_state": "Polling loop would need its own telemetry and cursor state log.",
+      "gap_or_implication": "~5 new telemetry event paths, all following existing `recordDirectTelemetry` pattern.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New `__tests__/activity-message.test.ts` mirroring `direct-message.test.ts`. `resolveChannel` activity branch test. `prime-review-send-support.ts` activity branch tests. `channel-adapters.server.test.ts` `prime_activity` adapter test. `ThreadDetailPane` booking-ref guard test.",
+      "current_or_option_state": "Similar test surface but must also mock cursor logic and Firebase polling.",
+      "gap_or_implication": "~4 new test files; ~12 new test cases. All follow existing patterns.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`PrimeMessagingChannelType` union: `['direct', 'broadcast', 'activity']`. `InboxChannel` array: add `'prime_activity'`. `booking_id` sentinel `'activity'`. No schema migration. `ensureActivityChannelMeta` added to `prime-thread-projection.ts`. `resolveSentMessageKind` and `resolveSentAdmissionReason` activity branches added.",
+      "current_or_option_state": "Same D1 contract changes required regardless.",
+      "gap_or_implication": "TypeScript-only contract changes. `ThreadDetailPane` guards `guestBookingRef` display for `prime_activity` channel.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One extra server round-trip per activity message send (same as direct messages). D1 write is fail-open (shadow-write errors are caught and logged, not surfaced to guest). No extra Firebase reads.",
+      "current_or_option_state": "Polling adds periodic Firebase REST reads across all live channels. At high activity counts this scales poorly. Cursor tracking adds write overhead.",
+      "gap_or_implication": "Server function adds ~100ms to guest send path. Identical to direct-message experience.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "If shadow-write fails, guest message still reaches Firebase and guests can read it — graceful degradation. Removing `prime_activity` from `InboxChannel` hides activity threads from Reception without removing data. TypeScript union change is additive.",
+      "current_or_option_state": "Polling can be halted by removing the cron trigger. However security model is unacceptable regardless.",
+      "gap_or_implication": "No feature flag strictly required. Additive changes. Degradation is clean.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The single architectural decision this analysis must resolve is: **how are activity channel messages ingested into the Prime D1 messaging database?** All downstream work (channel type extension, Reception adapter, staff reply path) is mechanical once this decision is made. The trigger mechanism choice also determines the security trust model for inbound messages.",
+    "goals": [
+      "Shadow-write inbound activity messages to `PRIME_MESSAGING_DB`.",
+      "Add `prime_activity` channel type across all layers where `prime_direct` and `prime_broadcast` exist.",
+      "Show activity threads in Reception's Prime inbox column alongside `prime_direct` threads.",
+      "Allow staff to reply to activity threads; reply projected back to Firebase via existing `projectPrimeThreadMessageToFirebase` path with a new `ensureActivityChannelMeta` branch."
+    ],
+    "non_goals": [
+      "AI draft generation for activity channels.",
+      "Presence tracking changes or attendance lifecycle.",
+      "Firebase RTDB security rule modifications.",
+      "Reception displaying activity roster or RSVP data."
+    ],
+    "constraints": [
+      "`message_threads.channel_type TEXT NOT NULL` — sentinel value `'activity'` needed for `booking_id` field; no schema migration required (SQLite has no CHECK constraint).",
+      "`projectPrimeThreadMessageToFirebase` uses `CF_FIREBASE_API_KEY` REST auth, not service-account token exchange.",
+      "`booking_id NOT NULL` on `message_threads` — activity threads use sentinel `'activity'`; `ThreadDetailPane` must guard this sentinel.",
+      "`prime-review-send-support.ts` `resolveSentMessageKind` and `resolveSentAdmissionReason` both have non-broadcast else-branches that must be updated."
+    ],
+    "assumptions": [
+      "`ActivityInstance.id` (UUID from `crypto.randomUUID()`) is used verbatim as `channelId` in `messaging/channels/<id>`.",
+      "`CF_FIREBASE_API_KEY` env var is available in the new CF Pages Function context (same project as `direct-message.ts`).",
+      "No PWA/offline constraint exists in the Prime app that would prevent an activity message from going through a server function before reaching Firebase."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Message authenticity / security",
+        "Why it matters": "Server must be able to trust that messages came from a valid guest session",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Delivery latency",
+        "Why it matters": "Staff need to see messages with low enough latency to respond meaningfully",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Implementation complexity",
+        "Why it matters": "Low complexity = faster delivery and fewer regression surfaces",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Pattern consistency",
+        "Why it matters": "Matches existing `direct-message.ts` architecture → lower cognitive overhead, same test patterns",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Infrastructure delta",
+        "Why it matters": "New infra (Durable Objects, cron workers) adds ops cost and deployment surface",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "Can the feature be turned off cleanly if a bug surfaces?",
+        "Weight": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Server function (new CF Pages Function `activity-message.ts`)",
+        "Description": "Guest app calls `POST /api/activity-message` before writing to Firebase. Server validates session, writes to Firebase server-side, shadow-writes to D1.",
+        "Upside": "Mirrors `direct-message.ts` exactly. Session validation on send path. Near-zero latency. No new infra.",
+        "Downside": "ChatProvider activity send branch must change from direct Firebase push to server fetch + Firebase write. Guest UX regression risk.",
+        "Key risks": "Guest app send error handling must be robust; Firebase write could succeed but D1 shadow-write fail silently.",
+        "Viable?": "Yes — **Recommended**"
+      },
+      {
+        "Option": "B — Polling CF Cron Worker",
+        "Description": "A scheduled worker queries Firebase REST API every N seconds for new messages across live activity channels. Writes new ones to D1.",
+        "Upside": "No guest app change. Works retroactively for messages sent before the feature existed.",
+        "Downside": "Latency up to N seconds. Requires cursor tracking per channel (KV or D1). Treats Firebase as untrusted source — cannot verify message sender. No `wrangler.toml` cron trigger on Prime Pages project today (new infra).",
+        "Key risks": "Message authenticity cannot be verified. Firebase REST polling at scale (many channels) adds read cost. Missed messages if cursor logic fails.",
+        "Viable?": "No — insufficient security model for an operator-visible inbox"
+      },
+      {
+        "Option": "C — Firebase RTDB listener (Durable Object)",
+        "Description": "A Durable Object subscribes to RTDB via WebSocket and shadow-writes new messages.",
+        "Upside": "Real-time, reliable.",
+        "Downside": "Durable Objects are significantly more expensive and complex than Pages Functions. Major new infra. Overkill for this use case.",
+        "Key risks": "High ops cost. Not in keeping with current architecture.",
+        "Viable?": "No — disproportionate complexity"
+      },
+      {
+        "Option": "D — Hybrid: server function + background reconciliation poll",
+        "Description": "Option A as primary; a low-frequency poll reconciles any gaps (e.g. messages sent before the feature deployed).",
+        "Upside": "Belt-and-suspenders. Handles historical backfill cleanly.",
+        "Downside": "Two systems to maintain.",
+        "Key risks": "Poll doubles as a secondary attack surface. Backfill value is low if deployment is clean.",
+        "Viable?": "Acceptable if backfill is explicitly needed; deferred to follow-on"
+      }
+    ],
+    "chosen_approach": {
+      "ChatProvider activity send branch updated": "`push(ref(db, ...))` replaced by `fetch('/api/activity-message', ...)` followed by no-op (server function writes to Firebase; client reflects via the existing `onChildAdded` subscription).",
+      "**Option B (Polling)** — rejected primarily on security grounds. A polling approach reads from Firebase and cannot verify that the message sender held a valid guest session. Messages could be injected by any authenticated Firebase user (including staff or malformed clients). Unacceptable for content surfaced in a staff-facing inbox. Secondary rejection reason": "requires new infra (cron trigger) and cursor tracking.",
+      "**Option D (Hybrid)** — useful only if historical backfill is required. Deferred": "the feature will be deployed to a running system where activity messages not yet shadow-written simply won't appear (same as current state). Historical backfill can be a one-time script if needed.",
+      "bookingId strategy": "Sentinel `'activity'` with `ThreadDetailPane` guard. Confirmed viable — `guestBookingRef` is rendered only when non-null, and the guard is a one-line conditional.",
+      "Guest app offline constraint": "No PWA/service-worker configuration found in Prime app. No constraint. Confirmed by checking `wrangler.toml`, `next.config.*`, and `package.json`."
+    },
+    "rejected_approaches": [
+      "**Option B (Polling)** — rejected primarily on security grounds. A polling approach reads from Firebase and cannot verify that the message sender held a valid guest session. Messages could be injected by any authenticated Firebase user (including staff or malformed clients). Unacceptable for content surfaced in a staff-facing inbox. Secondary rejection reason: requires new infra (cron trigger) and cursor tracking.",
+      "**Option C (Durable Object)** — rejected due to disproportionate infrastructure complexity and cost. The problem does not require a persistent real-time connection.",
+      "**Option D (Hybrid)** — useful only if historical backfill is required. Deferred: the feature will be deployed to a running system where activity messages not yet shadow-written simply won't appear (same as current state). Historical backfill can be a one-time script if needed."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Guest sends activity message",
+          "current": "Guest browser pushes directly to `messaging/channels/<id>/messages`. No server intercept. Message never reaches D1.",
+          "trigger": "Guest taps Send in `/chat/channel?id=<activityId>`",
+          "future": null,
+          "steady": "`onChildAdded` subscription in guest app (no change). Firebase message schema (no change). Activity presence tracking (no change).",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Staff sees activity message in Reception",
+          "current": "Activity threads do not appear — no data in D1.",
+          "trigger": "Existing Reception inbox polling on `/api/mcp/inbox`",
+          "future": null,
+          "steady": "Email column, direct message column, broadcast column (no change). Existing Prime review thread list query (no change).",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Staff replies to activity thread",
+          "current": "Not possible — no activity threads exist in Reception.",
+          "trigger": "Staff composes reply in `DraftReviewPanel`, taps Send",
+          "future": null,
+          "steady": "`review-thread-draft.ts`, `review-thread-resolve.ts`, `review-thread-dismiss.ts` (no change). Campaign/broadcast send path (no change). `resolveSentMessageKind` returns `'support'` for activity via existing else-branch (no change needed).",
+          "seams": null
+        }
+      ]
+    }
+  }
+}

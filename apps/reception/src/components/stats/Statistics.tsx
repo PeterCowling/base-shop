@@ -122,7 +122,7 @@ const Statistics: React.FC = () => {
             Loading statistics...
           </div>
         ) : error ? (
-          <div className="rounded-lg border border-danger/40 bg-danger/10 p-6 text-sm text-danger">
+          <div className="rounded-lg border border-error-main bg-error-light p-6 text-sm text-error-main">
             {error}
           </div>
         ) : data ? (

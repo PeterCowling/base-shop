@@ -1,0 +1,23 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-dark-mode-ui-fixes",
+  "business": "BRIK",
+  "build_date": "2026-03-14",
+  "status": "complete",
+  "outcome_contract": {
+    "why": "The reception app dark mode resets to light every time staff navigate between screens, making dark mode unusable on long shifts. Tab active state and alternating table rows are also hard to read.",
+    "intended_outcome_type": "bug-fix",
+    "intended_outcome_statement": "Dark mode persists correctly across all reception screens; active tabs have a visible background indicator; alternating table rows are legible.",
+    "source": "operator"
+  },
+  "commit": "1f33c42cb1",
+  "dispatch_ids": [
+    "IDEA-DISPATCH-20260313192500-BRIK-REC-001",
+    "IDEA-DISPATCH-20260313192500-BRIK-REC-002",
+    "IDEA-DISPATCH-20260313192500-BRIK-REC-003",
+    "IDEA-DISPATCH-20260313192500-BRIK-REC-004",
+    "IDEA-DISPATCH-20260313192500-BRIK-REC-005"
+  ],
+  "track": "micro-build",
+  "files_changed": 6
+}

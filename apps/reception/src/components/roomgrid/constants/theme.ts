@@ -1,5 +1,3 @@
-// src/libs/reservation-grid/src/lib/constants/theme.ts
-
 import type { TTheme } from "../interfaces/theme.interface";
 
 const THEME: TTheme = {

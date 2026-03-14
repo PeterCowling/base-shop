@@ -9,6 +9,13 @@ export interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   align?: "left" | "center" | "right";
 }
 
+/**
+ * Heading size map.
+ * Display-level headings (1-4) use profile-driven font-weight via
+ * `--profile-type-display-weight` with fallback to the current hardcoded value.
+ * This is applied as an inline style so the Tailwind font-weight class acts as
+ * the visual default when no profile CSS is loaded.
+ */
 const headingSizes: Record<HeadingLevel, string> = {
   1: "text-3xl md:text-4xl font-semibold tracking-tight",
   2: "text-2xl md:text-3xl font-semibold tracking-tight",
@@ -18,12 +25,20 @@ const headingSizes: Record<HeadingLevel, string> = {
   6: "text-sm md:text-base font-medium",
 };
 
+/** Heading levels 1-4 are considered "display" and receive profile weight overrides. */
+const isDisplayLevel = (level: HeadingLevel): boolean => level <= 4;
+
 type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
-export const Heading: React.FC<HeadingProps> = ({ level = 2, align = "left", className, ...rest }) => {
+export const Heading: React.FC<HeadingProps> = ({ level = 2, align = "left", className, style, ...rest }) => {
   const Comp = ("h" + level) as HeadingTag;
   const alignCls = align === "center" ? "text-center" : align === "right" ? "text-right" : "text-left";
-  return <Comp className={clsx(headingSizes[level], alignCls, className)} {...rest} />;
+  // Profile-driven display weight for display-level headings (1-4).
+  // Fallback matches the Tailwind font-semibold (600) / font-medium (500) defaults.
+  const profileStyle: React.CSSProperties | undefined = isDisplayLevel(level)
+    ? { fontWeight: "var(--profile-type-display-weight, 600)" as unknown as number, ...style }
+    : style;
+  return <Comp className={clsx(headingSizes[level], alignCls, className)} style={profileStyle} {...rest} />;
 };
 
 export interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {

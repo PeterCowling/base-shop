@@ -63,6 +63,14 @@ jest.mock("@/utils/ga4-events", () => ({
   fireWhatsappClick: jest.fn(),
 }));
 
+jest.mock("@/utils/trackThenNavigate", () => ({
+  trackThenNavigate: jest.fn(),
+}));
+
+jest.mock("@/utils/entryAttribution", () => ({
+  readAttribution: jest.fn(() => null),
+}));
+
 // --- GA4-07 TC-02/TC-04 (pre-existing) ---
 
 describe("ApartmentBookContent GA4 enrichment (GA4-07 TC-02/TC-04)", () => {

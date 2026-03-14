@@ -1,0 +1,179 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "mcp-server-reply",
+  "source_artifact_path": "docs/plans/mcp-server-reply/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/mcp-server-reply/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When a guest asks about something the AI has not seen before, it picks its best guess and sends it as correct. This risks giving guests wrong information. Separately, a quality warning that staff can skip is not a guarantee — building a real block ensures the quality bar cannot be bypassed.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "(1) Composite-path template selection applies hinted-first logic — unknown-topic questions routed to `follow_up_required` instead of a fluent wrong template (behavior already implemented). (2) `gmail_create_draft` rejects calls with `deliveryStatus: \"blocked\"` at the tool boundary. (3) Coverage scoring false-positives reduced by tightening `SYNONYMS[\"pool\"]` in `template-ranker.ts` (removing \"amenity\" and \"facility\" from the pool synonym set).",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — MCP tool layer only",
+      "current_or_option_state": "—",
+      "gap_or_implication": "No UI change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Composite follow_up path already correct (prior commit). Gmail gate error surfaced to agent as `errorResult`.",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Agent receives actionable error message naming `quality.failed_checks`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Caller-supplied `deliveryStatus` is trust-on-caller; belt-and-suspenders design acknowledged",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No auth or data-exposure change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`email_fallback_detected` telemetry already fires; no new telemetry required",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Monitor `partial_question_coverage` rate after TASK-03 deploy",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "TC-gmail-blocked, TC-gmail-absent (TASK-02); TC-pool-missing, TC-pool-covered (TASK-03)",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "Added to existing test files",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "TASK-02: additive optional `deliveryStatus` field; callers passing no field continue to work",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Backward-compatible schema addition",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Pure logic/data changes; no I/O path changes",
+      "current_or_option_state": "—",
+      "gap_or_implication": "No performance impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Two independent commits; each instantly revertable",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "TASK-03 may increase \"partial\" rate — monitor ops-inbox quality stats after deploy",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Two code changes to `packages/mcp-server` close the remaining AI email-reply quality gaps. TASK-02 adds a `deliveryStatus` field to `gmail_create_draft`'s schema so agents that receive a blocked quality result can no longer silently create a draft — the tool returns an error at the boundary. TASK-03 removes two overly broad synonyms (\"amenity\", \"facility\") from `SYNONYMS[\"pool\"]` in `template-ranker.ts` so pool-topic questions answered with generic facility text score \"missing\" rather than a false \"covered\". Note: the analysis targeted `coverage.ts:TOPIC_SYNONYMS[\"pool\"]`, but planning-phase v",
+    "goals": [
+      "Enforce `delivery_status: \"blocked\"` at the `gmail_create_draft` tool boundary via code, not SKILL.md only",
+      "Tighten `SYNONYMS[\"pool\"]` in `template-ranker.ts` to remove false-positive \"covered\" marks in coverage evaluation"
+    ],
+    "non_goals": [
+      "Any work on composite template selector hinted-first logic (already implemented; covered by TC-06-05)",
+      "Rewriting BM25 index or core ranking logic",
+      "Changing `PER_QUESTION_FLOOR = 25`",
+      "Editing `TOPIC_SYNONYMS[\"pool\"]` in `coverage.ts` (that entry is never consulted for \"pool\" due to `??` precedence with `SYNONYMS[\"pool\"]`)"
+    ],
+    "constraints": [
+      "All changes within `packages/mcp-server` only",
+      "`gmail_create_draft` schema change must be backward-compatible (new field optional)",
+      "Tests run in CI only"
+    ],
+    "assumptions": [
+      "`UNHINTED_TEMPLATE_CONFIDENCE_FLOOR = 70` is the correct shared constant",
+      "`deliveryStatus` in `gmail_create_draft` is caller-supplied; belt-and-suspenders enforcement"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "TASK-02: optional `deliveryStatus` field in `createDraftSchema` (`gmail.ts:574`); error guard at top of `handleCreateDraft` (`gmail.ts:2687`)",
+      "TASK-03: remove \"amenity\" and \"facility\" from `SYNONYMS[\"pool\"]` in `template-ranker.ts:179` (not coverage.ts — see Decision Log for why)",
+      "Why planning is not reopening option selection:",
+      "Analysis settled the approach for TASK-02; TASK-03 file target was corrected during planning-phase verification with no change to the intent (same outcome, correct file)"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-02",
+        "title": "Gmail draft gate — enforce `deliveryStatus: \"blocked\"` at tool boundary",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `packages/mcp-server/src/tools/gmail.ts` + new tests in `packages/mcp-server/src/__tests__/gmail-create-draft.test.ts`",
+        "affects": "`packages/mcp-server/src/tools/gmail.ts`, `[readonly] packages/mcp-server/src/__tests__/gmail-create-draft.test.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Coverage synonym tightening — remove \"amenity\"/\"facility\" from SYNONYMS[\"pool\"] in template-ranker.ts",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `packages/mcp-server/src/utils/template-ranker.ts` + new tests in `packages/mcp-server/src/__tests__/draft-quality-check.test.ts`",
+        "affects": "`packages/mcp-server/src/utils/template-ranker.ts`, `[readonly] packages/mcp-server/src/__tests__/draft-quality-check.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-02",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Gmail draft creation gate",
+          "trigger": "Agent calls `gmail_create_draft` after `draft_generate` returns `delivery_status: \"blocked\"`",
+          "flow": "(1) `createDraftSchema` validates args including optional `deliveryStatus`; (2) If `deliveryStatus === \"blocked\"`, `handleCreateDraft` returns `errorResult(\"Draft creation blocked: quality checks did not pass. Inspect quality.failed_checks from draft_generate output before proceeding.\")`; (3) Agent reads error and escalates to staff; (4) All callers not passing `deliveryStatus` continue to work (field absent → proceed)",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "Callers invoking `gmail_create_draft` directly (not via ops-inbox skill) may omit field → no enforcement; documented in tool description as next step"
+        },
+        {
+          "id": null,
+          "label": "Coverage scoring (pool synonyms)",
+          "trigger": "Quality check on any draft answering a pool-related question",
+          "flow": "(1) `evaluateQuestionCoverage` runs synonym expansion for \"pool\" keyword via `SYNONYMS[\"pool\"]` from template-ranker.ts; (2) After TASK-03: only \"swimming\", \"swim\", \"rooftop\" match; (3) \"amenity\"/\"facility\" no longer match pool queries; (4) Draft answering pool question with generic facility text now scores \"missing\" or \"partial\" → quality check reports `partial_question_coverage` warning",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "`partial_question_coverage` warning frequency may increase; ops-inbox staff sees partial warnings more often for pool queries with generic answers"
+        }
+      ]
+    }
+  }
+}

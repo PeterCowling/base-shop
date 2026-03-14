@@ -3,6 +3,8 @@ import "@/styles/global.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
+import { ThemeModeProvider } from "@acme/platform-core";
+
 import { CaptureFAB } from "@/components/capture/CaptureFAB";
 import { KeyboardShortcutProvider } from "@/components/keyboard/KeyboardShortcutProvider";
 import { ToastProvider } from "@/components/toast/ToastProvider";
@@ -25,12 +27,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ToastProvider>
-          <KeyboardShortcutProvider>
-            {children}
-            <CaptureFAB />
-          </KeyboardShortcutProvider>
-        </ToastProvider>
+        <ThemeModeProvider>
+          <ToastProvider>
+            <KeyboardShortcutProvider>
+              {children}
+              <CaptureFAB />
+            </KeyboardShortcutProvider>
+          </ToastProvider>
+        </ThemeModeProvider>
       </body>
     </html>
   );

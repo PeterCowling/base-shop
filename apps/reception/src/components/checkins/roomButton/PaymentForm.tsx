@@ -63,7 +63,8 @@ function PaymentForm() {
             <Button
               compatibilityMode="passthrough"
               disabled={isDisabled}
-              className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none ${leftButtonClass}`}
+              className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none ${
+                leftButtonClass}`}
               title={
                 isDisabled
                   ? "Payment not possible (already paid)"
@@ -78,7 +79,8 @@ function PaymentForm() {
             compatibilityMode="passthrough"
             onClick={handleImmediatePayment}
             disabled={isDisabled}
-            className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none text-xs font-medium ${rightButtonClass}`}
+            className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none text-xs font-medium ${
+              rightButtonClass}`}
             title={
               isDisabled
                 ? "Payment not possible (already paid)"

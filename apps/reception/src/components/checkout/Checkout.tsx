@@ -12,6 +12,7 @@ import useBagStorageData from "../../hooks/data/useBagStorageData";
 import useBookings from "../../hooks/data/useBookingsData";
 import { useCheckouts } from "../../hooks/data/useCheckouts";
 import useFinancialsRoom from "../../hooks/data/useFinancialsRoom";
+import useFridgeStorageData from "../../hooks/data/useFridgeStorageData";
 import useGuestByRoom from "../../hooks/data/useGuestByRoom";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
 import { useKeycardAssignments } from "../../hooks/data/useKeycardAssignments";
@@ -20,6 +21,7 @@ import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations
 import useAllTransactions from "../../hooks/mutations/useAllTransactionsMutations";
 import { useCheckoutsMutation } from "../../hooks/mutations/useCheckoutsMutation";
 import { useKeycardAssignmentsMutations } from "../../hooks/mutations/useKeycardAssignmentsMutations";
+import useSetFridgeUsedMutation from "../../hooks/mutations/useSetFridgeUsedMutation";
 import { type FirebaseBookings } from "../../types/hooks/data/bookingsData";
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
@@ -98,6 +100,12 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
     error: bagStorageError,
   } = useBagStorageData();
 
+  const {
+    fridgeStorage = {},
+    loading: fridgeStorageLoading,
+    error: fridgeStorageError,
+  } = useFridgeStorageData();
+
   // ───────────────────────────── consolidate loading / error state ──────────────────────────────
   const loading =
     bookingsLoading ||
@@ -108,7 +116,8 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
     checkoutsLoading ||
     code14Loading ||
     guestByRoomLoading ||
-    bagStorageLoading;
+    bagStorageLoading ||
+    fridgeStorageLoading;
 
   const error =
     bookingsError ||
@@ -119,7 +128,8 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
     checkoutsError ||
     code14Error ||
     guestByRoomError ||
-    bagStorageError;
+    bagStorageError ||
+    fridgeStorageError;
 
   // ──────────────────────────────── prepare checkout rows ────────────────────────────────────────
   const checkoutRows = useCheckoutClient({
@@ -144,6 +154,9 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   const { addToAllTransactions } = useAllTransactions();
   const { assignmentsRecord } = useKeycardAssignments();
   const { returnKeycard } = useKeycardAssignmentsMutations();
+  const { setFridgeUsed } = useSetFridgeUsedMutation();
+
+  const [pendingFridgeOccupantIds, setPendingFridgeOccupantIds] = useState<Set<string>>(new Set());
 
   // Remove a single loan item
   const handleRemoveLoanItem = useCallback(
@@ -287,19 +300,42 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
     ]
   );
 
+  // Toggle fridge-used flag for a single occupant
+  const onToggleFridge = useCallback(
+    async (guestId: string, _bookingRef: string, currentValue: boolean) => {
+      setPendingFridgeOccupantIds((prev) => new Set([...prev, guestId]));
+      try {
+        await setFridgeUsed(guestId, !currentValue);
+      } catch (err) {
+        console.error(`[Checkout] Error toggling fridge for ${guestId}:`, err);
+        showToast("Failed to update fridge flag", "error");
+      } finally {
+        setPendingFridgeOccupantIds((prev) => {
+          const next = new Set(prev);
+          next.delete(guestId);
+          return next;
+        });
+      }
+    },
+    [setFridgeUsed]
+  );
+
   // ────────────────────────────────────────── derive table data ──────────────────────────────────
   const guests: Guest[] = useMemo(
     () =>
       checkoutRows.map((row) => {
         const occupantId = row.occupantId ?? "";
         const storageRecord = bagStorage[occupantId];
+        const fridgeRecord = fridgeStorage[occupantId];
 
         if (_debug) {
           console.debug(
             "Occupant:",
             occupantId,
             " => BagStorageRecord:",
-            storageRecord
+            storageRecord,
+            " => FridgeStorageRecord:",
+            fridgeRecord
           );
         }
 
@@ -320,12 +356,12 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
               },
             ])
           ) as Record<string, { item: string; depositType?: LoanMethod }>,
-          fridge: "",
+          fridgeUsed: fridgeRecord?.used === true,
           isCompleted: row.isCompleted,
           bagStorageOptedIn: storageRecord?.optedIn === true,
         };
       }),
-    [checkoutRows, bagStorage, _debug]
+    [checkoutRows, bagStorage, fridgeStorage, _debug]
   );
 
   // ───────────────────────────────────────────── render ───────────────────────────────────────────
@@ -360,6 +396,8 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
             guests={guests}
             removeLoanItem={handleRemoveLoanItem}
             onComplete={onComplete}
+            onToggleFridge={onToggleFridge}
+            pendingFridgeOccupantIds={pendingFridgeOccupantIds}
           />
         )}
       </div>

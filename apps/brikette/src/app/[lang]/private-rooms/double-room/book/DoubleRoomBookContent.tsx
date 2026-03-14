@@ -15,20 +15,22 @@ import { Inline } from "@acme/design-system/primitives";
 import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel";
 import type { DateRange } from "@/components/booking/DateRangePicker";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
+import { buildWhatsappMessageUrl } from "@/config/hotel";
+import { BOOKING_CODE } from "@/context/modal/constants";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
-import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
+import { countNights, formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { readAttribution } from "@/utils/entryAttribution";
 import { createBrikClickId } from "@/utils/ga4-events";
 import { getDoubleRoomBookingPath } from "@/utils/localizedRoutes";
+import { buildOctorateCalendarUrl } from "@/utils/octorateLinks";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 
 type Props = {
   lang: AppLanguage;
 };
 
-const WHATSAPP_BASE = "https://wa.me/393287073695";
 const DOUBLE_ROOM_BOOKING_RETURN_KEY = "double_room_booking_return";
 
 // Rate codes for the double private room (separate from apartment, TASK-12a).
@@ -38,8 +40,9 @@ const DOUBLE_ROOM_RATE_CODES = {
 } as const;
 
 function buildWhatsappUrl(checkin: string, checkout: string): string {
-  const text = `Hi, I'm interested in booking the private double room at Brikette. Could you tell me about availability for ${checkin} to ${checkout}?`;
-  return `${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`;
+  return buildWhatsappMessageUrl(
+    `Hi, I'm interested in booking the private double room at Brikette. Could you tell me about availability for ${checkin} to ${checkout}?`,
+  );
 }
 
 function buildOctorateLink(
@@ -47,17 +50,16 @@ function buildOctorateLink(
   checkout: string,
   plan: "flex" | "nr",
 ): string {
-  const base = "https://book.octorate.com/octobook/site/reservation/calendar.xhtml";
-  const params = new URLSearchParams();
-  params.set("codice", "45111");
-  params.set("checkin", checkin);
-  params.set("checkout", checkout);
-  params.set("pax", "2"); // double room — fixed occupancy
-  params.set("room", DOUBLE_ROOM_RATE_CODES[plan]);
-  params.set("utm_source", "site");
-  params.set("utm_medium", "cta");
-  params.set("utm_campaign", `double_room_${plan}`);
-  return `${base}?${params.toString()}`;
+  return buildOctorateCalendarUrl({
+    codice: BOOKING_CODE,
+    checkin,
+    checkout,
+    pax: 2, // double room — fixed occupancy
+    room: DOUBLE_ROOM_RATE_CODES[plan],
+    utm_source: "site",
+    utm_medium: "cta",
+    utm_campaign: `double_room_${plan}`,
+  });
 }
 
 function DoubleRoomBookContent({ lang }: Props) {
@@ -92,9 +94,7 @@ function DoubleRoomBookContent({ lang }: Props) {
     sessionStorage.removeItem(DOUBLE_ROOM_BOOKING_RETURN_KEY);
   }, []);
 
-  const nights = range.from && range.to
-    ? Math.max(1, Math.round((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24)))
-    : 1;
+  const nights = range.from && range.to ? countNights(range.from, range.to) : 1;
   const isValidRange = Boolean(checkinIso && checkoutIso);
 
   const handleCheckout = useCallback((plan: "flex" | "nr") => {
@@ -256,7 +256,7 @@ function DoubleRoomBookContent({ lang }: Props) {
             rel="noopener noreferrer"
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 dark:border-white/30"
           >
-            {tRooms("moreAboutThisRoom") as string}
+            {tBook("whatsappCta") as string}
           </a>
         </div>
       </div>

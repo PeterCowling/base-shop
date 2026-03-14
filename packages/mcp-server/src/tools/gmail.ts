@@ -190,6 +190,7 @@ export type EmailSourcePath = "queue" | "reception" | "outbound" | "unknown";
 
 export type TelemetryEventKey =
   | "email_draft_created"
+  | "email_sent"
   | "email_draft_deferred"
   | "email_outcome_labeled"
   | "email_queue_transition"
@@ -217,6 +218,7 @@ const TelemetryEventSchema = z.object({
   ts: z.string(),
   event_key: z.enum([
     "email_draft_created",
+    "email_sent",
     "email_draft_deferred",
     "email_outcome_labeled",
     "email_queue_transition",
@@ -367,7 +369,7 @@ function computeDailyTelemetryRollup(
     const day = ts.toISOString().slice(0, 10);
     const bucket = getBucket(day);
 
-    if (event.event_key === "email_draft_created") {
+    if (event.event_key === "email_draft_created" || event.event_key === "email_sent") {
       bucket.drafted += 1;
       continue;
     }
@@ -464,6 +466,18 @@ const NON_CUSTOMER_SUBJECT_PATTERNS = [
   /\bprivacy policy\b/i,
   /\bannual report\b/i,
   /\bfattura\b/i,
+];
+
+const LEAVE_IN_INBOX_SUBJECT_PATTERNS = [
+  /hostelworld confirmed booking - hostel brikette,\s*positano/i,
+  /^a customer saved their research$/i,
+];
+
+const LEAVE_IN_INBOX_FROM_PATTERNS = [
+  "no-reply@revolut.com",
+  "infopoint@distrettocostadamalfi.it",
+  "ikea@news.email.ikea.it",
+  "no-reply@properties.booking.com",
 ];
 
 const CUSTOMER_SUBJECT_PATTERNS = [
@@ -564,6 +578,7 @@ const createDraftSchema = z.object({
   subject: z.string().min(1),
   bodyPlain: z.string().min(1),
   bodyHtml: z.string().optional(),
+  deliveryStatus: z.enum(["ready", "needs_patch", "blocked"]).optional(),
 });
 
 const markProcessedSchema = z.object({
@@ -678,7 +693,7 @@ export const gmailTools = [
   },
   {
     name: "gmail_create_draft",
-    description: "Create a draft reply to a customer email in Gmail. The draft will be threaded with the original email.",
+    description: "Create a draft reply to a customer email in Gmail. The draft will be threaded with the original email. Pass deliveryStatus from draft_generate output — calls with deliveryStatus: \"blocked\" are rejected at the tool boundary.",
     inputSchema: {
       type: "object",
       properties: {
@@ -686,6 +701,11 @@ export const gmailTools = [
         subject: { type: "string", description: "Email subject (usually RE: original subject)" },
         bodyPlain: { type: "string", description: "Plain text email body" },
         bodyHtml: { type: "string", description: "HTML email body (optional, for branded emails)" },
+        deliveryStatus: {
+          type: "string",
+          enum: ["ready", "needs_patch", "blocked"],
+          description: "Delivery status from draft_generate quality check. Calls with \"blocked\" are rejected. Pass this field to enforce the quality gate.",
+        },
       },
       required: ["emailId", "subject", "bodyPlain"],
     },
@@ -1138,6 +1158,53 @@ function parseMessageTimestamp(
   return null;
 }
 
+function extractOrganizeMessageMetadata(
+  latestMessage: gmail_v1.Schema$Message
+): {
+  fromRaw: string;
+  subject: string;
+  snippet: string;
+  hasListUnsubscribeHeader: boolean;
+  hasListIdHeader: boolean;
+  hasBulkPrecedenceHeader: boolean;
+} {
+  const latestHeaders = (latestMessage.payload?.headers || []) as EmailHeader[];
+
+  return {
+    fromRaw: getHeader(latestHeaders, "From"),
+    subject: getHeader(latestHeaders, "Subject") || "(no subject)",
+    snippet: latestMessage.snippet || "",
+    hasListUnsubscribeHeader: latestHeaders.some(
+      header => header.name.toLowerCase() === "list-unsubscribe"
+    ),
+    hasListIdHeader: latestHeaders.some(
+      header => header.name.toLowerCase() === "list-id"
+    ),
+    hasBulkPrecedenceHeader: latestHeaders.some(header => (
+      header.name.toLowerCase() === "precedence" &&
+      /(bulk|list|junk)/i.test(header.value || "")
+    )),
+  };
+}
+
+async function markLeaveInInboxAsRead(
+  gmail: gmail_v1.Gmail,
+  messageId: string,
+  dryRun: boolean
+): Promise<void> {
+  if (dryRun) {
+    return;
+  }
+
+  await gmail.users.messages.modify({
+    userId: "me",
+    id: messageId,
+    requestBody: {
+      removeLabelIds: ["UNREAD"],
+    },
+  });
+}
+
 function isAgreementReplySignal(subject: string, snippet: string): boolean {
   const subjectMatches = subject
     .toLowerCase()
@@ -1207,6 +1274,7 @@ function shouldTrashAsGarbage(fromRaw: string, subject: string): boolean {
 
 type OrganizeDecision =
   | "needs_processing"
+  | "leave_in_inbox"
   | "booking_reservation"
   | "cancellation"
   | "promotional"
@@ -1239,6 +1307,14 @@ function classifyOrganizeDecision(
 
   if (SPAM_SUBJECT_PATTERNS.some(pattern => pattern.test(subject))) {
     return { decision: "spam", reason: "matched-spam-pattern", senderEmail };
+  }
+
+  if (LEAVE_IN_INBOX_FROM_PATTERNS.some(pattern => senderEmail === pattern)) {
+    return { decision: "leave_in_inbox", reason: "revolut-sender-leave-inbox", senderEmail };
+  }
+
+  if (LEAVE_IN_INBOX_SUBJECT_PATTERNS.some(pattern => pattern.test(subject))) {
+    return { decision: "leave_in_inbox", reason: "hostelworld-confirmed-booking-leave-inbox", senderEmail };
   }
 
   const matchesBookingMonitorSender = BOOKING_MONITOR_FROM_PATTERNS.some((pattern) =>
@@ -2122,22 +2198,14 @@ async function _handleOrganizeInbox(
     const latestMessage = messages[messages.length - 1];
     if (!latestMessage?.id) continue;
 
-    const latestHeaders = (latestMessage.payload?.headers || []) as EmailHeader[];
-    const fromRaw = getHeader(latestHeaders, "From");
-    const subject = getHeader(latestHeaders, "Subject") || "(no subject)";
-    const snippet = latestMessage.snippet || "";
-    const hasListUnsubscribeHeader = latestHeaders.some(
-      header => header.name.toLowerCase() === "list-unsubscribe"
-    );
-    const hasListIdHeader = latestHeaders.some(
-      header => header.name.toLowerCase() === "list-id"
-    );
-    const hasBulkPrecedenceHeader = latestHeaders.some(header => {
-      return (
-        header.name.toLowerCase() === "precedence" &&
-        /(bulk|list|junk)/i.test(header.value || "")
-      );
-    });
+    const {
+      fromRaw,
+      subject,
+      snippet,
+      hasListUnsubscribeHeader,
+      hasListIdHeader,
+      hasBulkPrecedenceHeader,
+    } = extractOrganizeMessageMetadata(latestMessage);
 
     if (hasBriketteLabel(latestMessage.labelIds, labelNameById)) {
       skippedAlreadyManaged += 1;
@@ -2154,6 +2222,11 @@ async function _handleOrganizeInbox(
     );
 
     switch (classification.decision) {
+      case "leave_in_inbox": {
+        await markLeaveInInboxAsRead(gmail, latestMessage.id, dryRun);
+        skippedNoAction += 1;
+        break;
+      }
       case "trash": {
         trashed += 1;
         if (!dryRun) {
@@ -2622,8 +2695,15 @@ async function handleGetEmail(
 async function handleCreateDraft(
   gmail: gmail_v1.Gmail,
   args: unknown
-): Promise<ReturnType<typeof jsonResult>> {
-  const { emailId, subject, bodyPlain, bodyHtml } = createDraftSchema.parse(args);
+): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
+  const { emailId, subject, bodyPlain, bodyHtml, deliveryStatus } =
+    createDraftSchema.parse(args);
+
+  if (deliveryStatus === "blocked") {
+    return errorResult(
+      "Draft creation blocked: quality checks did not pass. Inspect quality.failed_checks from draft_generate output before proceeding."
+    );
+  }
 
   const original = await gmail.users.messages.get({
     userId: "me",

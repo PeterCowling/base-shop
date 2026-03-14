@@ -1,11 +1,20 @@
+// Validate required environment variables at module load time.
+import "../env";
+
 import crypto from "node:crypto";
 
 import type { NextResponse } from "next/server";
 
+import { getInventoryKv } from "./inventoryKv";
+import { inventoryLog } from "./inventoryLog";
+
 const COOKIE_NAME = "inventory_admin";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 
-function timingSafeEqual(a: string, b: string): boolean {
+/** KV key for session revocation — stores minimum issuedAt timestamp (ms). */
+const REVOCATION_KV_KEY = "inventory:revocation:min_issued_at";
+
+export function timingSafeEqual(a: string, b: string): boolean {
   const aBuf = Buffer.from(a);
   const bBuf = Buffer.from(b);
   if (aBuf.length !== bBuf.length) return false;
@@ -39,6 +48,11 @@ function sessionSecret(): string {
 }
 
 function adminToken(): string {
+  // Allow E2E token override in non-production environments only.
+  if (process.env.NODE_ENV !== "production") {
+    const e2eOverride = process.env.INVENTORY_E2E_ADMIN_TOKEN?.trim();
+    if (e2eOverride) return e2eOverride;
+  }
   return requireEnv("INVENTORY_ADMIN_TOKEN").trim();
 }
 
@@ -49,11 +63,64 @@ function issueSessionToken(secret: string): string {
   return `${payload}.${sign(payload, secret)}`;
 }
 
-function verifySessionToken(token: string, secret: string): boolean {
+/**
+ * Pure comparison: is the token's issuedAt before the revocation threshold?
+ * Returns true if the token is revoked (issued before the minimum timestamp).
+ */
+export function isTokenRevokedByTimestamp(
+  issuedAt: number,
+  minIssuedAt: number | null,
+): boolean {
+  if (minIssuedAt === null) return false;
+  if (!Number.isFinite(minIssuedAt)) return false;
+  return issuedAt < minIssuedAt;
+}
+
+/**
+ * Check session revocation status via KV-backed minimum-issuedAt.
+ *
+ * Fails open on KV unavailability (returns false = not revoked) with a warning log.
+ */
+async function isSessionRevoked(issuedAt: number): Promise<boolean> {
+  try {
+    const kv = await getInventoryKv();
+    if (!kv) return false; // KV not bound — fail open
+
+    const raw = await kv.get(REVOCATION_KV_KEY);
+    if (!raw) return false; // No revocation timestamp set
+
+    const minIssuedAt = Number(raw);
+    if (!Number.isFinite(minIssuedAt)) {
+      inventoryLog("warn", "revocation_invalid_timestamp", {
+        message: "Non-numeric value in revocation KV key",
+        raw,
+      });
+      return false;
+    }
+
+    if (isTokenRevokedByTimestamp(issuedAt, minIssuedAt)) {
+      inventoryLog("warn", "session_revoked", { issuedAt, minIssuedAt });
+      return true;
+    }
+
+    return false;
+  } catch (err) {
+    inventoryLog("warn", "revocation_kv_unavailable", {
+      message: "KV read failed during revocation check — failing open",
+      error: err instanceof Error ? err.message : String(err),
+    });
+    return false; // Fail open
+  }
+}
+
+async function verifySessionToken(token: string, secret: string): Promise<boolean> {
   const parts = token.split(".");
   if (parts.length !== 4) return false;
   const [version, issuedAtRaw, nonce, signature] = parts;
-  if (version !== "v1" || !issuedAtRaw || !nonce || !signature) return false;
+
+  // Timing-safe version check.
+  if (!timingSafeEqual(version ?? "", "v1")) return false;
+  if (!issuedAtRaw || !nonce || !signature) return false;
 
   const issuedAt = Number(issuedAtRaw);
   if (!Number.isFinite(issuedAt)) return false;
@@ -62,7 +129,29 @@ function verifySessionToken(token: string, secret: string): boolean {
   if (ageSeconds < 0 || ageSeconds > SESSION_MAX_AGE_SECONDS) return false;
 
   const payload = `v1.${issuedAtRaw}.${nonce}`;
-  return timingSafeEqual(signature, sign(payload, secret));
+  const expected = sign(payload, secret);
+  if (!timingSafeEqual(signature, expected)) return false;
+
+  // KV-backed session revocation check.
+  const revoked = await isSessionRevoked(issuedAt);
+  if (revoked) return false;
+
+  return true;
+}
+
+/**
+ * Revoke all sessions issued before the current timestamp.
+ * Writes the current time (ms) to the KV revocation key.
+ * After this call, all existing session tokens become invalid.
+ */
+export async function revokeAllInventorySessions(): Promise<void> {
+  const kv = await getInventoryKv();
+  if (!kv) {
+    throw new Error("KV namespace not available — cannot revoke sessions");
+  }
+  const now = String(Date.now());
+  await kv.put(REVOCATION_KV_KEY, now);
+  inventoryLog("info", "sessions_revoked", { minIssuedAt: now });
 }
 
 export async function validateInventoryAdminToken(token: string): Promise<boolean> {

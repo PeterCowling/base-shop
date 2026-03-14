@@ -37,8 +37,8 @@ export const DenominationInput = memo(function DenominationInput({
     .filter((i) => denominations[i].value > 2);
 
   const borderClass = idPrefix.startsWith("denomOpen_")
-    ? "border-info-light"
-    : "border-error-light";
+    ? "border-info-main"
+    : "border-error-main";
 
   const renderRows = (indices: number[]) => (
     <>
@@ -58,7 +58,7 @@ export const DenominationInput = memo(function DenominationInput({
               compatibilityMode="no-wrapper"
               id={`${idPrefix}${idx}`}
               type="text"
-              className={`border ${borderClass} rounded-lg p-1 text-sm w-32 text-center`}
+              className={`border ${borderClass} rounded-lg p-1 text-sm w-32 text-center bg-surface`}
               value={localValues[idx]}
               onChange={(e) => {
                 const val = e.target.value;

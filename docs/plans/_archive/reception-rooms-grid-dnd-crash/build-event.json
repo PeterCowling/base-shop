@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-rooms-grid-dnd-crash",
+  "business": "BRIK",
+  "dispatch_id": "IDEA-DISPATCH-20260313140000-0001",
+  "build_date": "2026-03-13",
+  "execution_track": "code",
+  "outcome_type": "operational",
+  "outcome_statement": "Clicking any cell in the rooms grid opens the booking modal without crashing. The drag-and-drop provider is mounted once at the page level.",
+  "outcome_source": "operator",
+  "status": "complete"
+}

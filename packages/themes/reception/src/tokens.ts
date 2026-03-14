@@ -10,11 +10,11 @@ import type { Token, TokenMap } from "@themes/base";
 
 export const tokens: TokenMap = {
   // Brand: hospitality green primary (operational readiness signal)
-  "--color-primary": { light: "142 72% 30%", dark: "142 70% 48%" },
+  "--color-primary": { light: "142 72% 30%", dark: "142 55% 48%" },
   "--color-primary-fg": { light: "0 0% 100%", dark: "160 8% 4%" },
   "--color-primary-soft": { light: "142 60% 95%", dark: "142 50% 14%" },
-  "--color-primary-hover": { light: "142 72% 25%", dark: "142 70% 54%" },
-  "--color-primary-active": { light: "142 72% 20%", dark: "142 70% 58%" },
+  "--color-primary-hover": { light: "142 72% 25%", dark: "142 55% 54%" },
+  "--color-primary-active": { light: "142 72% 20%", dark: "142 55% 58%" },
 
   // Accent: warm amber/orange (hospitality warning signal)
   "--color-accent": { light: "36 90% 50%", dark: "36 85% 58%" },
@@ -56,7 +56,7 @@ export const tokens: TokenMap = {
 
   // Interaction depth tokens
   "--color-table-row-hover": { light: "150 8% 96%", dark: "160 12% 12%" },
-  "--color-table-row-alt": { light: "150 5% 98%", dark: "160 8% 10%" },
+  "--color-table-row-alt": { light: "150 6% 91%", dark: "160 10% 14%" },
   "--color-surface-elevated": { light: "150 10% 94%", dark: "160 10% 14%" },
 
   // Category shade families (bar/POS product grid)
@@ -77,11 +77,11 @@ export const tokens: TokenMap = {
   "--color-greenShades-row1": { light: "140 40% 60%", dark: "140 22% 22%" },
   "--color-greenShades-row2": { light: "140 38% 52%", dark: "140 20% 26%" },
   "--color-greenShades-row3": { light: "140 35% 44%", dark: "140 18% 30%" },
-  "--color-blueShades-row1": { light: "210 45% 60%", dark: "210 25% 22%" },
-  "--color-blueShades-row2": { light: "210 42% 52%", dark: "210 22% 26%" },
-  "--color-blueShades-row3": { light: "210 40% 44%", dark: "210 20% 30%" },
-  "--color-blueShades-row4": { light: "210 38% 36%", dark: "210 18% 34%" },
-  "--color-blueShades-row5": { light: "210 35% 28%", dark: "210 16% 38%" },
+  "--color-warmGreenShades-row1": { light: "110 46% 58%", dark: "110 22% 22%" },
+  "--color-warmGreenShades-row2": { light: "110 44% 50%", dark: "110 20% 27%" },
+  "--color-warmGreenShades-row3": { light: "110 41% 42%", dark: "110 18% 32%" },
+  "--color-warmGreenShades-row4": { light: "110 38% 34%", dark: "110 16% 37%" },
+  "--color-warmGreenShades-row5": { light: "110 35% 27%", dark: "110 14% 42%" },
   "--color-purpleShades-row1": { light: "270 40% 56%", dark: "270 22% 24%" },
   "--color-purpleShades-row2": { light: "270 38% 48%", dark: "270 20% 30%" },
   "--color-spritzShades-row1": { light: "20 70% 53%", dark: "20 30% 24%" },
@@ -97,12 +97,12 @@ export const tokens: TokenMap = {
   "--color-grayishShades-row4": { light: "220 5% 36%", dark: "220 3% 40%" },
 
   // Chart palette
-  "--chart-1": { light: "240 60% 44%", dark: "240 60% 70%" },
+  "--chart-1": { light: "44 85% 48%", dark: "44 85% 65%" },
   "--chart-2": { light: "142 71% 45%", dark: "142 71% 60%" },
   "--chart-3": { light: "25 95% 53%", dark: "25 95% 68%" },
   "--chart-4": { light: "347 77% 50%", dark: "347 77% 65%" },
   "--chart-5": { light: "174 71% 39%", dark: "174 71% 60%" },
-  "--chart-6": { light: "199 89% 48%", dark: "199 89% 63%" },
+  "--chart-6": { light: "60 80% 44%", dark: "60 80% 62%" },
   "--chart-7": { light: "160 84% 39%", dark: "160 84% 55%" },
 };
 

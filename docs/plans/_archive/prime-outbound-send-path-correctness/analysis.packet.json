@@ -1,0 +1,222 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "prime-outbound-send-path-correctness",
+  "source_artifact_path": "docs/plans/prime-outbound-send-path-correctness/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/prime-outbound-send-path-correctness/fact-find.md",
+    "plan": "docs/plans/prime-outbound-send-path-correctness/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Staff broadcast path routes to an endpoint designed for review campaigns, creating potential misrouting, duplicate sends on retry, and unclear delivery guarantees.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The send path for staff whole-hostel broadcasts is correctly routed through `review-thread-send` (not `review-campaign-send`), has idempotency protection against retry-created duplicate threads/messages, and the delivery model to guest devices is documented and verified.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no UI changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "`prime-compose/route.ts` returns same 200/400/502/503 shape. The new endpoint returns `{ outcome: 'sent', sentMessageId: ... }` on success. If `sendPrimeReviewThread` returns `{ outcome: 'conflict' }` (e.g. concurrent duplicate), the endpoint returns HTTP 409 → Reception maps to 502. Operator sees a send failure on genuine concurrent duplicates, which is acceptable (rare edge case).",
+      "current_or_option_state": "Same external shape.",
+      "gap_or_implication": "Same external shape but more failure modes from extra fetch.",
+      "carry_forward_or_notes": "Response contract for `staff-broadcast-send`: `{ outcome: 'sent', sentMessageId }` on success; `{ outcome: 'conflict', message }` (409) on duplicate; `{ outcome: 'not_found' }` (404) if thread missing. Plan must specify this contract."
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Staff-owner gate preserved. Rate limit removed (belongs on this path). `actorSource` can be set to `'reception_staff_compose'` correctly.",
+      "current_or_option_state": "Rate limit and wrong `actorSource` remain without a second fix.",
+      "gap_or_implication": "Same problems as current path remain.",
+      "carry_forward_or_notes": "Option A removes rate-limit gate and restores correct audit label."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`actorSource: 'reception_staff_compose'` in admission record. One HTTP call to log per compose.",
+      "current_or_option_state": "`actorSource` still wrong unless separately patched.",
+      "gap_or_implication": "`actorSource` still wrong.",
+      "carry_forward_or_notes": "Should log when `sendPrimeReviewThread` returns `conflict` (potential concurrent duplicate detected). One HTTP call per compose attempt (reduced from three)."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New endpoint unit-tested in isolation (D1 + Firebase mocks, same pattern as TC-06B). `prime-compose/route.ts` simplified — its tests updated to mock the single new call.",
+      "current_or_option_state": "Needs schema change plus new test for idempotency key semantics.",
+      "gap_or_implication": "Needs test for draft-existence fetch path; fragile.",
+      "carry_forward_or_notes": "Option A has the most testable shape. Routing unit test for `prime-compose` is straightforward with a fetch mock."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No new D1 columns. Campaign + draft + message records unchanged. `actorSource` in admission records changes value.",
+      "current_or_option_state": "New column on draft/campaign table for idempotency key — schema drift risk.",
+      "gap_or_implication": "No schema change. Extra read on every request.",
+      "carry_forward_or_notes": "No schema migration needed for Option A."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One fewer HTTP hop (3 → 2). Rate limit removed. D1/Firebase non-transactional write sequence unchanged — C-03 partial mitigation only. Idempotency window narrowed to within-function (milliseconds) vs cross-hop (seconds).",
+      "current_or_option_state": "Same hop count. Idempotency window unchanged unless key is checked before initiate.",
+      "gap_or_implication": "One more HTTP call added (extra fetch).",
+      "carry_forward_or_notes": "C-03 (Firebase failure = silent loss) is not fully resolved by any option; plan must document this as a known residual risk."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Rollback = revert `prime-compose/route.ts` + remove new Prime endpoint file. No migration to roll back. Feature flag not needed (staff-only internal path).",
+      "current_or_option_state": "Rollback requires reverting schema addition AND code.",
+      "gap_or_implication": "Rollback = revert `prime-compose/route.ts`.",
+      "carry_forward_or_notes": "Option A has the cleanest rollback."
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The `reception-prime-outbound-messaging` build left four defects in the staff whole-hostel broadcast path: - **C-01**: `sendPrimeInboxThread` routes broadcasts to `review-campaign-send`, an endpoint designed for review campaigns with `booking`/`room` audience fan-out. For `whole_hostel` it is a needless indirection that adds a KV rate-limit gate (3/60 s), an extra HTTP hop, and the wrong `actorSource` label on the audit record. - **C-02**: Retry creates a duplicate broadcast. The `prime-compose` route calls `initiatePrimeOutboundThread` first on every attempt; `savePrimeReviewDraft` inside `st",
+    "goals": [
+      "Correct the send endpoint routing (C-01).",
+      "Achieve retry safety: two identical `prime-compose` calls must not produce two broadcast messages (C-02).",
+      "Fix the `actorSource` audit label.",
+      "Document the delivery model (C-05).",
+      "Test the routing decision and retry behaviour."
+    ],
+    "non_goals": [
+      "Full transactional consistency across Firebase and D1 (requires Firebase Transactions or a saga pattern — deferred).",
+      "Guest-facing push notification delivery.",
+      "Changes to `booking`/`room` campaign send paths."
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Eliminates C-02 (retry idempotency)",
+        "Why it matters": "Core outcome contract requirement — duplicate broadcasts visible to guests are a user-facing defect",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Eliminates C-01 (wrong endpoint routing)",
+        "Why it matters": "Removes rate-limit gate, unnecessary hop, wrong actorSource",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Code surface and blast radius",
+        "Why it matters": "Smaller change = lower regression risk to existing review-campaign and review-thread flows",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Test writability",
+        "Why it matters": "Can the approach be unit-tested without deep mocking?",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Preserves existing patterns",
+        "Why it matters": "Deviation from codebase conventions needs clear justification",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Addresses C-03 partial mitigation",
+        "Why it matters": "Firebase failure should at minimum be visible, not silently lost",
+        "Weight": "Low-Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: New single-hop `staff-broadcast-send` endpoint on Prime",
+        "Description": "Add `POST /api/staff-broadcast-send` that calls `savePrimeReviewDraft` then `sendPrimeReviewThread` in one CF Function invocation. Reception calls this single endpoint directly, bypassing both `staff-initiate-thread` and the `sendPrimeInboxThread` routing logic. `prime-compose/route.ts` is simplified to one HTTP call.",
+        "Upside": "Eliminates the multi-hop sequential retry window — the \"failed between hops\" scenario cannot occur in a single-hop design (C-02 primary hazard solved). Removes the campaign-send routing branch (C-01 solved). `actorSource` can be set correctly at the call site. One fewer HTTP round-trip on the happy path. Endpoint can be tested in isolation with D1/Firebase mocks.",
+        "Downside": "New file + new test file in Prime. `prime-compose/route.ts` and `initiatePrimeOutboundThread`/`sendPrimeInboxThread` need changes. `staff-initiate-thread.ts` becomes unused. `savePrimeReviewDraft` resets `review_status` to `pending` via `isReusableWholeHostelLane` before `sendPrimeReviewThread` fires — so the conflict check inside `sendPrimeReviewThread` cannot catch a retry if `savePrimeReviewDraft` runs first. Strictly concurrent duplicate requests that both arrive before any write completes can each reset to `pending` and both proceed to send. This is a known D1/SQLite serialization limitat",
+        "Key risks": "C-02 protection is for the sequential multi-hop retry window (the stated problem). Concurrent duplicate requests within the same millisecond window are out of scope for this fix and acceptable given D1 SQLite write serialization in practice.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Client idempotency key on `staff-initiate-thread`",
+        "Description": "Reception generates a UUID per compose attempt and passes it as a header or body field. `staff-initiate-thread` stores the key on the draft/campaign; on retry with same key, returns the existing draft without resetting thread status. Reception can then call `sendPrimeInboxThread` with confidence the thread was not reset.",
+        "Upside": "Preserves two-hop design. Minimal change to `sendPrimeInboxThread` routing (still wrong but can be fixed separately).",
+        "Downside": "Requires a new column or metadata field on the draft/campaign to store the idempotency key — effectively a schema addition. Reception must persist the key for the retry window (e.g. in the request, but if Reception crashes between initiate and send the key is lost). Retry initiated by a different Reception server instance needs the key to be client-side-generated (acceptable) but complex to test. The actorSource bug is not fixed by this option. The routing bug (C-01) also requires a separate fix.",
+        "Key risks": "Idempotency key only covers the initiate-send gap; does not eliminate the extra hop or rate-limit problem. Most complex to implement and test. Schema addition is a disproportionate response.",
+        "Viable?": "Yes, but inferior"
+      },
+      {
+        "Option": "C: Skip initiate on `prime-compose` if unsent draft already exists",
+        "Description": "Before calling `initiatePrimeOutboundThread`, `prime-compose/route.ts` first fetches the thread detail. If a non-sent staff draft exists for `broadcast_whole_hostel`, skip initiate and call `sendPrimeInboxThread` directly.",
+        "Upside": "No new Prime endpoint needed. Preserves the two-hop pattern for the first call.",
+        "Downside": "Requires an extra `getPrimeInboxThreadDetail` HTTP call on every compose request (even first-time calls). The \"skip\" decision requires inspecting draft state, which is fragile: if the existing draft's content differs from the new text, skipping initiate would silently send stale content. Does not fix C-01 (still routes through campaign-send). Does not fix actorSource. Adds logic to `prime-compose/route.ts` that makes it harder to reason about. Retry window between fetch-and-skip and the actual send still exists.",
+        "Key risks": "Fundamentally flawed: cannot skip initiate when the operator typed new broadcast text, so the \"skip\" guard cannot safely apply to the first new message of a broadcast. Retry idempotency requires knowing whether the prior initiate succeeded, which this option cannot reliably determine without state outside the request.",
+        "Viable?": "No — cannot satisfy C-02 without additional state"
+      }
+    ],
+    "chosen_approach": {
+      "**None.** All blocking questions were resolved during analysis. The idempotency approach (Option A) is decisive. The singleton-reset design is preserved": "after each send the thread is `sent`; the next compose call resets to `pending` via `savePrimeReviewDraft`/`isReusableWholeHostelLane`. The C-02 hazard (multi-hop sequential retry creating duplicate) is addressed by collapsing to a single hop. The residual concurrent-duplicate risk is accepted as out-of-scope."
+    },
+    "rejected_approaches": [
+      "**Option B (idempotency key)** — Rejected. Requires a schema addition (new column on draft or campaign table for the idempotency key), key persistence logic on the Reception side, and does not fix C-01 or actorSource without additional changes. Disproportionate complexity for a problem that Option A solves structurally.",
+      "**Option C (skip initiate on draft exists)** — Rejected. Cannot distinguish \"retry of same message\" from \"new broadcast with same content\". If the operator types identical text twice in quick succession, the second message would be silently dropped. Requires an extra HTTP round-trip on every compose request. Does not fix C-01, actorSource, or C-03."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Reception → Prime: compose",
+          "current": "Two HTTP calls: `POST /api/staff-initiate-thread` then `POST /api/review-campaign-send?campaignId=...` (via `sendPrimeInboxThread` routing branch). Total: 3 hops including the `getPrimeInboxThreadDetail` fetch. Rate-limited by campaign-send KV gate.",
+          "trigger": "Staff submits broadcast in Reception inbox UI",
+          "future": null,
+          "steady": "Reception auth gate (`requireStaffAuth`), telemetry event (`prime_broadcast_initiated`), 200/502/503 response shape",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Prime: initiate + send",
+          "current": "Two separate endpoints: `staff-initiate-thread` (upsert thread + draft + campaign) and `review-thread-send` (send draft). A retry between these two creates a duplicate — the initiate step resets `review_status: pending`, invalidating the send's conflict check.",
+          "trigger": "As above",
+          "future": null,
+          "steady": "`sendPrimeReviewThread` logic unchanged. `savePrimeReviewDraft` logic unchanged. `ensureWholeHostelCampaignForDraft` unchanged. `isReusableWholeHostelLane` reset behaviour preserved for legitimate re-use.",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Audit / actorSource",
+          "current": "`actorSource: 'reception_proxy'` hardcoded on all send paths",
+          "trigger": "As above",
+          "future": null,
+          "steady": "`actorUid` already correct on all paths",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Rate limit",
+          "current": "KV rate limit 3/60 s per actor via `review-campaign-send`",
+          "trigger": "As above",
+          "future": null,
+          "steady": "`review-campaign-send` rate limit unchanged for its intended use (review campaigns)",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Delivery to guests",
+          "current": "Firebase RTDB write to `messaging/channels/broadcast_whole_hostel/messages/{messageId}`. No push notification. Guests see message on next app open or if actively subscribed.",
+          "trigger": "As above",
+          "future": null,
+          "steady": "All downstream Firebase projection logic unchanged",
+          "seams": null
+        }
+      ]
+    }
+  }
+}

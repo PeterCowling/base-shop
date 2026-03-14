@@ -23,7 +23,46 @@ export interface MockEnv {
   PRIME_STAFF_LOCKOUT_WINDOW_SECONDS?: string;
   PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL?: string;
   PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY?: string;
+  PRIME_KPI_AGGREGATION_SECRET?: string;
   PRIME_MESSAGING_DB?: D1Database;
+  PRIME_ACTOR_CLAIMS_SECRET?: string;
+}
+
+/** Test-only signing secret — 32 chars, distinct from any gateway token value. */
+export const TEST_ACTOR_CLAIMS_SECRET = 'test-actor-claims-secret-32chars!!';
+
+/**
+ * Sign actor claims for use in test requests to Prime mutation endpoints.
+ * Uses the same HMAC-SHA256 algorithm as the production signing code.
+ *
+ * Returns the `x-prime-actor-claims` header value.
+ */
+export async function signTestActorClaims(
+  uid: string,
+  roles: string[],
+  secret: string = TEST_ACTOR_CLAIMS_SECRET,
+): Promise<string> {
+  const iat = Math.floor(Date.now() / 1000);
+  const payload = JSON.stringify({ uid, roles, iat });
+  const payloadBytes = new TextEncoder().encode(payload);
+
+  function toBase64Url(bytes: Uint8Array): string {
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  }
+
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const sigBytes = await crypto.subtle.sign('HMAC', key, payloadBytes);
+  return `${toBase64Url(payloadBytes)}.${toBase64Url(new Uint8Array(sigBytes))}`;
 }
 
 export interface MockD1StatementRecord {
@@ -528,6 +567,10 @@ export function createMockEnv(overrides: Partial<MockEnv> = {}): MockEnv {
     CF_FIREBASE_DATABASE_URL: 'https://example.firebaseio.com',
     CF_FIREBASE_API_KEY: 'test-api-key',
     PRIME_EXTENSION_TARGET_EMAIL: 'hostelbrikette@gmail.com',
+    // Default test secret for actor claims signing/verification (≥32 chars).
+    // All mutation endpoints require this to be set. Override to undefined to
+    // test the 503 misconfiguration path.
+    PRIME_ACTOR_CLAIMS_SECRET: TEST_ACTOR_CLAIMS_SECRET,
     ...overrides,
   };
 }

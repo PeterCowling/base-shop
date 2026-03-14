@@ -1,0 +1,21 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-colour-system-direction",
+  "build_date": "2026-03-14",
+  "status": "complete",
+  "commit": "1d1f0e6678",
+  "outcome_contract": {
+    "why": "The green + blue combination in the current interface creates visual clutter. The operator identified this as a product quality issue — the interface does not feel coherent or professional, which matters for a POS used daily by front-of-house staff.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The reception app's interface uses green and amber as its two active colour families, with blue removed from bar product categorisation, analytics chart-1 (hsl 240), and analytics chart-6 (hsl 199). The booking status system (hospitality-info, rvg awaiting/confirmed) is preserved. Visual competition is eliminated.",
+    "source": "operator"
+  },
+  "tasks_completed": ["TASK-01"],
+  "files_changed": [
+    "packages/themes/reception/src/tokens.ts",
+    "packages/themes/reception/tokens.css",
+    "apps/reception/tailwind.config.mjs",
+    "apps/reception/src/hooks/data/bar/useProducts.ts",
+    "scripts/src/themes/hsl-to-oklch.ts"
+  ]
+}

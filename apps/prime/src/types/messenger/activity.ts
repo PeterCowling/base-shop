@@ -29,6 +29,13 @@ export interface ActivityInstance {
   imageUrl?: string;
   /** Epoch (ms) start time */
   startTime: number;
+  /**
+   * Duration of this activity instance in minutes.
+   * Optional — when absent, the guest app defaults to 120 minutes.
+   * Set via Firebase console when creating new instances.
+   * Values ≤ 0 are guarded at the call site with Math.max(1, durationMinutes ?? 120).
+   */
+  durationMinutes?: number;
   /** Ticket price; numeric (interpreted as EUR) or formatted string ("Free", "15€" …). */
   price?: number | string;
   /** Initial messages shown when the activity goes live */

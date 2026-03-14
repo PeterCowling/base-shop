@@ -17,13 +17,16 @@ export const inboxEventTypes = [
   "approved",
   "sent",
   "send_failed",
+  "send_duplicate_blocked",
   "resolved",
   "dismissed",
   "inbox_recovery",
+  "needs_manual_draft_alert",
   "guest_matched",
   "guest_match_not_found",
   "thread_sync_error",
   "prime_manual_reply",
+  "prime_broadcast_initiated",
 ] as const;
 
 export type InboxEventType = (typeof inboxEventTypes)[number];
@@ -49,6 +52,7 @@ const CRITICAL_EVENT_TYPES: ReadonlySet<InboxEventType> = new Set([
   "admitted",
   "approved",
   "sent",
+  "prime_broadcast_initiated",
 ]);
 const MAX_METADATA_JSON_LENGTH = 4096;
 

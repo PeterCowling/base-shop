@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
 import MarkAsFailedButton from "./MarkAsFailedButton";
@@ -96,7 +97,7 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
       maxWidth="max-w-sm"
       className="font-body"
       footer={
-        <div className="flex gap-3 justify-end">
+        <Cluster justify="end" gap={3}>
           {hasCard ? (
             <MarkAsFailedButton
               bookingRef={bookingRef}
@@ -123,7 +124,7 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
             createPaymentTransaction={createPaymentTransaction}
             onSuccess={() => handlePaymentSuccess("paid")}
           />
-        </div>
+        </Cluster>
       }
     >
       <div className="mb-3">

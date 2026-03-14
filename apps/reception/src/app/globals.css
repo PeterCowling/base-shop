@@ -33,6 +33,20 @@
   --reception-signal-warning-fg: hsl(var(--hospitality-warning-fg));
   --reception-signal-info-bg: hsl(var(--hospitality-info));
   --reception-signal-info-fg: hsl(var(--hospitality-info-fg));
+
+  /* Rooms-grid SVG fill for checked-in state — vivid green, stands out clearly */
+  --reception-grid-checkedin-fill: hsl(142 72% 42%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --reception-grid-checkedin-fill: hsl(142 70% 62%);
+  }
+}
+
+html.dark,
+body.dark {
+  --reception-grid-checkedin-fill: hsl(142 70% 62%);
 }
 
 /* -------- CSS reset (minimal) ------------------------------------ */

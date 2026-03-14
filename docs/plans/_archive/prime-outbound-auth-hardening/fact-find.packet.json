@@ -1,0 +1,208 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "prime-outbound-auth-hardening",
+  "source_artifact_path": "docs/plans/prime-outbound-auth-hardening/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-outbound-auth-hardening/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff identity is caller-controlled at the Prime API layer — any holder of the gateway token can attribute actions to any staff UID, including audit records, broadcast sends, and message attributions. This is a correctness and audit-integrity issue, and for broadcast specifically it is a direct-harm risk (messages to all active guests attributed to wrong person).",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "After this change, the actor UID recorded at the Prime layer is cryptographically bound to a short-lived signed claims header verified with a separate signing secret. A caller with only the gateway token cannot forge a different UID. The broadcast send path additionally requires the caller to hold the `owner` or `admin` role (exact allowlist, not hierarchical — roles are a flat set).",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI changes — server-side only",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No user-facing states changed",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Shared token validates caller but does not bind identity; actor UID is freely injectable; broadcast role gate absent",
+      "gap_or_implication": "**High gap**: C-04 UID forgery + L-04 unbounded broadcast",
+      "carry_forward_or_notes": "Yes — core of this work"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "actorUid is persisted in D1 audit records; current records may carry forged UIDs",
+      "gap_or_implication": "Forged UIDs corrupt audit trail; post-fix old records not retroactively corrected",
+      "carry_forward_or_notes": "Yes — audit correctness"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "6 TCs for `staff-initiate-thread` but none test UID handling; 0 TCs for broadcast role gate",
+      "gap_or_implication": "Gap in security regression coverage",
+      "carry_forward_or_notes": "Yes — new TCs needed"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "No schema changes needed; `x-prime-actor-uid` header protocol changes; `buildPrimeActorHeaders` in reception changes",
+      "gap_or_implication": "Backward-compat risk during rollout if Prime updated before reception",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required (low)",
+      "current_or_option_state": "HMAC verification is O(1) CPU; adds one WebCrypto call per request; negligible on CF Workers",
+      "gap_or_implication": "None material",
+      "carry_forward_or_notes": "No — note only"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flag today; change is a new enforcement layer",
+      "gap_or_implication": "Must update Prime and reception atomically or keep backward-compat fallback during transition",
+      "carry_forward_or_notes": "Yes"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The Prime messaging staff API endpoints use a shared static gateway token (`PRIME_STAFF_OWNER_GATE_TOKEN`) or Cloudflare Access session cookie to authenticate callers, but then trust the caller-supplied `x-prime-actor-uid` request header to identify which staff member is acting. Any caller who holds the gateway token can assert any UID without server-side verification. This applies to **8** staff-facing mutation endpoints: `staff-initiate-thread`, `review-thread-draft`, `review-thread-resolve`, `review-thread-dismiss`, `review-thread-send`, `review-campaign-send`, `review-campaign` (POST creat",
+    "goals": [],
+    "non_goals": [
+      "Rebuilding the full multi-staff auth system for Prime (out of scope; currently a single shared PIN).",
+      "Adding per-request Firebase token verification on all Prime endpoints (the CF Worker environment lacks the Firebase Admin SDK).",
+      "Changing guest-facing auth flows."
+    ],
+    "constraints": [
+      "Prime runs as Cloudflare Pages Functions; no Firebase Admin SDK, no Node.js crypto beyond WebCrypto."
+    ],
+    "assumptions": [
+      "The correct minimal fix requires a **separate** signing secret (`PRIME_ACTOR_CLAIMS_SECRET`) present in both the reception app env and the Prime Pages Functions env, independent of `PRIME_STAFF_OWNER_GATE_TOKEN`. Reception signs a short-lived claims payload; Prime verifies. A forger who holds only the gateway token cannot mint valid claims without the separate signing secret.",
+      "`requireStaffAuth` in reception already validates the Firebase ID token and extracts UID and roles — these are the authoritative values to sign.",
+      "Broadcast role gate requires `owner` or `admin`. `developer` is excluded (see Resolved questions)."
+    ],
+    "key_entry_points": [
+      "`apps/prime/functions/api/staff-initiate-thread.ts` — creates broadcast thread + initial draft; reads actor UID from header (line 43)",
+      "`apps/reception/src/app/api/mcp/inbox/prime-compose/route.ts` — reception route that drives the full broadcast initiation; verified auth at line 13; forwards verified uid at lines 42–44",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts` — send-existing-thread path; verified auth, forwards uid at lines 45–69"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis prime-outbound-auth-hardening`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Gateway enforcement (`staff-owner-gate.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — fully read",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Actor UID consumption on all 8 mutation endpoints",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Pattern confirmed across all 8 (6 initial + 2 in review-campaign POST/PUT via critique); no outliers",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Reception→Prime forwarding layer (`prime-review.server.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`buildPrimeActorHeaders` confirmed as plain header forwarding",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Reception auth layer (`staff-auth.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Correctly implements Firebase ID token verification + role lookup",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Broadcast-specific endpoints",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`staff-initiate-thread` and `review-campaign-send` identified; rate-limit bypass risk noted",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Existing test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Tests cover access gate; zero tests for UID handling or role gate",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Staff/role data sources",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Firebase RTDB `userProfiles/{uid}` confirmed; roles structure documented",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Deployment/rollout risk",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Backward-compat period needed; no feature flag infrastructure today",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Staff member in the reception app initiates a whole-hostel broadcast via the \"Prime compose\" UI.",
+      "end_condition": "Message is queued for delivery to all active guests; draft is created in the Prime D1 database attributed to a staff UID; telemetry event is recorded in the reception database.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Reception auth (verified)",
+          "flow": "Staff fires POST /api/mcp/inbox/prime-compose → `requireStaffAuth` validates Firebase ID token via Identity Toolkit API → retrieves roles from RTDB `userProfiles/{uid}` → returns `{ uid, roles }`",
+          "owners": "Reception Next.js API layer",
+          "evidence": "`apps/reception/src/app/api/mcp/_shared/staff-auth.ts` lines 120–164",
+          "issues": "None; this layer is correctly gated"
+        },
+        {
+          "id": null,
+          "label": "Reception→Prime forwarding",
+          "flow": "`initiatePrimeOutboundThread({ text, actorUid: auth.uid })` called → adds `x-prime-actor-uid: <uid>` header → calls Prime `POST /api/staff-initiate-thread` with gateway token",
+          "owners": "`apps/reception/src/lib/inbox/prime-review.server.ts` `buildPrimeActorHeaders`",
+          "evidence": "lines 258–260",
+          "issues": "UID is forwarded as a plain header — no signature"
+        },
+        {
+          "id": null,
+          "label": "Prime gateway enforcement",
+          "flow": "`enforceStaffOwnerApiGate` checks: if dev, pass; if `PRIME_ENABLE_STAFF_OWNER_ROUTES=true`, pass; else check `cf-access-authenticated-user-email` or `x-prime-access-token == PRIME_STAFF_OWNER_GATE_TOKEN`",
+          "owners": "Prime Cloudflare Pages Function",
+          "evidence": "`apps/prime/functions/lib/staff-owner-gate.ts`",
+          "issues": "Validates caller has token; does NOT bind token to any specific identity"
+        },
+        {
+          "id": null,
+          "label": "Prime actor UID consumption",
+          "flow": "`const actorUid = request.headers.get('x-prime-actor-uid')?.trim() \\",
+          "owners": "\\",
+          "evidence": "'prime-owner'` — trusted as-is; recorded in draft, mutations, and campaign records",
+          "issues": "`staff-initiate-thread.ts`, `review-thread-resolve.ts`, `review-thread-dismiss.ts`, `review-thread-draft.ts`, `review-thread-send.ts`, `review-campaign-send.ts`, `review-campaign.ts` (POST line 77), `review-campaign.ts` (PUT line 122)"
+        },
+        {
+          "id": null,
+          "label": "Broadcast send execution",
+          "flow": "`review-campaign-send.ts` reads actorUid from header → passes to `sendPrimeReviewCampaign` as actorSource `reception_proxy` → no role check on actorUid",
+          "owners": "`apps/prime/functions/api/review-campaign-send.ts` lines 26–50",
+          "evidence": "**L-04: No broadcast role gate** — any valid gateway token holder can trigger broadcast",
+          "issues": null
+        }
+      ]
+    }
+  }
+}

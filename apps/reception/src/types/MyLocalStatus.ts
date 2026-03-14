@@ -4,6 +4,7 @@ export type MyLocalStatus =
   | "disabled" //must keep
   | "awaiting" //must keep
   | "confirmed" //must keep
+  | "gap" //Short free gap between bookings (1-3 days)
   | "1" //Booking created
   | "8" //Room payment made
   | "12" //checkedIn

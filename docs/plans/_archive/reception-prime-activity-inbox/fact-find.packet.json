@@ -1,0 +1,174 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-prime-activity-inbox",
+  "source_artifact_path": "docs/plans/reception-prime-activity-inbox/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Staff have no visibility into activity group chats. Guest questions or issues posted to activity channels go unnoticed. This creates a service gap for a running feature.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Activity channel messages appear in Reception's Prime inbox column within the same polling window as direct messages. Staff can read full conversation history and post replies that appear in the guest app.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`PrimeColumn` renders all non-email threads; `ThreadDetailPane` uses `capabilities` from adapter",
+      "gap_or_implication": "`prime_activity` adapter must define capabilities (no subject, no recipients, supports draft send). Activity title needs to appear in thread list.",
+      "carry_forward_or_notes": "Define adapter capabilities; verify PrimeColumn empty-state text update"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Draft panel shows/hides controls based on `capabilities.*`. Send path shows errors.",
+      "gap_or_implication": "Staff reply composer must be enabled for activity; \"mark presence\" gate is guest-only and does not apply to staff. Activity threads may have many senders (unlike 1:1 DM).",
+      "carry_forward_or_notes": "Confirm no \"member_uids\" guard blocks activity sends"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "RTDB rules: `messaging.write: \"auth != null\"` — any authenticated client can write. `enforceStaffOwnerApiGate` gates all Prime staff routes.",
+      "gap_or_implication": "Option C (server function) intercepts the send path and validates the guest session token before writing to Firebase, providing the same trust guarantees as `direct-message.ts`. A polling/listener approach cannot verify message authenticity and must be treated as untrusted input. `CF_FIREBASE_API_KEY` must be present in the Pages Function env for the projection write path.",
+      "carry_forward_or_notes": "Analysis must confirm Option C as the chosen trigger to close the authenticity gap"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`recordPrimeMessageAdmission` records each shadow-written message decision. `recordDirectTelemetry` used in direct-message path.",
+      "gap_or_implication": "Need equivalent telemetry for activity shadow-write events. Reception has no \"activity\" label in logs.",
+      "carry_forward_or_notes": "Add `recordDirectTelemetry` or equivalent for `activity.shadow_write.success/error`"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Direct-message path has `__tests__/direct-message.test.ts`. `review-threads.ts` has `__tests__/review-threads.test.ts`. Channel adapters have `__tests__/channel-adapters.server.test.ts`.",
+      "gap_or_implication": "New shadow-write function needs unit tests. `resolveChannel` needs `activity` branch test. `channel-adapters.server.test.ts` needs `prime_activity` adapter test.",
+      "carry_forward_or_notes": "~3 new test files; ~5-10 new test cases"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`PrimeMessagingChannelType` is a const union. `InboxChannel` is a const array. Both need `activity` added. No schema migration required — SQLite has no CHECK constraint enforcing the existing `direct",
+      "gap_or_implication": "broadcast` comment.",
+      "carry_forward_or_notes": "`booking_id NOT NULL` constraint requires sentinel strategy. Sentinel `'activity'` will render as `#activity` in `ThreadDetailPane` unless guarded. No `activity` branch in `resolveChannel` or `prime-review-send-support.ts` — existing code silently misclassifies or uses wrong kind/reason."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`listPrimeReviewThreads` has no `channel_type` filter so adding `activity` rows incurs no extra query cost.",
+      "gap_or_implication": "Shadow-write trigger mechanism choice matters: Firebase client listener in a Durable Object vs. a polling approach vs. a CF Worker scheduled trigger. The direct-message path uses a CF Pages Function trigger (client explicitly calls the API). Activity messages write directly to Firebase with no server API call — a different trigger mechanism is needed.",
+      "carry_forward_or_notes": "Analysis must compare trigger options"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flag currently exists for new channel types. Adding `prime_activity` to const arrays is additive and backward-compatible at the type level.",
+      "gap_or_implication": "If shadow-write fails silently, no messages appear in Reception — acceptable degradation (same as current state). Schema migration is additive (new comment only); rollback is safe.",
+      "carry_forward_or_notes": "No migration rollback risk; feature flag optional but recommended for initial roll-out"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The Prime guest app supports activity-based group chat channels (e.g. yoga, group dinner). Guests post messages to Firebase RTDB paths under `messaging/channels/<activityInstanceId>/messages`. These messages are read by the guest app but are never shadow-written to the Prime D1 `PRIME_MESSAGING_DB`, so Reception has no visibility. Reception's inbox currently knows three channel types: `email`, `prime_direct`, and `prime_broadcast`. An `activity` channel type does not exist in any layer. This work adds a complete pipeline: shadow-write activity messages to D1 → add a `prime_activity` channel ty",
+    "goals": [
+      "Shadow-write inbound activity messages to `PRIME_MESSAGING_DB` (new CF Pages Function or extended trigger).",
+      "Add `prime_activity` channel type across all layers where `prime_direct` and `prime_broadcast` exist.",
+      "Show activity threads in Reception's Prime inbox column alongside `prime_direct` threads.",
+      "Allow staff to reply to activity threads; reply is projected back to Firebase via the existing `projectPrimeThreadMessageToFirebase` path."
+    ],
+    "non_goals": [
+      "Automated AI draft generation for activity channels (can be added later; not in scope).",
+      "Presence tracking changes or attendance lifecycle.",
+      "Modifying the Firebase RTDB security rules (existing rules already permit `messaging` read+write for any `auth != null`, which the service account satisfies).",
+      "Reception displaying the full activity roster or RSVP status."
+    ],
+    "constraints": [
+      "Prime D1 `message_threads.channel_type` is `TEXT NOT NULL`. The schema comment `-- direct|broadcast` is documentation only — SQLite has no CHECK constraint. Adding `'activity'` requires no schema migration; the change is TypeScript-side only (add to the `PrimeMessagingChannelType` union and update code that branches on this value).",
+      "The existing `resolveChannel` function in `prime-review-api.ts` maps `else` to `prime_direct`. A new explicit branch is needed for `activity`.",
+      "The `PrimeMessagingChannelType` union in `prime-messaging-repositories.ts` is `['direct', 'broadcast']` — needs `activity` added."
+    ],
+    "assumptions": [
+      "Each `ActivityInstance.id` is used verbatim as the Firebase `channelId` under `messaging/channels/<id>`.",
+      "Activity IDs do not collide with `dm_*` or `broadcast_*` prefixes; they are `crypto.randomUUID()` values set in `activity-manage.ts` at creation time.",
+      "The existing `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` / `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` env vars available to `activity-manage.ts` are also available in the new shadow-write function context (same Pages Function environment).",
+      "`bookingId` is not intrinsically tied to an activity channel (activities are hostel-wide), so a synthetic or nullable `booking_id` value is needed in `message_threads`. The activity instance `createdBy` field and presence data could provide a guest's booking context, but the simpler initial model uses a constant like `hostel` or the activity instance ID."
+    ],
+    "key_entry_points": [],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis reception-prime-activity-inbox`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Firebase paths for activity messages",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Shadow-write data flow (direct-message template)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — pattern maps cleanly",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "D1 channel_type schema + migration surface",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "booking_id NOT NULL needs sentinel strategy",
+        "Resolution Required": "No — defaulted"
+      },
+      {
+        "Scope Area": "Reception InboxChannel const + adapter",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`prime_activity` absent from all layers",
+        "Resolution Required": "No — gap is the feature"
+      },
+      {
+        "Scope Area": "Reception inbox route + Prime review API flow",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "resolveChannel else-branch misclassifies activity",
+        "Resolution Required": "No — gap is the feature"
+      },
+      {
+        "Scope Area": "Staff reply Firebase write path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "ensureActivityChannelMeta branch missing",
+        "Resolution Required": "No — gap is the feature"
+      },
+      {
+        "Scope Area": "RTDB security rules for staff writes",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `auth != null` permits service account",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Trigger mechanism (no server intercept for activity sends)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "4 options identified; no definitive choice yet",
+        "Resolution Required": "Yes — analysis decision"
+      },
+      {
+        "Scope Area": "Test landscape",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "~3 test files and ~8 test cases needed",
+        "Resolution Required": "No — carry to plan"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

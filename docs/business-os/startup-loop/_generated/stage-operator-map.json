@@ -959,7 +959,7 @@
       "name_machine": "activation-readiness",
       "label_operator_short": "Activation readiness",
       "label_operator_long": "SELL-08 — Activation readiness",
-      "outcome_operator": "Paid-spend authorization state documented from measurement/risk/conversion checks.",
+      "outcome_operator": "Paid-spend authorization state documented from measurement, risk, conversion, and rendered funnel audit checks.",
       "aliases": [
         "activation-readiness",
         "spend-authorization",
@@ -974,7 +974,7 @@
           "id": "GATE-SELL-ACT-01",
           "label": "Spend authorization",
           "gate": "Hard",
-          "description": "Spend activation gate. Requires decision-grade measurement signal verified (GATE-MEAS-01 pass). Blocks any live spend or channel activation until measurement thresholds are met."
+          "description": "Spend activation gate. Requires decision-grade measurement signal verified plus a recent rendered sales-funnel audit pass on mobile and fullscreen. Blocks any live spend or channel activation until both thresholds are met."
         }
       ]
     },

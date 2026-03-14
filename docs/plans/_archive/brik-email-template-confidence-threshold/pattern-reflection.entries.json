@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-13T06:54:44.116Z",
+  "plan_slug": "brik-email-template-confidence-threshold",
+  "review_cycle_key": "brik-email-template-confidence-threshold",
+  "source_path": "docs/plans/brik-email-template-confidence-threshold/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

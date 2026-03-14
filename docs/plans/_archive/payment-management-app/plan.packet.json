@@ -1,0 +1,515 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "payment-management-app",
+  "source_artifact_path": "docs/plans/payment-management-app/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/payment-management-app/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Refunding requires accessing a buried page inside Caryina only; switching payment processors requires redeploying the entire app; no cross-shop payment visibility exists.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A standalone payment management app (`apps/payment-manager/`) is live on Cloudflare Workers: per-shop processor selection switchable at runtime via UI, cross-portfolio order list with refund issuance, and the Caryina admin refund route migrated to a proxy then removed. Scope clarification under Option A: Caryina's Node.js Axerve execution path is retained as a backend service; Phase 5 removal applies to the user-facing admin UI and the Stripe direct handler only.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Full app UI built in Next.js 15 with `@acme/design-system` and Tailwind v4; order list, order detail, refund modal, shop config, reconciliation, webhook log, analytics",
+      "current_or_option_state": "TASK-04, TASK-05, TASK-06, TASK-08, TASK-09, TASK-10",
+      "gap_or_implication": "Design spec not required (internal admin tool); QA loop (lp-design-qa + contrast + breakpoint) required per task",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Empty state, loading, refund in-flight, refund success/failure, provider switch confirmation, masked credential entry, Caryina proxy error",
+      "current_or_option_state": "TASK-04, TASK-05, TASK-06",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Session auth fail-closed; IP allowlist; AES-256-GCM credential encryption; `CARYINA_INTERNAL_TOKEN` + `PAYMENT_MANAGER_INTERNAL_TOKEN` service-to-service auth; customer email masked in UI",
+      "current_or_option_state": "TASK-02, TASK-03, TASK-05, TASK-12",
+      "gap_or_implication": "Fail-closed deviation from inventory-uploader template is intentional and explicit",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`PaymentConfigAudit` immutable log for all config changes; refund audit trail per order (in `Refund` model); structured logs for provider API calls; Caryina proxy call logged on both sides",
+      "current_or_option_state": "TASK-05, TASK-06",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Credential encryption round-trip + rotation tests; refund API unit tests (Stripe + Axerve proxy paths); proxy-failure test (Caryina down → 503); Phase 2 proxy integration test; Phase 3 cold-cache + env-var-fallback tests; existing 9 Caryina tests valid through Phase 1; split at Phase 2",
+      "current_or_option_state": "TASK-03, TASK-05, TASK-11, TASK-12",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "5 new additive Prisma models; existing `StripeWebhookEvent` reused (no new model); `ShopPaymentConfig.webhookEvents` relation removed from spec; `payloadJson` field out of scope for v1",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Axerve refund proxy: Caryina down → 503 (not silent); Phase 3 config reads: KV cache (60s TTL) + env-var fallback; checkout dual-write: fire-and-forget (checkout not blocked)",
+      "current_or_option_state": "TASK-05, TASK-04, TASK-12",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Phase 1: additive only, no rollback risk; Phase 2: revert Caryina proxy route; Phase 3: revert `provider.server.ts` to env-var read; Phase 4: CMP orders migration is read-only (no source data removed); Phase 5: only delete Caryina UI + Stripe handler",
+      "current_or_option_state": "TASK-11, TASK-12, TASK-13, TASK-14",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Workers that centralises payment lifecycle management across the PLAT portfolio. Phase 1 delivers the full application (scaffold, credential encryption, order list, refund API with Axerve SOAP proxy via Caryina, shop config, reconciliation view, webhook log, analytics). Phases 2–3 migrate Caryina's admin refund route to a unified proxy and enable runtime provider switching without redeploy. Phase 4 onboards Cover-me-pretty. Phase 5 removes legacy Caryina admin payment UI. The chosen approach (Option A: SOAP proxy via Car",
+    "goals": [
+      "Cross-portfolio order list with filtering, search, and refund issuance",
+      "Caryina processor selection (Axerve / Stripe) switchable at runtime without redeploy",
+      "Migrate Caryina's `/admin/api/refunds` to Payment Manager (Phase 2)",
+      "Checkout reconciliation view and webhook event log (reusing existing `StripeWebhookEvent` store)",
+      "Basic analytics dashboard (revenue, refund rate, failed payment rate)"
+    ],
+    "non_goals": [
+      "Customer-facing payment UI (stays in each storefront)",
+      "Dispute/chargeback management",
+      "New payment provider integrations beyond Axerve and Stripe",
+      "Payout management or bank reconciliation",
+      "Line-item-level partial refunds (v1 is amount-only)",
+      "CMP runtime provider switching (CMP is Stripe-only; `shop.json` hardcodes `\"billingProvider\": \"stripe\"`)"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Neon project `silent-flower-70372159` is shared; new models are additive migrations",
+      "Caryina will remain deployed alongside Payment Manager (it is the production storefront)",
+      "`PAYMENT_MANAGER_ENCRYPTION_KEY` global AES-256-GCM key is acceptable for v1",
+      "CMP order history lives primarily in `RentalOrder` Prisma model; `orders.jsonl` fallback handled gracefully"
+    ],
+    "selected_approach": [
+      "What was chosen: Option A — SOAP proxy via Caryina (full detail in analysis.md)",
+      "Why planning is not reopening option selection: analysis resolved the Axerve CF Workers blocker decisively; all 3 options were evaluated; Option A requires no third-party access confirmation and uses confirmed-available infrastructure"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Prisma schema — 5 new payment models",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`packages/platform-core/prisma/schema.prisma` — additive migration; 5 new models; generated Prisma client",
+        "affects": "`packages/platform-core/prisma/schema.prisma`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "App scaffold — wrangler, KV, session auth (fail-closed), middleware",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03",
+          "TASK-04",
+          "TASK-05",
+          "TASK-06",
+          "TASK-07",
+          "TASK-08",
+          "TASK-09",
+          "TASK-10"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/payment-manager/` — new Next.js 15 app; `wrangler.toml`; `src/middleware.ts`; `src/lib/auth/session.ts` (fail-closed variant); `src/lib/auth/pmKv.ts`; login page",
+        "affects": "`apps/payment-manager/` (new), `apps/payment-manager/wrangler.toml`, `apps/payment-manager/src/middleware.ts`, `apps/payment-manager/src/lib/auth/session.ts`, `apps/payment-manager/src/lib/auth/pmKv.ts`, `apps/payment-manager/src/app/login/page.tsx`, `apps/payment-manager/src/app/layout.tsx`, `apps/payment-manager/package.json`, `apps/payment-manager/tsconfig.json`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Credential encryption module (AES-256-GCM) + rotation endpoint",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 75,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-05",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/payment-manager/src/lib/crypto/credentials.ts` — `encrypt(plaintext, key)` / `decrypt(ciphertext, key)`; `apps/payment-manager/src/app/api/admin/rotate-key/route.ts` — key rotation endpoint; unit tests",
+        "affects": "`apps/payment-manager/src/lib/crypto/credentials.ts` (new), `apps/payment-manager/src/app/api/admin/rotate-key/route.ts` (new), `apps/payment-manager/src/lib/crypto/credentials.test.ts` (new)"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Order list + detail UI + Caryina dual-write hook",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 75,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-05",
+          "TASK-09",
+          "TASK-10",
+          "CHECKPOINT-01"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/payment-manager/src/app/(dashboard)/orders/page.tsx`; `apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx`; `apps/payment-manager/src/app/api/orders/route.ts`; `apps/payment-manager/src/app/api/orders/[orderId]/route.ts`; `apps/caryina/src/lib/checkoutSession.server.ts` (modified — add fire-and-forget dual-write)",
+        "affects": "`apps/payment-manager/src/app/(dashboard)/orders/page.tsx` (new), `apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx` (new), `apps/payment-manager/src/app/api/orders/route.ts` (new), `apps/payment-manager/src/app/api/orders/[orderId]/route.ts` (new), `apps/caryina/src/lib/checkoutSession.server.ts` (modified)"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Refund API (Stripe native + Axerve proxy via Caryina internal route)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "blocks": [
+          "TASK-06",
+          "CHECKPOINT-01"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/payment-manager/src/app/api/refunds/route.ts`; `apps/caryina/src/app/api/internal/axerve-refund/route.ts` (new non-admin Axerve handler in Caryina)",
+        "affects": "`apps/payment-manager/src/app/api/refunds/route.ts` (new), `apps/caryina/src/app/api/internal/axerve-refund/route.ts` (new), `apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx` (modified — add refund modal)"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Shop config UI + credential management",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-05"
+        ],
+        "blocks": [
+          "CHECKPOINT-01"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/payment-manager/src/app/(dashboard)/shops/page.tsx`; `apps/payment-manager/src/app/(dashboard)/shops/[shopId]/page.tsx`; `apps/payment-manager/src/app/api/shops/route.ts`; `apps/payment-manager/src/app/api/shops/[shopId]/config/route.ts`; `apps/payment-manager/src/app/api/shops/[shopId]/credentials/[provider]/route.ts`; test-connection endpoint",
+        "affects": "`apps/payment-manager/src/app/(dashboard)/shops/` (new), `apps/payment-manager/src/app/api/shops/` (new)"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Caryina webhook wire-up",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-08"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/caryina/src/app/api/stripe-webhook/route.ts` (modified — add `markStripeWebhookEventProcessed/Failed` calls)",
+        "affects": "`apps/caryina/src/app/api/stripe-webhook/route.ts`"
+      },
+      {
+        "task_id": "TASK-08",
+        "title": "Webhook event log UI",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-07"
+        ],
+        "blocks": [
+          "CHECKPOINT-01"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/payment-manager/src/app/(dashboard)/webhooks/page.tsx`; `apps/payment-manager/src/app/api/webhook-events/route.ts`",
+        "affects": "`apps/payment-manager/src/app/(dashboard)/webhooks/page.tsx` (new), `apps/payment-manager/src/app/api/webhook-events/route.ts` (new)"
+      },
+      {
+        "task_id": "TASK-09",
+        "title": "Checkout reconciliation view",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-04"
+        ],
+        "blocks": [
+          "CHECKPOINT-01"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/payment-manager/src/app/(dashboard)/reconciliation/page.tsx`; `apps/payment-manager/src/app/api/reconciliation/route.ts`",
+        "affects": "`apps/payment-manager/src/app/(dashboard)/reconciliation/` (new), `apps/payment-manager/src/app/api/reconciliation/route.ts` (new)"
+      },
+      {
+        "task_id": "TASK-10",
+        "title": "Analytics dashboard",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [
+          "TASK-04"
+        ],
+        "blocks": [
+          "CHECKPOINT-01"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/payment-manager/src/app/(dashboard)/analytics/page.tsx`; `apps/payment-manager/src/app/api/analytics/summary/route.ts`",
+        "affects": "`apps/payment-manager/src/app/(dashboard)/analytics/` (new)"
+      },
+      {
+        "task_id": "CHECKPOINT-01",
+        "title": "Phase 1 gate",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": null,
+        "effort": null,
+        "depends_on": [
+          "TASK-05",
+          "TASK-06",
+          "TASK-08",
+          "TASK-09",
+          "TASK-10"
+        ],
+        "blocks": [
+          "TASK-11",
+          "TASK-12"
+        ],
+        "execution_skill": null,
+        "deliverable": null,
+        "affects": null
+      },
+      {
+        "task_id": "TASK-11",
+        "title": "Phase 2 — Caryina proxy + internal Axerve route",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "CHECKPOINT-01"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/caryina/src/app/admin/api/refunds/route.ts` (converted to unified proxy); `apps/caryina/src/app/admin/api/refunds/route.test.ts` (split into proxy-shape + SOAP-execution tests)",
+        "affects": "`apps/caryina/src/app/admin/api/refunds/route.ts`, `apps/caryina/src/app/admin/api/refunds/route.test.ts`"
+      },
+      {
+        "task_id": "TASK-12",
+        "title": "Phase 3 — Runtime provider switching via Payment Manager",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 75,
+        "effort": "M",
+        "depends_on": [
+          "TASK-11"
+        ],
+        "blocks": [
+          "CHECKPOINT-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/caryina/src/lib/payments/provider.server.ts` (modified — reads from PM instead of env var); `apps/payment-manager/src/app/api/internal/shop-config/route.ts` (new service-to-service endpoint)",
+        "affects": "`apps/caryina/src/lib/payments/provider.server.ts`, `apps/payment-manager/src/app/api/internal/shop-config/route.ts` (new)"
+      },
+      {
+        "task_id": "CHECKPOINT-02",
+        "title": "Phase 3 gate",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": null,
+        "effort": null,
+        "depends_on": [
+          "TASK-12"
+        ],
+        "blocks": [
+          "TASK-13"
+        ],
+        "execution_skill": null,
+        "deliverable": null,
+        "affects": null
+      },
+      {
+        "task_id": "TASK-13",
+        "title": "Phase 4 — CMP onboarding",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 70,
+        "effort": "M",
+        "depends_on": [
+          "CHECKPOINT-02"
+        ],
+        "blocks": [
+          "TASK-14"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "CMP shop row in `ShopPaymentConfig`; migration script for `RentalOrder` → PM `Order`; CMP checkout dual-write hook; CMP webhook wire-up (already done for CMP in `stripeWebhookEventStore.ts`)",
+        "affects": "`apps/cover-me-pretty/src/api/checkout-session/route.ts` (modified — add dual-write hook); migration script (new); PM `ShopPaymentConfig` seed data"
+      },
+      {
+        "task_id": "TASK-14",
+        "title": "Phase 5 — Remove Caryina legacy admin payment code",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-13"
+        ],
+        "blocks": [
+          "TASK-15"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Scope clarification: `apps/caryina/src/app/admin/api/refunds/route.ts` was converted to a proxy in TASK-11 and is **retained** permanently as the admin refund proxy route. Phase 5 deletes any standalone Caryina admin payment UI page (if a separate React page existed before TASK-11 for direct Stripe/Axerve dispatch); if no such standalone page exists, this task's file-deletion scope is nil. `apps/caryina/src/app/api/internal/axerve-refund/route.ts` is also retained (Axerve execution). Caryina admin Stripe direct handler (`finalizeStripeSession`/`expireStripeSession` in the old route) was remove",
+        "affects": "Any standalone Caryina admin payment UI page (delete if exists); `apps/caryina/src/app/admin/api/refunds/route.ts` is NOT deleted (it is the TASK-11 proxy, retained permanently)"
+      },
+      {
+        "task_id": "TASK-15",
+        "title": "CI/deploy pipeline for payment-manager",
+        "type": "IMPLEMENT",
+        "status": "75% — eligible for build (at least one IMPLEMENT task at ≥80%; overall meets minimum threshold)",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`.github/workflows/payment-manager.yml`; `apps/payment-manager/` CI configuration",
+        "affects": "`.github/workflows/payment-manager.yml` (new)"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Axerve refund issuance",
+          "trigger": "Operator needs to issue an Axerve refund",
+          "flow": "(1) Operator opens Payment Manager → order list → order detail → \"Issue Refund\" modal; (2) POST `/api/refunds` → resolves provider = axerve; (3) Payment Manager POSTs `https://caryina-host/api/internal/axerve-refund` with `CARYINA_INTERNAL_TOKEN` header; (4) Caryina Node.js route executes SOAP call → returns result; (5) Payment Manager writes to `Refund` table, emits audit record, responds to UI",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03",
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Caryina outage → PM returns 503; Axerve route cannot be removed until Option B adopted"
+        },
+        {
+          "id": null,
+          "label": "Stripe refund issuance",
+          "trigger": "Operator needs to issue a Stripe refund",
+          "flow": "(1) Operator opens Payment Manager → \"Issue Refund\"; (2) POST `/api/refunds` → provider = stripe → `@acme/stripe` `createFetchHttpClient()` call native in CF Workers → writes `Refund` row, audit record → responds to UI; (3) After Phase 2: Caryina `/admin/api/refunds` proxies all refunds to Payment Manager",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03",
+            "TASK-05",
+            "TASK-11"
+          ],
+          "dependency_note": null,
+          "seams": "Phase 2 proxy rollback: revert Caryina route to direct dispatch"
+        },
+        {
+          "id": null,
+          "label": "Provider selection (Caryina)",
+          "trigger": "Operator needs to switch Caryina from Axerve to Stripe",
+          "flow": "(1) Operator opens Payment Manager → Shop config → selects provider; (2) PM writes `activeProvider` to `ShopPaymentConfig`; (3) After Phase 3: Caryina `resolveCaryinaPaymentProvider()` calls `POST https://payment-manager-host/api/internal/shop-config` with `PAYMENT_MANAGER_INTERNAL_TOKEN`; (4) Response cached in Caryina KV (60s TTL); env-var fallback on miss; (5) New checkouts use new provider immediately",
+          "task_ids": [
+            "TASK-06",
+            "TASK-12"
+          ],
+          "dependency_note": null,
+          "seams": "Phase 3 rollback: revert `provider.server.ts` to env-var read; cold-cache latency risk on Phase 3 go-live"
+        },
+        {
+          "id": null,
+          "label": "Cross-shop order visibility",
+          "trigger": "Operator opens Payment Manager order list",
+          "flow": "(1) Caryina checkout writes order to PM `Order` table (fire-and-forget, non-blocking); (2) Operator opens PM → filtered/paginated order list across all shops; (3) Order detail shows transaction IDs, line items, refund history",
+          "task_ids": [
+            "TASK-01",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Dual-write failure is fire-and-forget; orders created before Phase 1 go-live not in PM Order table (historical gap accepted)"
+        },
+        {
+          "id": null,
+          "label": "Webhook event audit",
+          "trigger": "Operator needs to audit Stripe webhook delivery",
+          "flow": "(1) CMP webhook handler already writes to `StripeWebhookEvent` via `stripeWebhookEventStore.ts`; (2) After TASK-07: Caryina webhook handler also writes to `StripeWebhookEvent`; (3) Operator opens PM webhook log → reads existing table → sees type, shop, status, lastError, timestamp per event",
+          "task_ids": [
+            "TASK-07",
+            "TASK-08"
+          ],
+          "dependency_note": null,
+          "seams": "Raw payload view out of scope (v1); Caryina events absent until TASK-07 ships"
+        },
+        {
+          "id": null,
+          "label": "Checkout reconciliation view",
+          "trigger": "Operator needs to see stale in-progress checkout attempts",
+          "flow": "(1) PM reads `Order` table (status = in-progress, age > 15min per shop); (2) Operator views list with elapsed time; (3) Can trigger manual reconciliation or release hold",
+          "task_ids": [
+            "TASK-04",
+            "TASK-09"
+          ],
+          "dependency_note": null,
+          "seams": "View only as accurate as dual-write; pre-dual-write historical attempts not visible"
+        }
+      ]
+    }
+  }
+}

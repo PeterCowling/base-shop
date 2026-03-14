@@ -13,6 +13,7 @@ import { Button } from "@acme/design-system/atoms";
 import { Stack } from "@acme/design-system/primitives";
 
 import type { EmailProgressData } from "../../schemas/emailProgressDataSchema";
+import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
 import { showToast } from "../../utils/toastUtils";
 
 import ArrivalDateChip from "./ArrivalDateChip";
@@ -52,8 +53,14 @@ export default function EmailProgressLists({
     (item: EmailProgressListItem) => {
       Promise.resolve(logNextActivity({ bookingRef: item.bookingRef }))
         .then(() => {
+          const toastLabel =
+            item.currentCode === 1
+              ? "Marked first reminder as sent"
+              : item.currentCode === 2
+              ? "Marked second reminder as sent"
+              : "Marked booking as cancelled";
           showToast(
-            `Logged next activity for Booking Ref: ${item.bookingRef}`,
+            `${toastLabel} for Booking Ref: ${item.bookingRef}`,
             "success"
           );
           // Immediately move occupant to the next code group
@@ -257,7 +264,17 @@ function ActivityCodeSection({
                       <ArrivalDateChip arrivalDate={item.arrivalDate} />
                     )}
 
-                    <span className="text-foreground">{item.occupantName}</span>
+                    <div>
+                      <span className="text-foreground">{item.occupantName}</span>
+                      {item.currentCode > 1 && item.lastActionedBy && (
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Last actioned by: {item.lastActionedBy}
+                          {item.lastActionedAt && (
+                            <> · {formatEnGbDateTimeFromIso(item.lastActionedAt)}</>
+                          )}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
                   {item.currentCode < 4 && (
@@ -269,10 +286,10 @@ function ActivityCodeSection({
                         onClick={() => onNext(item)}
                       >
                         {code === 1
-                          ? "Send First Reminder"
+                          ? "Mark First Reminder Sent"
                           : code === 2
-                          ? "Send Second Reminder"
-                          : "Cancel Booking"}
+                          ? "Mark Second Reminder Sent"
+                          : "Mark Booking Cancelled"}
                       </Button>
                       <Button
                         color="success"

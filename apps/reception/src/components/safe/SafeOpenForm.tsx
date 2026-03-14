@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import { showToast } from "../../utils/toastUtils";
 import FormContainer from "../common/FormContainer";
@@ -56,7 +57,7 @@ export const SafeOpenForm = memo(function SafeOpenForm({
         value={keycards}
         onChange={(e) => setKeycards(e.target.value)}
       />
-      <div className="mt-4 flex flex-col gap-3">
+      <Stack gap={3} className="mt-4">
         <PasswordReauthInline
           onSubmit={handleConfirm}
           submitLabel="Confirm opening"
@@ -69,7 +70,7 @@ export const SafeOpenForm = memo(function SafeOpenForm({
         >
           Cancel
         </Button>
-      </div>
+      </Stack>
     </FormContainer>
   );
 });

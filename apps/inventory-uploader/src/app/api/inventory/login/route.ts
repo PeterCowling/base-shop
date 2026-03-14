@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { inventoryLog } from "../../../../lib/auth/inventoryLog";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/auth/rateLimit";
 import {
   issueInventorySession,
   setInventoryCookie,
@@ -12,45 +14,24 @@ const LOGIN_MAX_ATTEMPTS = 10;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_PAYLOAD_MAX_BYTES = 8 * 1024;
 
-// In-memory rate limiter — sufficient for internal operator console.
-// Module-level store persists for the lifetime of the Worker instance.
-type RateLimitEntry = { count: number; resetAt: number };
-
-const rateLimitStore = new Map<string, RateLimitEntry>();
-
-function checkRateLimit(key: string): boolean {
-  const now = Date.now();
-  const store = rateLimitStore;
-  // Prune expired entries
-  for (const [k, v] of store.entries()) {
-    if (v.resetAt <= now) store.delete(k);
-  }
-  const entry = store.get(key);
-  if (!entry || entry.resetAt <= now) {
-    store.set(key, { count: 1, resetAt: now + LOGIN_WINDOW_MS });
-    return true;
-  }
-  entry.count += 1;
-  if (entry.count > LOGIN_MAX_ATTEMPTS) return false;
-  return true;
-}
-
-function getRequestIp(request: Request): string {
-  return (
-    request.headers.get("cf-connecting-ip") ??
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    "unknown"
-  );
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value) && typeof value === "object" && !Array.isArray(value);
 }
 
 export async function POST(request: Request) {
-  const ip = getRequestIp(request);
-  if (!checkRateLimit(`inventory-login:${ip}`)) {
-    return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
+  const requestIp = getRequestIp(request);
+  const limit = rateLimit({
+    key: `inventory-login:${requestIp}`,
+    windowMs: LOGIN_WINDOW_MS,
+    max: LOGIN_MAX_ATTEMPTS,
+  });
+
+  if (!limit.allowed) {
+    inventoryLog("warn", "rate_limited", { ip: requestIp });
+    return withRateHeaders(
+      NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 }),
+      limit,
+    );
   }
 
   // Check content-length before reading body
@@ -58,7 +39,10 @@ export async function POST(request: Request) {
   if (contentLength) {
     const parsed = Number(contentLength);
     if (Number.isFinite(parsed) && parsed > LOGIN_PAYLOAD_MAX_BYTES) {
-      return NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 });
+      return withRateHeaders(
+        NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 }),
+        limit,
+      );
     }
   }
 
@@ -66,28 +50,44 @@ export async function POST(request: Request) {
   try {
     const text = await request.text();
     if (Buffer.byteLength(text, "utf8") > LOGIN_PAYLOAD_MAX_BYTES) {
-      return NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 });
+      return withRateHeaders(
+        NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 }),
+        limit,
+      );
     }
     if (!text.trim()) {
-      return NextResponse.json({ ok: false, error: "invalid" }, { status: 400 });
+      return withRateHeaders(
+        NextResponse.json({ ok: false, error: "invalid" }, { status: 400 }),
+        limit,
+      );
     }
     payload = JSON.parse(text);
   } catch {
-    return NextResponse.json({ ok: false, error: "invalid" }, { status: 400 });
+    return withRateHeaders(
+      NextResponse.json({ ok: false, error: "invalid" }, { status: 400 }),
+      limit,
+    );
   }
 
   const token = isRecord(payload) && typeof payload.token === "string" ? payload.token : "";
   if (!token.trim()) {
-    return NextResponse.json({ ok: false, error: "missing" }, { status: 400 });
+    return withRateHeaders(
+      NextResponse.json({ ok: false, error: "missing" }, { status: 400 }),
+      limit,
+    );
   }
 
   const valid = await validateInventoryAdminToken(token);
   if (!valid) {
-    return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+    inventoryLog("warn", "login_failed", { ip: requestIp });
+    return withRateHeaders(
+      NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 }),
+      limit,
+    );
   }
 
   const sessionToken = await issueInventorySession();
   const response = NextResponse.json({ ok: true });
   setInventoryCookie(response, sessionToken);
-  return response;
+  return withRateHeaders(response, limit);
 }

@@ -1,0 +1,14 @@
+{
+  "feature_slug": "prime-ds-rules-deferred",
+  "business": "PRIME",
+  "build_date": "2026-03-13",
+  "status": "complete",
+  "outcome_type": "code-change",
+  "outcome_statement": "Remove all BRIK-3 DS lint suppressions from the Prime guest app and fix every revealed violation using established patterns, restoring pnpm lint --full to zero DS-rule errors.",
+  "intended_outcome_met": true,
+  "verdict": "MET",
+  "tasks_completed": 7,
+  "tasks_total": 7,
+  "commits": ["25569878d5", "07c8c4c72d", "f4d0d98472"],
+  "dispatch_id": "IDEA-DISPATCH-20260313200000-PRIME-009"
+}

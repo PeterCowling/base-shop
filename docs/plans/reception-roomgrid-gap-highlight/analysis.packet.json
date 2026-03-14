@@ -1,0 +1,172 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-roomgrid-gap-highlight",
+  "source_artifact_path": "docs/plans/reception-roomgrid-gap-highlight/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-roomgrid-gap-highlight/fact-find.md",
+    "plan": "docs/plans/reception-roomgrid-gap-highlight/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Free cells between close bookings look identical to genuinely free nights, hiding scheduling inefficiencies that staff need to act on.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Short gaps (1–3 consecutive free days between bookings) are visually distinguished on the grid, giving staff an immediate visual cue to investigate or reassign.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Gap period flows through existing `theme[\"date.status\"]` → `topColor` → `Day` component; amber colour defined once in `statusColors`",
+      "current_or_option_state": "Colour override in `RowCell` directly; `StatusLegend` still manually defined",
+      "gap_or_implication": "Option A: single colour definition in `statusColors`; cleaner legend sync",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "`getDayParams` special-case ensures full-block rendering; adjacent bookings unaffected",
+      "current_or_option_state": "Same result achievable but requires more component logic",
+      "gap_or_implication": "Option A: cleaner; `single.full` matches visual intent",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A for both",
+      "current_or_option_state": "N/A for both",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A for both",
+      "current_or_option_state": "N/A for both",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Gap detection is a pure function in data hook — easily unit tested; 5 TCs cover threshold, boundaries",
+      "current_or_option_state": "Harder to test: requires rendering component with gap date set; more setup",
+      "gap_or_implication": "Option A: better testability",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`MyLocalStatus` extended; `statusColors` extended; `TBookingPeriod` satisfied with placeholders; `NON_OCCUPIED_STATUSES` updated; `getDayParams` one-line addition",
+      "current_or_option_state": "`TRow`, `TReservedPeriod`, `RowCellProps` all need new fields; larger contract surface",
+      "gap_or_implication": "Option A: smaller contract surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "O(n×d) post-processing pass inside `useMemo`; trivial for typical grid windows",
+      "current_or_option_state": "Same cost",
+      "gap_or_implication": "Equal",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive; revert = remove `\"gap\"` from union + colour + detection + `getDayParams` line",
+      "current_or_option_state": "Same rollback simplicity",
+      "gap_or_implication": "Equal",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Decide where to detect and represent 1–3 day free gaps between bookings so they render in a distinct amber colour on the rooms grid. Two viable approaches: inject the gap status into the data layer (`useGridData`) vs. compute and apply it in the component layer (`RowCell`/`RoomGrid`). Additionally, because `getDayParams` controls day-shape rendering, any injected gap period must be handled specially in `getDayParams` to avoid shape distortion on adjacent cells.",
+    "goals": [
+      "Gap cells render amber/warning on the grid without touching the ReservationGrid rendering engine",
+      "No false positives for arrival/departure counts or occupancy strip",
+      "Clean TypeScript: exhaustive `statusColors` record, no `as any`",
+      "Minimal file surface — additive change, rollback = revert commit"
+    ],
+    "non_goals": [
+      "Runtime-configurable threshold",
+      "Drag-and-drop restrictions on gap cells",
+      "Server-side or API changes"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "GAP_THRESHOLD_DAYS = 3 (constant in `useGridData`)",
+      "Gap detection operates on fully packed rows (after `packBookingsIntoRows`)"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Rendering correctness",
+        "Why it matters": "Gap cells must show as full-block amber fill, not as booking start/end shapes",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Side-effect safety",
+        "Why it matters": "Must not corrupt occupancy, arrival, or departure counts",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Type safety",
+        "Why it matters": "TypeScript must compile without casts or suppressions",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Code surface area",
+        "Why it matters": "Fewer files = lower regression risk",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Testability",
+        "Why it matters": "Gap detection must be unit-testable without Firebase",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Data-layer injection",
+        "Description": "Add `\"gap\"` to `MyLocalStatus`. In `useGridData`, after `packBookingsIntoRows`, inject synthetic `TBookingPeriod` entries for gap dates. Add `status === \"gap\"` special-case in `getDayParams` (like `\"disabled\"`). Add `\"gap\"` to `NON_OCCUPIED_STATUSES`. Guard arrival/departure loops.",
+        "Upside": "Single source of truth; zero rendering code changes; gap status flows through existing `theme[\"date.status\"]` colour lookup; pure-function detection is easily tested",
+        "Downside": "Requires touching `dateUtils.ts` (`getDayParams`) to add one special-case; TBookingPeriod has required fields needing placeholder values for synthetic records",
+        "Key risks": "Forgetting `NON_OCCUPIED_STATUSES` update inflates occupancy; forgetting `getDayParams` special-case causes shape distortion",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Component-layer approach",
+        "Description": "Pass a `gapDates: Set<string>` or similar from `useGridData` to `RoomGrid`/`RowCell`. In `RowCell`, override colour when date is in `gapDates`. No change to `getDayParams`.",
+        "Upside": "Avoids `getDayParams` change; rendering logic stays in component",
+        "Downside": "Prop-drilling through `GridReservationRow` → `ReservationGrid` → `Row` → `RowCell`; bypasses the `theme[\"date.status\"]` colour mechanism; requires interface changes to `TRow`, `TReservedPeriod`, `RowCellProps`; much larger surface area",
+        "Key risks": "Interface sprawl across 4–5 files; `StatusLegend` colour still manually defined; harder to test rendering path",
+        "Viable?": "Yes"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — data-layer injection with `getDayParams` special-case",
+      "Why this wins": "Minimal surface area; gap status flows through existing colour mechanism; zero changes to `ReservationGrid`, `Row`, or `RowCell` prop interfaces; pure-function detection is easily unit tested; `StatusLegend` entry is the only manual sync point.",
+      "**What it depends on": "**",
+      "Option B (component-layer) — rejected": "prop-drilling through 4–5 interface files; bypasses existing colour mechanism; harder to test; larger blast radius."
+    },
+    "rejected_approaches": [
+      "Option B (component-layer) — rejected: prop-drilling through 4–5 interface files; bypasses existing colour mechanism; harder to test; larger blast radius."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "TypeScript compile enforces `statusColors` exhaustiveness — partial changes cause build failure",
+        "Unit tests for gap detection algorithm are the primary validation"
+      ],
+      "sequencing_constraints": [
+        "`MyLocalStatus` change must be committed alongside `statusColors` change (single task, single commit)"
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change",
+      "areas": []
+    }
+  }
+}

@@ -1,10 +1,10 @@
 ---
 Type: Analysis
 Status: Ready-for-planning
-Domain: Engineering
+Domain: UI
 Workstream: Engineering
-Created: 2026-03-13
-Last-updated: 2026-03-13
+Created: 2026-03-14
+Last-updated: 2026-03-14
 Feature-Slug: prime-activity-duration
 Execution-Track: code
 Deliverable-Type: code-change
@@ -17,137 +17,147 @@ Auto-Plan-Intent: analysis+auto
 artifact: analysis
 ---
 
-# Prime Activity Duration Analysis
+# Prime Activity Duration — Analysis
 
 ## Decision Frame
 
 ### Summary
 
-Activity finish times and lifecycle states in the prime guest app are calculated using a hardcoded 2-hour (120-minute) constant. This constant appears in three places across two files. The decision is: how should duration become data-driven? The answer is unambiguous from the evidence — add an optional `durationMinutes` field to `ActivityInstance` and replace the constant with `Math.max(1, activity.durationMinutes ?? 120)`. The only non-trivial sub-decision is whether to guard against invalid zero/negative values, which analysis resolves here.
+Staff cannot set custom durations on activity instances in the Prime guest app without directly editing Firebase RTDB via the console. `durationMinutes` is already defined in the `ActivityInstance` type and RTDB schema, but is optional with a silent 120-minute hardcoded fallback. No admin UI or API endpoint exists for activity CRUD. The decision is which approach to use to expose duration management to staff.
 
 ### Goals
 
-- Activity finish times reflect the actual planned duration of each instance
-- Live/ended lifecycle state is correct for non-120-minute activities
-- Backwards-compatible: existing instances without `durationMinutes` behave identically to today (120-minute default)
-- All three hardcoded call sites updated atomically
+- Staff can create and edit activity instances (including `durationMinutes`) through an in-app UI.
+- Activity cards display accurate end times derived from data, not the silent 2-hour default.
 
 ### Non-goals
 
-- `ActivityTemplate` default duration (per-template inheritance) — future enhancement
-- Staff activity creation UI within prime — no such UI exists; out of scope
-- Firebase security rules changes — duration is display metadata, no auth implications
-- Any activity management admin panel
+- Guest-facing UI changes.
+- Type changes to `ActivityInstance` (field already present).
+- Migration of existing Firebase records.
+- Full activity management dashboard with analytics or bulk operations.
 
 ### Constraints & Assumptions
 
 - Constraints:
-  - RTDB is schemaless (NoSQL JSON tree) — no migration, but no enforcement either; `durationMinutes` will be absent on all existing instances
-  - No Zod schema validates `ActivityInstance` at runtime — TypeScript-only type update sufficient
-  - `chat/channel/page.tsx` has a copy-paste of `resolveLifecycle` — must be updated in the same change
-
+  - Activity management must be staff-only; must not be accessible from the guest session.
+  - Firebase RTDB is the persistence layer.
+  - Cloudflare Pages Functions (`functions/api/`) are the established server-side layer for privileged operations.
 - Assumptions:
-  - Staff will set `durationMinutes` via Firebase console when creating new instances; existing instances fall back to 120 min
-  - `durationMinutes` values are positive integers (minutes); zero or negative should be guarded against
+  - `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` and `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` are set in the CF Pages environment (same env vars used by `aggregate-kpis.ts`).
+  - `durationMinutes` remains optional in the type for backward compatibility with existing records.
 
 ## Inherited Outcome Contract
 
-- **Why:** The prime guest app shows activity finish times based on a fixed 2-hour assumption. Staff-run activities vary in length. Without a configurable duration field, every activity incorrectly shows the same finish time, and the live/ended lifecycle is wrong for any activity that isn't exactly 2 hours.
+- **Why:** Guests can be sent links to activity events that appear to end after exactly 2 hours regardless of how long the activity actually runs. Staff have no way to adjust this without a code change. Adding a duration field to the staff activity form means new activities will display accurate end times.
 - **Intended Outcome Type:** operational
-- **Intended Outcome Statement:** Activity finish times and lifecycle states reflect the real planned duration stored per instance, defaulting to 120 minutes when no duration is set.
-- **Source:** auto
+- **Intended Outcome Statement:** Staff can create and edit activity instances via the Prime app UI, setting a custom duration in minutes. Activity cards show accurate end times derived from data, not a hardcoded default.
+- **Source:** operator
 
 ## Fact-Find Reference
 
 - Related brief: `docs/plans/prime-activity-duration/fact-find.md`
 - Key findings used:
-  - Three hardcoded call sites confirmed: `ActivitiesClient.tsx:58` (`formatFinishTime`), `ActivitiesClient.tsx:69` (`resolveLifecycle`), `chat/channel/page.tsx:46` (copy-paste `resolveLifecycle`)
-  - `ActivityInstance` type at `apps/prime/src/types/messenger/activity.ts` — no `durationMinutes` field
-  - RTDB is schemaless — no migration; existing records default to 120 min via `?? 120`
-  - `formatFinishTime` has exactly one call site (`ActivitiesClient.tsx:139`)
-  - No Zod schema on `ActivityInstance`
-  - Zero/negative `durationMinutes` risk identified — guard with `Math.max(1, ...)`
+  - `durationMinutes?: number` already present at `apps/prime/src/types/messenger/activity.ts:38` — no type change needed.
+  - `/chat/activities/manage` is a redirect stub — safe to repurpose.
+  - `FirebaseRest.set()` / `FirebaseRest.update()` established in `apps/prime/functions/lib/firebase-rest.ts` for server-side RTDB writes.
+  - `aggregate-kpis.ts` shows the full pattern: service account → custom token → ID token → Firebase REST write.
+  - Direct client RTDB write pattern also established (presence marking in `ActivitiesClient.tsx:287-290`).
 
 ## Evaluation Criteria
 
 | Criterion | Why it matters | Weight/priority |
 |---|---|---|
-| Correct finish time for non-120-min activities | Core goal — current state is broken for any duration ≠ 2h | Must-pass |
-| Backwards compatibility | Existing RTDB instances must not break | Must-pass |
-| Zero code changes outside the 4 affected files | Avoids scope creep | High |
-| Guard against invalid input | Prevents immediate-end bug on `durationMinutes: 0` | High |
-| No RTDB migration required | Keeps rollout reversible and zero-risk | High |
+| Auth correctness | Write access to `messaging/activities/instances` is a privileged operation; must be gated to authenticated staff only | Critical |
+| Firebase security rule impact | Modifying Firebase security rules is a console-only operation, not versioned in repo; changes carry a risk of misconfiguration | High |
+| Implementation effort | Plan scope should stay bounded; both options must be achievable in one small plan | High |
+| Testability | The write path must be unit-testable without a live Firebase connection | High |
+| Established pattern fit | New code should follow existing patterns to minimize maintenance surface | Medium |
 
 ## Options Considered
 
 | Option | Description | Upside | Downside | Key risks | Viable? |
 |---|---|---|---|---|---|
-| A — Add `durationMinutes?: number` to type + update 3 call sites | Optional field on `ActivityInstance`; `Math.max(1, durationMinutes ?? 120)` in both `resolveLifecycle` and `formatFinishTime` | Zero migration; backwards compatible; minimal surface area; 4 files only | Staff must set field via Firebase console (no in-app creation UI) | Zero/negative guard omitted without care | Yes — chosen |
-| B — Separate RTDB "activity config" node | Store duration in a separate path, e.g. `messaging/activities/config/{instanceId}/durationMinutes` | Clean separation of display config from instance data | Requires a second Firebase read per activity; no existing pattern; over-engineered for a single field | Two-source fan-in complicates lifecycle resolver | No |
-| C — Remove finish time display entirely | Stop showing end time; only show start time | Eliminates the incorrect information | Removes useful guest-facing information | Degrades UX; guests lose ability to plan | No |
+| A — Client-side RTDB write | Staff form in owner area writes directly to Firebase RTDB via the browser client SDK (same pattern as presence marking) | Simpler implementation; no new Cloudflare function needed | Client writes require Firebase security rules covering `messaging/activities/instances` specifically. The presence write pattern (`messaging/activities/presence`) confirms rules exist for some paths; coverage of the `instances` path is unconfirmed and unversioned in repo | Rules for `instances` may not permit client writes; misconfiguration could expose RTDB to broader writes | Viable but riskier |
+| B — Server-side Cloudflare Function | New `functions/api/activity-manage.ts` validates staff session, then writes to RTDB via `FirebaseRest.set()` using service account credentials | Privileged write stays server-side; same pattern as `aggregate-kpis.ts`; no Firebase security rule change needed for client-side; fully unit-testable | One additional file (function) + form must `fetch()` to endpoint | Service account env vars must be set (already required for aggregate-kpis) | Yes — chosen |
+| C — Type tightening + documentation | Make `durationMinutes` required in type; document Firebase console process | Zero UI code | Does not solve the operational problem; staff still need Firebase console access | N/A | No — rejected |
 
 ## Engineering Coverage Comparison
 
-| Coverage Area | Option A (chosen) | Option B | Chosen implication |
+| Coverage Area | Option A (client write) | Option B (server function) | Chosen (B) implication |
 |---|---|---|---|
-| UI / visual | `formatFinishTime` updated → correct finish time shown | Same but requires second read | Plan must update `formatFinishTime` signature and one call site |
-| UX / states | Both `resolveLifecycle` copies updated → correct live/ended boundary | Same but adds async dependency | Plan must update both copies atomically; test coverage for non-default duration |
-| Security / privacy | N/A — display-only field | N/A | No auth changes |
-| Logging / observability / audit | N/A | N/A | No new metrics needed |
-| Testing / validation | Existing test passes; add non-default duration test case | Would require async test mocking | Add one test fixture with `durationMinutes: 30` to confirm lifecycle boundary |
-| Data / contracts | `ActivityInstance` type gains optional field; RTDB schemaless | Adds new RTDB path, new type shape | RTDB records without field safe; old instances behave identically to today |
-| Performance / reliability | Trivial arithmetic; no new network call | Second Firebase read per activity | No performance impact |
-| Rollout / rollback | Additive type change; `git revert` rolls back fully | Rollback also requires RTDB path cleanup | Clean rollback: revert 4 files; no DB state |
+| UI / visual | Same — form needed in both | Same — form needed in both | Staff form at `/owner/activities`; list + create + edit; design system components |
+| UX / states | Same | Same | Loading/saving/error/success states in form; optimistic update optional |
+| Security / privacy | Requires Firebase rules permitting client writes from staff auth; rules not versioned | Validates staff session at function layer; service account write; no client rule change needed | Staff session validated server-side before any write; aligns with existing function auth pattern |
+| Logging / observability / audit | Client write has no audit log unless manually added | Function layer can emit structured log + telemetry event on create/edit | Add `direct-telemetry` event from function on successful write; provides audit trail |
+| Testing / validation | Client write in Jest needs Firebase emulator or mock; achievable but harder | Function is a plain async handler; easy to unit-test with mock `FirebaseRest` | Mock `FirebaseRest.set()` in Jest; assert correct path + payload |
+| Data / contracts | Same — `ActivityInstance` already typed | Same — validate payload against type before write | Server function validates `durationMinutes >= 1`, required fields present; returns error 400 otherwise |
+| Performance / reliability | Same — low-frequency write | Same — low-frequency write | N/A; infrequent staff-only operation |
+| Rollout / rollback | Same | Same | New pages/function additive; rollback = revert form to redirect stub |
 
 ## Chosen Approach
 
-- **Recommendation:** Option A — add `durationMinutes?: number` to `ActivityInstance`, update `formatFinishTime` to accept the full `ActivityInstance` object, and update both `resolveLifecycle` copies to use `Math.max(1, activity.durationMinutes ?? 120)`.
-- **Why this wins:** Option A is the minimal, correct fix. The type system already describes `ActivityInstance` exhaustively — adding one optional field follows the established pattern. No new network calls, no new RTDB paths, no migration. Option B introduces an unnecessary fan-in pattern for a single field. Option C degrades UX with no benefit.
-- **What it depends on:** Firebase RTDB schemaless behavior (confirmed); no Zod schema on `ActivityInstance` (confirmed); `formatFinishTime` has a single call site (confirmed at `ActivitiesClient.tsx:139`).
+- **Recommendation:** Option B — Server-side Cloudflare Function for RTDB writes.
+- **Why this wins:**
+  1. Privileged RTDB writes (creating/editing activity instances) should be server-side. Client-side writes for a staff operation require Firebase security rules to be updated in the Firebase console (unversioned) and tested — a non-trivial risk that is easy to misconfigure.
+  2. The pattern is already established in `apps/prime/functions/api/aggregate-kpis.ts`: staff calls endpoint → function validates credentials → `FirebaseRest.set()` writes to RTDB using service account. This is identical to what is needed here, just with a different payload.
+  3. The function layer enables proper payload validation (schema check, `durationMinutes >= 1`, required field presence) before any write reaches RTDB.
+  4. Testability is cleaner: mock `FirebaseRest`, assert correct write path and payload shape in Jest without a live Firebase connection.
+- **What it depends on:**
+  - `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` and `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` set in Cloudflare Pages environment (already confirmed required by `aggregate-kpis.ts` — if that function works in production, these are available).
+  - Staff auth session cookie readable from the function (established pattern in `staff-auth-session.ts`).
 
 ### Rejected Approaches
 
-- **Option B (separate RTDB config node)** — over-engineered for a single optional field. Creates a two-source fan-in for lifecycle resolution with no compensating benefit. Rejected.
-- **Option C (remove finish time)** — removes useful guest information to avoid fixing the root cause. Rejected.
+- **Option A (client-side direct write)** — Viable but rejected: requires unversioned Firebase security rule changes in the console; unclear if current rules allow it; risk of misconfiguration. The server-side approach is marginally more code but much safer.
+- **Option C (type tightening + docs)** — Rejected: does not give staff any UI. The operational problem (no in-app creation flow) remains unsolved. Type tightening alone would break any existing Firebase records that lack `durationMinutes`.
 
 ### Open Questions (Operator Input Required)
 
-None. All decisions are resolvable from evidence and standard engineering practice.
+None — all decisions are agent-resolvable from evidence and established patterns.
 
 ## End-State Operating Model
 
-None: no material process topology change. The change modifies three utility functions and one TypeScript interface within the prime guest app. No CI/deploy lane, operator runbook, Firebase security rule, or multi-step workflow is altered.
+| Area | Current state | Trigger | Delivered step-by-step end state | What remains unchanged | Risks / seams to carry into planning |
+|---|---|---|---|---|---|
+| Staff creates an activity | Staff uses Firebase console → manual JSON | Staff navigates to `/owner/activities` → taps "Create activity" | Staff fills form (title, startTime, durationMinutes ≥ 1, status, optional: description/meetUpPoint/meetUpTime) → POSTs to `POST /api/activity-manage` → function validates staff session + payload → `FirebaseRest.set()` writes to `messaging/activities/instances/[newId]` → function returns 200 → form shows success | Guest-facing read path unchanged; `ChatProvider` real-time listener already picks up new instances automatically | Service account env vars must be verified in CF Pages; planning must include wrangler.toml secrets confirmation |
+| Staff edits an activity | Staff uses Firebase console → direct JSON edit | Staff navigates to `/owner/activities` → taps "Edit" on an existing instance | Form pre-populated with existing data → staff edits → POSTs to `PATCH /api/activity-manage` → function validates session + payload → `FirebaseRest.update()` on existing path → 200 | Guest-facing real-time subscription propagates update automatically | Edit must not allow changing `id`; function must reject id mismatch |
+| Guest views activity | `ActivitiesClient.tsx` renders `startTime + (durationMinutes ?? 120)` | Guest loads `/activities` | Same rendering — no change. For instances created via new form, `durationMinutes` will be present; guest sees accurate end time | Fallback `?? 120` remains for legacy instances | None; fully backward-compatible |
+| `/chat/activities/manage` route | Redirect stub → `/activities` | Staff navigates to old URL | Permanent redirect to `/owner/activities` | N/A | Ensure redirect doesn't break any existing staff bookmark |
 
 ## Planning Handoff
 
 - Planning focus:
-  - TASK-01: Type update — `ActivityInstance` gains `durationMinutes?: number`
-  - TASK-02: UI fix — `formatFinishTime` signature change to `(activity: ActivityInstance)` (preferred over explicit `startTime, durationMinutes` params because `resolveLifecycle` already takes the full object — signature consistency reduces future divergence) + both `resolveLifecycle` copies updated (3 call sites in 2 files)
-  - TASK-03: Test — add one test fixture with `durationMinutes: 30` to `attendance-lifecycle.test.tsx` to confirm non-default lifecycle boundary; verify existing tests still pass
-  - Tasks can be sequenced TASK-01 → TASK-02 → TASK-03 (type must exist before UI can use it; test validates both)
-
+  - New Cloudflare Function: `apps/prime/functions/api/activity-manage.ts` — POST (create) + PATCH (update) with staff session validation, payload schema validation, and `FirebaseRest` write.
+  - New owner page: `apps/prime/src/app/owner/activities/page.tsx` — list existing instances + create/edit form.
+  - New form component: `apps/prime/src/components/activity-manage/ActivityManageForm.tsx` — fields: title, startTime, durationMinutes (min 1, default 60), status, optional description/meetUpPoint/meetUpTime.
+  - Redirect: update `/chat/activities/manage` page to redirect to `/owner/activities` instead of `/activities`.
+  - Unit tests: mock `FirebaseRest.set()/update()`; assert payload shape; assert `durationMinutes < 1` returns 400.
 - Validation implications:
-  - `resolveLifecycle` with `durationMinutes: 30` and `startTime: Date.now() - 25 * 60 * 1000` should return `'live'` (not yet ended at 30 min)
-  - `resolveLifecycle` with `durationMinutes: 30` and `startTime: Date.now() - 35 * 60 * 1000` should return `'ended'`
-  - `formatFinishTime` with `durationMinutes: undefined` should produce same output as current (120-min default)
-  - `durationMinutes: 0` guard: `Math.max(1, 0)` → 1 minute; prevents immediate-end bug
-
+  - TC: function rejects unauthenticated requests (401).
+  - TC: function rejects `durationMinutes: 0` (400).
+  - TC: function writes correct RTDB path on valid request.
+  - TC: form renders correctly in create and edit modes.
+  - TC: redirect from old URL resolves to `/owner/activities`.
 - Sequencing constraints:
-  - Type update must precede UI call-site changes (TypeScript compiler enforces)
-  - Both `resolveLifecycle` copies should be updated in the same commit for atomicity
-  - Tests come last (validate the completed implementation)
-
+  - Function (server-side write) before form integration — form depends on the function for real responses.
+  - Form component and owner page scaffold can be built in parallel with the function (using a mock endpoint); integration is the final step.
+  - Owner activities page depends on the form component.
+  - Redirect is independent; can be TASK-01.
 - Risks to carry into planning:
-  - The two `resolveLifecycle` functions in different files are identical today — no divergence risk for this fix, but the duplication itself is a maintenance liability. Plan should note the duplication as a known code smell (out of scope to refactor now).
+  - Service account env vars: confirm `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` and `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` in `wrangler.toml` / CF Pages secrets. If absent, function cannot authenticate writes. (**Pre-ship check; not a planning blocker**.)
+  - Staff session cookie validation: the function must use the same session-validation logic as other staff functions. Pattern exists in `staff-auth-session.ts` but exact cookie-checking utility must be confirmed at plan stage.
+  - `durationMinutes` form default: plan should adopt 60 minutes as the form default (not the 120-minute code fallback); operator may adjust during build if needed.
 
 ## Risks to Carry Forward
 
 | Risk | Likelihood | Impact | Why not resolved in analysis | Planning implication |
 |---|---|---|---|---|
-| Staff forget to set `durationMinutes` on new instances | High | Low — defaults to 120 min gracefully | Operator behavior outside analysis scope | Accept; document the default in code comment |
-| `durationMinutes` copy-paste duplication in `chat/channel/page.tsx` grows | Low | Medium — future divergence risk | Not in scope to consolidate now | Note as tech debt in plan; flag for future refactor |
+| Service account env vars not set in CF Pages | Low (already required by aggregate-kpis) | High — function writes fail silently | Cannot verify CF Pages secrets from repo | Plan must include a pre-ship verification step or SPIKE task |
+| Staff session cookie parsing: function may need a utility not yet extracted | Medium | Medium — could block build if pattern unclear | Auth utility approach only confirmed at function-level, not as a reusable module | Plan should confirm the exact staff session validation pattern at build time |
+| Owner page RTDB query scope: `ChatProvider` only loads live/upcoming (20-limit) | Medium | Low — planning detail; owner page list needs all instances including archived | Cannot decide query pattern at analysis stage | Plan must choose query pattern for owner list view (separate RTDB read vs `ChatProvider`); consider pagination for the list |
 
 ## Planning Readiness
 
 - Status: Go
-- Rationale: All evidence confirmed. Single viable option. No operator input required. 4 files, 3 call sites, 1 test update. Full backwards compatibility. Clean rollback.
+- Rationale: Approach is decisive (Option B), all dependencies are confirmed or verifiable at plan stage, zero operator-only questions remain, and the implementation pattern is fully established in the codebase.

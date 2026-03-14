@@ -4,132 +4,182 @@
   "feature_slug": "prime-activity-duration",
   "source_artifact_path": "docs/plans/prime-activity-duration/fact-find.md",
   "source_artifact_status": "Ready-for-analysis",
-  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
   "execution_track": "code",
   "deliverable_type": "code-change",
   "primary_execution_skill": "lp-do-build",
-  "supporting_skills": [],
-  "related_artifacts": {},
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-activity-duration/analysis.md"
+  },
   "outcome_contract": {
-    "why": "The prime guest app shows activity finish times based on a fixed 2-hour assumption. Staff-run activities vary in length. Without a configurable duration field, every activity incorrectly shows the same finish time, and the live/ended lifecycle is wrong for any activity that isn't exactly 2 hours.",
-    "intended_outcome_type": null,
-    "intended_outcome_statement": null,
-    "source": "auto"
+    "why": "Guests can be sent links to activity events that appear to end after exactly 2 hours regardless of how long the activity actually runs. Staff have no way to adjust this without a code change. Adding a duration field to the staff activity form means new activities will display accurate end times.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can create and edit activity instances via the Prime app UI, setting a custom duration in minutes. Activity cards show accurate end times derived from data, not a hardcoded default.",
+    "source": "operator"
   },
   "engineering_coverage": [
     {
       "coverage_area": "UI / visual",
       "applicable": "Required",
-      "current_or_option_state": "Update `formatFinishTime` to show correct finish time",
-      "gap_or_implication": "`ActivityCard` displays finish time via this function",
-      "carry_forward_or_notes": null
+      "current_or_option_state": "`/chat/activities/manage` is a redirect stub; no form exists",
+      "gap_or_implication": "Full staff management form needs design (create + edit + duration field)",
+      "carry_forward_or_notes": "Yes — form design choices"
     },
     {
       "coverage_area": "UX / states",
       "applicable": "Required",
-      "current_or_option_state": "`resolveLifecycle` must use `durationMinutes ?? 120`",
-      "gap_or_implication": "Affects live/ended state boundary",
-      "carry_forward_or_notes": null
+      "current_or_option_state": "Guest activity cards display `startTime + 2h` for instances without `durationMinutes`",
+      "gap_or_implication": "Form needs: empty/loading/error/save-success states; duration field needs validation feedback",
+      "carry_forward_or_notes": "Yes"
     },
     {
       "coverage_area": "Security / privacy",
-      "applicable": "N/A",
-      "current_or_option_state": "No new data exposure",
-      "gap_or_implication": "`durationMinutes` is display metadata",
-      "carry_forward_or_notes": null
+      "applicable": "Required",
+      "current_or_option_state": "Owner pages use staff auth guard; direct RTDB writes from client require matching Firebase security rules",
+      "gap_or_implication": "Firebase rules for `messaging/activities/instances` must allow writes only for authenticated staff; unknown if rules exist",
+      "carry_forward_or_notes": "Yes — rules verification needed"
     },
     {
       "coverage_area": "Logging / observability / audit",
-      "applicable": "N/A",
-      "current_or_option_state": "No new metrics",
-      "gap_or_implication": "Duration is display-only",
-      "carry_forward_or_notes": null
+      "applicable": "Required",
+      "current_or_option_state": "Presence writes have no audit log. No existing activity-create audit trail",
+      "gap_or_implication": "No create/edit event logged — staff won't know if a write was applied silently incorrectly",
+      "carry_forward_or_notes": "Yes — recommend `direct-telemetry` on create/edit"
     },
     {
       "coverage_area": "Testing / validation",
       "applicable": "Required",
-      "current_or_option_state": "Existing lifecycle test passes; optional: add non-default duration case",
-      "gap_or_implication": "Test file at `__tests__/attendance-lifecycle.test.tsx`",
-      "carry_forward_or_notes": null
+      "current_or_option_state": "TC-P09/TC-P10 cover lifecycle display; no form tests",
+      "gap_or_implication": "Need form validation unit tests + at least 1 test asserting `durationMinutes` is written to RTDB shape",
+      "carry_forward_or_notes": "Yes"
     },
     {
       "coverage_area": "Data / contracts",
       "applicable": "Required",
-      "current_or_option_state": "`ActivityInstance` type updated; RTDB schemaless — no migration",
-      "gap_or_implication": "Old instances fall back to 120 min",
-      "carry_forward_or_notes": null
+      "current_or_option_state": "`ActivityInstance.durationMinutes?: number` already present",
+      "gap_or_implication": "No runtime validation that new instances include a valid duration; form must enforce",
+      "carry_forward_or_notes": "Yes"
     },
     {
       "coverage_area": "Performance / reliability",
       "applicable": "N/A",
-      "current_or_option_state": "Trivial arithmetic change",
-      "gap_or_implication": "No performance impact",
-      "carry_forward_or_notes": null
+      "current_or_option_state": "RTDB writes are low-frequency (staff-only infrequent create/edit)",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
     },
     {
       "coverage_area": "Rollout / rollback",
       "applicable": "Required",
-      "current_or_option_state": "Additive type change; backwards compatible; rollback = revert type + calc",
-      "gap_or_implication": "No DB state to roll back",
-      "carry_forward_or_notes": null
+      "current_or_option_state": "No feature flag pattern currently; management page is already accessible but noop",
+      "gap_or_implication": "New page can ship behind a feature flag or staff-only guard with no guest impact; rollback = revert to redirect stub",
+      "carry_forward_or_notes": "Yes"
     }
   ],
   "open_operator_questions": [],
   "stage_payload": {
-    "scope_summary": "The prime guest app shows activity cards with a calculated finish time and lifecycle state (upcoming/live/ended). Both calculations hard-code the duration as 2 hours (120 minutes). Staff running activities of different lengths — a 30-minute yoga session or a 3-hour boat trip — cannot adjust the displayed finish time without a code change. This fact-find establishes what needs to change to make duration data-driven.",
-    "goals": [],
-    "non_goals": [],
-    "constraints": [],
-    "assumptions": [],
-    "key_entry_points": [],
+    "scope_summary": "Staff cannot set custom durations on activity instances through any app UI. The `durationMinutes` field already exists in the TypeScript type and Firebase RTDB schema, but is optional with a silent 120-minute default baked into the app. There is no admin form for creating or editing activity instances — the only route is Firebase console, which most staff do not use. The fix is to build a minimal staff-facing activity management form that includes a `durationMinutes` field.",
+    "goals": [
+      "Enable staff to create and edit activity instances (including `durationMinutes`) through an in-app UI, without needing Firebase console access.",
+      "Make the 120-minute default explicit and visible, not silent."
+    ],
+    "non_goals": [
+      "Guest-facing UI changes.",
+      "Changes to the Firebase RTDB schema or `ActivityInstance` type (both already support duration).",
+      "Full activity management dashboard with analytics, bulk operations, or template editing.",
+      "Migration of existing Firebase records that lack `durationMinutes` (old records remain at 120-minute default; fix is forward-only for new and edited instances)."
+    ],
+    "constraints": [
+      "Activity management must be staff-only (owner/staff auth guard, not guest session).",
+      "Firebase RTDB is the persistence layer — no new backend API endpoint needed; direct client write with proper security rules.",
+      "The existing stub page at `/chat/activities/manage` already exists as a redirect placeholder; it can be repurposed."
+    ],
+    "assumptions": [
+      "`durationMinutes` will remain optional in the type (no breaking change to existing records).",
+      "Staff creating new instances will always set a duration via the form (form validation enforces non-zero)."
+    ],
+    "key_entry_points": [
+      "`apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx` — redirect stub; candidate location for the new management form",
+      "`apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx` — guest-facing activity list; renders lifecycle from `durationMinutes ?? 120`",
+      "`apps/prime/src/app/(guarded)/chat/channel/page.tsx:48-49` — lifecycle resolution in chat channel; same `durationMinutes ?? 120` pattern"
+    ],
     "key_findings": [],
     "analysis_readiness": {
-      "Entry points confirmed": "`apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx` and `apps/prime/src/app/(guarded)/chat/channel/page.tsx`",
-      "Type to update": "`ActivityInstance` in `apps/prime/src/types/messenger/activity.ts`",
-      "Call sites": "3 — `formatFinishTime` (ActivitiesClient:58), `resolveLifecycle` (ActivitiesClient:69), `resolveLifecycle` copy (chat/channel/page.tsx:46)",
-      "RTDB": "schemaless, no migration required",
-      "Tests": "1 test file, non-breaking change",
-      "Execution track": "code",
-      "Delivery readiness": "90% (adjusted from 92% to reflect the third call site and zero-guard consideration)"
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis prime-activity-duration`"
     },
     "rehearsal_issues": [
       {
-        "Scope Area": "Type definition (`activity.ts`)",
+        "Scope Area": "`ActivityInstance` type and RTDB schema",
         "Coverage Confirmed": "Yes",
-        "Issues Found": "None",
+        "Issues Found": "None — field already present",
         "Resolution Required": "No"
       },
       {
-        "Scope Area": "UI call sites (`ActivitiesClient.tsx`)",
+        "Scope Area": "Consumer code (lifecycle resolution)",
         "Coverage Confirmed": "Yes",
-        "Issues Found": "`formatFinishTime` takes `startTime` only — signature change needed",
-        "Resolution Required": "No (noted in plan)"
-      },
-      {
-        "Scope Area": "RTDB schema (no migration)",
-        "Coverage Confirmed": "Yes",
-        "Issues Found": "None — schemaless; old records safe",
+        "Issues Found": "None — `?? 120` fallback is correct; test coverage exists",
         "Resolution Required": "No"
       },
       {
-        "Scope Area": "Test file",
+        "Scope Area": "Staff authentication path for form",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Owner session pattern exists; exact guard HOC not verified in `/owner/` routing",
+        "Resolution Required": "No — defaultable to same guard as `owner/page.tsx`"
+      },
+      {
+        "Scope Area": "Firebase security rules",
+        "Coverage Confirmed": "No",
+        "Issues Found": "Rules not in repo; cannot verify from code",
+        "Resolution Required": "No — blocking for ship, not for planning"
+      },
+      {
+        "Scope Area": "Write path (client → RTDB)",
         "Coverage Confirmed": "Yes",
-        "Issues Found": "None — non-breaking type addition",
+        "Issues Found": "No existing write for activity create; pattern confirmed from presence write",
         "Resolution Required": "No"
       },
       {
-        "Scope Area": "Third call site (`chat/channel/page.tsx:46`)",
-        "Coverage Confirmed": "Yes",
-        "Issues Found": "Major: copy-paste `resolveLifecycle` with same constant — added to scope",
-        "Resolution Required": "No (fixed in fact-find)"
+        "Scope Area": "Test coverage",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Lifecycle tests exist; form/write tests do not",
+        "Resolution Required": "No — new tests in plan scope"
       }
     ],
     "process_topology": {
-      "changed": false,
-      "note": "None: local code path only. This change does not alter any multi-step process, workflow, lifecycle state, CI/deploy/release lane, approval path, or operator runbook. It modifies two utility functions within a single UI component and one TypeScript interface.",
+      "changed": true,
+      "note": null,
       "trigger": null,
       "end_condition": null,
-      "areas": []
+      "areas": [
+        {
+          "id": null,
+          "label": "Staff creates an activity",
+          "flow": "Staff logs into Firebase console → navigates to `messaging/activities/instances` → manually constructs a JSON node with all required fields → saves",
+          "owners": "Staff / Firebase console",
+          "evidence": "`apps/prime/src/types/messenger/activity.ts:20-48` (fields to populate)",
+          "issues": "No in-app form; `durationMinutes` is assumed to be frequently omitted since it is optional and the JSDoc comment directs staff to the Firebase console — no RTDB data export was inspected to confirm this; when omitted, activities default to 120 min"
+        },
+        {
+          "id": null,
+          "label": "Guest views activity",
+          "flow": "App loads instances from `messaging/activities/instances` via real-time query → resolves lifecycle based on `startTime + (durationMinutes ?? 120) * 60000` → displays start/end time on card",
+          "owners": "Guest / Firebase RTDB / ActivitiesClient",
+          "evidence": "`ActivitiesClient.tsx:61,74`; `chat/channel/page.tsx:49`",
+          "issues": "Displayed end time is always `startTime + 2h` for any instance without `durationMinutes` set"
+        },
+        {
+          "id": null,
+          "label": "`/chat/activities/manage` route",
+          "flow": "Renders `GuardedRouteRedirect` → immediately redirects to `/activities`",
+          "owners": "Guest app",
+          "evidence": "`apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx:6`",
+          "issues": "Stub — no management UI"
+        }
+      ]
     }
   }
 }

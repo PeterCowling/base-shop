@@ -1,81 +1,57 @@
----
-Type: Build-Record
-Status: Complete
-Domain: API
-Last-reviewed: 2026-03-13
-Feature-Slug: prime-activity-duration
-Execution-Track: code
-Completed-date: 2026-03-13
-artifact: build-record
-Build-Event-Ref: docs/plans/prime-activity-duration/build-event.json
----
+# Build Record — prime-activity-duration
 
-# Build Record: Prime Activity Duration
+**Date:** 2026-03-14
+**Plan:** `docs/plans/prime-activity-duration/plan.md`
+**Status:** All tasks complete
 
 ## Outcome Contract
 
-- **Why:** The prime guest app shows activity finish times based on a fixed 2-hour assumption. Staff-run activities vary in length. Without a configurable duration field, every activity incorrectly shows the same finish time, and the live/ended lifecycle is wrong for any activity that isn't exactly 2 hours.
+- **Why:** Guests receive activity links showing end times that are always exactly 2 hours after start, regardless of the real activity length, because staff had no way to set duration without editing Firebase directly. Adding a staff form with a duration field means new activities will show accurate end times.
 - **Intended Outcome Type:** operational
-- **Intended Outcome Statement:** Activity finish times and lifecycle states reflect the real planned duration stored per instance, defaulting to 120 minutes when no duration is set.
-- **Source:** auto
+- **Intended Outcome Statement:** Staff can create and edit activity instances via the Prime app UI, setting a custom duration in minutes. Activity cards show accurate end times derived from data, not a hardcoded default.
+- **Source:** operator
 
-## What Was Built
+## Tasks Completed
 
-**TASK-01 (commit `242e3b6caa`):** Added `durationMinutes?: number` to the `ActivityInstance` interface in `apps/prime/src/types/messenger/activity.ts`. The field is optional so existing RTDB records without it fall back gracefully to 120 minutes. JSDoc documents the field as minutes, the optional 120-minute default, and the zero-guard applied at call sites.
-
-**TASK-02 (commit `7286a4f63a`):** Updated all three hardcoded 2-hour duration references across two files. In `ActivitiesClient.tsx`, `formatFinishTime` signature changed from `(startTime: number)` to `(activity: ActivityInstance)` and now computes `Math.max(1, activity.durationMinutes ?? 120) * 60 * 1000`. Both `resolveLifecycle` copies (in `ActivitiesClient.tsx` and the copy-paste duplicate in `chat/channel/page.tsx`) were updated to the same expression. The single `formatFinishTime` call site was updated accordingly. The `Math.max(1, ...)` guard prevents an immediate-end bug when `durationMinutes` is 0 or negative.
-
-**TASK-03 (commit `ed0ecd9bef`):** Added regression-protection tests. The `useChat` mock was refactored from a static inline object to `jest.fn()` with `mockReturnValue()` to enable per-test activity fixture overrides. A new `describe("ActivitiesClient — non-default durationMinutes lifecycle")` block was added with TC-P09 (activity 25 min into a 30-min event renders as "Live now") and TC-P10 (activity 35 min into a 30-min event renders as "Event ended"). All 5 pre-existing tests are preserved.
-
-## Tests Run
-
-| Command | Result | Notes |
+| Task | Description | Commit |
 |---|---|---|
-| `tsc --noEmit` (prime app, via pre-commit hook) | Pass | All three commits passed typecheck via pre-commit turbo typecheck |
-| `eslint` (prime app, via pre-commit hook) | Pass | New code clean; pre-existing BRIK-3 DS lint warnings on `chat/channel/page.tsx` are not introduced by this change |
-| `pnpm --filter prime test attendance-lifecycle` | CI-pending | Tests run in CI per testing policy; `ed0ecd9bef` pushed to `dev` for CI validation |
+| TASK-01 | Updated `/chat/activities/manage` redirect to `/owner/activities` | `5b5a5de3b4` (Wave 1) |
+| TASK-02 | New CF function `activity-manage.ts` — GET/POST/PATCH with owner gate + FirebaseRest | `5b5a5de3b4` (Wave 1) |
+| TASK-03 | New `ActivityManageForm` component — create/edit mode | `5b5a5de3b4` (Wave 1) |
+| TASK-04 | New owner page `/owner/activities` — list + create + edit | `f531d143b8` |
+| TASK-05 | Unit tests (TC-02a–f, TC-03c–d) | `98378acb72` |
 
-## Workflow Telemetry Summary
+## Deliverables
 
-4 workflow-step records across the full DO chain (lp-do-fact-find → lp-do-analysis → lp-do-plan → lp-do-build). Context input grew from 33 KB at fact-find to 95 KB at build, reflecting progressive artifact accumulation. 7 deterministic checks run across the pipeline. Token measurement not available (runtime session capture not configured).
-
-| Stage | Avg context bytes | Avg artifact bytes | Modules |
-|---|---:|---:|---:|
-| lp-do-fact-find | 33 495 | 13 372 | 1 |
-| lp-do-analysis | 41 124 | 10 800 | 1 |
-| lp-do-plan | 77 389 | 24 858 | 1 |
-| lp-do-build | 94 996 | 6 200 | 2 |
-
-## Validation Evidence
-
-### TASK-01
-- TC-P01: TypeScript accepted `ActivityInstance` with `durationMinutes: 60` — confirmed by commit `242e3b6caa` (pre-commit typecheck pass)
-- TC-P02: TypeScript accepted `ActivityInstance` without `durationMinutes` — confirmed; field is optional, all existing tests compile without providing it
-
-### TASK-02
-- TC-P03: `activity.durationMinutes ?? 120` resolves to 120 when field is absent — confirmed by all existing tests exercising the 10-min-ago live activity with no `durationMinutes` field
-- TC-P04/TC-P05: 25 min elapsed in 30-min activity → live; 35 min elapsed → ended — confirmed by TC-P09/TC-P10 test cases in TASK-03
-- TC-P06: `Math.max(1, 0) = 1` guard — confirmed by code inspection; `durationMinutes: 0` uses 1-minute duration
-- TC-P07: `formatFinishTime(activity)` with `durationMinutes: undefined` returns same time as before — confirmed by existing tests which use activities without `durationMinutes`
-
-### TASK-03
-- TC-P08: All tests pass — commit `ed0ecd9bef` typecheck and lint clean; CI pending for Jest execution
-- TC-P09: `Short Yoga` (25 min elapsed, `durationMinutes: 30`) renders "Live now", not "Event ended" — implemented in `describe("non-default durationMinutes lifecycle")`
-- TC-P10: `Quick Sprint` (35 min elapsed, `durationMinutes: 30`) renders "Event ended", not "Live now" — implemented in same describe block
+- `apps/prime/functions/api/activity-manage.ts` — new Cloudflare Pages Function (GET/POST/PATCH, owner gate auth, Firebase RTDB writes via service account)
+- `apps/prime/functions/lib/firebase-id-token.ts` — extracted shared `exchangeCustomTokenForIdToken` helper
+- `apps/prime/src/components/activity-manage/ActivityManageForm.tsx` — staff form component (create/edit mode, client-side validation, all ActivityInstance fields)
+- `apps/prime/src/app/owner/activities/page.tsx` — server component with `canAccessStaffOwnerRoutes` gate
+- `apps/prime/src/app/owner/activities/ActivitiesPageClient.tsx` — client component: fetches instances, renders list + form toggle
+- `apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx` — updated redirect from `/activities` to `/owner/activities`
+- `apps/prime/functions/api/__tests__/activity-manage.test.ts` — function unit tests (TC-02a–f)
+- `apps/prime/src/components/activity-manage/__tests__/ActivityManageForm.test.tsx` — form unit tests (TC-03c–d)
 
 ## Engineering Coverage Evidence
 
-| Coverage Area | Evidence / N/A | Notes |
-|---|---|---|
-| UI / visual | `formatFinishTime` now uses `activity.durationMinutes ?? 120`; ActivityCard renders correct finish time for non-120-min activities | One call site at `ActivitiesClient.tsx:139` updated |
-| UX / states | Both `resolveLifecycle` copies updated; live/ended boundary now respects per-instance `durationMinutes` | 3 hardcoded call sites in 2 files updated atomically in TASK-02 |
-| Security / privacy | N/A | Display-only field; no auth/data exposure implications |
-| Logging / observability / audit | N/A | Trivial arithmetic change; no new metrics warranted |
-| Testing / validation | TC-P09 and TC-P10 added in TASK-03; existing tests validate 120-min default path remains unchanged | Tests run via CI per testing policy |
-| Data / contracts | `ActivityInstance.durationMinutes?: number` added; RTDB schemaless — no migration; old instances fall back to 120 min | Additive type change; backwards-compatible |
-| Performance / reliability | N/A | Two integer arithmetic operations; no network calls added |
-| Rollout / rollback | Additive, backwards-compatible; rollback = `git revert` 4 files; no RTDB state to undo | Zero-guard prevents edge-case regression on `durationMinutes: 0` |
+| Coverage Area | Delivered |
+|---|---|
+| UI / visual | Owner page + form component with full field set, status badge, loading/empty/error states |
+| UX / states | Loading → empty / list; form idle → submitting → success/error; create/edit mode distinction |
+| Security / privacy | `enforceStaffOwnerApiGate` (CF Access or secret token) on all function routes; `canAccessStaffOwnerRoutes` server guard on owner page |
+| Logging / observability | `recordDirectTelemetry('write.success')` + `console.info` structured log on every create/edit |
+| Testing / validation | TC-02a–f (function validation + auth), TC-03c–d (form validation + fetch shape); no RTDB emulator needed |
+| Data / contracts | `durationMinutes` written to RTDB on every create/edit; `durationMinutes >= 1` enforced server-side; legacy records without field show "120 (default)" in owner list |
+| Performance / reliability | N/A — infrequent staff-only write; one-shot RTDB GET on page load |
+| Rollout / rollback | Additive new function + pages; rollback = delete files; zero guest exposure |
 
-## Scope Deviations
+## Workflow Telemetry Summary
 
-None. Build executed strictly within plan scope. The copy-paste `resolveLifecycle` duplication in `chat/channel/page.tsx` was noted as tech debt in TASK-02 but consolidation remains out of scope per plan constraints.
+| Stage | Records | Modules | Context Input Bytes | Artifact Bytes |
+|---|---|---|---|---|
+| lp-do-fact-find | 1 | 1.00 | 38572 | 18449 |
+| lp-do-analysis | 1 | 1.00 | 53914 | 14575 |
+| lp-do-plan | 1 | 1.00 | 124436 | 43163 |
+| lp-do-build | 1 | 2.00 | 101113 | 0 |
+
+Total context input: 318,035 bytes. Token measurement not captured (auto-capture not available in this session).

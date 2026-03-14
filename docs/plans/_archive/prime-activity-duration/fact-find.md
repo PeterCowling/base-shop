@@ -1,256 +1,255 @@
 ---
 Type: Fact-Find
+Outcome: Planning
 Status: Ready-for-analysis
-Domain: Engineering
+Domain: UI
 Workstream: Engineering
-Created: 2026-03-13
-Last-reviewed: 2026-03-13
-Last-updated: 2026-03-13
+Created: 2026-03-14
+Last-updated: 2026-03-14
 Feature-Slug: prime-activity-duration
-Dispatch-ID: IDEA-DISPATCH-20260313200000-PRIME-008
-Outcome: planning
 Execution-Track: code
 Deliverable-Family: code-change
 Deliverable-Channel: none
 Deliverable-Subtype: none
 Deliverable-Type: code-change
 Startup-Deliverable-Alias: none
-Loop-Gap-Trigger: none
 Primary-Execution-Skill: lp-do-build
+Supporting-Skills: none
+Related-Analysis: docs/plans/prime-activity-duration/analysis.md
+Dispatch-ID: IDEA-DISPATCH-20260313200000-PRIME-008
 ---
 
-# Fact-Find: Prime Activity Duration (prime-activity-duration)
+# Prime Activity Duration — Fact-Find Brief
 
 ## Scope
 
-The prime guest app shows activity cards with a calculated finish time and lifecycle state (upcoming/live/ended). Both calculations hard-code the duration as 2 hours (120 minutes). Staff running activities of different lengths — a 30-minute yoga session or a 3-hour boat trip — cannot adjust the displayed finish time without a code change. This fact-find establishes what needs to change to make duration data-driven.
+### Summary
 
-## Access Declarations
+Staff cannot set custom durations on activity instances through any app UI. The `durationMinutes` field already exists in the TypeScript type and Firebase RTDB schema, but is optional with a silent 120-minute default baked into the app. There is no admin form for creating or editing activity instances — the only route is Firebase console, which most staff do not use. The fix is to build a minimal staff-facing activity management form that includes a `durationMinutes` field.
 
-None. Investigation is code-only (TypeScript source + Firebase RTDB type contracts). No live database access required.
+### Goals
+
+- Enable staff to create and edit activity instances (including `durationMinutes`) through an in-app UI, without needing Firebase console access.
+- Make the 120-minute default explicit and visible, not silent.
+
+### Non-goals
+
+- Guest-facing UI changes.
+- Changes to the Firebase RTDB schema or `ActivityInstance` type (both already support duration).
+- Full activity management dashboard with analytics, bulk operations, or template editing.
+- Migration of existing Firebase records that lack `durationMinutes` (old records remain at 120-minute default; fix is forward-only for new and edited instances).
+
+### Constraints & Assumptions
+
+- Constraints:
+  - Activity management must be staff-only (owner/staff auth guard, not guest session).
+  - Firebase RTDB is the persistence layer — no new backend API endpoint needed; direct client write with proper security rules.
+  - The existing stub page at `/chat/activities/manage` already exists as a redirect placeholder; it can be repurposed.
+- Assumptions:
+  - `durationMinutes` will remain optional in the type (no breaking change to existing records).
+  - Staff creating new instances will always set a duration via the form (form validation enforces non-zero).
 
 ## Outcome Contract
 
-- **Why:** The prime guest app shows activity finish times based on a fixed 2-hour assumption. Staff-run activities vary in length. Without a configurable duration field, every activity incorrectly shows the same finish time, and the live/ended lifecycle is wrong for any activity that isn't exactly 2 hours.
-- **Intended Outcome:** Activity finish times and lifecycle states reflect the real planned duration stored per instance, defaulting to 120 minutes when no duration is set.
-- **Source:** auto
-
-## Evidence Audit (Current State)
-
-### 1. ActivityInstance type — no duration field
-
-**File:** `apps/prime/src/types/messenger/activity.ts` (lines 20-41)
-
-```typescript
-export interface ActivityInstance {
-  id: string;
-  templateId: string;
-  title: string;
-  description?: string;
-  meetUpPoint?: string;
-  meetUpTime?: string;
-  imageUrl?: string;
-  startTime: number;           // Epoch ms
-  price?: number | string;
-  initialMessages?: string[];
-  rsvpUrl?: string;
-  status: 'live' | 'upcoming' | 'archived';
-  createdBy: string;
-  updatedAt?: number;
-  // NO durationMinutes field
-}
-```
-
-`ActivityTemplate` (lines 1-19 of same file) also has no duration field.
-
-### 2. Hardcoded 2-hour duration — three call sites
-
-**File 1:** `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx`
-
-**Call site 1 — `formatFinishTime` (line 58):**
-```typescript
-function formatFinishTime(startTime: number): string {
-  const finish = new Date(startTime + 2 * 60 * 60 * 1000);  // hardcoded 2h
-  return new Intl.DateTimeFormat(undefined, {
-    hour: 'numeric', minute: '2-digit',
-  }).format(finish);
-}
-```
-One call site for `formatFinishTime`: `ActivitiesClient.tsx:139` — `formatFinishTime(activity.startTime)`. No other callers (`grep -rn "formatFinishTime" apps/prime/src` → single result).
-
-**Call site 2 — `resolveLifecycle` in `ActivitiesClient.tsx` (line 69):**
-```typescript
-function resolveLifecycle(activity: ActivityInstance, now: number): ActivityLifecycle {
-  const start = activity.startTime;
-  const end = start + 2 * 60 * 60 * 1000;  // hardcoded 2h
-  if (now >= end || activity.status === 'archived') return 'ended';
-  if (now >= start || activity.status === 'live') return 'live';
-  return 'upcoming';
-}
-```
-
-**File 2:** `apps/prime/src/app/(guarded)/chat/channel/page.tsx`
-
-**Call site 3 — `resolveLifecycle` copy in `chat/channel/page.tsx` (line 46):**
-```typescript
-function resolveLifecycle(activity: ActivityInstance, now: number): ActivityLifecycle {
-  const start = activity.startTime;
-  const end = start + 2 * 60 * 60 * 1000;  // hardcoded 2h — SAME constant
-  if (now >= end || activity.status === 'archived') { return 'ended'; }
-  if (now >= start || activity.status === 'live') { return 'live'; }
-  return 'upcoming';
-}
-```
-This is a copy-paste of the `ActivitiesClient` function — same signature, same hardcoded constant. It controls the lifecycle display in the activity chat channel view. **Both files must be updated.**
-
-`formatFinishTime` takes `startTime: number` only — to use per-instance duration, the signature must change to accept the full `ActivityInstance` object.
-
-### 3. Activity fetch path — Firebase RTDB, no API function layer
-
-**Hook:** `useChat()` in `apps/prime/src/contexts/messaging/ChatProvider.tsx` (lines 294-335)
-
-Firebase onValue listener:
-```
-ref(db, `${MSG_ROOT}/activities/instances`)
-  orderByChild('status')  startAt('live')  endAt('upcoming')  limitToFirst(20)
-```
-
-`MSG_ROOT` is `messaging` (from `apps/prime/src/utils/messaging/dbRoot.ts`).
-
-No Express/Pages-function layer for activities — all reads/writes go directly through the Firebase SDK. The RTDB schema is document-style (NoSQL); adding a new optional field to instances requires no migration — existing records simply lack the field and will fall back to the default.
-
-### 4. Complete RTDB instance schema (current)
-
-Path: `messaging/activities/instances/{instanceId}`
-
-| Field | Type | Notes |
-|---|---|---|
-| `id` | string | Document key |
-| `templateId` | string | |
-| `title` | string | |
-| `description` | string? | |
-| `meetUpPoint` | string? | |
-| `meetUpTime` | string? | HH:mm |
-| `imageUrl` | string? | |
-| `startTime` | number | Epoch ms |
-| `price` | number\|string? | |
-| `initialMessages` | string[]? | |
-| `rsvpUrl` | string? | |
-| `status` | 'live'\|'upcoming'\|'archived' | |
-| `createdBy` | string | |
-| `updatedAt` | number? | |
-| `durationMinutes` | — | **MISSING** |
-
-### 5. Test landscape
-
-**File:** `apps/prime/src/app/(guarded)/activities/__tests__/attendance-lifecycle.test.tsx` (151 lines)
-
-The test renders `ActivitiesClient` with mock activities that have no `durationMinutes`. The lifecycle resolution is covered by mock timing (using `Date.now()` offsets). No explicit reference to the 2-hour constant in the tests. Adding `durationMinutes?: number` to `ActivityInstance` is a non-breaking type change; existing test fixtures remain valid. Tests will need updating only if the `resolveLifecycle` test adds a case for non-default durations (not required for the baseline fix).
-
-### 6. `formatFinishTime` signature impact
-
-Current call: `formatFinishTime(activity.startTime)`. After fix, it needs access to `durationMinutes`. Two options:
-- A) Change signature to `formatFinishTime(activity: ActivityInstance)` — reads both `startTime` and `durationMinutes ?? 120` internally.
-- B) Change signature to `formatFinishTime(startTime: number, durationMinutes = 120)` — explicit parameters.
-
-Option A is cleaner since `resolveLifecycle` already takes the full `ActivityInstance`.
-
-### 7. No activity creation/edit UI in prime
-
-There is no in-app UI for creating or editing activity instances — staff create them directly via Firebase console or an admin tool. Adding `durationMinutes` to the type is sufficient; no form UI changes are needed in prime.
-
-## Confidence Inputs
-
-| Dimension | Score | Notes |
-|---|---|---|
-| Problem confirmed | High | Hardcoded constant verified at exact lines |
-| Solution path clear | High | Type addition + two call-site fixes; schemaless RTDB needs no migration |
-| Test impact | High | One test file; non-breaking addition |
-| Scope boundary | High | 4 files maximum (type, 2 UI components, test) |
-| External risk | Low | No external data source changes required |
-
-**Overall delivery readiness:** 90%
-
-## Key Files
-
-| File | Role |
-|---|---|
-| `apps/prime/src/types/messenger/activity.ts` | `ActivityInstance` type — add `durationMinutes?: number` |
-| `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx` | Call sites 1 + 2: `formatFinishTime` and `resolveLifecycle` |
-| `apps/prime/src/app/(guarded)/chat/channel/page.tsx` | Call site 3: copy-paste `resolveLifecycle` — same fix needed |
-| `apps/prime/src/app/(guarded)/activities/__tests__/attendance-lifecycle.test.tsx` | Lifecycle tests (non-breaking; may add coverage) |
-| `apps/prime/src/contexts/messaging/ChatProvider.tsx` | Activity fetch hook (read-only) |
+- **Why:** Guests can be sent links to activity events that appear to end after exactly 2 hours regardless of how long the activity actually runs. Staff have no way to adjust this without a code change. Adding a duration field to the staff activity form means new activities will display accurate end times.
+- **Intended Outcome Type:** operational
+- **Intended Outcome Statement:** Staff can create and edit activity instances via the Prime app UI, setting a custom duration in minutes. Activity cards show accurate end times derived from data, not a hardcoded default.
+- **Source:** operator
 
 ## Current Process Map
 
-None: local code path only. This change does not alter any multi-step process, workflow, lifecycle state, CI/deploy/release lane, approval path, or operator runbook. It modifies two utility functions within a single UI component and one TypeScript interface.
+### Process Areas
+
+| Area | Current step-by-step flow | Owners / systems / handoffs | Evidence refs | Known issues |
+|---|---|---|---|---|
+| Staff creates an activity | Staff logs into Firebase console → navigates to `messaging/activities/instances` → manually constructs a JSON node with all required fields → saves | Staff / Firebase console | `apps/prime/src/types/messenger/activity.ts:20-48` (fields to populate) | No in-app form; `durationMinutes` is assumed to be frequently omitted since it is optional and the JSDoc comment directs staff to the Firebase console — no RTDB data export was inspected to confirm this; when omitted, activities default to 120 min |
+| Guest views activity | App loads instances from `messaging/activities/instances` via real-time query → resolves lifecycle based on `startTime + (durationMinutes ?? 120) * 60000` → displays start/end time on card | Guest / Firebase RTDB / ActivitiesClient | `ActivitiesClient.tsx:61,74`; `chat/channel/page.tsx:49` | Displayed end time is always `startTime + 2h` for any instance without `durationMinutes` set |
+| `/chat/activities/manage` route | Renders `GuardedRouteRedirect` → immediately redirects to `/activities` | Guest app | `apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx:6` | Stub — no management UI |
+
+## Evidence Audit (Current State)
+
+### Entry Points
+
+- `apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx` — redirect stub; candidate location for the new management form
+- `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx` — guest-facing activity list; renders lifecycle from `durationMinutes ?? 120`
+- `apps/prime/src/app/(guarded)/chat/channel/page.tsx:48-49` — lifecycle resolution in chat channel; same `durationMinutes ?? 120` pattern
+
+### Key Modules / Files
+
+- `apps/prime/src/types/messenger/activity.ts:20-48` — `ActivityInstance` type. `durationMinutes?: number` is optional; JSDoc comment says "Set via Firebase console when creating new instances"
+- `apps/prime/src/contexts/messaging/ChatProvider.tsx:297-302` — reads from `MSG_ROOT/activities/instances` via `onValue()` paginated query; no write path
+- `apps/prime/src/utils/messaging/dbRoot.ts` — defines `MSG_ROOT = 'messaging'`; activity RTDB path is `messaging/activities/instances/[id]`
+- `apps/prime/functions/api/` — 22 functions; none create/edit activity instances (no `activity-create.ts`, `activity-update.ts`, etc.)
+- `apps/prime/src/app/owner/page.tsx` — owner dashboard; no activity creation UI
+
+### Patterns & Conventions Observed
+
+- Firebase writes from client: pattern exists in `ActivitiesClient.tsx:287-290` (`set(dbRef(db, ...), { at: Date.now() })` for presence marking). Direct client RTDB writes are established.
+- Staff authentication: `apps/prime/functions/api/staff-auth-session.ts` gates staff-only API actions (confirmed path). Owner pages use `apps/prime/src/app/owner/` with its own guard (exact guard HOC not inspected in this investigation).
+- Hardcoded default: `?? 120` appears at exactly 3 locations in source (2 call sites + type JSDoc); no config constant extracted.
+
+### Data & Contracts
+
+- Types/schemas/events:
+  - `ActivityInstance` (`apps/prime/src/types/messenger/activity.ts`) — `durationMinutes?: number`. Already present. No type change needed.
+  - `ActivityTemplate` — does not include `durationMinutes`. Templates are reused across instances; per-instance duration is correct approach.
+- Persistence:
+  - Firebase RTDB path: `messaging/activities/instances/[id]`
+  - Fields required when creating: `id`, `templateId`, `title`, `startTime`, `status`, `createdBy`
+  - `durationMinutes` is optional but meaningful; a management form should default to `60` and require a positive non-zero value. (60 chosen rather than the code's implicit 120-minute fallback to avoid inadvertently creating activities that run longer than intended; operator may adjust this default in planning.)
+- API/contracts:
+  - No API endpoint for activity CRUD exists. Direct RTDB write from authenticated client is the existing pattern.
+
+### Test Landscape
+
+#### Existing Test Coverage
+
+| Area | Test Type | Files | Coverage Notes |
+|---|---|---|---|
+| `durationMinutes` lifecycle — non-default | Unit | `attendance-lifecycle.test.tsx:174-234` | TC-P09/TC-P10 cover 30-min activity showing as live (25 min elapsed) and ended (35 min elapsed). Solid. |
+| `durationMinutes` lifecycle — default (absent) | Unit | `attendance-lifecycle.test.tsx` | Tests for absent `durationMinutes` exist implicitly (earlier TCs pass no field → 120-min default) |
+| Management form | Unit | None | No tests — stub page redirects |
+| Firebase write (activity create) | Unit | None | No tests — no write path exists yet |
+
+#### Coverage Gaps
+
+- No tests for the create/edit form component or the Firebase write.
+- No test asserting that creating an instance without `durationMinutes` causes the 120-min default to apply (integration gap, acceptable given existing TC-P09/P10).
+
+#### Testability Assessment
+
+- Easy to test: form validation (required fields, non-zero `durationMinutes`), form state transitions.
+- Hard to test: Firebase RTDB write in Jest without a real database.
+- Test seams needed: Abstract the RTDB write behind a testable function to enable unit tests on the write logic.
 
 ## Engineering Coverage Matrix
 
-| Coverage Area | Applicable | Treatment | Notes |
+| Coverage Area | Applicable? | Current-state evidence | Gap / risk | Carry forward to analysis |
+|---|---|---|---|---|
+| UI / visual | Required | `/chat/activities/manage` is a redirect stub; no form exists | Full staff management form needs design (create + edit + duration field) | Yes — form design choices |
+| UX / states | Required | Guest activity cards display `startTime + 2h` for instances without `durationMinutes` | Form needs: empty/loading/error/save-success states; duration field needs validation feedback | Yes |
+| Security / privacy | Required | Owner pages use staff auth guard; direct RTDB writes from client require matching Firebase security rules | Firebase rules for `messaging/activities/instances` must allow writes only for authenticated staff; unknown if rules exist | Yes — rules verification needed |
+| Logging / observability / audit | Required | Presence writes have no audit log. No existing activity-create audit trail | No create/edit event logged — staff won't know if a write was applied silently incorrectly | Yes — recommend `direct-telemetry` on create/edit |
+| Testing / validation | Required | TC-P09/TC-P10 cover lifecycle display; no form tests | Need form validation unit tests + at least 1 test asserting `durationMinutes` is written to RTDB shape | Yes |
+| Data / contracts | Required | `ActivityInstance.durationMinutes?: number` already present | No runtime validation that new instances include a valid duration; form must enforce | Yes |
+| Performance / reliability | N/A | RTDB writes are low-frequency (staff-only infrequent create/edit) | None | No |
+| Rollout / rollback | Required | No feature flag pattern currently; management page is already accessible but noop | New page can ship behind a feature flag or staff-only guard with no guest impact; rollback = revert to redirect stub | Yes |
+
+## Questions
+
+### Resolved
+
+- Q: Does `durationMinutes` need to be added to the Firebase RTDB schema or TypeScript type?
+  - A: No. The field already exists as `durationMinutes?: number` in `ActivityInstance` (`apps/prime/src/types/messenger/activity.ts:38`). Firebase RTDB is schema-free; the field just needs to be written.
+  - Evidence: `apps/prime/src/types/messenger/activity.ts:32-38`
+- Q: Are there existing Firebase security rules governing writes to `messaging/activities/instances`?
+  - A: Not confirmed from repo inspection (no `*.rules` file found in `apps/prime`). Rules are set in the Firebase console. This is an open question for staff/infra but does not block planning — the form can be built and rules verified pre-ship.
+  - Evidence: `find apps/prime -name "*.rules"` → no results
+- Q: Is there an existing admin API endpoint for creating/editing activities?
+  - A: No. `apps/prime/functions/api/` contains 22 endpoints, none for activity CRUD. Direct RTDB client write is the only path.
+  - Evidence: `ls apps/prime/functions/api/` — no `activity-*.ts` files
+- Q: Does the `ActivityTemplate` type store duration?
+  - A: No. Templates store `meetUpPoint`, `meetUpTime`, `price`, `initialMessages` — no duration. Duration is per-instance, not per-template. Correct design.
+  - Evidence: `apps/prime/src/types/messenger/activity.ts:6-18`
+- Q: What authentication is required for a staff activity management form?
+  - A: Owner/staff session. The `apps/prime/src/app/owner/` directory houses staff-only pages. The manage form should live there or behind the same guard rather than in the guest-session-guarded `(guarded)` area.
+  - Evidence: `apps/prime/src/app/owner/` — owner session guard; `apps/prime/functions/api/staff-auth-session.ts` — staff auth
+- Q: Should the `/chat/activities/manage` URL be preserved, or should activity management move to `/owner/activities`?
+  - A: Place management in `/owner/activities` (consistent with other staff-only tools in the owner area), and add a permanent redirect from `/chat/activities/manage` → `/owner/activities`. This is safe: the current manage page is already a redirect stub with no bookmarkable content. No operator input required — analysis should adopt this as the chosen route.
+  - Evidence: `apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx` — redirect stub with no UI; `apps/prime/src/app/owner/` — owner area convention
+
+### Open (Operator Input Required)
+
+None — all questions are agent-resolvable from available evidence and documented conventions.
+
+## Confidence Inputs
+
+- Implementation: 87% — type and schema already correct; only UI and write logic needed; Firebase write pattern established
+- Approach: 85% — direct RTDB write with owner guard is clearly right; form location TBD but defaultable
+- Impact: 80% — eliminates the 120-min hardcoded appearance for new activities; existing data unchanged
+- Delivery-Readiness: 82% — Firebase rules need verification before ship but don't block development
+- Testability: 75% — form validation testable; RTDB write needs test seam abstraction
+
+## Risks
+
+| Risk | Likelihood | Impact | Mitigation / Open Question |
 |---|---|---|---|
-| UI / visual | Required | Update `formatFinishTime` to show correct finish time | `ActivityCard` displays finish time via this function |
-| UX / states | Required | `resolveLifecycle` must use `durationMinutes ?? 120` | Affects live/ended state boundary |
-| Security / privacy | N/A | No new data exposure | `durationMinutes` is display metadata |
-| Logging / observability / audit | N/A | No new metrics | Duration is display-only |
-| Testing / validation | Required | Existing lifecycle test passes; optional: add non-default duration case | Test file at `__tests__/attendance-lifecycle.test.tsx` |
-| Data / contracts | Required | `ActivityInstance` type updated; RTDB schemaless — no migration | Old instances fall back to 120 min |
-| Performance / reliability | N/A | Trivial arithmetic change | No performance impact |
-| Rollout / rollback | Required | Additive type change; backwards compatible; rollback = revert type + calc | No DB state to roll back |
+| Firebase security rules don't allow client writes to `messaging/activities/instances` | Medium | High — form writes silently fail or throw | Verify rules in Firebase console before ship; add write test that catches RTDB permission errors |
+| Staff create activities with `durationMinutes: 0` | Low | Medium — lifecycle shows activity as ended immediately | Form validation: require `durationMinutes >= 1`; code already guards with `Math.max(1, ...)` |
+| Existing live activity instances without `durationMinutes` continue showing 2h default | Medium | Low — existing data is not migrated | Acceptable. Fix is forward-only. Operator can manually set `durationMinutes` in Firebase for important upcoming instances. |
+| No audit trail for activity creation | Low | Low — staff error hard to diagnose | Recommend logging create/edit event via `direct-telemetry` endpoint |
 
-## Open Questions
+## Planning Constraints & Notes
 
-No open questions remain.
+- Must-follow patterns:
+  - Staff UI must use owner session guard, not guest session
+  - Direct RTDB client write is established pattern; no new API endpoint needed
+  - `durationMinutes` must remain optional in the type (backward-compat with existing instances)
+  - Form must default duration to 60 minutes and enforce positive non-zero value
+- Rollout/rollback expectations:
+  - New management page is additive; rollback = revert manage page to redirect stub
+  - No guest-facing changes; zero guest risk
+- Observability expectations:
+  - Log create/edit events via `direct-telemetry` or similar
 
-| # | Question | Status | Resolution |
-|---|---|---|---|
-| 1 | Should `durationMinutes` live on `ActivityTemplate` as a default, with `ActivityInstance` inheriting or overriding? | Resolved | Instance-only for now. Staff need per-instance control. Template default is a future enhancement outside this scope. |
-| 2 | Is there a staff activity creation/edit UI that needs updating? | Resolved | No in-app creation UI exists — staff use Firebase console. No form changes required. |
-| 3 | Does any other component besides `ActivitiesClient` use the hardcoded 2h constant? | Resolved | `grep -rn "2 \* 60 \* 60" apps/prime/src` — three call sites total: two in `ActivitiesClient.tsx` (lines 58, 69) and one in `chat/channel/page.tsx` (line 46). All three must be updated. |
+## Suggested Task Seeds (Non-binding)
+
+- TASK-01: Build `ActivityManageForm` component (create + edit mode; fields: title, startTime, durationMinutes, description, meetUpPoint, meetUpTime, status)
+- TASK-02: Wire manage page at `/owner/activities` — list existing instances + "Create" + edit button per instance
+- TASK-03: Firebase RTDB write function for create/update activity instance, with runtime validation
+- TASK-04: Unit tests for form validation and RTDB write shape
+- TASK-05: Add redirect `/chat/activities/manage` → `/owner/activities`
+
+## Execution Routing Packet
+
+- Primary execution skill: lp-do-build
+- Supporting skills: none
+- Deliverable acceptance package:
+  - Staff can navigate to `/owner/activities`, see existing activity instances, create a new one with a `durationMinutes` value, and see it appear in the guest-facing activity list with the correct end time
+  - Form rejects `durationMinutes <= 0`
+  - Unit tests cover form validation and write shape
+- Post-delivery measurement plan:
+  - Verify a newly created activity instance in RTDB contains `durationMinutes` field
+  - Verify guest activity card shows correct end time based on set duration
+
+## Scope Signal
+
+Signal: right-sized
+Rationale: The field and schema already exist. The change is purely additive UI — a staff form in an existing owner area, writing to an existing RTDB path, using an established direct-write pattern. No type changes, no schema migrations, no guest-facing risk.
+
+## Evidence Gap Review
+
+### Gaps Addressed
+
+- Confirmed `durationMinutes` is already in the type and RTDB schema — no data model work needed.
+- Confirmed no existing API endpoint or admin form for activity creation — full gap.
+- Confirmed Firebase client write pattern exists (presence marking in ActivitiesClient) — approach is validated.
+- Confirmed the manage page is a stub redirect — safe to repurpose.
+- Firebase security rules for activity instances are not confirmed from repo — flagged as a pre-ship risk.
+
+### Confidence Adjustments
+
+- Raised implementation confidence (87%) because: type + schema + write pattern all exist; only UI layer is missing.
+- Left testability at 75% because: RTDB write testing in Jest requires a test seam; not complex but needs explicit design.
+
+### Remaining Assumptions
+
+- Firebase security rules permit authenticated staff writes to `messaging/activities/instances` — must verify before ship.
+- Duration default of 60 minutes is a reasonable form default (shorter than the current 120-min code default, more likely to match real activities).
 
 ## Rehearsal Trace
 
 | Scope Area | Coverage Confirmed | Issues Found | Resolution Required |
 |---|---|---|---|
-| Type definition (`activity.ts`) | Yes | None | No |
-| UI call sites (`ActivitiesClient.tsx`) | Yes | `formatFinishTime` takes `startTime` only — signature change needed | No (noted in plan) |
-| RTDB schema (no migration) | Yes | None — schemaless; old records safe | No |
-| Test file | Yes | None — non-breaking type addition | No |
-| Third call site (`chat/channel/page.tsx:46`) | Yes | Major: copy-paste `resolveLifecycle` with same constant — added to scope | No (fixed in fact-find) |
-
-## Scope Signal
-
-**Signal:** right-sized
-
-**Rationale:** The change is 4 files (type + 2 UI components + 1 test), all within the same guarded routes. The type addition is non-breaking. The three call-site fixes are well-understood. No database migration. No form UI. The scope is as narrow as the problem allows.
-
-## Evidence Gap Review
-
-### Gaps Addressed
-- Confirmed exact file/line for both hardcoded call sites
-- Confirmed RTDB is schemaless (no migration needed)
-- Confirmed all three consumers of the 2-hour constant: two in `ActivitiesClient.tsx` and one copy-paste in `chat/channel/page.tsx`
-- Confirmed no staff creation UI exists in prime
-
-### Confidence Adjustments
-None — all key claims verified.
-
-### Remaining Assumptions
-- Staff are aware that existing activity instances will show the 120-minute default until they set `durationMinutes` when creating new instances via the Firebase console. This is acceptable: the change is additive and backwards-compatible.
-- No Zod/runtime schema validates `ActivityInstance` reads from Firebase (`grep -rn "ActivityInstance" apps/prime/src | grep "z\.object\|zod\|parse"` → no results). The type is TypeScript-only; no runtime schema update is needed.
-- The plan should guard against `durationMinutes <= 0` inputs (e.g., use `Math.max(1, activity.durationMinutes ?? 120)`) or document that 0/negative is invalid. An unguarded 0 would immediately mark any activity as ended at start time.
+| `ActivityInstance` type and RTDB schema | Yes | None — field already present | No |
+| Consumer code (lifecycle resolution) | Yes | None — `?? 120` fallback is correct; test coverage exists | No |
+| Staff authentication path for form | Partial | Owner session pattern exists; exact guard HOC not verified in `/owner/` routing | No — defaultable to same guard as `owner/page.tsx` |
+| Firebase security rules | No | Rules not in repo; cannot verify from code | No — blocking for ship, not for planning |
+| Write path (client → RTDB) | Yes | No existing write for activity create; pattern confirmed from presence write | No |
+| Test coverage | Partial | Lifecycle tests exist; form/write tests do not | No — new tests in plan scope |
 
 ## Analysis Readiness
 
-**Ready for analysis.** All blockers resolved.
-
-- Entry points confirmed: `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx` and `apps/prime/src/app/(guarded)/chat/channel/page.tsx`
-- Type to update: `ActivityInstance` in `apps/prime/src/types/messenger/activity.ts`
-- Call sites: 3 — `formatFinishTime` (ActivitiesClient:58), `resolveLifecycle` (ActivitiesClient:69), `resolveLifecycle` copy (chat/channel/page.tsx:46)
-- RTDB: schemaless, no migration required
-- No Zod schema on `ActivityInstance` — TypeScript-only type update sufficient
-- Tests: 1 test file, non-breaking change
-- Execution track: code
-- Delivery readiness: 90% (adjusted from 92% to reflect the third call site and zero-guard consideration)
-
-**Recommended approach:** Add `durationMinutes?: number` to `ActivityInstance`. Update `formatFinishTime` to accept the full `ActivityInstance`. Update both `resolveLifecycle` functions (in two files) to use `Math.max(1, activity.durationMinutes ?? 120)`. 4 files total.
+- Status: Ready-for-analysis
+- Blocking items: none
+- Recommended next step: `/lp-do-analysis prime-activity-duration`

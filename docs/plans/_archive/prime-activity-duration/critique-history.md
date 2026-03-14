@@ -1,53 +1,67 @@
 # Critique History: prime-activity-duration
 
-## Round 1 — 2026-03-13 (Fact-Find artifact)
+## Round 1 — 2026-03-14
+
+lp-score: 4.0/5.0
 
 ### Issues Opened This Round
-
 | ID | Severity | Target | Summary |
 |---|---|---|---|
-| 1-01 | Major | Evidence Audit §2 / Key Files / Open Q 3 | Third hardcoded call site missed: `chat/channel/page.tsx:46` has copy-paste `resolveLifecycle` with same constant |
-| 1-02 | Minor | Scope / Scope & Intent | Duplicate section: identical paragraph under both `## Scope` and `## Scope & Intent` |
-| 1-03 | Minor | Analysis Readiness / Evidence Gap Review | `formatFinishTime` caller count unstated (one call site at line 139 — confirmed but not explicit) |
+| 1-01 | Moderate | Current Process Map | "durationMinutes frequently omitted" stated as fact; no RTDB data evidence |
+| 1-02 | Moderate | Questions / Open | URL placement question was agent-resolvable; moved to Resolved with stated default |
+| 1-03 | Minor | Patterns & Conventions | `staffAuthSession.ts` lib path unverified; corrected to confirmed API path |
+| 1-04 | Minor | Data & Contracts | 60 vs 120 form default discrepancy unexplained; rationale added |
 
 ### Issues Confirmed Resolved This Round
-
-None (first round).
-
-### Issues Carried Open (not yet resolved)
-
-None — all issues fixed inline during Autofix. Score after fix: 4.0 → post-fix effective score raised to credible.
-
-## Round 2 — 2026-03-13 (Analysis artifact)
-
-### Issues Opened This Round
-
-| ID | Severity | Target | Summary |
-|---|---|---|---|
-| 2-01 | Minor | Planning Handoff / TASK-02 | `formatFinishTime` signature sub-choice (full object vs explicit params) not justified in analysis — rationale was in fact-find but not carried forward |
-
-### Issues Confirmed Resolved This Round
-
-None — Round 1 issues were on fact-find artifact, not analysis.
-
-### Issues Carried Open (not yet resolved)
-
-None — 2-01 fixed inline during Autofix. Final verdict: credible (score: 4.5).
-
-## Round 3 — 2026-03-13 (Plan artifact)
-
-### Issues Opened This Round
-
-| ID | Severity | Target | Summary |
-|---|---|---|---|
-| 3-01 | Minor | TASK-01/TASK-02/TASK-03 Validation contracts | TC label collision: plan's TC-01–TC-10 overlap with existing test file's `TC-01/TC-02/TC-03` labels; renamed to TC-P01–TC-P10 in Autofix |
-
-### Issues Confirmed Resolved This Round
-
 | Prior ID | Severity | Summary | How resolved |
 |---|---|---|---|
-| (none carried from Round 2 for plan artifact) | — | — | — |
+| — | — | First run | — |
 
 ### Issues Carried Open (not yet resolved)
+| Prior ID | Severity | Rounds Open | Summary |
+|---|---|---|---|
+| — | — | — | — |
 
-None — 3-01 fixed inline during Autofix (TC labels renamed to TC-P prefix). No Critical or Major issues found. Final verdict: **credible** (score: 4.5). Proceed to build.
+## Round 1 (Analysis) — 2026-03-14
+
+lp-score: 4.0/5.0
+
+### Issues Opened This Round
+| ID | Severity | Target | Summary |
+|---|---|---|---|
+| A1-01 | Moderate | Options Considered — Option A | Rejection reasoning conflated "rules exist" with "rules cover instances path"; precision fix applied |
+| A1-02 | Minor | Risks to Carry Forward | Owner page RTDB query scope / ChatProvider 20-instance limit not mentioned; row added |
+| A1-03 | Minor | Planning Handoff — Sequencing | Form scaffold parallelization not noted; clarification added |
+
+### Issues Confirmed Resolved This Round
+| Prior ID | Severity | Summary | How resolved |
+|---|---|---|---|
+| — | — | First analysis critique | — |
+
+### Issues Carried Open (not yet resolved)
+| Prior ID | Severity | Rounds Open | Summary |
+|---|---|---|---|
+| — | — | — | — |
+
+## Round 1 (Plan) — 2026-03-14
+
+lp-score: 4.0/5.0
+
+### Issues Opened This Round
+| ID | Severity | Target | Summary |
+|---|---|---|---|
+| P1-01 | Major | TASK-02 Acceptance / TASK-03 Security | Auth mechanism incompatibility: `enforceStaffAuthTokenGate` requires Firebase Bearer ID token; owner area has no `PinAuthProvider` or ID token source for client components — confirmed by grep. Changed to `enforceStaffOwnerApiGate` |
+| P1-02 | Major | TASK-02 Deliverable / Decision Log | GET handler for instance list documented in Decision Log / TASK-04 notes but absent from TASK-02 spec; added to TASK-02 Deliverable, Acceptance, and TC |
+| P1-03 | Moderate | TASK-04 Planning Validation | `FirebaseRest.get()` described as "likely has it" — speculative; confirmed at `firebase-rest.ts:51` |
+| P1-04 | Minor | TASK-05 Affects | Path `apps/prime/src/__tests__/...` inconsistent with Deliverable path `apps/prime/src/test/...`; aligned |
+| P1-05 | Minor | TASK-01 TC-01 / TASK-05 Acceptance | TC-01 redirect test referenced in TASK-01 but absent from TASK-05 Acceptance; added as manual-verify note in TC-05 |
+
+### Issues Confirmed Resolved This Round
+| Prior ID | Severity | Summary | How resolved |
+|---|---|---|---|
+| — | — | First plan critique | — |
+
+### Issues Carried Open (not yet resolved)
+| Prior ID | Severity | Rounds Open | Summary |
+|---|---|---|---|
+| — | — | — | — |

@@ -1,13 +1,14 @@
 {
   "schema_version": "build-event.v1",
-  "build_id": "cdb5148c-409d-4731-8719-8229ad796131",
   "feature_slug": "prime-activity-duration",
-  "emitted_at": "2026-03-13T19:00:43.538Z",
-  "why": "The prime guest app shows activity finish times based on a fixed 2-hour assumption. Staff-run activities vary in length. Without a configurable duration field, every activity incorrectly shows the same finish time, and the live/ended lifecycle is wrong for any activity that is not exactly 2 hours.",
-  "why_source": "auto",
-  "intended_outcome": {
-    "type": "operational",
-    "statement": "Activity finish times and lifecycle states reflect the real planned duration stored per instance, defaulting to 120 minutes when no duration is set.",
-    "source": "auto"
-  }
+  "business": "BRIK",
+  "plan_path": "docs/plans/prime-activity-duration/plan.md",
+  "build_record_path": "docs/plans/prime-activity-duration/build-record.user.md",
+  "completed_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "Staff can create and edit activity instances via the Prime app UI, setting a custom duration in minutes. Activity cards show accurate end times derived from data, not a hardcoded default.",
+  "why": "Guests receive activity links showing end times that are always exactly 2 hours after start, regardless of the real activity length.",
+  "source": "operator",
+  "tasks_completed": 5,
+  "tasks_total": 5
 }

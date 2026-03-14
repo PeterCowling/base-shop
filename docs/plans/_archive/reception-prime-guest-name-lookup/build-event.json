@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-prime-guest-name-lookup-2026-03-14",
+  "feature_slug": "reception-prime-guest-name-lookup",
+  "emitted_at": "2026-03-14T22:20:00.000Z",
+  "why": "Prime inbox threads have no guest names, making triage slower for staff. Email threads already resolve names. Closing this gap makes the Prime inbox parity-complete for the most operator-visible field.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Prime direct (prime_direct) inbox threads display a booking-level guest name (lead guest or first named occupant from guestsDetails/{bookingRef}) in the inbox list view; broadcast and activity threads remain name-free; Firebase unavailability degrades gracefully to null names with no throw",
+    "source": "auto"
+  }
+}

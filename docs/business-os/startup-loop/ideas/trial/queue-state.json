@@ -1,7 +1,7 @@
 {
   "last_updated": "2026-03-14T19:00:00.000Z",
   "counts": {
-    "enqueued": 71,
+    "enqueued": 70,
     "processed": 33,
     "declined": 2,
     "skipped": 1,
@@ -34820,7 +34820,7 @@
         "coverage-hint: UX"
       ],
       "created_at": "2026-03-14T17:18:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "When a room is unavailable for extension, staff see a disabled N/A button with no explanation. They don't know if the room is full, if the dates are wrong, or if there's a system fault \u2014 so they may waste time investigating or calling for help when the answer is simply that the room has no free beds.",
       "intended_outcome": {
         "type": "operational",
@@ -34829,8 +34829,10 @@
       },
       "processed_by": {
         "target_route": "lp-do-build",
-        "target_path": "docs/plans/reception-extension-na-button-no-explanation/micro-build.md"
-      }
+        "target_path": "docs/plans/_archive/reception-extension-na-button-no-explanation/micro-build.md"
+      },
+      "completed_at": "2026-03-14",
+      "outcome": "N/A buttons now show tooltip explaining room unavailability on hover"
     },
     {
       "schema_version": "dispatch.v2",
@@ -34927,7 +34929,7 @@
       "cluster_key": "brik-prepayments-ux-safety",
       "cluster_fingerprint": "brik-prepayments-audit-20260314",
       "lineage_depth": 0,
-      "area_anchor": "BRIK — Staff can accidentally record a guest payment with one click and no warning",
+      "area_anchor": "BRIK \u2014 Staff can accidentally record a guest payment with one click and no warning",
       "location_anchors": [
         "apps/reception/src/components/prepayments/MarkAsPaidButton.tsx",
         "apps/reception/src/components/prepayments/BookingPaymentsLists.tsx",
@@ -34939,9 +34941,9 @@
       "recommended_route": "lp-do-build",
       "priority": "P1",
       "confidence": 0.95,
-      "current_truth": "The amount button (e.g. '€65.31') on each prepayments row records a completed payment in Firebase immediately on first click with no confirmation dialog. Amounts up to €748 are present in the current live list.",
+      "current_truth": "The amount button (e.g. '\u20ac65.31') on each prepayments row records a completed payment in Firebase immediately on first click with no confirmation dialog. Amounts up to \u20ac748 are present in the current live list.",
       "next_scope_now": "Add a confirmation step (inline confirm or dialog) to MarkAsPaidButton before the payment transaction is written to Firebase.",
-      "why": "Clicking the euro amount on a booking row instantly records that payment as done — no confirmation is shown. A misclick or accidental tap records a real financial transaction immediately. Because payments up to €748 appear on this screen, a single mistake could write an incorrect record into the books. Adding one confirmation step means staff can see what they are about to do before it is saved.",
+      "why": "Clicking the euro amount on a booking row instantly records that payment as done \u2014 no confirmation is shown. A misclick or accidental tap records a real financial transaction immediately. Because payments up to \u20ac748 appear on this screen, a single mistake could write an incorrect record into the books. Adding one confirmation step means staff can see what they are about to do before it is saved.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Clicking the amount button shows a confirmation step before any payment transaction is written. A confirmed click records the payment; cancelling does nothing.",
@@ -34973,7 +34975,7 @@
       "cluster_key": "brik-prepayments-ux-safety",
       "cluster_fingerprint": "brik-prepayments-audit-20260314",
       "lineage_depth": 0,
-      "area_anchor": "BRIK — Clicking a prepayment row does nothing, so staff don't know how to open it",
+      "area_anchor": "BRIK \u2014 Clicking a prepayment row does nothing, so staff don't know how to open it",
       "location_anchors": [
         "apps/reception/src/components/prepayments/BookingPaymentsLists.tsx",
         "/prepayments"
@@ -35016,7 +35018,7 @@
       "cluster_key": "brik-prepayments-ux-safety",
       "cluster_fingerprint": "brik-prepayments-audit-20260314",
       "lineage_depth": 0,
-      "area_anchor": "BRIK — The 'Mark as Failed' button fires instantly with no confirmation and no loading feedback",
+      "area_anchor": "BRIK \u2014 The 'Mark as Failed' button fires instantly with no confirmation and no loading feedback",
       "location_anchors": [
         "apps/reception/src/components/prepayments/MarkAsFailedButton.tsx",
         "apps/reception/src/components/prepayments/BookingPaymentsLists.tsx",
@@ -35030,7 +35032,7 @@
       "confidence": 0.95,
       "current_truth": "MarkAsFailedButton fires logActivity immediately on click with no confirmation dialog, no button disabled state during the async call, and no error message shown to the user if the call fails. Logging a failed payment attempt triggers an automated email to the guest.",
       "next_scope_now": "Add a loading/disabled state to MarkAsFailedButton during the async call. Show an error toast if the call fails. Add a brief confirmation (inline or dialog) before firing, since the action sends a guest-facing email.",
-      "why": "Clicking 'Mark as Failed' immediately sends an automated email to the guest and changes their payment status — with no confirmation shown and no way to cancel. If the button is clicked by mistake, staff have no way to stop the email or undo the status change. Adding a brief 'are you sure?' step and a visible loading state protects against mistakes and gives staff confidence the action worked.",
+      "why": "Clicking 'Mark as Failed' immediately sends an automated email to the guest and changes their payment status \u2014 with no confirmation shown and no way to cancel. If the button is clicked by mistake, staff have no way to stop the email or undo the status change. Adding a brief 'are you sure?' step and a visible loading state protects against mistakes and gives staff confidence the action worked.",
       "intended_outcome": {
         "type": "operational",
         "statement": "MarkAsFailedButton shows a confirmation step before firing. The button is visibly disabled while the request is in progress. An error toast appears if the action fails.",
@@ -35061,7 +35063,7 @@
       "cluster_key": "brik-prepayments-ux-safety",
       "cluster_fingerprint": "brik-prepayments-audit-20260314",
       "lineage_depth": 0,
-      "area_anchor": "BRIK — Staff can click 'Mark as Failed' more than three times, sending extra emails to guests",
+      "area_anchor": "BRIK \u2014 Staff can click 'Mark as Failed' more than three times, sending extra emails to guests",
       "location_anchors": [
         "apps/reception/src/components/prepayments/MarkAsFailedButton.tsx",
         "/prepayments"
@@ -35072,9 +35074,9 @@
       "recommended_route": "lp-do-build",
       "priority": "P1",
       "confidence": 0.97,
-      "current_truth": "MarkAsFailedButton logs codes 5 → 6 → 7 in sequence. After code 7 (final attempt) the button remains active and re-logs code 7 on every subsequent click, because the else-if branch still matches codes.includes(6). There is no terminal state that disables or hides the button after the final attempt.",
+      "current_truth": "MarkAsFailedButton logs codes 5 \u2192 6 \u2192 7 in sequence. After code 7 (final attempt) the button remains active and re-logs code 7 on every subsequent click, because the else-if branch still matches codes.includes(6). There is no terminal state that disables or hides the button after the final attempt.",
       "next_scope_now": "Add a guard: if existingCodes includes 7, disable or hide the MarkAsFailedButton entirely. No further clicks should be possible after the final attempt.",
-      "why": "The system is designed so that a booking can only fail payment three times before it is treated as a final failure. But the button does not stop working after the third click — it stays visible and active, and each extra click logs another 'final failure' and could trigger another guest email. Adding a simple check that hides or disables the button once the third failure is recorded prevents any extra emails from being sent.",
+      "why": "The system is designed so that a booking can only fail payment three times before it is treated as a final failure. But the button does not stop working after the third click \u2014 it stays visible and active, and each extra click logs another 'final failure' and could trigger another guest email. Adding a simple check that hides or disables the button once the third failure is recorded prevents any extra emails from being sent.",
       "intended_outcome": {
         "type": "operational",
         "statement": "MarkAsFailedButton is disabled or hidden once code 7 has been logged for a booking. No further clicks are possible after the third failure attempt.",
@@ -35103,7 +35105,7 @@
       "cluster_key": "brik-prepayments-ux-clarity",
       "cluster_fingerprint": "brik-prepayments-audit-20260314",
       "lineage_depth": 0,
-      "area_anchor": "BRIK — The time counter on each prepayment row has no label, so staff don't know what it means",
+      "area_anchor": "BRIK \u2014 The time counter on each prepayment row has no label, so staff don't know what it means",
       "location_anchors": [
         "apps/reception/src/components/prepayments/HoursChip.tsx",
         "apps/reception/src/components/prepayments/BookingPaymentsLists.tsx",
@@ -35146,7 +35148,7 @@
       "cluster_key": "brik-prepayments-audit-trail",
       "cluster_fingerprint": "brik-prepayments-audit-20260314",
       "lineage_depth": 0,
-      "area_anchor": "BRIK — Payments recorded on the prepayments screen are attributed to 'System' instead of the staff member who processed them",
+      "area_anchor": "BRIK \u2014 Payments recorded on the prepayments screen are attributed to 'System' instead of the staff member who processed them",
       "location_anchors": [
         "apps/reception/src/components/prepayments/PrepaymentsContainer.tsx",
         "apps/reception/src/context/AuthContext.tsx",
@@ -35160,7 +35162,7 @@
       "confidence": 0.93,
       "current_truth": "createPaymentTransaction in PrepaymentsContainer.tsx hardcodes user_name: 'System' for all transactions written via the prepayments screen. The logged-in user's name is available from useAuth() in the same component but is not passed to the transaction.",
       "next_scope_now": "Read the logged-in user's display name from useAuth() in PrepaymentsContainer.tsx and pass it as user_name to createPaymentTransaction instead of the hardcoded 'System' string.",
-      "why": "Every payment recorded through this screen shows 'System' as the person who took the payment, even though a real staff member was at the desk. If a payment ever needs to be queried or investigated, there is no record of who handled it. This is a one-line fix: the staff member's name is already available on the screen — it just needs to be included in the payment record.",
+      "why": "Every payment recorded through this screen shows 'System' as the person who took the payment, even though a real staff member was at the desk. If a payment ever needs to be queried or investigated, there is no record of who handled it. This is a one-line fix: the staff member's name is already available on the screen \u2014 it just needs to be included in the payment record.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Payment transactions written from the prepayments screen carry the logged-in staff member's name as user_name. The audit trail correctly identifies who processed each payment.",

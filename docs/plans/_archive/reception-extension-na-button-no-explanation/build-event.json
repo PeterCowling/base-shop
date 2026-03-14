@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T16:01:00.000Z",
+  "business": "BRIK",
+  "plan_slug": "reception-extension-na-button-no-explanation",
+  "build_commit": "c649a49d41",
+  "outcome_contract": {
+    "why": "When a room is unavailable for extension, staff see a disabled N/A button with no explanation. They don't know if the room is full, if the dates are wrong, or if there's a system fault — so they may waste time troubleshooting or asking a manager unnecessarily.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff hovering or focusing an N/A button see a plain-language tooltip explaining the room is unavailable for the selected dates.",
+    "source": "operator"
+  }
+}

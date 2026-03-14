@@ -56,14 +56,26 @@ export async function GET(request: Request) {
   }
 
   try {
-    const config: { shopId: string; activeProvider: string } | null =
+    let config: { shopId: string; activeProvider: string } | null =
       await prismaAny.shopPaymentConfig.findUnique({
         where: { shopId },
         select: { shopId: true, activeProvider: true },
       });
 
     if (!config) {
-      return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
+      // Auto-seed: create a default config row so that new shops don't get a hard 404
+      // on first access. Callers (e.g. Caryina provider.server.ts) fall back to env-var
+      // on 404, but creating the row on first-access avoids the fallback on every request
+      // and allows operators to change provider via the PM dashboard immediately.
+      const seeded: { shopId: string; activeProvider: string } =
+        await prismaAny.shopPaymentConfig.upsert({
+          where: { shopId },
+          create: { shopId, activeProvider: "axerve" },
+          update: {},
+          select: { shopId: true, activeProvider: true },
+        });
+      pmLog("info", "internal_shop_config_auto_seeded", { shopId, activeProvider: seeded.activeProvider });
+      config = seeded;
     }
 
     return NextResponse.json({

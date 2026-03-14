@@ -173,6 +173,25 @@ export async function hasPmSession(request: Request): Promise<boolean> {
   return hasPmSessionFromCookieHeader(request.headers.get("cookie"));
 }
 
+/**
+ * Returns true when the request carries a valid Caryina-PM bearer token.
+ * Used to authenticate machine-to-machine calls from Caryina (e.g. refund proxying).
+ * Token must match CARYINA_PM_TOKEN exactly; comparison is timing-safe.
+ */
+export function hasCaryinaPmBearerToken(request: Request): boolean {
+  const expectedToken = process.env.CARYINA_PM_TOKEN?.trim();
+  if (!expectedToken) return false;
+
+  const authHeader = request.headers.get("authorization") ?? "";
+  if (!authHeader.startsWith("Bearer ")) return false;
+
+  const candidate = authHeader.slice("Bearer ".length).trim();
+  if (!candidate) return false;
+
+  if (candidate.length !== expectedToken.length) return false;
+  return timingSafeEqual(candidate, expectedToken);
+}
+
 export async function hasPmSessionFromCookieHeader(
   cookieHeader: string | null,
 ): Promise<boolean> {

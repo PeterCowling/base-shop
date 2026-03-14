@@ -31,6 +31,8 @@ export async function resolveCaryinaPaymentProvider(): Promise<CaryinaPaymentPro
         headers: { "x-internal-token": PM_INTERNAL_TOKEN },
         // Next.js fetch cache: revalidate every 60 seconds (KV-equivalent caching at request level)
         next: { revalidate: 60 },
+        // Abort after 8 s to prevent Caryina checkout from hanging on a slow PM response.
+        signal: AbortSignal.timeout(8000),
       });
 
       if (res.ok) {

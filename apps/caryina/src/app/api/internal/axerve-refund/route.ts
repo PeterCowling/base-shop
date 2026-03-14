@@ -23,6 +23,8 @@
  *   502 { ok: false, error: "Payment service unavailable" } — SOAP failure
  */
 
+import crypto from "node:crypto";
+
 import { NextResponse } from "next/server";
 
 import { AxerveError, callRefund } from "@acme/axerve";
@@ -69,11 +71,16 @@ function parseBody(raw: unknown): BodyParseResult {
   };
 }
 
+function timingSafeStringEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(Buffer.from(a), Buffer.from(b));
+}
+
 export async function POST(request: Request) {
-  // Token authentication
-  const token = request.headers.get("x-internal-token");
-  const expectedToken = process.env.CARYINA_INTERNAL_TOKEN;
-  if (!expectedToken || token !== expectedToken) {
+  // Token authentication — timing-safe comparison prevents timing attacks.
+  const token = request.headers.get("x-internal-token") ?? "";
+  const expectedToken = process.env.CARYINA_INTERNAL_TOKEN ?? "";
+  if (!expectedToken || !token || !timingSafeStringEqual(token, expectedToken)) {
     return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
 

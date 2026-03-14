@@ -17,6 +17,7 @@ import {
   dispatchMerchantOrderEmail,
   sendCheckoutAlert,
 } from "@/lib/payments/notifications.server";
+import { pmOrderDualWrite } from "@/lib/pmOrderDualWrite.server";
 
 const SHOP = "caryina";
 const STRIPE_SESSION_TTL_SECONDS = 30 * 60;
@@ -105,6 +106,27 @@ async function completeStripeFinalization(params: {
       amount: totalCents,
       currency: verified.currency ?? "eur",
     },
+  });
+
+  // TC-04-02 follow-up: fire-and-forget status update — mark order "completed" in PM.
+  // The initial dual-write (at checkout session creation) created the row with status
+  // "pending". PM's refund route hard-blocks on status !== "completed", so this write is
+  // required before any refund can be issued.
+  void pmOrderDualWrite({
+    id: attempt.idempotencyKey,
+    shopId: SHOP,
+    provider: "stripe",
+    status: "completed",
+    amountCents: totalCents,
+    currency: verified.currency?.toUpperCase() ?? "EUR",
+    customerEmail: attempt.buyerEmail ?? verified.buyerEmail,
+    providerOrderId: verified.paymentIntentId ?? verified.sessionId,
+  }).catch((err: unknown) => {
+    console.warn("[pm_dual_write_completed_failed]", { // i18n-exempt -- developer log
+      orderId: attempt.idempotencyKey,
+      shopId: SHOP,
+      error: err instanceof Error ? err.message : String(err),
+    });
   });
 }
 

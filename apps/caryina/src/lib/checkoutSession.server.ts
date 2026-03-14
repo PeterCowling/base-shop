@@ -553,6 +553,27 @@ async function handleSuccessfulPayment(
       : {}),
   });
 
+  // TC-04-02 follow-up: fire-and-forget status update — mark order "completed" in PM.
+  // The initial dual-write (in handleCheckoutSessionRequest) created the row with status
+  // "pending". PM's refund route hard-blocks on status !== "completed", so this write is
+  // required before any refund can be issued.
+  void pmOrderDualWrite({
+    id: holdContext.checkout.idempotencyKey,
+    shopId: SHOP,
+    provider: holdContext.provider as string,
+    status: "completed",
+    amountCents: holdContext.totalCents,
+    currency: CURRENCY.toUpperCase(),
+    customerEmail: holdContext.checkout.buyerEmail,
+    providerOrderId: transactionId,
+  }).catch((err: unknown) => {
+    console.warn("[pm_dual_write_completed_failed]", { // i18n-exempt -- developer log
+      orderId: holdContext.checkout.idempotencyKey,
+      shopId: SHOP,
+      error: err instanceof Error ? err.message : String(err),
+    });
+  });
+
   const response = NextResponse.json(successBody);
   response.headers.set(
     "Set-Cookie",
@@ -710,7 +731,11 @@ export async function handleCheckoutSessionRequest(
       customerEmail: checkout.buyerEmail,
       lineItemsJson: lineItems,
     }).catch((err: unknown) => {
-      console.warn("[pm_dual_write_failed]", err); // i18n-exempt -- developer log
+      console.warn("[pm_dual_write_failed]", { // i18n-exempt -- developer log
+        orderId: checkout.idempotencyKey,
+        shopId: SHOP,
+        error: err instanceof Error ? err.message : String(err),
+      });
     });
   }
 

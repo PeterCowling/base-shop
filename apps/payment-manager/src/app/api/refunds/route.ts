@@ -30,7 +30,7 @@ import { prisma } from "@acme/platform-core/db";
 import { stripe } from "@acme/stripe";
 
 import { pmLog } from "../../../lib/auth/pmLog";
-import { hasPmSession } from "../../../lib/auth/session";
+import { hasCaryinaPmBearerToken, hasPmSession } from "../../../lib/auth/session";
 
 export const runtime = "nodejs";
 
@@ -67,7 +67,8 @@ async function getTotalRefunded(orderId: string): Promise<number> {
 }
 
 export async function POST(request: Request) {
-  const authenticated = await hasPmSession(request);
+  // Accept either a valid operator session cookie OR the Caryina machine-to-machine bearer token.
+  const authenticated = (await hasPmSession(request)) || hasCaryinaPmBearerToken(request);
   if (!authenticated) {
     return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }

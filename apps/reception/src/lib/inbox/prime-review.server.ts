@@ -541,25 +541,6 @@ export async function sendPrimeInboxThread(
     };
   }
 
-  const detail = await getPrimeInboxThreadDetail(prefixedThreadId);
-  if (detail?.campaign?.id && detail.thread.channel === "prime_broadcast") {
-    const payload = await primeRequest<{
-      campaign: PrimeReviewCampaignDetail;
-      sentMessageId: string | null;
-    }>(
-      `/api/review-campaign-send?campaignId=${encodeURIComponent(detail.campaign.id)}`,
-      {
-        method: "POST",
-        headers: buildPrimeActorHeaders(actorUid),
-      },
-    );
-
-    return {
-      draft: detail.currentDraft,
-      sentMessageId: payload.sentMessageId,
-    };
-  }
-
   const payload = await primeRequest<{
     thread: PrimeReviewThreadSummary;
     draft: PrimeReviewThreadDetail["currentDraft"];
@@ -607,6 +588,37 @@ export async function initiatePrimeOutboundThread(input: {
   );
 
   return { detail: payload.detail };
+}
+
+/**
+ * Send a whole-hostel staff broadcast via the single-hop `/api/staff-broadcast-send` endpoint.
+ *
+ * Combines thread upsert, draft save, and send in one Prime function invocation, eliminating
+ * the previous three-hop chain (staff-initiate-thread → prime-compose route → review-thread-send).
+ *
+ * Returns null when Prime is not configured (graceful degrade — caller should 503).
+ * Propagates throws from primeRequest for Prime 4xx/5xx errors (caller should 502).
+ */
+export async function staffBroadcastSend(input: {
+  text: string;
+  actorUid?: string;
+}): Promise<{ sentMessageId: string | null } | null> {
+  if (!readPrimeReviewConfig()) {
+    return null;
+  }
+
+  const payload = await primeRequest<{ outcome: string; sentMessageId: string | null }>(
+    "/api/staff-broadcast-send",
+    {
+      method: "POST",
+      body: JSON.stringify({ plainText: input.text }),
+      headers: buildPrimeActorHeaders(input.actorUid),
+      // 10-second hard timeout: prevents a slow Prime function from hanging the Reception API route.
+      signal: AbortSignal.timeout(10_000),
+    },
+  );
+
+  return { sentMessageId: payload.sentMessageId };
 }
 
 export async function replayPrimeInboxCampaignDelivery(

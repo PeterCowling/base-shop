@@ -25,6 +25,7 @@ describe('messagingPolicy', () => {
     pace: 'active',
     socialOptIn: true,
     chatOptIn: true,
+    ghostMode: false,
     blockedUsers: [],
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -92,6 +93,20 @@ describe('messagingPolicy', () => {
 
       expect(canSendDirectMessage(sender, 'uuid-1', recipient, null)).toBe(false);
     });
+
+    it('returns false when recipient has ghostMode enabled', () => {
+      const sender = createProfile({ chatOptIn: true });
+      const recipient = createProfile({ chatOptIn: true, ghostMode: true });
+
+      expect(canSendDirectMessage(sender, 'uuid-1', recipient, 'uuid-2')).toBe(false);
+    });
+
+    it('allows ghost sender to send DM to non-ghost recipient (ghost only blocks inbound)', () => {
+      const sender = createProfile({ chatOptIn: true, ghostMode: true });
+      const recipient = createProfile({ chatOptIn: true, ghostMode: false });
+
+      expect(canSendDirectMessage(sender, 'uuid-1', recipient, 'uuid-2')).toBe(true);
+    });
   });
 
   describe('isVisibleInDirectory', () => {
@@ -141,6 +156,20 @@ describe('messagingPolicy', () => {
 
       expect(isVisibleInDirectory(profile, 'uuid-1', null, 'uuid-2')).toBe(false);
     });
+
+    it('returns false when profile has ghostMode enabled', () => {
+      const profile = createProfile({ chatOptIn: true, ghostMode: true });
+      const viewer = createProfile({ chatOptIn: true });
+
+      expect(isVisibleInDirectory(profile, 'uuid-1', viewer, 'uuid-2')).toBe(false);
+    });
+
+    it('does not hide viewer who has ghostMode enabled (ghost only hides self)', () => {
+      const profile = createProfile({ chatOptIn: true, ghostMode: false });
+      const viewer = createProfile({ chatOptIn: true, ghostMode: true });
+
+      expect(isVisibleInDirectory(profile, 'uuid-1', viewer, 'uuid-2')).toBe(true);
+    });
   });
 
   describe('isThreadReadOnly', () => {
@@ -168,6 +197,13 @@ describe('messagingPolicy', () => {
     it('returns true when either user blocks the other', () => {
       const sender = createProfile({ chatOptIn: true, blockedUsers: ['uuid-2'] });
       const recipient = createProfile({ chatOptIn: true });
+
+      expect(isThreadReadOnly(sender, 'uuid-1', recipient, 'uuid-2')).toBe(true);
+    });
+
+    it('returns true when recipient has ghostMode enabled (thread read-only inherits ghost check)', () => {
+      const sender = createProfile({ chatOptIn: true });
+      const recipient = createProfile({ chatOptIn: true, ghostMode: true });
 
       expect(isThreadReadOnly(sender, 'uuid-1', recipient, 'uuid-2')).toBe(true);
     });

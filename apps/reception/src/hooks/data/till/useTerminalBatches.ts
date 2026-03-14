@@ -6,13 +6,18 @@ import {
 } from "../../../types/hooks/data/terminalBatchData";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 
+export type TerminalBatchWithId = TerminalBatch & { id: string };
+
 export default function useTerminalBatches() {
   const { data, loading, error } = useFirebaseSubscription<
     Record<string, TerminalBatch>
   >("reconciliation/terminalBatches", terminalBatchesSchema);
 
-  const batches = useMemo<TerminalBatch[]>(
-    () => (data ? Object.values(data) : []),
+  const batches = useMemo<TerminalBatchWithId[]>(
+    () =>
+      data
+        ? Object.entries(data).map(([id, batch]) => ({ id, ...batch }))
+        : [],
     [data]
   );
 

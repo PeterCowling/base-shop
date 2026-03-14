@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { push, ref, set } from "firebase/database";
+import { push, ref, remove, set } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { manualTerminalBatchSchema } from "../../schemas/reconciliationManualSchema";
@@ -43,5 +43,20 @@ export function useTerminalBatchesMutations() {
     [database, user]
   );
 
-  return useMemo(() => ({ addTerminalBatch }), [addTerminalBatch]);
+  const removeTerminalBatch = useCallback(
+    async (id: string): Promise<void> => {
+      try {
+        await remove(ref(database, `reconciliation/terminalBatches/${id}`));
+        showToast("Terminal batch removed", "success");
+      } catch {
+        showToast("Failed to remove terminal batch", "error");
+      }
+    },
+    [database]
+  );
+
+  return useMemo(
+    () => ({ addTerminalBatch, removeTerminalBatch }),
+    [addTerminalBatch, removeTerminalBatch]
+  );
 }

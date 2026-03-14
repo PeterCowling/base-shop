@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react";
-import { push, ref, set } from "firebase/database";
+import { push, ref, remove, set } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
 import { manualPmsPostingSchema } from "../../schemas/reconciliationManualSchema";
@@ -44,5 +44,20 @@ export function usePmsPostingsMutations() {
     [database, user]
   );
 
-  return useMemo(() => ({ addPmsPosting }), [addPmsPosting]);
+  const removePmsPosting = useCallback(
+    async (id: string): Promise<void> => {
+      try {
+        await remove(ref(database, `reconciliation/pmsPostings/${id}`));
+        showToast("PMS posting removed", "success");
+      } catch {
+        showToast("Failed to remove PMS posting", "error");
+      }
+    },
+    [database]
+  );
+
+  return useMemo(
+    () => ({ addPmsPosting, removePmsPosting }),
+    [addPmsPosting, removePmsPosting]
+  );
 }

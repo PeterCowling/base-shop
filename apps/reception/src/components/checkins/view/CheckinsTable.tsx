@@ -6,6 +6,7 @@ import { Button, Table, TableBody, TableCell, TableRow } from "@acme/design-syst
 
 import type { CheckinMode } from "../../../hooks/utilities/useCheckinsModes";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
+import type { SingleRoomStatus } from "../../../types/hooks/data/roomStatusData";
 import DateSelector from "../../common/DateSelector";
 import { FilterToolbar } from "../../common/FilterToolbar";
 import { OperationalTableScreen } from "../../common/OperationalTableScreen";
@@ -47,6 +48,8 @@ interface Props {
   onToggleCancelled: () => void;
   /** Booking statuses map (bookingRef -> status) */
   bookingStatuses: Record<string, string | undefined>;
+  /** Room status map (roomNumber -> SingleRoomStatus), or null while loading */
+  roomStatusMap: Record<string, SingleRoomStatus> | null;
 }
 
 /**
@@ -87,6 +90,7 @@ const CheckinsTableView: React.FC<Props> = ({
   showCancelled,
   onToggleCancelled,
   bookingStatuses,
+  roomStatusMap,
 }) => (
   <OperationalTableScreen
     title="Check-ins"
@@ -211,6 +215,7 @@ const CheckinsTableView: React.FC<Props> = ({
                       : undefined
                   }
                   isCancelled={bookingStatuses[guestRow.bookingRef] === "cancelled"}
+                  roomStatusMap={roomStatusMap}
                 />
               ))}
           </TableBody>

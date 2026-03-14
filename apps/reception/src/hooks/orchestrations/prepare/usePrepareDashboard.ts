@@ -418,6 +418,13 @@ export default function usePrepareDashboardData(selectedDate: string) {
         }
       } else {
         if (dbStatus.clean === "Yes") {
+          if (
+            typeof dbStatus.cleaned === "string" &&
+            !Number.isNaN(toEpochMillis(dbStatus.cleaned)) &&
+            toEpochMillis(dbStatus.cleaned) >= todayTime
+          ) {
+            return; // preserve stayover clean
+          }
           saveRoomStatus(dbKey, {
             ...dbStatus,
             clean: false,
@@ -444,5 +451,6 @@ export default function usePrepareDashboardData(selectedDate: string) {
     error,
     noRoomsData: !roomsByDate || !roomsByDate[selectedDate],
     noCheckinsData: !mergedCheckins || !mergedCheckins[selectedDate],
+    roomStatusMap,
   };
 }

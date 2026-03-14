@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-14T16:10:05.471Z",
+  "last_updated": "2026-03-14T16:36:25.584Z",
   "counts": {
-    "enqueued": 76,
-    "processed": 34,
+    "enqueued": 73,
+    "processed": 33,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 403,
+    "completed": 407,
     "fact_find_ready": 39,
     "plan_ready": 0,
-    "micro_build_ready": 34,
+    "micro_build_ready": 31,
     "briefing_ready": 1,
     "total": 723
   },
@@ -36,7 +36,7 @@
       "current_truth": "handleWithdrawal step 2 (recordFloatEntry) has no rollback. If step 1 succeeds and step 2 fails, the safe withdrawal is reversed but the float entry is not — safe and till totals diverge permanently.",
       "next_scope_now": "Add a rollback function to the recordFloatEntry step in handleWithdrawal so both steps are reversed atomically on failure.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.97,
       "evidence_refs": [
@@ -50,7 +50,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-safe-withdrawal-float-rollback",
+        "micro_build_path": "docs/plans/_archive/reception-safe-withdrawal-float-rollback/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-safe-withdrawal-float-rollback/micro-build.md",
+        "completed_at": "2026-03-14T16:27:06.522Z",
+        "outcome": "Completed via reception-safe-withdrawal-float-rollback."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -73,7 +84,7 @@
       "current_truth": "Workbench uses lastCashCount (last-ever, no date filter) and loads all PMS postings and terminal batches ever recorded without a date range. Both inputs can pull data from previous shifts.",
       "next_scope_now": "Filter cashCounts to today's entries before picking the last count. Pass today's date range into usePmsPostings and useTerminalBatches.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.95,
       "evidence_refs": [
@@ -89,7 +100,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:01.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-workbench-date-filter",
+        "micro_build_path": "docs/plans/_archive/reception-workbench-date-filter/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-workbench-date-filter/micro-build.md",
+        "completed_at": "2026-03-14T16:33:03.595Z",
+        "outcome": "Completed via reception-workbench-date-filter."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -34916,7 +34938,7 @@
       "next_scope_now": "Add the same identity verification, rate limit, telemetry, and message-length cap that already exist on review-campaign-send.ts.",
       "adjacent_later": [],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.92,
       "evidence_refs": [
@@ -34925,7 +34947,7 @@
         "coverage-hint: apps/prime/functions/api/review-campaign-send.ts — existing patterns to replicate"
       ],
       "created_at": "2026-03-14T17:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Staff can send a broadcast to all guests without the app checking who they are or stopping repeated sends. This means anyone with basic access to the staff tools could flood guest messages, and there would be no record of who sent what or when. The fix brings this endpoint up to the same standard as the other staff-only actions.",
       "intended_outcome": {
         "type": "operational",
@@ -34934,7 +34956,15 @@
       },
       "processed_by": {
         "target_route": "lp-do-build",
-        "target_path": "docs/plans/prime-broadcast-endpoint-hardening/micro-build.md"
+        "target_path": "docs/plans/prime-broadcast-endpoint-hardening/micro-build.md",
+        "target_kind": "build",
+        "target_slug": "prime-broadcast-endpoint-hardening",
+        "micro_build_path": "docs/plans/_archive/prime-broadcast-endpoint-hardening/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/prime-broadcast-endpoint-hardening/micro-build.md",
+        "completed_at": "2026-03-14T15:45:30.092Z",
+        "outcome": "Four protections added to `apps/prime/functions/api/staff-broadcast-send.ts`: 1. **Auth (C-1):** `resolveActorClaims` + `enforceBroadcastRoleGate` called at entry — the plain unsigned `x-prime-actor-uid` header and its `'prime-owner'` fallb"
       }
     },
     {
@@ -35179,12 +35209,14 @@
         "target_slug": "reception-extension-collect-amount-mismatch",
         "target_path": "docs/plans/reception-extension-collect-amount-mismatch/micro-build.md",
         "processed_at": "2026-03-14T17:18:00.000Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "micro_build_path": "docs/plans/_archive/reception-extension-collect-amount-mismatch/micro-build.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-extension-collect-amount-mismatch/micro-build.md",
         "completed_at": "2026-03-14T15:51:09.702Z",
-        "outcome": "Modal collect amount now matches table display: passes rounded nightlyRate to ExtensionPayModal"
+        "outcome": "Modal collect amount now matches table display: passes rounded nightlyRate to ExtensionPayModal",
+        "micro_build_path": "docs/plans/_archive/reception-extension-collect-amount-mismatch/micro-build.md"
       }
     },
     {
@@ -35208,7 +35240,7 @@
       "next_scope_now": "Add a title attribute (tooltip) to the N/A button with a short human-readable reason: e.g. 'No room availability for these dates'.",
       "adjacent_later": [],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.93,
       "evidence_refs": [
@@ -35217,7 +35249,7 @@
         "coverage-hint: UX"
       ],
       "created_at": "2026-03-14T17:18:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "When a room is unavailable for extension, staff see a disabled N/A button with no explanation. They don't know if the room is full, if the dates are wrong, or if there's a system fault — so they may waste time investigating or calling for help when the answer is simply that the room has no free beds.",
       "intended_outcome": {
         "type": "operational",
@@ -35226,10 +35258,18 @@
       },
       "processed_by": {
         "target_route": "lp-do-build",
-        "target_path": "docs/plans/_archive/reception-extension-na-button-no-explanation/micro-build.md"
+        "target_path": "docs/plans/_archive/reception-extension-na-button-no-explanation/micro-build.md",
+        "target_kind": "build",
+        "target_slug": "reception-extension-na-button-no-explanation",
+        "micro_build_path": "docs/plans/_archive/reception-extension-na-button-no-explanation/micro-build.md"
       },
       "completed_at": "2026-03-14",
-      "outcome": "N/A buttons now show tooltip explaining room unavailability on hover"
+      "outcome": "N/A buttons now show tooltip explaining room unavailability on hover",
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-extension-na-button-no-explanation/micro-build.md",
+        "completed_at": "2026-03-14T16:00:55.313Z",
+        "outcome": "Added `title` prop to both N/A-state buttons in `apps/reception/src/components/man/Extension.tsx`: ```tsx // Guest button (line ~392) title={availabilityMap[r.occupantId] ? undefined : \"Room unavailable for these dates\"} // Booking button ("
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -35360,12 +35400,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_slug": "brik-prepayments-ux-hardening",
-        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md"
+        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md",
+        "target_kind": "build"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md",
         "completed_at": "2026-03-14T16:06:17.544Z",
-        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip"
+        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip",
+        "micro_build_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
       }
     },
     {
@@ -35413,12 +35455,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_slug": "brik-prepayments-ux-hardening",
-        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md"
+        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md",
+        "target_kind": "build"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md",
         "completed_at": "2026-03-14T16:06:17.545Z",
-        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip"
+        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip",
+        "micro_build_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
       }
     },
     {
@@ -35468,12 +35512,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_slug": "brik-prepayments-ux-hardening",
-        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md"
+        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md",
+        "target_kind": "build"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md",
         "completed_at": "2026-03-14T16:06:17.545Z",
-        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip"
+        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip",
+        "micro_build_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
       }
     },
     {
@@ -35520,12 +35566,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_slug": "brik-prepayments-ux-hardening",
-        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md"
+        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md",
+        "target_kind": "build"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md",
         "completed_at": "2026-03-14T16:06:17.545Z",
-        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip"
+        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip",
+        "micro_build_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
       }
     },
     {
@@ -35573,12 +35621,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_slug": "brik-prepayments-ux-hardening",
-        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md"
+        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md",
+        "target_kind": "build"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md",
         "completed_at": "2026-03-14T16:06:17.545Z",
-        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip"
+        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip",
+        "micro_build_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
       }
     },
     {
@@ -35627,12 +35677,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_slug": "brik-prepayments-ux-hardening",
-        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md"
+        "micro_build_path": "docs/plans/brik-prepayments-ux-hardening/micro-build.md",
+        "target_kind": "build"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md",
         "completed_at": "2026-03-14T16:06:17.545Z",
-        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip"
+        "outcome": "Prepayments UX hardening: confirmation dialogs on Pay/Fail buttons, terminal guard after code 7, user attribution in transactions, single-click rows, hours tooltip",
+        "micro_build_path": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
       }
     },
     {

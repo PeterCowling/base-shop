@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-workbench-date-filter",
+  "business": "BRIK",
+  "build_date": "2026-03-14",
+  "dispatch_ids": ["IDEA-DISPATCH-20260314161500-0002", "IDEA-DISPATCH-20260314161500-0003"],
+  "outcome_type": "operational",
+  "outcome_statement": "Workbench shows only today's data; refund-heavy shifts no longer trigger invalid reconciliation warnings.",
+  "why": "Accumulated all-time postings made reconciliation totals incorrect; nonneg validation blocked legitimate refund scenarios.",
+  "source": "operator",
+  "status": "complete"
+}

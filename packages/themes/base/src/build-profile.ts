@@ -98,14 +98,6 @@ function computeTypeScaleVars(
 // CSS generation helpers
 // ═══════════════════════════════════════════
 
-function _indent(text: string, level: number): string {
-  const prefix = "  ".repeat(level);
-  return text
-    .split("\n")
-    .map((line) => (line.trim() ? prefix + line : line))
-    .join("\n");
-}
-
 function formatBlock(selector: string, vars: Record<string, string>): string {
   const entries = Object.entries(vars);
   if (entries.length === 0) return "";

@@ -1,6 +1,7 @@
 @config "../../../../tailwind.config.mjs";
 
 @import "@themes/base/tokens.css";
+@import "./theme-tokens.generated.css";
 @import "tailwindcss";
 
 html,
@@ -8,28 +9,6 @@ body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-}
-
-/* Gate token aliases — fully self-contained, immune to OS prefers-color-scheme */
-:root {
-  --gate-ink: hsl(0 0% 10%);
-  --gate-muted: hsl(0 0% 40%);
-  --gate-bg: hsl(0 0% 100%);
-  --gate-accent: hsl(190 70% 40%);
-  --gate-accent-soft: hsl(190 50% 95%);
-  --gate-header-bg: hsl(220 20% 10%);
-  --gate-header-fg: hsl(0 0% 92%);
-  --gate-header-muted: hsl(0 0% 60%);
-  --gate-surface: hsl(0 0% 96%);
-  --gate-status-ready: hsl(150 60% 40%);
-  --gate-status-draft: hsl(40 90% 50%);
-  --gate-status-incomplete: hsl(0 75% 55%);
-  --gate-input-bg: hsl(0 0% 100%);
-  --gate-on-accent: hsl(0 0% 100%);
-  --gate-border: hsl(0 0% 10% / 0.22);
-  --gate-header-border: hsla(0, 0%, 100%, 0.2);
-  /* Teal accent line for use against the dark header background */
-  --gate-header-accent: hsl(190 70% 40% / 0.35);
 }
 
 /* Gate color utilities */

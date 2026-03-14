@@ -1,0 +1,141 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-request-retry",
+  "source_artifact_path": "/Users/petercowling/base-shop/docs/plans/reception-prime-request-retry/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "Transient network errors currently produce a hard inbox failure state visible to the operator. A single retry eliminates the most common class of noise without adding complexity.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The Prime inbox column recovers from single transient errors without a page reload.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — server-only function, no rendering",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UI change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — error recovery is transparent to the UI once the retry succeeds; callers' error-state logic is unchanged",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UX contract change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no new headers, secrets, or data are introduced; same auth headers forwarded on retry",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Same `buildPrimeHeaders()` call on retry path",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no log/metric change; the function remains silent on success",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Out of scope per dispatch",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — new unit test: fetch fails once then succeeds, assert result returned",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Tests run in CI only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — no schema or API contract change; same `PrimeEnvelope<T>` shape",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No contract change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required — 300 ms delay added on transient failures only; no impact on happy path",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Only applies when first attempt fails",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A — purely additive behaviour in a private function; rolling back is a single-line revert",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No feature flag needed",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The private `primeRequest<T>()` function in `apps/reception/src/lib/inbox/prime-review.server.ts` makes a single fetch call with no retry. Any transient network error or non-OK response immediately throws, causing the entire Prime inbox column to show an error state until the next page reload. This plan adds a single retry after a 300 ms delay, scoped to `listPrimeInboxThreadSummaries()` — the function that backs the inbox column — by adding an optional `retry` flag to `primeRequest<T>()` that defaults to `false`. Write/mutation callers are unaffected. The unit test exercises the retry path vi",
+    "goals": [
+      "`listPrimeInboxThreadSummaries()` retries exactly once after 300 ms on network failure or non-OK response.",
+      "The retry uses the same URL, headers, and body as the original attempt.",
+      "On a second failure, `listPrimeInboxThreadSummaries()` throws `\"Failed to load Prime threads\"` — the same error it throws today (no new error shape exposed to callers).",
+      "A passing unit test demonstrates fail-once-then-succeed on the exported `listPrimeInboxThreadSummaries()` function."
+    ],
+    "non_goals": [
+      "Retry on mutation endpoints (POST/PUT: resolve, dismiss, send, draft, broadcast, replay) — these are explicitly excluded to avoid duplicate side effects.",
+      "Exponential backoff or more than one retry.",
+      "Changes to error messages, error types, or any public export signature.",
+      "Changes to any other file except `prime-review.server.ts` and its test file."
+    ],
+    "constraints": [
+      "Server-only file (`import \"server-only\"`); `setTimeout` is available in Node.js but not in browser/Edge runtimes. Using a `new Promise(resolve => setTimeout(resolve, 300))` pattern is standard Node.",
+      "The 300 ms delay is fixed per the dispatch spec. No configuration knob needed.",
+      "Tests must mock `fetch` globally and must exercise the retry via an exported function, not by accessing the private `primeRequest<T>()` directly.",
+      "NEVER run Jest locally — push to CI and use `gh run watch`."
+    ],
+    "assumptions": [],
+    "selected_approach": [
+      "What was chosen:",
+      "Add an optional `retry?: boolean` parameter to `primeRequest<T>()`, defaulting to `false`. When `retry: true` is passed, the function catches errors and non-OK responses, waits 300 ms, and retries once. On second failure, rethrow the original error. `listPrimeInboxThreadSummaries()` passes `retry: true`; all mutation callers use the default `false`.",
+      "Why planning is not reopening option selection:",
+      "Scoping retry to the list function (rather than making it uniform) directly resolves the non-idempotent write concern raised in critique, while still fixing the reported inbox error state. This is the minimal safe extension of the dispatch spec."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Scope retry to `listPrimeInboxThreadSummaries()` via optional flag on `primeRequest<T>()` + unit test",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/reception/src/lib/inbox/prime-review.server.ts` + new `apps/reception/src/lib/inbox/__tests__/prime-request-retry.test.ts`",
+        "affects": "`apps/reception/src/lib/inbox/prime-review.server.ts`, `apps/reception/src/lib/inbox/__tests__/prime-request-retry.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The retry is internal to `primeRequest<T>()` and is invisible to all callers and operators.",
+      "areas": []
+    }
+  }
+}

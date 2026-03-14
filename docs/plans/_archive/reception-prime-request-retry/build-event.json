@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-prime-request-retry-2026-03-14",
+  "feature_slug": "reception-prime-request-retry",
+  "emitted_at": "2026-03-14T20:09:00.000Z",
+  "why": "Transient network errors currently produce a hard inbox failure state visible to the operator. A single retry eliminates the most common class of noise without adding complexity.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "The Prime inbox column recovers from single transient errors without a page reload.",
+    "source": "auto"
+  }
+}

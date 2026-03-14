@@ -38,6 +38,12 @@ interface DraftReviewPanelProps {
 
 type DraftConfirmDialog = "none" | "regenerate" | "send" | "resolve" | "dismiss";
 
+function buildRegenerateConfirmMessage(hasUnsavedChanges: boolean, status: string | undefined): string {
+  return hasUnsavedChanges || status === "edited" || status === "under_review"
+    ? "This will overwrite the current draft with a fresh agent-generated reply."
+    : "Generate a fresh agent draft for this thread?";
+}
+
 function parseRecipientEmails(input: string): string[] {
   return input
     .split(",")
@@ -186,6 +192,11 @@ export default function DraftReviewPanel({
   const requiresManualDraft = threadDetail.thread.needsManualDraft && !currentDraft;
   const actionsDisabled = savingDraft || regeneratingDraft || sendingDraft || resolvingThread || dismissingThread;
 
+  const hasNoReplyRecipient = useMemo(() => {
+    if (!channelCapabilities.supportsRecipients) return false;
+    return parsedRecipients.some((email) => /^no[-.]?reply@/i.test(email) || /\bnoreply\b/i.test(email));
+  }, [channelCapabilities.supportsRecipients, parsedRecipients]);
+
   async function handleSave() {
     if (!canSaveDraft) {
       throw new Error("Draft actions are not available for this channel yet.");
@@ -316,10 +327,11 @@ export default function DraftReviewPanel({
             <Grid gap={3} className="sm:grid-cols-2">
               {channelCapabilities.supportsSubject && (
                 <div>
-                  <label className="mb-1 block text-xs font-semibold text-foreground/70">
+                  <label htmlFor="draft-subject" className="mb-1 block text-xs font-semibold text-foreground/70">
                     {channelCapabilities.subjectLabel}
                   </label>
                   <input
+                    id="draft-subject"
                     value={subject}
                     onChange={(event) => setSubject(event.target.value)}
                     disabled={!canSaveDraft}
@@ -330,10 +342,11 @@ export default function DraftReviewPanel({
               )}
               {channelCapabilities.supportsRecipients && (
                 <div>
-                  <label className="mb-1 block text-xs font-semibold text-foreground/70">
+                  <label htmlFor="draft-recipient" className="mb-1 block text-xs font-semibold text-foreground/70">
                     {channelCapabilities.recipientLabel}
                   </label>
                   <input
+                    id="draft-recipient"
                     value={recipientInput}
                     onChange={(event) => {
                       setRecipientInput(event.target.value);
@@ -350,6 +363,11 @@ export default function DraftReviewPanel({
                   />
                   {recipientBlurError && (
                     <p className="mt-1 text-xs text-error-main">{recipientBlurError}</p>
+                  )}
+                  {hasNoReplyRecipient && !recipientBlurError && (
+                    <p className="mt-1 text-xs text-warning-main">
+                      This address looks like a no-reply address — sending here will not reach anyone.
+                    </p>
                   )}
                 </div>
               )}
@@ -467,11 +485,7 @@ export default function DraftReviewPanel({
             <ConfirmModal
               isOpen={confirmDialog === "regenerate"}
               title="Regenerate draft?"
-              message={
-                hasUnsavedChanges || currentDraft?.status === "edited" || currentDraft?.status === "under_review"
-                  ? "This will overwrite the current draft with a fresh agent-generated reply."
-                  : "Generate a fresh agent draft for this thread?"
-              }
+              message={buildRegenerateConfirmMessage(hasUnsavedChanges, currentDraft?.status)}
               confirmLabel="Regenerate"
               onCancel={() => setConfirmDialog("none")}
               onConfirm={handleConfirmRegenerate}

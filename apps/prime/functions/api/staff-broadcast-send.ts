@@ -1,12 +1,23 @@
 import type { D1Database } from '@acme/platform-core/d1';
 
 import { WHOLE_HOSTEL_BROADCAST_CHANNEL_ID } from '../../src/lib/chat/directMessageChannel';
+import {
+  isActorClaimsResponse,
+  resolveActorClaims,
+} from '../lib/actor-claims-resolver';
+import { enforceBroadcastRoleGate } from '../lib/broadcast-role-gate';
+import { recordDirectTelemetry } from '../lib/direct-telemetry';
 import { errorResponse, type FirebaseEnv, jsonResponse } from '../lib/firebase-rest';
+import { enforceKvRateLimit } from '../lib/kv-rate-limit';
 import { getPrimeMessagingDb, hasPrimeMessagingDb } from '../lib/prime-messaging-db';
 import { upsertPrimeMessageThread } from '../lib/prime-messaging-repositories';
 import { savePrimeReviewDraft } from '../lib/prime-review-drafts';
 import { sendPrimeReviewThread } from '../lib/prime-review-send';
 import { enforceStaffOwnerApiGate } from '../lib/staff-owner-gate';
+
+const BROADCAST_SEND_RATE_LIMIT_MAX_REQUESTS = 3;
+const BROADCAST_SEND_RATE_LIMIT_WINDOW_SECONDS = 60;
+const BROADCAST_MAX_LENGTH = 500;
 
 /**
  * Firebase RTDB delivery model:
@@ -23,6 +34,8 @@ interface Env extends FirebaseEnv {
   PRIME_ENABLE_STAFF_OWNER_ROUTES?: string;
   PRIME_STAFF_OWNER_GATE_TOKEN?: string;
   PRIME_MESSAGING_DB?: D1Database;
+  RATE_LIMIT?: KVNamespace;
+  PRIME_ACTOR_CLAIMS_SECRET?: string;
 }
 
 interface StaffBroadcastSendRequestBody {
@@ -42,6 +55,28 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return gateResponse;
   }
 
+  const claimsResult = await resolveActorClaims(request, env);
+  if (isActorClaimsResponse(claimsResult)) {
+    return claimsResult;
+  }
+  const { uid: actorUid, roles } = claimsResult;
+
+  const roleGate = enforceBroadcastRoleGate(roles, actorUid);
+  if (roleGate) {
+    return roleGate;
+  }
+
+  const rateLimitResponse = await enforceKvRateLimit({
+    kv: env.RATE_LIMIT,
+    key: `ratelimit:broadcast_send:${actorUid}`,
+    maxRequests: BROADCAST_SEND_RATE_LIMIT_MAX_REQUESTS,
+    windowSeconds: BROADCAST_SEND_RATE_LIMIT_WINDOW_SECONDS,
+    errorMessage: 'Broadcast send rate limit exceeded. Wait 60 seconds.', // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
+  });
+  if (rateLimitResponse) {
+    return rateLimitResponse;
+  }
+
   if (!hasPrimeMessagingDb(env)) {
     return errorResponse('PRIME_MESSAGING_DB binding is required for Prime review writes', 503); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
@@ -57,8 +92,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!plainText) {
     return errorResponse('plainText is required', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
+  if (plainText.length > BROADCAST_MAX_LENGTH) {
+    return errorResponse(`Message exceeds maximum length of ${BROADCAST_MAX_LENGTH} characters`, 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
+  }
 
-  const actorUid = request.headers.get('x-prime-actor-uid')?.trim() || 'prime-owner';
   const db = getPrimeMessagingDb(env);
 
   try {
@@ -98,6 +135,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     if (sendResult.outcome === 'conflict') {
       return errorResponse(sendResult.message, 409);
     }
+
+    await recordDirectTelemetry(env, 'broadcast_staff.success');
 
     return jsonResponse({
       success: true,

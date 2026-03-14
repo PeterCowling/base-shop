@@ -19,6 +19,7 @@ export const DIRECT_TELEMETRY_METRICS = [
   'write.denied_policy',
   'write.denied_channel_meta_conflict',
   'write.error',
+  'broadcast_staff.success',
 ] as const;
 
 function parseCounter(raw: string | null): number {

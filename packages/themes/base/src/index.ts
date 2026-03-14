@@ -1,5 +1,9 @@
 // packages/themes/base/src/index.ts
+export { assets as baseAssets } from "./assets";
+export { profile as baseProfile } from "./design-profile";
 export * from "./easing";
+export { recipes as baseRecipes } from "./recipes";
+export type * from "./theme-expression";
 export * from "./tokens";
 
 // Export core token scales (single source of truth for design-tokens package)

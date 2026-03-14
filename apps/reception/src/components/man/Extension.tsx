@@ -390,6 +390,7 @@ function Extension() {
                                 color={availabilityMap[r.occupantId] ? "primary" : "default"}
                                 tone={availabilityMap[r.occupantId] ? "solid" : "soft"}
                                 size="sm"
+                                title={availabilityMap[r.occupantId] ? undefined : "Room unavailable for these dates"}
                                 onClick={() => {
                                   if (availabilityMap[r.occupantId]) {
                                     setSelectedNights(getNights(r.occupantId));
@@ -407,6 +408,7 @@ function Extension() {
                                     color={availabilityMap[r.occupantId] ? "primary" : "default"}
                                     tone={availabilityMap[r.occupantId] ? "solid" : "soft"}
                                     size="sm"
+                                    title={availabilityMap[r.occupantId] ? undefined : "Room unavailable for these dates"}
                                     onClick={() => {
                                       if (availabilityMap[r.occupantId]) {
                                         setSelectedNights(

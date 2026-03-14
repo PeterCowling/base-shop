@@ -27,10 +27,9 @@
 
 import { NextResponse } from "next/server";
 
-import { prisma } from "@acme/platform-core/db";
-
 import { pmLog } from "../../../../lib/auth/pmLog";
 import { timingSafeEqual } from "../../../../lib/auth/session";
+import { createOrUpdateOrder } from "../../../../lib/orders/createOrUpdateOrder";
 
 export const runtime = "nodejs";
 
@@ -75,29 +74,6 @@ function validateRequiredFields(
   };
 }
 
-async function upsertOrder(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PM-0004 prisma client type varies
-  prismaAny: any,
-  fields: ValidatedOrderFields,
-  body: Record<string, unknown>,
-): Promise<void> {
-  const sharedFields = {
-    shopId: fields.shopId,
-    provider: fields.provider,
-    status: optStr(body.status) ?? "pending",
-    amountCents: fields.amountCents,
-    currency: optStr(body.currency) ?? "EUR",
-    customerEmail: optStr(body.customerEmail),
-    providerOrderId: optStr(body.providerOrderId),
-    lineItemsJson: body.lineItemsJson ?? null,
-  };
-  await prismaAny.order.upsert({
-    where: { id: fields.id },
-    create: { id: fields.id, ...sharedFields },
-    update: sharedFields,
-  });
-}
-
 export async function POST(request: Request) {
   // Token auth — CARYINA_INTERNAL_TOKEN must be present in both PM and Caryina.
   let internalToken: string;
@@ -136,11 +112,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "missing_required_fields" }, { status: 400 });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PM-0004 prisma client type varies
-  const prismaAny = prisma as any;
-
   try {
-    await upsertOrder(prismaAny, fields, body);
+    await createOrUpdateOrder({
+      id: fields.id,
+      shopId: fields.shopId,
+      provider: fields.provider,
+      amountCents: fields.amountCents,
+      status: optStr(body.status) ?? "pending",
+      currency: optStr(body.currency) ?? "EUR",
+      customerEmail: optStr(body.customerEmail) ?? undefined,
+      providerOrderId: optStr(body.providerOrderId) ?? undefined,
+      lineItemsJson: body.lineItemsJson,
+    });
     pmLog("info", "internal_order_upsert", {
       id: fields.id,
       shopId: fields.shopId,

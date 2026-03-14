@@ -9,7 +9,7 @@
  *     console.warn("[pm_dual_write_failed]", err)
  *   );
  *
- * If PAYMENT_MANAGER_SERVICE_URL is not set, the write is silently skipped.
+ * If PAYMENT_MANAGER_URL is not set, the write is silently skipped.
  * If CARYINA_INTERNAL_TOKEN is not set, the write is silently skipped.
  * Both errors are logged at warn level; checkout proceeds normally.
  */
@@ -27,7 +27,7 @@ export interface PmOrderWriteInput {
 }
 
 export async function pmOrderDualWrite(input: PmOrderWriteInput): Promise<void> {
-  const pmUrl = process.env.PAYMENT_MANAGER_SERVICE_URL?.trim();
+  const pmUrl = process.env.PAYMENT_MANAGER_URL?.trim();
   if (!pmUrl) {
     // Not configured — silently skip. This is normal before PM is deployed.
     return;

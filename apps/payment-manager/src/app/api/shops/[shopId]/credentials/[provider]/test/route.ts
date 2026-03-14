@@ -154,5 +154,10 @@ function testAxerveCredentials(
   }
 
   pmLog("info", "test_connection_axerve_format_ok", { shopId });
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({
+    ok: true,
+    liveTestSkipped: true,
+    reason: "axerve_live_test_not_supported",
+    message: "Credential format is valid. Live verification requires a real transaction — SOAP is not available in this runtime.",
+  });
 }

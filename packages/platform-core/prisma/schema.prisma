@@ -423,6 +423,9 @@ model Order {
 }
 
 /// Refund record per order. Written on every refund attempt (success or failure).
+/// Invariant: shopId MUST equal the parent Order's shopId.
+/// This is enforced at the application layer (refunds route derives shopId from the
+/// fetched Order record only — never from user-supplied input).
 model Refund {
   id               String   @id @default(cuid())
   orderId          String

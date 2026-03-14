@@ -18,6 +18,16 @@ declare global {
   var __pmRateLimitStore: Map<string, RateLimitEntry> | undefined;
 }
 
+/**
+ * SCOPE NOTE: This rate limiter uses in-process memory (globalThis Map).
+ * Cloudflare Workers can run multiple isolates concurrently — each isolate has its
+ * own memory. The effective rate limit across all isolates is therefore:
+ *   max × N isolates (where N is unpredictable under load).
+ * For a low-traffic internal operator tool this is an acceptable tradeoff.
+ * If stricter global rate limiting is needed in future, replace with a KV-backed
+ * counter (PAYMENT_MANAGER_KV is already bound to this Worker).
+ */
+
 /** Maximum number of rate-limit entries to keep in memory. LRU-evict when exceeded. */
 const MAX_ENTRIES = 20_000;
 

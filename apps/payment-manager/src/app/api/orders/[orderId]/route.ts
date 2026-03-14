@@ -60,7 +60,6 @@ export async function GET(
           select: {
             id: true,
             amountCents: true,
-            currency: true,
             status: true,
             providerRefundId: true,
             reason: true,
@@ -94,7 +93,6 @@ export async function GET(
           const ref = r as {
             id: string;
             amountCents: number;
-            currency: string;
             status: string;
             providerRefundId: string | null;
             reason: string | null;
@@ -103,7 +101,8 @@ export async function GET(
           return {
             id: ref.id,
             amountCents: ref.amountCents,
-            currency: ref.currency,
+            // Refund model has no currency column — inherit from the parent order.
+            currency: order.currency as string,
             status: ref.status,
             providerRefundId: ref.providerRefundId,
             reason: ref.reason,

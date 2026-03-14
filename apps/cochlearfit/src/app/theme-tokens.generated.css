@@ -1,0 +1,45 @@
+/* ═══════════════════════════════════════════════════════════════════════
+ * AUTO-GENERATED — do not edit manually.
+ * Source: packages/themes/cochlearfit/src/ (assets.ts, design-profile.ts, theme-css-config.ts)
+ * Generator: scripts/cochlearfit/generate-theme-tokens.ts
+ * Regenerate: pnpm --filter scripts cochlearfit:generate-theme-tokens
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+
+  /* Profile */
+  --theme-transition-duration: 200ms;
+
+  /* Derived */
+  --color-bg: 42 45% 94%;
+  --color-fg: 33 15% 12%;
+  --color-fg-muted: 33 11% 33%;
+  --color-muted: 40 30% 90%;
+  --color-primary: 9 75% 59%;
+  --color-primary-fg: 0 0% 100%;
+  --color-accent: 9 62% 48%;
+  --color-accent-fg: 0 0% 100%;
+  --color-link: 9 62% 48%;
+  --color-info: 178 51% 29%;
+  --color-info-fg: 0 0% 100%;
+  --color-sand: 38 52% 80%;
+  --color-ocean: 180 32% 46%;
+  --color-berry: 351 54% 60%;
+  --surface-1: 35 100% 98%;
+  --surface-2: 0 0% 100%;
+  --surface-3: 42 45% 92%;
+  --surface-input: 0 0% 100%;
+  --color-panel: 0 0% 100%;
+  --color-focus-ring: var(--color-primary);
+  --ring: var(--color-primary);
+  --ring-offset: var(--color-bg);
+  --gradient-hero-from: 178 51% 29%;
+  --gradient-hero-via: 42 45% 94%;
+  --gradient-hero-to: 9 75% 59%;
+}
+
+.dark {
+  color-scheme: dark;
+
+}

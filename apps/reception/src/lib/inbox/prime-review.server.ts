@@ -7,6 +7,7 @@ import type {
   InboxThreadSummaryApiModel,
 } from "./api-models.server";
 import { resolveInboxChannelAdapter } from "./channel-adapters.server";
+import { fetchPrimeGuestNames } from "./guest-matcher.server";
 
 export type PrimeReviewThreadSummary = {
   id: string;
@@ -411,7 +412,35 @@ export async function listPrimeInboxThreadSummaries(status?: string): Promise<In
     : "/api/review-threads?limit=50";
   try {
     const summaries = await primeRequest<PrimeReviewThreadSummary[]>(url, {}, { retry: true });
-    return summaries.map(mapPrimeSummaryToInboxThread);
+    const threads = summaries.map(mapPrimeSummaryToInboxThread);
+
+    // Augment prime_direct threads with guest names from Firebase RTDB.
+    // Fail-open: fetchPrimeGuestNames catches internally; names stay null on failure.
+    try {
+      const uniqueRefs = [
+        ...new Set(
+          threads
+            .map((t) => t.guestBookingRef)
+            .filter((ref): ref is string => Boolean(ref) && ref !== "activity"),
+        ),
+      ];
+      if (uniqueRefs.length > 0) {
+        const nameMap = await fetchPrimeGuestNames(uniqueRefs);
+        for (const thread of threads) {
+          if (thread.guestBookingRef) {
+            const names = nameMap.get(thread.guestBookingRef);
+            if (names) {
+              thread.guestFirstName = names.firstName;
+              thread.guestLastName = names.lastName;
+            }
+          }
+        }
+      }
+    } catch {
+      // Firebase name lookup failure must never prevent inbox from loading.
+    }
+
+    return threads;
   } catch {
     // Re-throw with a safe message so callers can surface the failure.
     // The original error (which may contain infrastructure details) is not forwarded.
@@ -431,6 +460,7 @@ export async function getPrimeInboxThreadDetail(
     `/api/review-thread?threadId=${encodeURIComponent(threadId)}`,
   );
 
+  // TODO: guest-name augmentation not yet implemented for detail/mutation paths — see reception-prime-guest-name-lookup follow-on
   return {
     thread: {
       ...mapPrimeSummaryToInboxThread(detail.thread),
@@ -538,6 +568,7 @@ export async function resolvePrimeInboxThread(
     },
   );
 
+  // TODO: guest-name augmentation not yet implemented for detail/mutation paths — see reception-prime-guest-name-lookup follow-on
   return mapPrimeSummaryToInboxThread(payload.thread);
 }
 
@@ -559,6 +590,7 @@ export async function dismissPrimeInboxThread(
     },
   );
 
+  // TODO: guest-name augmentation not yet implemented for detail/mutation paths — see reception-prime-guest-name-lookup follow-on
   return mapPrimeSummaryToInboxThread(payload.thread);
 }
 
@@ -594,43 +626,6 @@ export async function sendPrimeInboxThread(
     draft: mapPrimeCurrentDraft(buildPrimeInboxThreadId(threadId), payload.draft),
     sentMessageId: payload.sentMessageId,
   };
-}
-
-/**
- * Initiate a whole-hostel outbound broadcast thread on Prime.
- *
- * Calls POST /api/staff-initiate-thread with the provided text, creating the
- * broadcast thread and an initial draft ready for sending.
- *
- * Returns null when Prime is not configured (graceful degrade — caller should 503).
- * Propagates throws from primeRequest for Prime 4xx/5xx errors (caller should 502).
- *
- * @deprecated Use `staffBroadcastSend` instead. This function only initiates the thread
- * and draft; the caller must separately call `sendPrimeInboxThread`, which creates a race
- * window between draft save and send. `staffBroadcastSend` collapses the entire pipeline
- * into a single atomic hop via `/api/staff-broadcast-send`.
- */
-export async function initiatePrimeOutboundThread(input: {
-  text: string;
-  actorUid?: string;
-  roles?: string[];
-}): Promise<{ detail: PrimeReviewThreadDetail } | null> {
-  if (!readPrimeReviewConfig()) {
-    return null;
-  }
-
-  const payload = await primeRequest<{ detail: PrimeReviewThreadDetail }>(
-    "/api/staff-initiate-thread",
-    {
-      method: "POST",
-      body: JSON.stringify({ plainText: input.text }),
-      headers: await buildPrimeActorHeaders(input.actorUid, input.roles),
-      // 10-second hard timeout: prevents a slow Prime function from hanging the Reception API route.
-      signal: AbortSignal.timeout(10_000),
-    },
-  );
-
-  return { detail: payload.detail };
 }
 
 /**

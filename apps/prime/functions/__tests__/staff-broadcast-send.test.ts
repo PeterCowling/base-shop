@@ -13,6 +13,14 @@
  * TC-06:  sendPrimeReviewThread returns conflict → 409
  * TC-07:  sendPrimeReviewThread throws → 500 + console.error called
  * TC-08:  actorSource passed to sendPrimeReviewThread is 'reception_staff_compose'
+ *
+ * Auth / role-gate coverage (ported from staff-initiate-thread — TC-09 through TC-14):
+ * TC-09:  Unsigned request (no x-prime-actor-claims) → 401 { error: 'missing' }
+ * TC-10:  Invalid signature on x-prime-actor-claims → 401 { error: 'invalid-sig' }
+ * TC-11:  Missing PRIME_ACTOR_CLAIMS_SECRET → 503 { error: 'claims-secret-not-configured' }
+ * TC-12:  Staff-only role (not owner/admin) → 403 { error: /insufficient role/i }
+ * TC-13:  Owner role → proceeds past auth and role gate (200 or 409)
+ * TC-14:  Admin role → proceeds past auth and role gate (200 or 409)
  */
 
 import { onRequestPost as staffBroadcastSendHandler } from '../api/staff-broadcast-send';
@@ -24,6 +32,7 @@ import {
   createMockD1Database,
   createMockEnv,
   createPagesContext,
+  signTestActorClaims,
 } from './helpers';
 
 jest.mock('../lib/prime-review-drafts', () => ({
@@ -260,5 +269,166 @@ describe('POST /api/staff-broadcast-send', () => {
         actorSource: 'reception_staff_compose',
       }),
     );
+  });
+});
+
+describe('POST /api/staff-broadcast-send — auth and role-gate coverage (TC-09 through TC-14)', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  // TC-09: unsigned request → 401 missing
+  it('TC-09: returns 401 when x-prime-actor-claims header is absent', async () => {
+    // Suppress expected console.error from actor-claims-resolver (missing header log)
+    jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    const { db } = createMockD1Database();
+    const response = await staffBroadcastSendHandler(
+      createPagesContext({
+        url: 'https://prime.example.com/api/staff-broadcast-send',
+        method: 'POST',
+        headers: { Authorization: 'Bearer test-token' },
+        env: createMockEnv({
+          NODE_ENV: 'development',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+          PRIME_MESSAGING_DB: db,
+        }),
+        body: { plainText: 'Hello hostel!' },
+      }),
+    );
+
+    expect(response.status).toBe(401);
+    const body = await response.json() as { error: string };
+    expect(body.error).toBe('missing');
+  });
+
+  // TC-10: invalid signature → 401 invalid-sig
+  it('TC-10: returns 401 when x-prime-actor-claims has invalid signature', async () => {
+    // Suppress expected console.error from actor-claims-resolver (invalid sig log)
+    jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    const { db } = createMockD1Database();
+    const response = await staffBroadcastSendHandler(
+      createPagesContext({
+        url: 'https://prime.example.com/api/staff-broadcast-send',
+        method: 'POST',
+        headers: {
+          'x-prime-actor-claims': 'dGVzdA.aW52YWxpZHNpZw', // tampered payload.sig
+          Authorization: 'Bearer test-token',
+        },
+        env: createMockEnv({
+          NODE_ENV: 'development',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+          PRIME_MESSAGING_DB: db,
+        }),
+        body: { plainText: 'Hello hostel!' },
+      }),
+    );
+
+    expect(response.status).toBe(401);
+    const body = await response.json() as { error: string };
+    expect(body.error).toBe('invalid-sig');
+  });
+
+  // TC-11: missing PRIME_ACTOR_CLAIMS_SECRET → 503 claims-secret-not-configured
+  it('TC-11: returns 503 when PRIME_ACTOR_CLAIMS_SECRET is not configured', async () => {
+    // Suppress expected console.error from actor-claims-resolver (missing secret log)
+    jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    const { db } = createMockD1Database();
+    const response = await staffBroadcastSendHandler(
+      createPagesContext({
+        url: 'https://prime.example.com/api/staff-broadcast-send',
+        method: 'POST',
+        headers: { Authorization: 'Bearer test-token' },
+        env: createMockEnv({
+          NODE_ENV: 'development',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+          PRIME_MESSAGING_DB: db,
+          PRIME_ACTOR_CLAIMS_SECRET: undefined,
+        }),
+        body: { plainText: 'Hello hostel!' },
+      }),
+    );
+
+    expect(response.status).toBe(503);
+    const body = await response.json() as { error: string };
+    expect(body.error).toBe('claims-secret-not-configured');
+  });
+
+  // TC-12: staff-only role → 403 insufficient role
+  it('TC-12: returns 403 when signed claims have staff role only (not owner/admin)', async () => {
+    // Suppress expected console.error from broadcast-role-gate (insufficient role log)
+    jest.spyOn(console, 'error').mockImplementation(() => undefined);
+    const { db } = createMockD1Database();
+    const claimsHeader = await signTestActorClaims('staff-uid-123', ['staff']);
+    const response = await staffBroadcastSendHandler(
+      createPagesContext({
+        url: 'https://prime.example.com/api/staff-broadcast-send',
+        method: 'POST',
+        headers: { 'x-prime-actor-claims': claimsHeader, Authorization: 'Bearer test-token' },
+        env: createMockEnv({
+          NODE_ENV: 'development',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+          PRIME_MESSAGING_DB: db,
+        }),
+        body: { plainText: 'Hello hostel!' },
+      }),
+    );
+
+    expect(response.status).toBe(403);
+    const body = await response.json() as { error: string };
+    expect(body.error).toMatch(/insufficient role/i);
+  });
+
+  // TC-13: owner role → proceeds past auth and role gate (200 or 409)
+  it('TC-13: signed claims with owner role proceed past auth and role gate', async () => {
+    // Suppress expected console.warn from kv-rate-limit (no KV binding in test env)
+    jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const { db } = createMockD1Database();
+    const claimsHeader = await signTestActorClaims('owner-uid', ['owner']);
+    const response = await staffBroadcastSendHandler(
+      createPagesContext({
+        url: 'https://prime.example.com/api/staff-broadcast-send',
+        method: 'POST',
+        headers: { 'x-prime-actor-claims': claimsHeader, Authorization: 'Bearer test-token' },
+        env: createMockEnv({
+          NODE_ENV: 'development',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+          PRIME_MESSAGING_DB: db,
+        }),
+        body: { plainText: 'Hello hostel!' },
+      }),
+    );
+
+    // Should not be a 401/403; reaches DB layer (200 or 409 with mock)
+    expect([200, 409]).toContain(response.status);
+  });
+
+  // TC-14: admin role → proceeds past auth and role gate (200 or 409)
+  it('TC-14: signed claims with admin role proceed past auth and role gate', async () => {
+    // Suppress expected console.warn from kv-rate-limit (no KV binding in test env)
+    jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const { db } = createMockD1Database();
+    const claimsHeader = await signTestActorClaims('admin-uid', ['admin']);
+    const response = await staffBroadcastSendHandler(
+      createPagesContext({
+        url: 'https://prime.example.com/api/staff-broadcast-send',
+        method: 'POST',
+        headers: { 'x-prime-actor-claims': claimsHeader, Authorization: 'Bearer test-token' },
+        env: createMockEnv({
+          NODE_ENV: 'development',
+          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+          PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+          PRIME_MESSAGING_DB: db,
+        }),
+        body: { plainText: 'Hello hostel!' },
+      }),
+    );
+
+    // Should not be a 401/403; reaches DB layer (200 or 409 with mock)
+    expect([200, 409]).toContain(response.status);
   });
 });

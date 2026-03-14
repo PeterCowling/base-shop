@@ -3,5 +3,5 @@
 import GuardedRouteRedirect from '../../../../../components/navigation/GuardedRouteRedirect';
 
 export default function ManageActivitiesPage() {
-  return <GuardedRouteRedirect targetPath="/activities" />;
+  return <GuardedRouteRedirect targetPath="/owner/activities" />;
 }

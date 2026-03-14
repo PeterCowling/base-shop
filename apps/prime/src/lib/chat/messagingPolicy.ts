@@ -33,6 +33,11 @@ export function canSendDirectMessage(
     return false;
   }
 
+  // Ghost mode: recipient is not accepting DMs from other guests
+  if (recipientProfile.ghostMode) {
+    return false;
+  }
+
   // Both must have chatOptIn enabled
   if (!senderProfile.chatOptIn || !recipientProfile.chatOptIn) {
     return false;
@@ -67,6 +72,11 @@ export function isVisibleInDirectory(
   viewerUuid: string | null | undefined,
 ): boolean {
   if (!profile || !viewerProfile || !profileUuid || !viewerUuid) {
+    return false;
+  }
+
+  // Ghost mode: profile is hidden from the directory
+  if (profile.ghostMode) {
     return false;
   }
 

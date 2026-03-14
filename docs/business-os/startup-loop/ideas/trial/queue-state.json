@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-14T16:46:50.354Z",
+  "last_updated": "2026-03-14T17:07:08.248Z",
   "counts": {
-    "enqueued": 73,
+    "enqueued": 72,
     "processed": 33,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 407,
-    "fact_find_ready": 39,
+    "completed": 408,
+    "fact_find_ready": 38,
     "plan_ready": 0,
     "micro_build_ready": 31,
     "briefing_ready": 1,
@@ -483,7 +483,12 @@
       "priority": "P2",
       "confidence": 0.92,
       "queue_state": "enqueued",
-      "enqueued_at": "2026-03-14T15:58:00.000Z"
+      "enqueued_at": "2026-03-14T15:58:00.000Z",
+      "processed_by": {
+        "target_path": "docs/plans/reception-room-cleaning-status-pipeline/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -35717,14 +35722,14 @@
         "Ghost mode indicator in the guest directory listing"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.82,
       "evidence_refs": [
         "operator-stated: guests need the ability to mark themselves as 'ghost' — not available for communication by other guests"
       ],
       "created_at": "2026-03-14T17:30:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Right now any guest in the hostel can send a direct message to any other guest. There is no way for a guest to say they want to be left alone. Some guests travel for work or simply prefer privacy — this feature lets them opt out of peer messages without any staff involvement.",
       "intended_outcome": {
         "type": "operational",
@@ -35734,7 +35739,14 @@
       "processed_by": {
         "target_path": "docs/plans/prime-guest-ghost-mode/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "prime-guest-ghost-mode",
+        "fact_find_slug": "prime-guest-ghost-mode"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-guest-ghost-mode/plan.md",
+        "completed_at": "2026-03-14T17:05:10.301Z",
+        "outcome": "**TASK-01 — Type foundation:** Added `ghostMode: boolean` to the `GuestProfile` interface in `apps/prime/src/types/guestProfile.ts` and set it to `false` in `DEFAULT_GUEST_PROFILE`. Extended the `effectiveProfile` explicit per-field spread "
       }
     }
   ]

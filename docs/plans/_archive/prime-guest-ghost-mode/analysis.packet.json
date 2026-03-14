@@ -1,0 +1,225 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "prime-guest-ghost-mode",
+  "source_artifact_path": "docs/plans/prime-guest-ghost-mode/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/prime-guest-ghost-mode/fact-find.md",
+    "plan": "docs/plans/prime-guest-ghost-mode/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Guests want a way to be in the chat system without being open to incoming DMs — useful for solo travellers who want to read broadcasts and send one-off messages without being reachable.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A guest can toggle ghost mode on their profile. While ghost mode is on, no other guest can initiate a DM with them, and they do not appear in other guests' directories.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Checkbox following `chatOptIn` pattern; no layout changes",
+      "current_or_option_state": "Same UI but reads from `profile.privacySettings?.ghostMode`",
+      "gap_or_implication": "Option A: existing pattern; no new component logic",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Loading/saving/error states inherited from existing `isBusy` guard",
+      "current_or_option_state": "Same states; slightly more null-state handling for missing object",
+      "gap_or_implication": "Option A: simpler; no extra null-state branch",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Firebase rules fix required (same for both); `ghostMode` check in `canSendDirectMessage`",
+      "current_or_option_state": "Same rules fix; `privacySettings` null also needs handling in policy function",
+      "gap_or_implication": "Option A: fewer null paths in policy enforcement",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`write.denied_policy` telemetry covers ghost mode rejections; no new metric needed",
+      "current_or_option_state": "Identical",
+      "gap_or_implication": "Option A: no delta",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests on `canSendDirectMessage` + `isVisibleInDirectory`; component tests on form",
+      "current_or_option_state": "Same, but tests must also cover `privacySettings: undefined` null case",
+      "gap_or_implication": "Option A: simpler test matrix; fewer edge cases",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Add to `GuestProfile`, `DEFAULT_GUEST_PROFILE`, and `effectiveProfile` explicit spread",
+      "current_or_option_state": "New `PrivacySettings` type required; all consumers access via optional chaining",
+      "gap_or_implication": "Option A: minimal type surface; explicit spread gap is known and documented",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — boolean field on in-memory profile object; no new queries",
+      "current_or_option_state": "N/A — same",
+      "gap_or_implication": "N/A for both",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive RTDB field; rollback removes type + form; stale `ghostMode: true` RTDB nodes are harmless dead data",
+      "current_or_option_state": "Additive but harder to reason about `privacySettings` null vs `{}` on rollback",
+      "gap_or_implication": "Option A: clean rollback path",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Guests have no way to stop incoming DMs without fully opting out of chat (`chatOptIn: false`), which also prevents them from sending messages. The operator has requested a targeted \"ghost mode\" toggle: active ghost-mode guests cannot receive DMs, disappear from the guest directory, but retain full outbound messaging capability. The decision is: how should ghost mode be structured — as an additional flat boolean field on `GuestProfile` (matching the existing `chatOptIn`/`socialOptIn` pattern) or as a nested `privacySettings` object for future extensibility?",
+    "goals": [
+      "Add `ghostMode: boolean` to the guest profile type and RTDB persistence.",
+      "Enforce ghost mode in the server-side DM gate (`canSendDirectMessage` in `direct-message.ts`).",
+      "Hide ghost-mode guests from the guest directory (`isVisibleInDirectory`).",
+      "Surface the toggle in `GuestProfileForm` with i18n labels (EN + IT).",
+      "Fix the Firebase security rules gap that allows any authenticated user to write any guest's profile."
+    ],
+    "non_goals": [
+      "Staff-visible ghost mode indicators.",
+      "Ghost mode persisting across stays.",
+      "Notification suppression for ghost guests."
+    ],
+    "constraints": [
+      "RTDB is the sole persistence layer for guest profiles; no D1 record needed.",
+      "Write path is client-side Firebase SDK (`update()` via `useGuestProfileMutator`) — no new API endpoint required.",
+      "Server-side enforcement must remain in `direct-message.ts`; client-side is advisory only.",
+      "Both EN and IT locales must be updated in the same commit (CI enforces completeness)."
+    ],
+    "assumptions": [
+      "Ghost mode defaults to `false` (opt-in model — ghost is off by default).",
+      "The `effectiveProfile` explicit spread in `useFetchGuestProfile` requires a deliberate per-field addition for any new `GuestProfile` field."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Pattern consistency",
+        "Why it matters": "Minimises cognitive overhead and prevents novel failure modes",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Consumer update burden",
+        "Why it matters": "Each consumer of `GuestProfile` that is not updated is a silent-skip risk",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Firebase rules correctness",
+        "Why it matters": "Rules gap is a security precondition for ghost mode correctness",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "Additive changes that can be reverted without data loss are strongly preferred",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Test seam quality",
+        "Why it matters": "Can the approach be proven correct with automation?",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Future extensibility",
+        "Why it matters": "Room for a future `doNotDisturb` or similar toggle without a schema rewrite",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Flat boolean field",
+        "Description": "Add `ghostMode: boolean` directly to `GuestProfile` alongside `chatOptIn` and `socialOptIn`. Update type, default, effectiveProfile spread, policy functions, form, i18n, and Firebase rules.",
+        "Upside": "Exact match to existing pattern; all consumers follow the same `profile.ghostMode` access path; trivially rollbackable",
+        "Downside": "None materially — the pattern is already proven",
+        "Key risks": "Silent-drop risk in `effectiveProfile` spread (must explicitly add `ghostMode: data.ghostMode ?? false`)",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Nested privacy object",
+        "Description": "Add `privacySettings: { ghostMode: boolean }` as a new nested object on `GuestProfile`.",
+        "Upside": "Extensibility for future privacy fields without polluting the top-level type",
+        "Downside": "Introduces a new access pattern (`profile.privacySettings?.ghostMode`); null-safety required throughout; inconsistent with `chatOptIn`/`socialOptIn`; adds migration complexity if future fields differ",
+        "Key risks": "Null-safety failures when `privacySettings` absent on old profiles; no existing pattern to follow; higher consumer update burden",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — flat boolean field addition, following the established `chatOptIn`/`socialOptIn` pattern.",
+      "Why this wins": "All existing privacy and preference fields on `GuestProfile` are flat booleans. Option A matches this pattern exactly, minimises consumer update burden, and produces the cleanest rollback path. Option B buys extensibility that has no concrete near-term requirement — the cost (null-safety overhead, new access pattern, inconsistency with existing fields) is not justified by speculative future fields.",
+      "**What it depends on": "**",
+      "`effectiveProfile` spread must explicitly include `ghostMode": "data.ghostMode ?? false` — this is the single highest-risk implementation detail and must be covered by a dedicated test."
+    },
+    "rejected_approaches": [
+      "**Option B (nested privacy object)** — rejected because it introduces a new access pattern inconsistent with existing `chatOptIn`/`socialOptIn`, adds null-safety overhead everywhere `privacySettings` is read, and provides extensibility with no near-term concrete requirement."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "All policy changes are pure-function — unit-testable without RTDB mock.",
+        "`GuestProfileForm` component has no existing test file; a new `GuestProfileForm.test.tsx` must be created.",
+        "`apps/prime/functions/__tests__/direct-message.test.ts` is the authoritative server-gate test suite; a ghost mode 403 case must be added.",
+        "`translations-completeness.test.ts` enforces EN/IT parity — both locales must be updated in the same commit.",
+        "Firebase security rules are not unit-testable via Jest; manual evidence (or Firebase emulator test) is acceptable."
+      ],
+      "sequencing_constraints": [
+        "TASK-01 (type + defaults) must complete before TASK-02 (policy), TASK-03 (form), or TASK-04 (tests).",
+        "**TASK-05 (Firebase rules) must be co-committed with TASK-03 (form toggle)** — this is a hard constraint, not a preference. TASK-05 must NOT be treated as a sequential step after TASK-04. The plan must reflect this as a co-commit pairing.",
+        "TASK-04 (tests) depends on TASK-02 and TASK-03 both complete."
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Ghost mode toggle",
+          "current": "No toggle exists; no `ghostMode` field on profile",
+          "trigger": "Guest opens `/account/profile` and taps Save",
+          "future": "Guest sees ghost mode checkbox → toggles → taps Save → `handleSave` payload includes `ghostMode` → `updateProfile` writes to RTDB at `guestProfiles/{uuid}`",
+          "steady": "All other profile fields and save flow unchanged",
+          "seams": "`effectiveProfile` spread must be explicitly extended; `handleSave` payload must include `ghostMode`"
+        },
+        {
+          "id": null,
+          "label": "DM write enforcement",
+          "current": "`canSendDirectMessage` checks mutual `chatOptIn` + bilateral block list only",
+          "trigger": "`POST /api/direct-message`",
+          "future": "Sender profile and peer profile fetched from RTDB → `canSendDirectMessage` checks `recipientProfile.ghostMode` first → returns `false` if true → 403 returned with `write.denied_policy` telemetry",
+          "steady": "Auth, rate-limit, and other `canSendDirectMessage` checks unchanged",
+          "seams": "Ghost check should be added before (or alongside) `chatOptIn` check to avoid confusion when both are set"
+        },
+        {
+          "id": null,
+          "label": "Directory filtering",
+          "current": "`isVisibleInDirectory` checks mutual `chatOptIn` + bilateral block list",
+          "trigger": "`GuestDirectory.tsx` renders guest list",
+          "future": "`isVisibleInDirectory` returns `false` when `profile.ghostMode === true` → ghost guest absent from rendered list",
+          "steady": "All non-ghost guests shown unchanged",
+          "seams": "Client-side only; server-side `direct-message.ts` remains the authoritative DM gate"
+        },
+        {
+          "id": null,
+          "label": "Firebase security rules",
+          "current": "`guestProfiles/{uuid}` inherits root `\".write\": \"auth != null\"` — any authenticated user can write any guest's profile",
+          "trigger": "Any authenticated user calls Firebase `update()` with a `guestProfiles/{other-uuid}` path",
+          "future": "`database.rules.json` adds `\"guestProfiles\": { \"$uuid\": { \".write\": \"auth != null && auth.uid == $uuid\" } }` — write restricted to own profile",
+          "steady": "All other Firebase rules unchanged",
+          "seams": "Must be committed alongside the form toggle (TASK-03) — guests need the toggle to set their own ghost state; must not deploy as a standalone commit before the form lands. The restriction itself is safe to deploy at any time (all correct existing writes use own UUID) but has no user value without the form."
+        }
+      ]
+    }
+  }
+}

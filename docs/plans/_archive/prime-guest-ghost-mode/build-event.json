@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "28d925c2-9009-4337-aaf5-50a9845e783a",
+  "feature_slug": "prime-guest-ghost-mode",
+  "emitted_at": "2026-03-14T17:03:21.667Z",
+  "why": "Guests want a way to be in the chat system without being open to incoming DMs — useful for solo travellers who want to read broadcasts and send one-off messages without being reachable.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "A guest can toggle ghost mode on their profile. While ghost mode is on, no other guest can initiate a DM with them, and they do not appear in other guests' directories.",
+    "source": "operator"
+  }
+}

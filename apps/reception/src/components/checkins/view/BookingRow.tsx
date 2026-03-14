@@ -48,8 +48,13 @@ const BookingRowView: FC<BookingRowViewProps> = ({
   notesOpen,
   closeNotes,
   isCancelled,
-  roomStatusMap: _roomStatusMap,
-}) => (
+  roomStatusMap,
+}) => {
+  const roomKey = booking.roomAllocated ? `index_${booking.roomAllocated}` : null;
+  const roomStatus = roomKey ? roomStatusMap?.[roomKey] : undefined;
+  const isClean = roomStatus?.clean === "Yes";
+
+  return (
   <>
     <TableRow
       className={`border-b border-border-2 hover:bg-table-row-hover odd:bg-table-row-alt transition-colors text-sm text-foreground ${
@@ -138,6 +143,19 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           <DocInsertButton booking={booking} selectedDate={selectedDate} />
         </div>
       </TableCell>
+      <TableCell className="px-3 py-2 text-center">
+        {roomKey && roomStatus !== undefined && (
+          <span
+            className={`px-2 py-1 rounded-lg text-sm font-semibold ${
+              isClean
+                ? "bg-success-main text-success-fg"
+                : "bg-error-main text-danger-fg"
+            }`}
+          >
+            {isClean ? "Clean" : "Dirty"}
+          </span>
+        )}
+      </TableCell>
     </TableRow>
     {notesOpen && booking.isFirstForBooking && (
       <TableRow>
@@ -146,7 +164,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           table semantics (a <div> directly under <TableBody> triggers DOM nesting
           warnings during tests).
         */}
-        <TableCell colSpan={7} className="p-0">
+        <TableCell colSpan={8} className="p-0">
           <BookingNotesModal
             bookingRef={booking.bookingRef}
             onClose={closeNotes}
@@ -155,6 +173,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
       </TableRow>
     )}
   </>
-);
+  );
+};
 
 export default BookingRowView;

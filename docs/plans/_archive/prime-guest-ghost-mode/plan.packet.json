@@ -1,0 +1,253 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "prime-guest-ghost-mode",
+  "source_artifact_path": "docs/plans/prime-guest-ghost-mode/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-guest-ghost-mode/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Guests want a way to be in the chat system without being open to incoming DMs — useful for solo travellers who want to read broadcasts and send one-off messages without being reachable.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A guest can toggle ghost mode on their profile. While ghost mode is on, no other guest can initiate a DM with them, and they do not appear in other guests' directories.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Ghost mode checkbox in `GuestProfileForm` following `chatOptIn` pattern",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "No layout changes; follows existing toggle pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Loading/saving/error states inherited from `isBusy` guard; no extra null-state branch",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Same `disabled={isBusy}` pattern as existing toggles",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Firebase rules fix restricts `guestProfiles/$uuid` writes to own profile; `ghostMode` check added to `canSendDirectMessage` server-side gate",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "Rules fix co-committed with form toggle — hard constraint",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Ghost mode DM rejections counted in existing `write.denied_policy` telemetry; no new metric needed",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "`recordDirectTelemetry(env, 'write.denied_policy')` already called on `canSendDirectMessage` returning false",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for `canSendDirectMessage`/`isVisibleInDirectory`; new `GuestProfileForm.test.tsx`; ghost mode 403 test in `direct-message.test.ts`",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "`GuestProfileForm.test.tsx` must be created from scratch",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`ghostMode` added to `GuestProfile` interface, `DEFAULT_GUEST_PROFILE`, and `effectiveProfile` explicit spread",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Silent-drop risk in spread is highest-risk item — covered by dedicated test",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — boolean field on in-memory profile object; no new queries",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No performance impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive RTDB field; stale `ghostMode: true` nodes on rollback are harmless dead data",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "Clean rollback: remove type field + form toggle; Firebase rules restriction can remain without harm",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "This plan implements a guest-level \"ghost mode\" toggle that allows guests to opt out of receiving incoming direct messages from other guests while retaining full outbound messaging capability. Ghost-mode guests are also hidden from the guest directory. The change adds a single flat boolean field (`ghostMode`) to the `GuestProfile` type following the existing `chatOptIn`/`socialOptIn` pattern, enforces the flag in the server-side DM gate and client-side directory filter, surfaces a form toggle with EN+IT i18n, and fixes a Firebase security rules gap that would otherwise allow any authenticated ",
+    "goals": [
+      "Add `ghostMode: boolean` to the `GuestProfile` type and `DEFAULT_GUEST_PROFILE`.",
+      "Extend `effectiveProfile` explicit spread in `useFetchGuestProfile` to include `ghostMode: data.ghostMode ?? false`.",
+      "Enforce ghost mode in `canSendDirectMessage` (server-side) so no DM can be sent to a ghost guest.",
+      "Hide ghost-mode guests from `isVisibleInDirectory` (client-side directory).",
+      "Surface the toggle in `GuestProfileForm` with i18n labels in EN and IT locales.",
+      "Fix the Firebase security rules gap: restrict `guestProfiles/$uuid` writes to `auth.uid == $uuid`."
+    ],
+    "non_goals": [
+      "Staff-visible ghost mode indicators.",
+      "Ghost mode persisting across stays.",
+      "Notification or read-receipt suppression for ghost guests.",
+      "D1 persistence (RTDB is the sole persistence layer)."
+    ],
+    "constraints": [
+      "RTDB is the sole persistence layer for guest profiles; no D1 record needed.",
+      "Write path is client-side Firebase SDK (`update()` via `useGuestProfileMutator`) — no new API endpoint required.",
+      "Server-side enforcement must remain in `direct-message.ts`; client-side is advisory only.",
+      "Both EN and IT locales must be updated in the same commit (CI enforces completeness via `translations-completeness.test.ts`).",
+      "**TASK-03 (form toggle) and Firebase rules fix must be co-committed** — this is a hard constraint. Deploying the form without the rules fix creates a window where any authenticated guest can ghost-flag another guest."
+    ],
+    "assumptions": [
+      "Ghost mode defaults to `false` for all guests (opt-in model — ghost is off by default).",
+      "The `effectiveProfile` explicit spread in `useFetchGuestProfile` at lines 107-117 requires a deliberate per-field addition for any new `GuestProfile` field; there is no `...data` spread."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Flat boolean field `ghostMode` on `GuestProfile`, default `false`.",
+      "Two independent policy function updates: `canSendDirectMessage` and `isVisibleInDirectory`.",
+      "Firebase rules fix co-committed with form toggle (TASK-03).",
+      "Why planning is not reopening option selection:",
+      "Analysis decisively eliminated Option B (nested `privacySettings`) with explicit downside rationale.",
+      "No open operator questions remain.",
+      "All consumers identified and accounted for in task structure."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add `ghostMode` field to `GuestProfile` type, default, and `effectiveProfile` spread",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — updated `guestProfile.ts` and `useFetchGuestProfile.ts`",
+        "affects": "`apps/prime/src/types/guestProfile.ts`, `apps/prime/src/hooks/pureData/useFetchGuestProfile.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Enforce ghost mode in `canSendDirectMessage` and `isVisibleInDirectory`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — updated `messagingPolicy.ts`",
+        "affects": "`apps/prime/src/lib/chat/messagingPolicy.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Ghost mode toggle in `GuestProfileForm` + i18n (EN+IT) + Firebase rules fix [co-committed]",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — updated `GuestProfileForm.tsx`, `en/Onboarding.json`, `it/Onboarding.json`, `database.rules.json` (all in one commit)",
+        "affects": "`apps/prime/src/components/profile/GuestProfileForm.tsx`, `apps/prime/public/locales/en/Onboarding.json`, `apps/prime/public/locales/it/Onboarding.json`, `apps/prime/database.rules.json`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Tests — messaging policy, form component, server DM gate",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — updated `messagingPolicy.test.ts`, new `GuestProfileForm.test.tsx`, updated `direct-message.test.ts`",
+        "affects": "`apps/prime/src/lib/chat/__tests__/messagingPolicy.test.ts`, `apps/prime/src/components/profile/__tests__/GuestProfileForm.test.tsx` (new), `apps/prime/functions/__tests__/direct-message.test.ts`, `apps/prime/src/hooks/pureData/__tests__/useFetchGuestProfile.test.ts` (new)"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Ghost mode toggle",
+          "trigger": "Guest opens `/account/profile` and taps Save",
+          "flow": "Guest sees ghost mode checkbox → toggles on/off → taps Save → `handleSave` collects payload including `ghostMode` → `useGuestProfileMutator.updateProfile(partial)` → Firebase `update(ref(db, 'guestProfiles/{uuid}'), payload)` → RTDB updated",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03"
+          ],
+          "dependency_note": "(type) (form + Firebase rules)",
+          "seams": "Firebase write restricted to own profile after TASK-03 deploys; rollback removes checkbox and type field; stale RTDB ghost flags are safe dead data"
+        },
+        {
+          "id": null,
+          "label": "DM write enforcement",
+          "trigger": "`POST /api/direct-message` called by any guest",
+          "flow": "Auth + rate-limit checks → fetch sender + peer profiles from RTDB → `canSendDirectMessage(senderProfile, senderUuid, peerProfile, peerUuid)` → if `recipientProfile.ghostMode === true` return `false` → 403 with `write.denied_policy` telemetry",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02"
+          ],
+          "dependency_note": "(type propagates to `direct-message.ts`) (policy)",
+          "seams": "`isThreadReadOnly` inherits ghost check automatically via `canSendDirectMessage` delegation; no other DM paths require update"
+        },
+        {
+          "id": null,
+          "label": "Directory filtering",
+          "trigger": "`GuestDirectory.tsx` renders guest list",
+          "flow": "`isVisibleInDirectory(profile, uuid, viewerProfile, viewerUuid)` returns `false` when `profile.ghostMode === true` → ghost guest absent from rendered list",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02"
+          ],
+          "dependency_note": "(type) (policy)",
+          "seams": "Client-side only; `direct-message.ts` remains authoritative server gate; no seam"
+        },
+        {
+          "id": null,
+          "label": "Firebase security rules",
+          "trigger": "Any authenticated user calls Firebase `update()` on `guestProfiles/{other-uuid}`",
+          "flow": "`database.rules.json` new `guestProfiles` rule: `\"$uuid\": { \".write\": \"auth != null && auth.uid == $uuid\" }` → write rejected unless caller's UID matches the profile UUID",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": "(co-committed form toggle)",
+          "seams": "Hard constraint: must not deploy form without rules fix; deploying rules fix alone is safe (all correct existing writes already use own UID)"
+        }
+      ]
+    }
+  }
+}

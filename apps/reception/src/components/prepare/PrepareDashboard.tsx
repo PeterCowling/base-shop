@@ -1,13 +1,15 @@
 // File: src/components/prepare/PrepareDashboard.tsx
 "use client";
 
-import { memo, useMemo, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";
+import useRoomStatusMutations from "../../hooks/mutations/useRoomStatusMutations";
 import { useCheckoutCountsByRoomForDate } from "../../hooks/orchestrations/prepare/useCheckoutCountsByRoomForDate";
 import useInHouseGuestsByRoom from "../../hooks/orchestrations/prepare/useInHouseGuestsByRoom";
 import usePrepareDashboardData from "../../hooks/orchestrations/prepare/usePrepareDashboard";
-import { getLocalToday, isToday as isTodayDate } from "../../utils/dateUtils";
+import { getItalyIsoString, getLocalToday, isToday as isTodayDate } from "../../utils/dateUtils";
+import { showToast } from "../../utils/toastUtils";
 import DateSelector from "../common/DateSelector";
 
 import CleaningPriorityTable from "./CleaningPriorityTable";
@@ -17,6 +19,26 @@ function PrepareDashboard(): JSX.Element {
   const { user } = useAuth();
   const localTodayStr = getLocalToday();
   const [selectedDate, setSelectedDate] = useState<string>(localTodayStr);
+  const [isWriting, setIsWriting] = useState<boolean>(false);
+
+  const { saveRoomStatus } = useRoomStatusMutations();
+
+  const handleMarkClean = useCallback(
+    async (roomNumber: string) => {
+      setIsWriting(true);
+      try {
+        await saveRoomStatus(`index_${roomNumber}`, {
+          clean: "Yes",
+          cleaned: getItalyIsoString(),
+        });
+      } catch {
+        showToast("Failed to mark room as clean", "error");
+      } finally {
+        setIsWriting(false);
+      }
+    },
+    [saveRoomStatus]
+  );
 
   // Retrieve aggregated data from existing orchestrator
   const {
@@ -116,7 +138,12 @@ function PrepareDashboard(): JSX.Element {
 
   return (
     <PreparePage dateSelector={dateSelector}>
-      <CleaningPriorityTable data={finalData} isToday={isTodayFlag} />
+      <CleaningPriorityTable
+        data={finalData}
+        isToday={isTodayFlag}
+        onMarkClean={handleMarkClean}
+        isWriting={isWriting}
+      />
     </PreparePage>
   );
 }

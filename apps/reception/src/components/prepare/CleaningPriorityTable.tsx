@@ -3,6 +3,7 @@
 import { type FC, memo } from "react";
 
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -27,6 +28,8 @@ export interface TableRow {
 interface CleaningPriorityTableProps {
   data: TableRow[];
   isToday: boolean;
+  onMarkClean: (roomNumber: string) => void;
+  isWriting: boolean;
 }
 
 /**
@@ -76,7 +79,7 @@ const Chip: FC<ChipProps> = memo(function Chip({ label, color }) {
  *   for anything else that might rely on TableRow’s older fields.
  */
 const CleaningPriorityTable: FC<CleaningPriorityTableProps> = memo(
-  function CleaningPriorityTable({ data, isToday }) {
+  function CleaningPriorityTable({ data, isToday, onMarkClean, isWriting }) {
     return (
       <div className="bg-surface shadow-md rounded-lg p-4">
         <Table className="w-full border-collapse">
@@ -86,6 +89,7 @@ const CleaningPriorityTable: FC<CleaningPriorityTableProps> = memo(
               <TableHead className="border-b py-2 text-center">Occupants</TableHead>
               <TableHead className="border-b py-2 text-center">Checkouts</TableHead>
               <TableHead className="border-b py-2 text-center">Cleanliness</TableHead>
+              <TableHead className="border-b py-2 text-center">Mark Clean</TableHead>
             </DSTableRow>
           </TableHeader>
           <TableBody>
@@ -112,6 +116,19 @@ const CleaningPriorityTable: FC<CleaningPriorityTableProps> = memo(
                         (Needs cleaning)
                       </span>
                     )}
+                  </TableCell>
+                  {/* Mark Clean button: today-only, global write lock */}
+                  <TableCell className="border-b py-2 text-center">
+                    <Button
+                      color="primary"
+                      tone="solid"
+                      type="button"
+                      disabled={isWriting || !isToday}
+                      onClick={() => onMarkClean(row.roomNumber)}
+                      className="rounded-lg px-3 py-1 text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Mark Clean
+                    </Button>
                   </TableCell>
                 </DSTableRow>
               );

@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-03-14T16:06:17.545Z",
+  "last_updated": "2026-03-14T16:10:05.471Z",
   "counts": {
-    "enqueued": 65,
+    "enqueued": 76,
     "processed": 34,
     "declined": 2,
     "skipped": 1,
@@ -11,11 +11,408 @@
     "completed": 403,
     "fact_find_ready": 39,
     "plan_ready": 0,
-    "micro_build_ready": 23,
+    "micro_build_ready": 34,
     "briefing_ready": 1,
-    "total": 712
+    "total": 723
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-safe-withdrawal-float-sync",
+      "cluster_key": "brik-reception-cash-data-integrity",
+      "cluster_fingerprint": "brik-reception-safe-withdrawal-rollback-float-entry-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Taking cash out of the safe to refill the till leaves the records out of sync if anything goes wrong mid-way",
+      "location_anchors": [
+        "apps/reception/src/components/safe/SafeManagement.tsx",
+        "apps/reception/src/utils/transaction.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "handleWithdrawal step 2 (recordFloatEntry) has no rollback. If step 1 succeeds and step 2 fails, the safe withdrawal is reversed but the float entry is not — safe and till totals diverge permanently.",
+      "next_scope_now": "Add a rollback function to the recordFloatEntry step in handleWithdrawal so both steps are reversed atomically on failure.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "apps/reception/src/components/safe/SafeManagement.tsx:118-131",
+        "operator-stated: confirmed by live browser audit + code review 2026-03-14"
+      ],
+      "why": "A safe withdrawal records two things: the cash leaving the safe and the cash arriving in the till float. If the second step fails after the first succeeds, the system has no way to undo it — the safe shows the cash as gone but the till never receives it. Staff would see a discrepancy with no clear cause.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Safe withdrawal is atomic — if either step fails, both are cleanly reversed and the safe balance matches the till balance.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:00.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-workbench-stale-data-date-filter",
+      "cluster_key": "brik-reception-workbench-reliability",
+      "cluster_fingerprint": "brik-reception-workbench-date-filter-cash-drawer-postings-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — The end-of-day workbench can show yesterday's cash count and old PMS entries, making the numbers unreliable",
+      "location_anchors": [
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx",
+        "apps/reception/src/hooks/data/till/usePmsPostings.ts",
+        "apps/reception/src/hooks/data/till/useTerminalBatches.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Workbench uses lastCashCount (last-ever, no date filter) and loads all PMS postings and terminal batches ever recorded without a date range. Both inputs can pull data from previous shifts.",
+      "next_scope_now": "Filter cashCounts to today's entries before picking the last count. Pass today's date range into usePmsPostings and useTerminalBatches.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx:197-202",
+        "apps/reception/src/hooks/data/till/usePmsPostings.ts",
+        "apps/reception/src/hooks/data/till/useTerminalBatches.ts",
+        "operator-stated: confirmed by live browser audit + code review 2026-03-14"
+      ],
+      "why": "The workbench pulls the most recent cash count ever recorded and all PMS and terminal entries regardless of date. If the most recent count is from a previous shift, or if old postings are included, the reconciliation numbers are wrong with no warning. Staff would be closing out the day against incorrect baselines.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Workbench shows only today's cash count and today's PMS and terminal entries. All numbers can be trusted without first verifying the date of each data point.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:01.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-workbench-negative-totals-validation",
+      "cluster_key": "brik-reception-workbench-reliability",
+      "cluster_fingerprint": "brik-reception-workbench-refund-day-validation-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — The reconciliation screen stops working on days when there are more refunds than sales",
+      "location_anchors": [
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "All six computed POS/drawer/PMS/terminal totals are validated with z.number().nonnegative(). On refund-heavy shifts the totals go negative, failing validation — the workbench shows an error toast and zeros all values.",
+      "next_scope_now": "Change validation to z.number() (allow negative) so refund-heavy shifts display correctly. Keep the parse-error warning for NaN only.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx:227-248",
+        "operator-stated: confirmed by code review 2026-03-14"
+      ],
+      "why": "If the bar runs more refunds or comps than sales in a shift — a correction day or a low-traffic day with one large refund — the POS totals go negative. The workbench treats any negative number as corrupt data, shows an error, and zeros out all the reconciliation columns. Staff can't close out that shift properly.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The workbench handles negative POS totals without errors. Refund-heavy shifts can be fully reconciled like any other shift.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:02.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-safe-history-labels-expand-key",
+      "cluster_key": "brik-reception-safe-history-ux",
+      "cluster_fingerprint": "brik-reception-safe-transaction-table-labels-index-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — The safe's transaction history shows computer codes instead of readable labels, and expanding a row can jump to the wrong entry",
+      "location_anchors": [
+        "apps/reception/src/components/safe/SafeManagement.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "SafeManagement renders s.type directly — staff see 'bankDeposit', 'pettyCash', 'opening' etc. The expand row uses array index (idx) as the key, so if transactions reload in a different order the expanded detail row shows the wrong breakdown.",
+      "next_scope_now": "Add a type-label map ('bankDeposit' → 'Bank Deposit' etc). Switch expandedRows state to use s.id (or timestamp+idx stable key) instead of positional index.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "apps/reception/src/components/safe/SafeManagement.tsx:315-319",
+        "apps/reception/src/components/safe/SafeManagement.tsx:531",
+        "operator-stated: confirmed by code review 2026-03-14"
+      ],
+      "why": "The safe transaction log shows raw database identifiers like 'bankDeposit' and 'pettyCash' — staff have to decode camelCase strings to understand each entry. Separately, when a new transaction appears while the history is open, the expanded detail panel can shift to a different row, showing the wrong breakdown.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The safe history shows plain readable labels for every transaction type. Detail rows stay correctly pinned to their transaction even when new entries arrive.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:03.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-keycard-return-rollback-silent-fail",
+      "cluster_key": "brik-reception-cash-data-integrity",
+      "cluster_fingerprint": "brik-reception-keycard-return-rollback-error-handling-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Returning keycards to the safe can fail silently, leaving the keycard count wrong with no alert to staff",
+      "location_anchors": [
+        "apps/reception/src/components/safe/SafeManagement.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "handleReturn catch block only shows a toast when error.message !== 'return failed'. Rollback failures from returnKeycardsToSafe(-count) returning false produce no feedback at all.",
+      "next_scope_now": "Rework the error handling so any failure path — including rollback — shows a clear toast. Separate the 'no keycards to return' user error from internal failure paths.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "apps/reception/src/components/safe/SafeManagement.tsx:281-312",
+        "operator-stated: confirmed by code review 2026-03-14"
+      ],
+      "why": "When returning keycards to the safe and something goes wrong during the rollback, staff see no error message. The keycard count could end up inconsistent — the system thinks keycards are in one place but the records say another — and there's no way to know it happened.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Any failure during keycard return — including rollback failures — shows a clear error message. Staff always know whether the action succeeded or needs to be retried.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:04.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0006",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-cash-hub-url-tab-routing",
+      "cluster_key": "brik-reception-navigation-ux",
+      "cluster_fingerprint": "brik-reception-cashhub-tab-url-sync-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Refreshing the screen always resets to the Till tab, and the Safe and Workbench can't be bookmarked or linked directly",
+      "location_anchors": [
+        "apps/reception/src/components/cash/CashHub.tsx",
+        "apps/reception/src/app/till-reconciliation/page.tsx",
+        "apps/reception/src/app/safe-reconciliation/page.tsx",
+        "apps/reception/src/app/reconciliation-workbench/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "CashHub uses useState<Tab>('till') with no URL sync. All three sub-page routes redirect to /cash and always land on Till. Safe and Workbench tab state is lost on refresh.",
+      "next_scope_now": "Sync the active tab to a URL search param (e.g. ?tab=safe) or use the existing sub-routes (/safe-reconciliation, /reconciliation-workbench) as the source of truth via useSearchParams or router.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "apps/reception/src/components/cash/CashHub.tsx:22",
+        "operator-stated: confirmed by live browser audit 2026-03-14"
+      ],
+      "why": "The Till, Safe, and Workbench tabs don't update the page URL when switched. Refreshing the page always lands on Till. The Safe and Workbench can't be bookmarked or linked directly. Staff who primarily use the safe or workbench lose their place every session.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Each tab has its own URL. Refreshing the page keeps you on the same tab. Safe and Workbench can be bookmarked and linked directly.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:05.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0007",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-till-disabled-action-context",
+      "cluster_key": "brik-reception-navigation-ux",
+      "cluster_fingerprint": "brik-reception-till-disabled-dropdown-tooltip-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — When a shift isn't open, all the cash action buttons are greyed out with no explanation of why",
+      "location_anchors": [
+        "apps/reception/src/components/till/ActionButtons.tsx",
+        "apps/reception/src/components/till/ActionDropdown.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Cash and Keycards ActionDropdown triggers remain enabled when no shift is open, opening to show all 5/3 options disabled. No tooltip or message explains that 'Open Shift' is the prerequisite.",
+      "next_scope_now": "When no shift is open, either disable the Cash and Keycards dropdown triggers themselves and add a title tooltip, or render a short inline message inside the dropdown explaining the prerequisite.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "apps/reception/src/components/till/ActionButtons.tsx:111-168",
+        "operator-stated: confirmed by live browser audit 2026-03-14"
+      ],
+      "why": "Until a shift is opened, every option under Cash and Keycards appears in the dropdown as disabled. Staff covering for someone else have no indication what step they're missing. Adding a short explanation prevents confusion and avoids unnecessary support questions.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Disabled actions show a clear reason when hovered or focused. Staff immediately know that opening a shift is the required first step.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:06.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0008",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-workbench-cc-pms-terminal-delta",
+      "cluster_key": "brik-reception-workbench-reliability",
+      "cluster_fingerprint": "brik-reception-workbench-cc-reconciliation-triangle-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — The end-of-day reconciliation doesn't check whether the PMS card total matches the terminal batch printout",
+      "location_anchors": [
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Workbench shows PMS CC vs POS CC delta and Terminal vs POS CC delta, but never directly compares PMS CC total against Terminal batch total. A discrepancy between those two sources goes undetected.",
+      "next_scope_now": "Add a row or column to the reconciliation table showing PMS CC − Terminal batch. Highlight it red when non-zero.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx:285-358",
+        "operator-stated: confirmed by code review 2026-03-14"
+      ],
+      "why": "The workbench checks each source against POS totals, but never directly compares the PMS card total against the terminal batch — the two numbers that physically have to match at end of day. A discrepancy between what the PMS says and what the terminal printed can go unnoticed.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The workbench shows a direct comparison between the PMS card total and the terminal batch total. A discrepancy between the two is immediately visible at a glance.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:07.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0009",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-workbench-pms-terminal-delete",
+      "cluster_key": "brik-reception-workbench-reliability",
+      "cluster_fingerprint": "brik-reception-workbench-pms-terminal-delete-entry-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Typing in the wrong PMS amount or terminal batch leaves a permanent wrong entry with no way to correct it",
+      "location_anchors": [
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx",
+        "apps/reception/src/hooks/mutations/usePmsPostingsMutations.ts",
+        "apps/reception/src/hooks/mutations/useTerminalBatchesMutations.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "PMS postings and terminal batch entries have no delete or edit action in the UI. Corrections require adding a compensating entry, leaving multiple entries in the history.",
+      "next_scope_now": "Add a delete button (with confirmation) to each PMS posting row and to the terminal batch entries. Wire to a delete mutation in the respective hooks.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx:362-372",
+        "operator-stated: confirmed by code review 2026-03-14"
+      ],
+      "why": "Once a PMS posting or terminal batch amount is submitted, there's no way to delete it. A typo means adding another entry to compensate — leaving two entries instead of one correct one. This clutters the reconciliation history and makes it harder to audit at end of day.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "PMS postings and terminal batch entries can be deleted from the workbench with a single confirmed action. The reconciliation history stays clean and accurate.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:08.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0010",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-till-float-banner-stale-date",
+      "cluster_key": "brik-reception-till-shift-ux",
+      "cluster_fingerprint": "brik-reception-float-banner-midnight-stale-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — The 'opening float not set' reminder can show the wrong status if the till screen is left open overnight",
+      "location_anchors": [
+        "apps/reception/src/components/till/TillReconciliation.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "startOfDayIso(new Date()) and endOfDayIso(new Date()) in useCashCountsData are computed once at component mount. Leaving the page open past midnight means the float check references the previous day's window.",
+      "next_scope_now": "Move the date range to a state variable that refreshes at midnight (or use a useMemo with a live clock), so the float check always references today.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "apps/reception/src/components/till/TillReconciliation.tsx:36-43",
+        "operator-stated: confirmed by code review 2026-03-14"
+      ],
+      "why": "The check for whether today's opening float has been set is calculated once when the screen loads. If the screen is left open overnight — common at a reception desk — the check still refers to yesterday. The reminder banner may appear incorrectly or disappear when it shouldn't.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The float reminder always checks the current day, even if the screen has been open for many hours. Night staff see the correct status when they start their shift.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:09.000Z",
+      "queue_state": "enqueued"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314161500-0011",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-reception-till-safe-workbench-audit-20260314",
+      "anchor_key": "brik-reception-date-picker-accessibility",
+      "cluster_key": "brik-reception-till-shift-ux",
+      "cluster_fingerprint": "brik-reception-date-picker-a11y-label-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — The date range pickers on the till screen have broken labels that read out twice and two buttons that are indistinguishable by keyboard or screen reader",
+      "location_anchors": [
+        "apps/reception/src/components/common/DateSelector.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "DateSelector produces spinbutton accessible names 'Day Day', 'Month Month', 'Year Year' (label + aria-label concatenated). The two calendar icon buttons both have accessible name 'Show date picker' with no distinction between start and end date.",
+      "next_scope_now": "Fix DateSelector to avoid doubling the label text. Add distinct aria-labels to the two calendar trigger buttons ('Show start date picker' / 'Show end date picker' or similar).",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "apps/reception/src/components/common/DateSelector.tsx",
+        "operator-stated: confirmed by live browser a11y audit 2026-03-14 — a11y tree shows doubled field names and indistinguishable calendar buttons"
+      ],
+      "why": "The date input fields are labelled 'Day Day', 'Month Month', 'Year Year' — each name is spoken twice by screen readers. There are also two calendar buttons with no way to tell which opens the start date and which opens the end date. Anyone using keyboard navigation or assistive technology cannot use these controls reliably.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Date inputs have clean single labels. The two calendar buttons are distinctly labelled. The date range pickers are fully usable with keyboard navigation and screen readers.",
+        "source": "auto"
+      },
+      "created_at": "2026-03-14T16:15:10.000Z",
+      "queue_state": "enqueued"
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260314155800-0001",

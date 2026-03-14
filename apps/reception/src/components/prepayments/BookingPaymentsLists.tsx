@@ -185,9 +185,14 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                         wrap
                         role="button"
                         tabIndex={0}
-                        title="Double-click to open this booking"
-                        onDoubleClick={() => onOpenBooking(item)}
-                        onClick={() => onBookingClick?.(item)}
+                        title="Click to open this booking"
+                        onClick={() => {
+                          if (onBookingClick) {
+                            onBookingClick(item);
+                          } else {
+                            onOpenBooking(item);
+                          }
+                        }}
                         onKeyDown={(event: KeyboardEvent<HTMLDivElement>) => {
                           if (event.key === "Enter") {
                             event.preventDefault();
@@ -219,7 +224,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                         </Inline>
 
                         {/* Right side: Hours chip + Payment actions */}
-                        <Inline gap={2} wrap={false}>
+                        <Inline gap={2} wrap={false} onClick={(e: React.MouseEvent) => e.stopPropagation()}>
                           <HoursChip
                             hoursElapsed={hoursElapsed}
                             thresholdHours={thresholdHours}

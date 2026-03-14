@@ -24,9 +24,15 @@ const HoursChip: React.FC<HoursChipProps> = ({
     }
   }
 
+  const tooltipText =
+    hoursElapsed !== null
+      ? `${Math.floor(hoursElapsed)} hours since terms were agreed or last payment attempt${thresholdHours !== null ? ` (alert threshold: ${thresholdHours}h)` : ""}`
+      : "Time elapsed is unavailable";
+
   return (
     <span
       className={`inline-flex items-center justify-center px-4 py-2 text-sm rounded-lg font-semibold ${chipStyle}`}
+      title={tooltipText}
     >
       {chipLabel}
     </span>

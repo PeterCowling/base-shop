@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-14T20:47:19.148Z",
+  "last_updated": "2026-03-14T21:18:22.964Z",
   "counts": {
-    "enqueued": 74,
-    "processed": 34,
+    "enqueued": 71,
+    "processed": 35,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 424,
-    "fact_find_ready": 47,
+    "completed": 426,
+    "fact_find_ready": 45,
     "plan_ready": 0,
-    "micro_build_ready": 24,
+    "micro_build_ready": 23,
     "briefing_ready": 1,
     "total": 742
   },
@@ -36269,7 +36269,7 @@
       "current_truth": "mapPrimeSummaryToInboxThread() always sets guestFirstName and guestLastName to null, even though bookingId is available in the Prime thread summary. The Firebase guestsDetails path holds guest name data keyed by bookingRef/occupantId, but no reverse lookup from bookingId is performed for Prime threads.",
       "next_scope_now": "Fact-find: map the Firebase guestsDetails data structure, determine how to look up name from bookingId efficiently at list time (bulk vs per-request vs cache), and assess whether the occupantId is derivable from the bookingId alone or requires an additional lookup step.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -36279,7 +36279,7 @@
         "packages/lib/src/hospitality/index.ts"
       ],
       "created_at": "2026-03-14T20:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Staff triaging the inbox always see a guest's name for email conversations but never for Prime messaging threads. They have to open the full thread to find out who they're speaking with, which slows down triage and creates an inconsistent experience across channel types.",
       "intended_outcome": {
         "type": "operational",
@@ -36289,7 +36289,14 @@
       "processed_by": {
         "target_path": "docs/plans/reception-prime-guest-name-lookup/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-prime-guest-name-lookup",
+        "fact_find_slug": "reception-prime-guest-name-lookup"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/reception-prime-guest-name-lookup/plan.md",
+        "completed_at": "2026-03-14T21:09:44.954Z",
+        "outcome": "**TASK-01 (imports):** Added `bookingRootPath` and `guestDetailsBookingPath` named imports to the existing `@acme/lib/hospitality` import in `guest-matcher.server.ts`. No runtime behavior change. **TASK-02 (fetchPrimeGuestNames helper):** I"
       }
     },
     {
@@ -36502,7 +36509,7 @@
       "current_truth": "The deprecated /api/staff-initiate-thread endpoint (Prime) and initiatePrimeOutboundThread() function (Reception) still exist alongside the new staffBroadcastSend() / /api/staff-broadcast-send single-hop replacement. Both paths are marked @deprecated in code comments.",
       "next_scope_now": "Delete /api/staff-initiate-thread from Prime functions and delete initiatePrimeOutboundThread() from prime-review.server.ts. Verify no remaining callers before deleting.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.95,
       "evidence_refs": [
@@ -36511,7 +36518,7 @@
         "apps/reception/src/lib/inbox/prime-review.server.ts"
       ],
       "created_at": "2026-03-14T20:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Two code paths for the same operation create ongoing maintenance overhead and increase the risk of the old path being accidentally reused. Removing the deprecated path removes the ambiguity.",
       "intended_outcome": {
         "type": "operational",
@@ -36521,7 +36528,14 @@
       "processed_by": {
         "target_path": "docs/plans/reception-prime-deprecated-endpoint-cleanup/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-prime-deprecated-endpoint-cleanup",
+        "fact_find_slug": "reception-prime-deprecated-endpoint-cleanup"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-prime-deprecated-endpoint-cleanup/plan.md",
+        "completed_at": "2026-03-14T20:49:27.811Z",
+        "outcome": "Completed via reception-prime-deprecated-endpoint-cleanup."
       }
     },
     {

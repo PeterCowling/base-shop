@@ -1,0 +1,230 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-prime-guest-name-lookup",
+  "source_artifact_path": "docs/plans/reception-prime-guest-name-lookup/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-prime-guest-name-lookup/fact-find.md",
+    "plan": "docs/plans/reception-prime-guest-name-lookup/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Prime inbox threads have no guest names, making triage slower for staff. Email threads already resolve names. Closing this gap makes the Prime inbox parity-complete for the most operator-visible field.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Prime direct (`prime_direct`) inbox threads display a booking-level guest name (lead guest or first named occupant from `guestsDetails/{bookingRef}`) in the inbox list view; broadcast and activity threads remain name-free; Firebase unavailability degrades gracefully to null names with no throw",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — UI already wired",
+      "current_or_option_state": "N/A — UI already wired",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Fail-open: error → null names, no UX change",
+      "current_or_option_state": "Same fail-open; `Promise.allSettled` can handle partial failures per-ref",
+      "gap_or_implication": "Option B: slightly more precise partial-fail handling; Option A: all-or-nothing",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "PII in server memory only; no client exposure change",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No change from baseline",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Log once: map build status + count + duration",
+      "current_or_option_state": "Log per-batch: how many refs fetched, how many found",
+      "gap_or_implication": "Option B allows finer-grained hit-rate logging",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "One mock for `fetchFirebaseJson` covering entire tree response",
+      "current_or_option_state": "One mock per bookingRef call; `jest.fn()` chained resolves",
+      "gap_or_implication": "Option A test setup simpler; Option B tests are slightly more explicit",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No type changes; `guestDetailsBookingPath` returns root path for empty string — guard mandatory",
+      "current_or_option_state": "Same guard required; path called with validated ref only",
+      "gap_or_implication": "Both require the empty-string guard",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Single large Firebase read; payload grows with historical bookings; timeout risk if tree is very large",
+      "current_or_option_state": "N small reads; each bounded; easier to add timeout per-call",
+      "gap_or_implication": "Option B is more resilient to payload growth",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive; no DB migration; rollback = revert augmentation call",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No difference",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The reception inbox permanently returns `guestFirstName: null` / `guestLastName: null` for all Prime messaging threads. The bookingId needed to look up the guest is already present on every `PrimeReviewThreadSummary`. The decision is which Firebase fetch strategy to use for the list-time augmentation — two options differ primarily on the single vs. batch lookup surface and how they handle the confirmed empty-string broadcast sentinel risk.",
+    "goals": [
+      "Surface guest first and last name on `prime_direct` inbox list threads",
+      "Guard against `bookingId: ''` (broadcast) triggering a full-tree `guestsDetails/` read",
+      "Guard against `bookingId: 'activity'` (activity channel) triggering any Firebase call",
+      "Fail open: Firebase unavailable → names stay null, no throw, no visible error"
+    ],
+    "non_goals": [
+      "Augmenting detail/mutation paths (`getPrimeInboxThreadDetail`, `resolvePrimeInboxThread`, `dismissPrimeInboxThread`) — de-scoped to a follow-on",
+      "Changing how email thread guest names work",
+      "Occupant-level precision matching (booking-level lead guest is sufficient for inbox display)"
+    ],
+    "constraints": [
+      "`listPrimeInboxThreadSummaries` is async; augmentation can happen after the Prime API call, before return"
+    ],
+    "assumptions": [
+      "For `prime_direct` threads, `bookingId` is a valid Firebase `bookingRef`"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Firebase call efficiency (N+1 avoidance)",
+        "Why it matters": "Up to 50 threads; each extra round-trip adds latency to inbox load",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Empty-string / sentinel correctness",
+        "Why it matters": "An unguarded empty bookingRef triggers a full `guestsDetails` tree read — correctness + performance risk",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Code simplicity / pattern consistency",
+        "Why it matters": "New code should match established `guest-matcher` / `firebase-rtdb` patterns",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Blast radius (scope containment)",
+        "Why it matters": "Change should be localized to `prime-review.server.ts` and new helper",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Testability",
+        "Why it matters": "New code paths must be verifiable in Jest without network calls",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Single `guestsDetails/` root fetch",
+        "Description": "Fetch entire `guestsDetails/` root once, build in-memory `bookingRef → {firstName, lastName}` map, augment all summaries",
+        "Upside": "One Firebase call regardless of thread count; mirrors `buildGuestEmailMap` pattern exactly; simplest code",
+        "Downside": "Full tree read on every inbox list; payload grows as historical bookings accumulate",
+        "Key risks": "Historical booking accumulation may grow payload significantly over time",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Parallel per-bookingRef fetches (deduplicated)",
+        "Description": "Collect unique non-sentinel bookingRefs from summaries, fire parallel `fetchFirebaseJson(guestDetailsBookingPath(ref))` calls",
+        "Upside": "Only fetches needed bookingRefs; payload bounded by current active guest count",
+        "Downside": "Multiple Firebase calls (up to N unique refs, typically 2-8 in practice); slightly more complex code",
+        "Key risks": "Marginally more code; `Promise.all` failure handling needed",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: Per-thread sequential fetch",
+        "Description": "Fetch `guestsDetails/{bookingRef}` for each thread serially",
+        "Upside": "Simplest loop logic",
+        "Downside": "N round-trips; slow inbox load",
+        "Key risks": "Unacceptable at 50 threads",
+        "Viable?": "No"
+      },
+      {
+        "Option": "D: Reuse `buildGuestEmailMap` result",
+        "Description": "Reuse the email-thread guest map (keyed by email) for Prime",
+        "Upside": "Zero extra Firebase reads",
+        "Downside": "Email map is keyed by email; Prime threads have no guest email; not reusable without restructuring",
+        "Key risks": "Architectural mismatch; would require restructuring `buildGuestEmailMap`",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Add a new exported helper `fetchPrimeGuestNames(bookingRefs: string[])` in `apps/reception/src/lib/inbox/guest-matcher.server.ts`. Per unique valid bookingRef it fires two parallel `fetchFirebaseJson` calls — `bookings/{bookingRef}` (to find `leadGuest: true` occupantId) and `guestsDetails/{bookingRef}` (to read that occupant's name) — via `Promise.allSettled`. Empty/sentinel bookingRefs are filtered before any path is constructed. Returns `Map<string, { firstName: string; lastName: string }>`. Augment `listPrimeInboxThreadSummaries()` by calling this helper after mapping and patching the resu",
+      "**Why this wins over Option A": "**",
+      "Concurrency cap": "Fan-out is bounded: unique bookingRefs are deduplicated first; in practice 2–10 refs. Each ref triggers 2 Firebase calls (bookings + guestsDetails). A hard cap of 10 concurrent ref-pairs prevents pathological cases.",
+      "Lead-guest strategy (dual-fetch)": "`guestsDetails/{bookingRef}/{occupantId}` does not carry a `leadGuest` flag — that flag lives in `bookings/{bookingRef}/{occupantId}.leadGuest`. Existing reception code (`usePrepaymentData.ts:252`, `useEmailProgressData.ts:195`) explicitly cross-references both paths. `fetchPrimeGuestNames` fetches both paths per unique ref, identifies the `leadGuest: true` occupantId from bookings, retrieves that occupant's name from guestsDetails. Falls back to first named occupant when no `leadGuest: true` is found.",
+      "`mapPrimeSummaryToInboxThread` — NOT changed": "Changing the mapper would widen blast radius to detail/resolve/dismiss paths (lines 436, 541, 562 in `prime-review.server.ts`) which are de-scoped. The broadcast `guestBookingRef: ''` pre-condition is left in place; the empty-string guard lives entirely in `fetchPrimeGuestNames` before any path construction.",
+      "**What it depends on": "**",
+      "Option A (root fetch)": "Viable but rejected on payload-growth grounds. A single `guestsDetails/` root read grows with every historical booking. Under load (peak season) the tree could be large enough to cause timeout or slow the inbox list noticeably. Option B trades call count (2–8 vs 1) for bounded payload.",
+      "Option C (sequential per-thread fetch)": "Rejected — N sequential round-trips at up to 50 threads is unacceptable latency.",
+      "Option D (reuse email guest map)": "Rejected — the email map is email-keyed; Prime threads have no guest email at list time. Restructuring `buildGuestEmailMap` would widen blast radius unnecessarily."
+    },
+    "rejected_approaches": [
+      "**Option A (root fetch):** Viable but rejected on payload-growth grounds. A single `guestsDetails/` root read grows with every historical booking. Under load (peak season) the tree could be large enough to cause timeout or slow the inbox list noticeably. Option B trades call count (2–8 vs 1) for bounded payload.",
+      "**Option C (sequential per-thread fetch):** Rejected — N sequential round-trips at up to 50 threads is unacceptable latency.",
+      "**Option D (reuse email guest map):** Rejected — the email map is email-keyed; Prime threads have no guest email at list time. Restructuring `buildGuestEmailMap` would widen blast radius unnecessarily."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "Tests run in CI only; `apps/reception/src/lib/inbox/__tests__/prime-review-mapper.test.ts` is the test file model (mocked `global.fetch`)",
+        "New tests for `listPrimeInboxThreadSummaries` must distinguish Prime API vs Firebase URL in `global.fetch` mock (e.g. `jest.fn().mockImplementation((url) => ...)`)",
+        "Existing `prime-review-mapper.test.ts` regression tests must still pass (mapper not changed)"
+      ],
+      "sequencing_constraints": [
+        "TASK-01 (import `guestDetailsBookingPath` + `bookingRootPath`) must precede TASK-02 (helper implementation)",
+        "TASK-02 (helper `fetchPrimeGuestNames`) must precede TASK-03 (augmentation call in `listPrimeInboxThreadSummaries`) and TASK-05 (helper unit tests)",
+        "TASK-03 (augmentation) must precede TASK-07 (augmentation integration tests)",
+        "TASK-06 (API contract test updates) is independent; can run in parallel with TASK-02"
+      ],
+      "risks_to_carry_forward": [
+        "Dual-endpoint `global.fetch` mock setup is moderately complex; if done wrong tests pass against wrong mock data — reviewer must verify mock URL routing explicitly"
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Prime thread list guest names",
+          "current": "`listPrimeInboxThreadSummaries()` returns all threads with `guestFirstName: null`, `guestLastName: null`",
+          "trigger": "`GET /api/mcp/inbox` request",
+          "future": "(1) Prime API call returns `PrimeReviewThreadSummary[]`; (2) `summaries.map(mapPrimeSummaryToInboxThread)` builds base `InboxThreadSummaryApiModel[]` with null names; (3) unique non-sentinel bookingRefs extracted; (4) `fetchPrimeGuestNames(refs)` fires parallel Firebase reads; (5) names patched into summaries before return",
+          "steady": "Email thread path unchanged; `mapPrimeSummaryToInboxThread` stays synchronous; detail/mutation paths remain null (de-scoped)",
+          "seams": "Firebase unavailability must degrade gracefully — tested in build"
+        },
+        {
+          "id": null,
+          "label": "Sentinel guard (`'activity'` + empty string)",
+          "current": "`guestBookingRef` already nullified for `prime_activity`; broadcast threads emit `guestBookingRef: ''` (existing mapper pre-condition; NOT changed)",
+          "trigger": "Any inbox list request including broadcast threads",
+          "future": "`fetchPrimeGuestNames` filters empty/sentinel bookingRefs before constructing any Firebase path; `prime_activity` ('activity') and broadcast ('') bookingRefs never reach `bookingRootPath` or `guestDetailsBookingPath`",
+          "steady": "`mapPrimeSummaryToInboxThread` unchanged; broadcast `guestBookingRef: ''` unchanged; guard is internal to helper only",
+          "seams": "Empty-string guard must be tested explicitly to prevent root-fetch regression"
+        },
+        {
+          "id": null,
+          "label": "UI display",
+          "current": "`ThreadList.tsx` renders name when non-null; shows nothing when null",
+          "trigger": "Name populated by new augmentation",
+          "future": "Guest name appears in Prime direct thread list rows",
+          "steady": "All other thread list fields unchanged",
+          "seams": "No UI changes required"
+        }
+      ]
+    }
+  }
+}

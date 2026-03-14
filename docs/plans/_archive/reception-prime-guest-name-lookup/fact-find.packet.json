@@ -1,0 +1,218 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-prime-guest-name-lookup",
+  "source_artifact_path": "docs/plans/reception-prime-guest-name-lookup/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Prime inbox threads have no guest names, making triage slower for staff. Email threads already resolve names. Closing this gap makes the Prime inbox parity-complete for the most operator-visible field.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Prime direct (`prime_direct`) inbox threads display a booking-level guest name (lead guest or first named occupant from `guestsDetails/{bookingRef}`) in the inbox list view; broadcast and activity threads remain name-free; Firebase unavailability degrades gracefully to null names with no throw",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "`ThreadList.tsx:239` already renders `guestFirstName` conditionally; `ThreadDetailPane.tsx:162` shows guest block when name or bookingRef present; no UI changes needed",
+      "gap_or_implication": "None — UI already handles populated fields",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Guest names show when non-null; null shows nothing (graceful); no loading state needed (inline with list fetch)",
+      "gap_or_implication": "Must confirm fail-open behavior (null name, no error) when Firebase unavailable",
+      "carry_forward_or_notes": "Yes — specify fail-open behavior"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Guest PII (first/last name) already flows through email thread path; same server-only context applies",
+      "gap_or_implication": "Firebase secret required (`FIREBASE_DB_SECRET`) — already in use; no new secret needed",
+      "carry_forward_or_notes": "Minimal — confirm no client-side PII leak beyond what email threads already expose"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`sync.server.ts:689-694` emits `guest_matched` / `guest_match_not_found` events for email threads; no equivalent for Prime",
+      "gap_or_implication": "Add similar telemetry or console log for Prime guest map build status (status, count, duration)",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`prime-activity-contracts.test.ts` tests sentinel guard; `guest-matcher.server.test.ts` covers email path; no tests for Prime guest name augmentation",
+      "gap_or_implication": "New unit tests for augmentation helper and fail-open",
+      "carry_forward_or_notes": "Yes — required new tests"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`InboxThreadSummaryApiModel.guestFirstName/guestLastName` already `string \\",
+      "gap_or_implication": "null`; no type change needed; `PrimeReviewThreadSummary.bookingId` is source of truth",
+      "carry_forward_or_notes": "No schema or DB migration needed (Prime threads are not persisted); Firebase data structure confirmed"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`buildGuestEmailMap` fetches entire `guestsDetails/` tree — acceptable if active bookings are filtered; up to 50 Prime threads may have up to 50 unique bookingRefs",
+      "gap_or_implication": "Bulk fetch strategy must avoid N+1; prefer single `guestsDetails/` root fetch",
+      "carry_forward_or_notes": "Yes — bulk strategy is an analysis decision"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "No DB migration; no feature flag needed; change is additive (null → populated); any regression rolls back to null names — same as current state",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The reception inbox shows guest names for email threads by matching sender email to active Firebase bookings at sync time (`sync.server.ts` / `buildGuestEmailMap`). For Prime messaging threads, `mapPrimeSummaryToInboxThread()` always sets `guestFirstName: null` and `guestLastName: null` even though `PrimeReviewThreadSummary.bookingId` is always populated and equals the Firebase `bookingRef`. This fact-find investigates the Firebase data shape, the bookingId→bookingRef relationship, the occupantId resolution challenge, integration point options, and efficiency constraints for the list-time bulk",
+    "goals": [
+      "Confirm the Firebase `guestsDetails/{bookingRef}/{occupantId}` field schema",
+      "Confirm bookingId from Prime equals bookingRef in Firebase",
+      "Determine whether occupantId is needed and how to derive it (or work around it) from bookingRef alone",
+      "Assess bulk-fetch efficiency for up to 50 Prime threads at list time",
+      "Identify the correct integration point (augment `mapPrimeSummaryToInboxThread` vs higher layer)",
+      "Document the `prime_activity` sentinel guard requirement"
+    ],
+    "non_goals": [
+      "Changing how email thread guest lookup works",
+      "Modifying Prime app-side data structures",
+      "Real-time subscriptions or websocket patterns",
+      "Per-message sender matching for Prime (out of scope — bookingId is already thread-level)",
+      "Guest name population in detail/mutation paths (`getPrimeInboxThreadDetail`, `resolvePrimeInboxThread`, `dismissPrimeInboxThread`) — de-scoped to a follow-on plan"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "When `bookingId` is non-empty and not `'activity'`, it equals a valid Firebase `bookingRef` — this is the case for `prime_direct` threads (guest-specific) but not for broadcasts",
+      "The `guestsDetails/{bookingRef}` node contains at least one occupant with `firstName`/`lastName`; the lead guest is the most useful name to surface",
+      "Firebase lookup at list time (not per-request) is acceptable given the existing pattern in `buildGuestEmailMap`"
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/app/api/mcp/inbox/route.ts` — list endpoint; calls `listPrimeInboxThreadSummaries` and merges with email rows; currently passes Prime rows through without guest name augmentation",
+      "`apps/reception/src/lib/inbox/prime-review.server.ts` — all Prime thread operations; `mapPrimeSummaryToInboxThread()` is the mapping gap"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis reception-prime-guest-name-lookup`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Firebase data structure (`guestsDetails/{bookingRef}/{occupantId}`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`bookingId === bookingRef` identity",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`occupantId` derivation from `bookingRef` alone",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — lead guest strategy documented",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`prime_activity` sentinel guard (`'activity'`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`prime_broadcast` empty-string bookingId guard",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed from `staff-broadcast-send.ts:107`; guard documented",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Integration point — list path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — augmentation in `listPrimeInboxThreadSummaries` is clear",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Integration point — detail/mutation paths (de-scoped)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap in investigation] [Minor]: de-scoped to follow-on; TODO comment will mark the gap",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bulk-fetch efficiency for 50 threads",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Scope gap in investigation] [Minor]: live Firebase payload size for `guestsDetails/` root not measurable statically; advisory only",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "UI consumption of populated fields",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — existing UI wiring confirmed",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Fail-open pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — established pattern in `buildGuestEmailMap`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test coverage gap",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — gaps documented, new tests scoped",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Detail-path (single thread) coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `getPrimeInboxThreadDetail` also calls `mapPrimeSummaryToInboxThread`",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Operator loads reception inbox (`GET /api/mcp/inbox`) or opens Prime thread detail",
+      "end_condition": "Inbox list returns with `guestFirstName` / `guestLastName` populated for Prime threads that have a non-sentinel bookingId",
+      "areas": [
+        {
+          "id": null,
+          "label": "Email thread guest lookup",
+          "flow": "(1) Gmail sync triggers `processThread`; (2) `buildGuestEmailMap()` fetches `bookings/` + `guestsDetails/` from Firebase in parallel; (3) `matchSenderToGuest(map, senderEmail)` finds match; (4) guest fields written to D1 thread row and returned via `buildThreadSummaryFromRow`",
+          "owners": "`sync.server.ts`, `guest-matcher.server.ts`, `api-models.server.ts`",
+          "evidence": "`sync.server.ts:930`, `guest-matcher.server.ts:106`",
+          "issues": "None (working correctly)"
+        },
+        {
+          "id": null,
+          "label": "Prime thread listing",
+          "flow": "(1) `GET /api/mcp/inbox` calls `listPrimeInboxThreadSummaries(status)`; (2) Prime API `/api/review-threads?limit=50` returns array of `PrimeReviewThreadSummary`; (3) each summary passed to `mapPrimeSummaryToInboxThread()`; (4) `guestFirstName: null`, `guestLastName: null` always returned",
+          "owners": "`prime-review.server.ts`, `app/api/mcp/inbox/route.ts`",
+          "evidence": "`prime-review.server.ts:301-329`, `route.ts:48-61`",
+          "issues": "**Gap: guest names never populated**"
+        },
+        {
+          "id": null,
+          "label": "Prime detail (single thread)",
+          "flow": "Same `mapPrimeSummaryToInboxThread` called inside `getPrimeInboxThreadDetail` — same null gap",
+          "owners": "`prime-review.server.ts:415`",
+          "evidence": "`prime-review.server.ts:401-460`",
+          "issues": "Same null gap"
+        }
+      ]
+    }
+  }
+}

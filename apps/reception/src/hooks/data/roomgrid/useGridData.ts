@@ -8,6 +8,7 @@ import type { MyLocalStatus } from "../../../types/MyLocalStatus";
 import {
   dateRangesOverlap,
   generateDateRange,
+  getNextDay,
   sortByDateAsc,
   toEpochMillis,
 } from "../../../utils/dateUtils";
@@ -192,6 +193,117 @@ export function packBookingsIntoRows(
   return rows;
 }
 
+/**
+ * Maximum consecutive free days between two bookings that qualifies as a "short gap".
+ * Gaps of 1–GAP_THRESHOLD_DAYS days are highlighted in amber on the rooms grid.
+ */
+const GAP_THRESHOLD_DAYS = 3;
+
+/**
+ * Post-process a packed row array and inject synthetic gap periods for free days
+ * that are sandwiched between two bookings within GAP_THRESHOLD_DAYS.
+ *
+ * A "gap" is a consecutive run of free days where:
+ *   - The run length is ≤ GAP_THRESHOLD_DAYS
+ *   - There is a booking whose period ends on or before the run's first day
+ *   - There is a booking whose period starts on or after the day after the run's last day
+ *
+ * Each gap day is injected as a synthetic TBookingPeriod with status "gap"
+ * (exclusive-end convention: start = gapDate, end = nextDay).
+ */
+export function detectAndInjectGapPeriods(
+  rows: GridReservationRow[],
+  startDate: string,
+  endDate: string
+): GridReservationRow[] {
+  const allDates = generateDateRange(startDate, endDate);
+  if (allDates.length === 0) return rows;
+
+  return rows.map((row) => {
+    const bookingPeriods = row.periods.filter((p) => p.status !== "gap");
+    if (bookingPeriods.length < 2) {
+      // Need at least 2 bookings to have a gap between them
+      return row;
+    }
+
+    // Build a set of booked dates for fast lookup
+    const bookedDates = new Set<string>();
+    for (const period of bookingPeriods) {
+      // period.end is exclusive — dates in [period.start, period.end)
+      for (const d of generateDateRange(period.start, period.end)) {
+        if (d < period.end) {
+          bookedDates.add(d);
+        }
+      }
+    }
+
+    // Collect free dates in the grid window
+    const freeDates = allDates.filter((d) => !bookedDates.has(d));
+    if (freeDates.length === 0) return row;
+
+    // Group consecutive free dates into runs
+    const runs: string[][] = [];
+    let current: string[] = [freeDates[0]];
+    for (let i = 1; i < freeDates.length; i++) {
+      const expected = getNextDay(freeDates[i - 1]);
+      if (freeDates[i] === expected) {
+        current.push(freeDates[i]);
+      } else {
+        runs.push(current);
+        current = [freeDates[i]];
+      }
+    }
+    runs.push(current);
+
+    const gapPeriods: TBookingPeriod[] = [];
+    const gapColor = "hsl(40 90% 85%)";
+
+    for (const run of runs) {
+      if (run.length > GAP_THRESHOLD_DAYS) continue;
+
+      const runStart = run[0];
+      const runEnd = run[run.length - 1]; // last free day (inclusive)
+      const dayAfterRun = getNextDay(runEnd);
+
+      // Is there a booking that ends on or before runStart (i.e. ends <= runStart)?
+      // A booking's end date is exclusive, so booking.end === runStart means
+      // the booking's last occupied night is runStart - 1. We want a booking
+      // that directly precedes the gap.
+      const hasBookingBefore = bookingPeriods.some(
+        (p) => p.end <= runStart
+      );
+
+      // Is there a booking that starts on or after dayAfterRun?
+      const hasBookingAfter = bookingPeriods.some(
+        (p) => p.start >= dayAfterRun
+      );
+
+      if (!hasBookingBefore || !hasBookingAfter) continue;
+
+      for (const gapDate of run) {
+        gapPeriods.push({
+          start: gapDate,
+          end: getNextDay(gapDate),
+          status: "gap",
+          bookingRef: "",
+          occupantId: "",
+          firstName: "",
+          lastName: "",
+          info: "Short gap",
+          color: gapColor,
+        });
+      }
+    }
+
+    if (gapPeriods.length === 0) return row;
+
+    return {
+      ...row,
+      periods: [...row.periods, ...gapPeriods],
+    };
+  });
+}
+
 const getActivityStatus = (
   occActs: { [activityId: string]: IActivity } | undefined
 ): MyLocalStatus => {
@@ -200,7 +312,7 @@ const getActivityStatus = (
     (a, b) => toEpochMillis(b.timestamp) - toEpochMillis(a.timestamp)
   );
   if (!list.length) return "1";
-  const precedence: MyLocalStatus[] = ["1", "8", "12", "14", "16"];
+  const precedence: MyLocalStatus[] = ["1", "8", "12", "14", "16", "23"];
   let best: MyLocalStatus = "1";
   let bestIdx = -1;
   for (const act of list) {
@@ -312,13 +424,84 @@ export default function useGridData(startDate: string, endDate: string) {
         });
       });
 
-      result[room] = packBookingsIntoRows(rows, beds);
+      result[room] = detectAndInjectGapPeriods(
+        packBookingsIntoRows(rows, beds),
+        startDate,
+        endDate
+      );
     });
 
     return result;
   }, [
     knownRooms,
     getBedCount,
+    bookingsData,
+    guestsDetailsData,
+    guestByRoomData,
+    activitiesData,
+    startDate,
+    endDate,
+  ]);
+
+  /**
+   * Collect all occupants who are unallocated within the current date window.
+   *
+   * An occupant is "unallocated" when:
+   *   - guestByRoomData[occId]?.allocated is absent, empty string, or a value
+   *     not in knownRooms
+   *
+   * The result is sorted by checkInDate ascending for deterministic panel order.
+   */
+  const unallocatedOccupants = useMemo<UnallocatedOccupant[]>(() => {
+    const result: UnallocatedOccupant[] = [];
+
+    Object.entries(bookingsData).forEach(([bookingRef, occMap]) => {
+      Object.entries(occMap as Record<string, unknown>).forEach(([occId, rawData]) => {
+        if (occId.startsWith("__")) return;
+        if (!hasBookingDateRange(rawData)) return;
+
+        const data = rawData;
+
+        // Skip bookings outside the selected date window
+        if (data.checkOutDate < startDate || data.checkInDate > endDate) return;
+
+        // Skip invalid date ranges
+        if (data.checkInDate >= data.checkOutDate) return;
+
+        // Determine if this occupant is unallocated
+        const allocated = guestByRoomData[occId]?.allocated;
+        const isUnallocated =
+          !allocated || !knownRooms.includes(allocated);
+
+        if (!isUnallocated) return;
+
+        const firstName = guestsDetailsData?.[bookingRef]?.[occId]?.firstName ?? "";
+        const lastName = guestsDetailsData?.[bookingRef]?.[occId]?.lastName ?? "";
+        const status = getActivityStatus(activitiesData[occId]);
+
+        // Prefer guestByRoomData.booked; fall back to bookingsData roomNumbers[0]
+        const bookedFromGuestByRoom = guestByRoomData[occId]?.booked;
+        const bookedFromBookings =
+          (bookingsData[bookingRef] as Record<string, { roomNumbers?: string[] }>)[occId]
+            ?.roomNumbers?.[0];
+        const bookedRoom = bookedFromGuestByRoom ?? bookedFromBookings;
+
+        result.push({
+          bookingRef,
+          occupantId: occId,
+          firstName,
+          lastName,
+          checkInDate: data.checkInDate,
+          checkOutDate: data.checkOutDate,
+          bookedRoom,
+          status,
+        });
+      });
+    });
+
+    return sortByDateAsc(result, (o) => o.checkInDate);
+  }, [
+    knownRooms,
     bookingsData,
     guestsDetailsData,
     guestByRoomData,
@@ -339,6 +522,7 @@ export default function useGridData(startDate: string, endDate: string) {
 
   return {
     getReservationDataForRoom,
+    unallocatedOccupants,
     testDates,
     testStartDate: startDate,
     testEndDate: endDate,

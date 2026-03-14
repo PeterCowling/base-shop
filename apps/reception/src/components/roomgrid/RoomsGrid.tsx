@@ -62,6 +62,7 @@ const RoomsGrid: FC = () => {
       const rows = getReservationDataForRoom(room);
       for (const row of rows) {
         for (const period of row.periods) {
+          if (period.status === "gap") continue;
           if (period.start === today && !seenArrivals.has(period.occupantId)) {
             seenArrivals.add(period.occupantId);
             arrivalList.push({

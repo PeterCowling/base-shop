@@ -204,6 +204,10 @@ export const dateUtils = {
       if (position !== "none") {
         if (period.status === "disabled") {
           dayType = "single.disabled";
+        } else if (period.status === "gap") {
+          // Gap periods render as a full-block cell regardless of position,
+          // so they don't distort adjacent booking start/end shapes.
+          dayType = "single.full";
         } else if (position === "start") {
           dayType = "single.start";
         } else if (position === "end") {

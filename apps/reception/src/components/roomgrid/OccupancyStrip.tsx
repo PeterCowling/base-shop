@@ -16,7 +16,7 @@ import type { MyLocalStatus } from "../../types/MyLocalStatus";
  * "14" (checkout complete) is intentionally counted as occupied — the guest
  * is still present in the property until they reach status "16".
  */
-const NON_OCCUPIED_STATUSES = new Set<MyLocalStatus>(["free", "disabled", "16"]);
+const NON_OCCUPIED_STATUSES = new Set<MyLocalStatus>(["free", "disabled", "gap", "16"]);
 
 /**
  * Returns true if a period's date range includes `today`.

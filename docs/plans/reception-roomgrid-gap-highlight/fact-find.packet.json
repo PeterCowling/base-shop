@@ -1,0 +1,167 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-roomgrid-gap-highlight",
+  "source_artifact_path": "docs/plans/reception-roomgrid-gap-highlight/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Free cells between close bookings look identical to genuinely free nights, hiding scheduling inefficiencies that staff need to act on.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Short gaps (1–3 consecutive free days between bookings) are visually distinguished on the grid, giving staff an immediate visual cue to investigate or reassign.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`statusColors.ts` maps status → CSS colour; `StatusLegend` renders swatches",
+      "gap_or_implication": "No gap swatch; no amber token for warning-bg confirmed; need to verify token exists or use inline hsl",
+      "carry_forward_or_notes": "Confirm colour token; add legend entry"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Free cells show transparent; booking cells show coloured; no gap state exists",
+      "gap_or_implication": "Staff cannot identify short gaps without manual scanning",
+      "carry_forward_or_notes": "Define gap state clearly; ensure empty-state (no gaps in window) gracefully unchanged"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Internal tool; no auth changes; no PII exposure in gap status",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No logging required for a visual-only derived status",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`useGridData.test.ts` has good hook unit coverage; `packBookingsIntoRows` tested",
+      "gap_or_implication": "No gap detection test exists",
+      "carry_forward_or_notes": "Write gap detection unit tests (TC-01 through TC-05)"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`MyLocalStatus` union exhaustively checked at compile time by `statusColors`",
+      "gap_or_implication": "Adding `\"gap\"` requires simultaneous update to both `MyLocalStatus` and `statusColors` — must be atomic",
+      "carry_forward_or_notes": "Atomic change; verify `TBookingPeriod` shape for synthetic gap periods"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`allRoomData` is a `useMemo`; gap detection adds O(n×d) pass (periods × dates in range)",
+      "gap_or_implication": "For typical short grids (14-30 days, <10 rooms, <5 beds/room), O(n×d) is trivial",
+      "carry_forward_or_notes": "Note in plan; no concern for typical window sizes"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Pure UI change; no schema/DB/API changes",
+      "gap_or_implication": "Rolling back is deleting the `\"gap\"` member + colour + detection code",
+      "carry_forward_or_notes": "Additive-only change simplifies rollback; TypeScript error-safety prevents partial deploy"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "On the `/rooms-grid` page, free days that fall between two booking periods with only 1–3 days of gap look identical to any other free cell. Staff must scan manually to find these scheduling hazards. This change adds a `\"gap\"` pseudo-status so those cells render in a distinct amber/warning colour.",
+    "goals": [
+      "Visually distinguish 1–3 consecutive free days sandwiched between two bookings for the same room/row",
+      "Integrate cleanly into the existing `MyLocalStatus` → `statusColors` → `RowCell` rendering pipeline",
+      "Add a matching legend entry in `StatusLegend`",
+      "Provide full unit-test coverage of the detection algorithm"
+    ],
+    "non_goals": [
+      "Changing click behaviour or modal content for gap cells",
+      "Server-side or database changes",
+      "Drag-and-drop restrictions on gap cells",
+      "Dynamic configuration of the gap threshold at runtime"
+    ],
+    "constraints": [
+      "No new npm dependencies",
+      "Must use DS primitives (Cluster, Inline, Stack) for any new UI; no raw flex divs",
+      "Tests must be written but NOT run locally (CI only per testing policy)",
+      "All commits via `scripts/agents/with-writer-lock.sh`"
+    ],
+    "assumptions": [
+      "GAP_THRESHOLD_DAYS = 3 (configurable as a file-level constant)",
+      "The grid date window is always finite (user-selected start/end)",
+      "`packBookingsIntoRows` already handles per-row period packing; gap detection runs after packing"
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/app/rooms-grid/page.tsx` → lazy-imports `RoomsGridClient` (no SSR); entry point for the rooms-grid page",
+      "`apps/reception/src/app/rooms-grid/RoomsGridClient.tsx` → wraps providers and renders `<RoomsGrid />`",
+      "`apps/reception/src/components/roomgrid/RoomsGrid.tsx` → calls `useGridData(startDate, endDate)`, iterates `knownRooms`, passes per-room data to `<RoomGrid />`",
+      "`apps/reception/src/components/roomgrid/RoomGrid.tsx` → passes `data` (array of `GridReservationRow`) to `<ReservationGrid>` with a `theme` mapping status → colour"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Entry points (rooms-grid page → RoomsGrid → useGridData)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Data flow: `useGridData` → `packBookingsIntoRows` → `getReservationDataForRoom`",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Type contract: `MyLocalStatus` → `statusColors` exhaustiveness",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Type contract gap Minor]: adding `\"gap\"` to union without simultaneous `statusColors` update causes compile error — resolved by atomic task",
+        "Resolution Required": "No (handled in plan)"
+      },
+      {
+        "Scope Area": "Period injection: synthetic gap periods must satisfy `TBookingPeriod` shape",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Missing data dependency Moderate]: `TBookingPeriod` requires `bookingRef`, `occupantId`, `firstName`, `lastName`, `info`, `color` — gap pseudo-periods need placeholder values",
+        "Resolution Required": "No (handled in task)"
+      },
+      {
+        "Scope Area": "Downstream loop interference: arrivals/departures in RoomsGrid",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Integration boundary Minor]: arrival/departure loops iterate `.periods` without status guard — gap periods could produce false movements",
+        "Resolution Required": "No (handled in task)"
+      },
+      {
+        "Scope Area": "OccupancyStrip period iteration",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Not fully confirmed — needs read of OccupancyStrip.tsx",
+        "Resolution Required": "No (low risk; guard pattern is consistent)"
+      },
+      {
+        "Scope Area": "Test coverage: gap detection algorithm",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No existing tests — new test file required",
+        "Resolution Required": "No (in plan)"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

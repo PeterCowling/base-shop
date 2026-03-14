@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-safe-withdrawal-float-rollback",
+  "business": "BRIK",
+  "build_date": "2026-03-14",
+  "dispatch_id": "IDEA-DISPATCH-20260314161500-0001",
+  "outcome_type": "operational",
+  "outcome_statement": "handleWithdrawal step 2 now has a rollback (recordFloatEntry(-amount)), making the two-step safe withdrawal transaction fully reversible in all failure scenarios.",
+  "why": "A missing rollback on the float entry step meant the transaction pattern was incomplete; adding the compensating undo keeps till and safe balances consistent if a future step fails.",
+  "source": "operator",
+  "status": "complete"
+}

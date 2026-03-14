@@ -1,0 +1,235 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "cochlearfit-theme-token-compiler",
+  "source_artifact_path": "docs/plans/cochlearfit-theme-token-compiler/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "None: no analysis stage; fact-find was sufficient for direct planning"
+  },
+  "outcome_contract": {
+    "why": "Hand-authored CSS custom properties drift silently — there is no gate to detect a value change or a new token that should have been added. Moving cochlearfit into the compiler system gives the same structural protection brikette has: a committed generated file and a parity test that fails when the source config diverges from the committed snapshot.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "cochlearfit's CSS token surface is managed through the same three-layer compiler system as brikette, eliminating hand-authored duplication and enabling systematic theme management",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Parity test + committed generated file guarantee exact token value reproduction",
+      "current_or_option_state": "TASK-04, TASK-05",
+      "gap_or_implication": "Zero value changes; parity test is the gate",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No interactive state depends on token structure",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "CSS tokens only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No runtime logging",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "New parity test in `packages/themes/cochlearfit/__tests__/generated-parity.test.ts`",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Light-only variant of brikette test; `.dark` block skipped",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`ThemeCSSConfig`, `ThemeAssets`, `DesignProfile` all stable; `generateThemeCSS()` API unchanged",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "HSL triplet strategy verified against compiler source",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Generated CSS is static; no runtime cost change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Two-phase: generated file committed before globals.css is updated; rollback = revert TASK-06 commit",
+      "current_or_option_state": "TASK-04, TASK-06",
+      "gap_or_implication": "Intermediate state (both committed file and hand-authored block) is valid for one commit window",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Cochlearfit's 25 CSS custom properties are currently hand-authored in `apps/cochlearfit/src/app/globals.css`. This plan moves them into the same structured three-layer compiler system used by brikette (`assets.ts` → `design-profile.ts` → `theme-css-config.ts`, compiled by `generateThemeCSS()`). A new `packages/themes/cochlearfit/` package is created from scratch, a generator script is added, the generated CSS file is committed to the app, a parity test is added, and the hand-authored `:root` block in `globals.css` is replaced with an `@import` of the generated file. Zero compiler changes are r",
+    "goals": [
+      "Move cochlearfit's token surface into the same three-layer compiler system as brikette",
+      "Produce `apps/cochlearfit/src/app/theme-tokens.generated.css` committed to repo, containing all 25 hand-authored custom properties plus the compiler-emitted extras (`--theme-transition-duration`, `.dark { color-scheme: dark; }`)",
+      "Write a parity test that proves fresh `generateThemeCSS()` output matches the committed generated file (generator-to-snapshot freshness gate)",
+      "Remove the hand-authored `:root` custom-property block from `globals.css`; replace with `@import \"./theme-tokens.generated.css\"`"
+    ],
+    "non_goals": [
+      "Dark mode — cochlearfit is light-only; no `.dark` override block will be authored",
+      "Token value changes — structure-preserving retrofit only",
+      "Migrating `body`, `::selection`, `@layer utilities`, or `@keyframes` blocks — only the `:root` custom properties are in scope",
+      "Adding cochlearfit tokens to any shared package",
+      "Compiler changes — `generateThemeCSS()` already supports the `derivedVars.light` path"
+    ],
+    "constraints": [
+      "All 25 existing CSS custom property values must be preserved exactly (no value changes)",
+      "Tests run in CI only — never run `jest`/`pnpm test` locally; typecheck via `pnpm --filter @apps/cochlearfit typecheck` (which wraps `run-next-app.sh --mode typecheck`)",
+      "Jest resolves `@themes/*` to `packages/themes/*/src` via workspace path mapping — parity test imports `@themes/base` via this mechanism, and cochlearfit source files via relative `../src/*` imports"
+    ],
+    "assumptions": [
+      "The brikette package/test/generator structure is the correct and complete reference, with the exception that the generator script import style must change to relative paths (brikette generator is currently broken for the same reason)",
+      "`derivedVars.light` is the correct mechanism for all 25 tokens (confirmed by reviewing compiler source)"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "All 25 custom properties go into `derivedVars.light` in `ThemeCSSConfig`",
+      "`assets.ts` is a minimal stub (empty maps satisfying `ThemeAssets` interface)",
+      "`design-profile.ts` contains real guidance metadata for cochlearfit's warm-earth, light-only character",
+      "Package structure mirrors brikette exactly (minus `recipes.ts` — cochlearfit has no component recipes)",
+      "Why planning is not reopening option selection:",
+      "The fact-find confirmed the approach with evidence from compiler source (line 198–204, `generateDerivedVars()` emits verbatim); no viable alternatives exist for this migration path"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Create `packages/themes/cochlearfit/` package skeleton",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `packages/themes/cochlearfit/package.json`, `packages/themes/cochlearfit/tsconfig.json`, `packages/themes/cochlearfit/jest.config.cjs`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Author source files",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `packages/themes/cochlearfit/src/assets.ts`, `src/design-profile.ts`, `src/theme-css-config.ts`, `src/index.ts`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add generator script entry to `scripts/package.json`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `scripts/package.json` (add script entry)",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Create generator script and produce committed generated CSS",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-05",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `scripts/cochlearfit/generate-theme-tokens.ts` (new), `apps/cochlearfit/src/app/theme-tokens.generated.css` (new, committed)",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Write parity test",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-04"
+        ],
+        "blocks": [
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `packages/themes/cochlearfit/__tests__/generated-parity.test.ts` (new)",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Update `globals.css` — replace `:root` block with `@import`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [
+          "TASK-04",
+          "TASK-05"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/cochlearfit/src/app/globals.css` (modified)",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The change is additive (new package + generated file + test) plus a structural swap of `:root` vars in globals.css. No workflow, CI lane, approval path, operator runbook, or multi-step process is modified.",
+      "areas": []
+    }
+  }
+}

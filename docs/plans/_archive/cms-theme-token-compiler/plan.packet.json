@@ -1,0 +1,215 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "cms-theme-token-compiler",
+  "source_artifact_path": "docs/plans/cms-theme-token-compiler/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/cms-theme-token-compiler/fact-find.md"
+  },
+  "outcome_contract": {
+    "why": "The brikette app has been fully migrated to the compiled token system. The CMS app retains a large hand-authored `cms.tokens.css` that is out of sync with that discipline. Retrofitting the CMS closes the gap, gives a single audit point for all CMS color decisions, and removes a class of drift bugs.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "`cms.tokens.css` is replaced by a generated file produced by `generateThemeCSS()` from a typed CMS theme package; a parity test suite locks the output; no runtime behaviour changes.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Parity test proves generated output matches hand-authored; visual correctness is structural (token values identical)",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "No visual regression possible if parity test passes; 1:1 token swap",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — no UX change; dark mode toggle mechanism unchanged",
+      "current_or_option_state": "-",
+      "gap_or_implication": "`html.theme-dark` selector path is unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — pure CSS build-time artifact; no auth, no data",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no runtime behaviour change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Build-time only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Parity test (`packages/themes/cms/__tests__/generated-parity.test.ts`) covers every `:root` var and every `html.theme-dark` var plus inverse check for no extra vars",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "Same pattern as brikette parity test",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`ThemeCSSConfig` already has `darkSelector?` field; `fontVarMap` and `derivedVars` are existing record types; no interface extension needed",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Compiler change not required — confirmed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — build-time generation; generated file is a static committed artifact",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Rollback = revert `globals.css` import line; hand-authored `cms.tokens.css` kept intact during PR",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "One-line rollback",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Retrofit `apps/cms` to use the same three-layer generated theme token system that brikette uses. The compiler (`packages/themes/base/src/build-theme-css.ts`) already supports `darkSelector` (confirmed in the actual source). Create `packages/themes/cms/` as a new theme package, map all 60 token custom properties across `:root` and `html.theme-dark` into `derivedVars` (no hex colors, no `colorVarMap` or `rgbVarMap` needed), commit the generated file, write a parity test, and swap the `globals.css` import. No runtime behaviour changes.",
+    "goals": [
+      "Create `packages/themes/cms/` as a structured theme package parallel to `@themes/brikette`",
+      "Map all 60 custom properties across `:root` (33 properties) and `html.theme-dark` (27 properties) into `derivedVars`",
+      "Write a parity test that proves compiler output matches the hand-authored file exactly (selector-aware extraction)",
+      "Commit the generated CSS file and swap the import in `globals.css`",
+      "Leave the multi-theme preview system (`previewTokens`, `WizardPreview`, `useThemeEditor`) entirely untouched"
+    ],
+    "non_goals": [
+      "Migrating the per-shop storefront theme preview system",
+      "Changing the CMS dark mode toggle mechanism",
+      "Changing `@themes/brikette` in any way",
+      "Adding new tokens beyond what is in `cms.tokens.css`",
+      "CSS changes to `globals.css` beyond the one import line"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Generated CSS lives at `apps/cms/src/app/cms.tokens.generated.css`",
+      "`globals.css` import changes from `./cms.tokens.css` to `./cms.tokens.generated.css`; hand-authored `cms.tokens.css` is kept as reference during this PR"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Create a new `@themes/cms` package using `derivedVars` for all 60 tokens; no `colorVarMap` or `rgbVarMap` entries",
+      "Use `fontVarMap` for the two font family declarations (`--font-sans`, `--font-mono`) tied to `assets.fonts`",
+      "Use `derivedVars.light` for: semantic colors in `:root`, companion `*-dark` vars in `:root`, typography derivations, surface tokens, ring/border/gradient/elevation/hero tokens",
+      "Use `derivedVars.dark` for: `var(--color-*-dark)` aliases (the `html.theme-dark` block), direct overrides (`--color-link`, surface triplets, dark elevation values), same-value repeat tokens",
+      "`darkSelector: \"html.theme-dark\"` in `ThemeCSSConfig`",
+      "Why planning is not reopening option selection:",
+      "Fact-find settled all decisions; no forks remain. The only novel element (darkSelector) is already implemented in the compiler."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Create @themes/cms package scaffold",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New package `packages/themes/cms/` with `package.json`, `tsconfig.json`, `jest.config.cjs`, `src/assets.ts`, `src/design-profile.ts`",
+        "affects": "`packages/themes/cms/package.json` (new), `packages/themes/cms/tsconfig.json` (new), `packages/themes/cms/jest.config.cjs` (new), `packages/themes/cms/src/assets.ts` (new), `packages/themes/cms/src/design-profile.ts` (new)"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Write CMS theme-css-config.ts (all 60 tokens)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`packages/themes/cms/src/theme-css-config.ts` with all 60 CMS custom properties mapped through `derivedVars`",
+        "affects": "`packages/themes/cms/src/theme-css-config.ts` (new)"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Generate and commit cms.tokens.generated.css",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/cms/src/app/cms.tokens.generated.css` — committed generated file",
+        "affects": "`apps/cms/src/app/cms.tokens.generated.css` (new)"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Write generated-parity test suite",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`packages/themes/cms/__tests__/generated-parity.test.ts`",
+        "affects": "`packages/themes/cms/__tests__/generated-parity.test.ts` (new)"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Wire globals.css import and add workspace dep",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/cms/src/app/globals.css` (import change), `apps/cms/package.json` (`@themes/cms` dep added)",
+        "affects": "`apps/cms/src/app/globals.css`, `apps/cms/package.json`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The token file is a static CSS import; no CI gate, no generation script, no operator workflow is introduced. The parity test runs in CI (filter `@themes/cms`) as a standard Jest suite.",
+      "areas": []
+    }
+  }
+}

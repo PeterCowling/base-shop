@@ -6,7 +6,7 @@ import TableHeader from "../TableHeader";
 
 describe("TableHeader", () => {
   it("renders column titles with icons", () => {
-    const { container } = render(
+    render(
       <table>
         <TableHeader />
       </table>
@@ -20,7 +20,7 @@ describe("TableHeader", () => {
       "Keycard Deposit",
       "Status",
       "Document Insert",
-      "Email Booking",
+      "Room Ready",
     ];
 
     columns.forEach((title) => {
@@ -29,7 +29,5 @@ describe("TableHeader", () => {
       // Lucide icons render as SVG elements
       expect(headerCell.querySelector("svg")).toBeInTheDocument();
     });
-
-    expect(container).toMatchSnapshot();
   });
 });

@@ -1,0 +1,16 @@
+{
+  "event_type": "build_complete",
+  "feature_slug": "reception-roomgrid-gap-highlight",
+  "dispatch_id": "IDEA-DISPATCH-20260314190000-BRIK-004",
+  "business": "BRIK",
+  "completed_at": "2026-03-14T13:55:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "commit": "93646204d7",
+  "tasks_completed": ["TASK-01"],
+  "files_changed": 8,
+  "tests_added": 8,
+  "typecheck": "pass",
+  "lint": "pass",
+  "outcome": "Added gap status highlighting short free gaps between bookings on rooms-grid"
+}

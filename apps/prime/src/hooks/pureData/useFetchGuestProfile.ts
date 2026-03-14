@@ -113,6 +113,7 @@ export function useFetchGuestProfile(
           pace: data.pace,
           socialOptIn: data.socialOptIn,
           chatOptIn: data.chatOptIn,
+          ghostMode: data.ghostMode ?? false,
           blockedUsers: data.blockedUsers,
         }
       : DEFAULT_GUEST_PROFILE;

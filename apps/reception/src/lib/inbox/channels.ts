@@ -1,4 +1,6 @@
-export const inboxChannels = ["email", "prime_direct", "prime_broadcast"] as const;
+import { PRIME_CHANNELS } from '@acme/lib/prime';
+
+export const inboxChannels = ["email", ...PRIME_CHANNELS] as const;
 
 export type InboxChannel = (typeof inboxChannels)[number];
 

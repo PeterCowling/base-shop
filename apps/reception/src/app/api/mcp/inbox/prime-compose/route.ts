@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { WHOLE_HOSTEL_BROADCAST_CHANNEL_ID } from "@acme/lib/prime";
+
 import {
   buildPrimeInboxThreadId,
   staffBroadcastSend,
@@ -57,10 +59,7 @@ export async function POST(request: Request) {
     );
   }
 
-  // WHOLE_HOSTEL_BROADCAST_CHANNEL_ID lives in the Prime app and is not importable here.
-  // The literal 'broadcast_whole_hostel' is stable by definition:
-  // buildBroadcastChannelId('whole_hostel') = BROADCAST_CHANNEL_PREFIX + '_' + 'whole_hostel'
-  const broadcastPrefixedId = buildPrimeInboxThreadId("broadcast_whole_hostel");
+  const broadcastPrefixedId = buildPrimeInboxThreadId(WHOLE_HOSTEL_BROADCAST_CHANNEL_ID);
 
   // Fire-and-forget: intentional. The broadcast was already sent successfully above.
   // prime_broadcast_initiated is a CRITICAL_EVENT_TYPE so recordInboxEvent will

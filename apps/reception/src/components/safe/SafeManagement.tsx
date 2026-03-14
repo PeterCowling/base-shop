@@ -125,7 +125,7 @@ function SafeManagement(): JSX.Element {
           run: () => recordWithdrawal(amount, breakdown),
           rollback: () => recordDeposit(amount, 0, 0, breakdown),
         },
-        { run: () => recordFloatEntry(amount) },
+        { run: () => recordFloatEntry(amount), rollback: () => recordFloatEntry(-amount) },
       ],
       "Failed to record withdrawal."
     );

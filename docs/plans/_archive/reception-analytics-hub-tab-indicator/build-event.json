@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T07:11:51.888Z",
+  "feature_slug": "reception-analytics-hub-tab-indicator",
+  "completed_date": "2026-03-14",
+  "why": "All four hub components should have consistent active-tab styling. AnalyticsHub was missed in the previous reception-dark-mode-ui-fixes build.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "AnalyticsHub active tab shows bg-primary/10 highlight, visually consistent with CashHub, EodHub, and StockHub.",
+  "why_source": "auto",
+  "plan_path": "docs/plans/reception-analytics-hub-tab-indicator/micro-build.md",
+  "build_record_path": "docs/plans/reception-analytics-hub-tab-indicator/build-record.user.md"
+}

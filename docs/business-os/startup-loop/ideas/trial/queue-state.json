@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-03-14T05:51:59.009Z",
+  "last_updated": "2026-03-14T12:00:00.000Z",
   "counts": {
-    "enqueued": 41,
+    "enqueued": 50,
     "processed": 25,
     "declined": 2,
     "skipped": 1,
@@ -11,11 +11,371 @@
     "completed": 350,
     "fact_find_ready": 32,
     "plan_ready": 0,
-    "micro_build_ready": 7,
+    "micro_build_ready": 16,
     "briefing_ready": 0,
-    "total": 626
+    "total": 635
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120000-0001",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-pm-refund-currency-bug",
+      "root_event_id": "operator:PLAT:PRODUCTS:pm-refund-currency-bug:20260314",
+      "anchor_key": "payment-manager-refund-currency-display",
+      "cluster_key": "PLAT:PRODUCTS:payment-manager-refund-currency-display",
+      "cluster_fingerprint": "pm-order-detail-refund-currency-undefined",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 refund amounts show incorrectly on every order detail page",
+      "location_anchors": [
+        "apps/payment-manager/src/app/api/orders/[orderId]/route.ts",
+        "apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx",
+        "packages/platform-core/prisma/schema.prisma"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The order detail API selects a currency field that does not exist on the Refund database model. Every refund record returns currency as undefined. The UI passes this to the amount formatter, so all refund figures on the order detail page display incorrectly.",
+      "next_scope_now": "Fix the order detail API to read currency from the parent Order record and pass it down to refund rows. Confirm all refund amounts render with the correct currency symbol.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "operator-stated: post-build audit confirmed Refund Prisma model has no currency field; API selects currency: true from Refund \u2014 always undefined",
+        "apps/payment-manager/src/app/api/orders/[orderId]/route.ts \u2014 Refund select includes currency: true",
+        "apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx \u2014 formatAmount(refund.amountCents, refund.currency) with undefined currency",
+        "packages/platform-core/prisma/schema.prisma \u2014 Refund model has no currency field"
+      ],
+      "why": "Every refund shown in the order detail view has a missing or broken currency label. Staff cannot trust the refund figures displayed \u2014 the tool is unreliable for day-to-day refund operations until this is fixed.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Refund amounts in the order detail view display with the correct currency on every order. Currency is read from the parent order record, not the non-existent Refund model field.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120001-0002",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-pm-orders-never-recorded",
+      "root_event_id": "operator:PLAT:PRODUCTS:pm-orders-never-recorded:20260314",
+      "anchor_key": "payment-manager-order-dual-write-env-var",
+      "cluster_key": "PLAT:PRODUCTS:payment-manager-order-dual-write-env-var",
+      "cluster_fingerprint": "pm-dual-write-service-url-mismatch",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 every shop order is silently lost and never recorded in the order list",
+      "location_anchors": [
+        "apps/caryina/src/lib/pmOrderDualWrite.server.ts",
+        "apps/caryina/src/lib/checkoutSession.server.ts",
+        "apps/payment-manager/src/app/api/internal/orders/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The order recording code reads env var PAYMENT_MANAGER_SERVICE_URL but only PAYMENT_MANAGER_URL is configured. Every checkout silently skips writing to Payment Manager. The PM order list is always empty.",
+      "next_scope_now": "Change pmOrderDualWrite.server.ts to read PAYMENT_MANAGER_URL. Verify orders appear in Payment Manager after a test checkout.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "operator-stated: post-build audit confirmed pmOrderDualWrite reads PAYMENT_MANAGER_SERVICE_URL; only PAYMENT_MANAGER_URL is set in secrets and .env.local",
+        "apps/caryina/src/lib/pmOrderDualWrite.server.ts \u2014 reads PAYMENT_MANAGER_SERVICE_URL, not PAYMENT_MANAGER_URL",
+        "apps/caryina/src/lib/payments/provider.server.ts \u2014 reads PAYMENT_MANAGER_URL (the correct var name)"
+      ],
+      "why": "The Payment Manager order list is completely empty. Every checkout on the shop drops the order silently \u2014 the tool cannot be used for order tracking or refunds until this is fixed.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "pmOrderDualWrite.server.ts reads PAYMENT_MANAGER_URL. Orders appear in Payment Manager within seconds of a successful shop checkout.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120002-0003",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-pm-rate-limiter-isolate-doc",
+      "root_event_id": "operator:PLAT:PRODUCTS:pm-rate-limiter-isolate-doc:20260314",
+      "anchor_key": "payment-manager-rate-limiter-isolate-scope",
+      "cluster_key": "PLAT:PRODUCTS:payment-manager-rate-limiter-isolate-scope",
+      "cluster_fingerprint": "pm-login-rate-limit-per-isolate-undocumented",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 login protection limit is not as strong as it looks (undocumented gap)",
+      "location_anchors": [
+        "apps/payment-manager/src/lib/auth/rateLimit.ts",
+        "apps/payment-manager/src/app/api/auth/login/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The login rate limiter uses in-process memory. Cloudflare can run multiple independent server processes simultaneously \u2014 each has its own memory. The effective limit is higher than the documented 10 requests per 15 minutes. This is not documented anywhere in the code.",
+      "next_scope_now": "Add a code comment in rateLimit.ts documenting that the limit is per-server-process, not global, so future maintainers understand the real behaviour.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: post-build audit confirmed rateLimit.ts uses globalThis Map; no comment about per-isolate scope",
+        "apps/payment-manager/src/lib/auth/rateLimit.ts \u2014 in-memory LRU, no KV-backed global state"
+      ],
+      "why": "Anyone maintaining this tool in future will see '10 requests per 15 minutes' and assume the login is fully protected. Without a comment explaining the per-process limitation, the real security posture is invisible. Documenting it prevents false confidence.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "rateLimit.ts has a clear code comment explaining the rate limit is per Cloudflare isolate, not global across all server processes, so future maintainers understand the actual protection level.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120003-0004",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-pm-dashboard-layout-auth-nav",
+      "root_event_id": "operator:PLAT:PRODUCTS:pm-dashboard-layout-auth-nav:20260314",
+      "anchor_key": "payment-manager-dashboard-layout",
+      "cluster_key": "PLAT:PRODUCTS:payment-manager-dashboard-layout",
+      "cluster_fingerprint": "pm-dashboard-no-layout-no-nav-no-server-auth",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 dashboard has no navigation between sections and no login protection on individual pages",
+      "location_anchors": [
+        "apps/payment-manager/src/app/(dashboard)/",
+        "apps/payment-manager/src/middleware.ts",
+        "apps/payment-manager/src/app/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Each dashboard page (Orders, Shops, Analytics, Reconciliation, Webhooks) is an isolated full-page component with no shared navigation. Staff must manually type URLs to switch between sections. Dashboard pages also rely entirely on middleware for login protection with no backup check.",
+      "next_scope_now": "Add a (dashboard)/layout.tsx with a minimal sidebar or top nav linking all sections, plus a server-side login check redirecting to /login if the session is missing.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: post-build audit confirmed (dashboard)/ route group has no layout.tsx; no shared nav exists",
+        "operator-stated: dashboard pages rely entirely on middleware cookie check; no server-side session guard on pages themselves",
+        "apps/payment-manager/src/app/page.tsx \u2014 root page has hasPmSession() check; dashboard pages do not"
+      ],
+      "why": "Staff using the tool for refunds and configuration have no way to navigate between sections without manually typing the URL. It also means a single security layer protects all admin pages \u2014 a standard gap for internal tools.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A shared dashboard layout provides navigation between all sections (Orders, Shops, Analytics, Reconciliation, Webhooks) and a server-side login check on every dashboard page. Staff can switch sections with one click.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120004-0005",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-pm-refund-shopid-constraint",
+      "root_event_id": "operator:PLAT:PRODUCTS:pm-refund-shopid-constraint:20260314",
+      "anchor_key": "payment-manager-refund-shopid-integrity",
+      "cluster_key": "PLAT:PRODUCTS:payment-manager-refund-shopid-integrity",
+      "cluster_fingerprint": "pm-refund-shopid-no-db-constraint",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 a refund could be recorded under the wrong shop without any warning",
+      "location_anchors": [
+        "packages/platform-core/prisma/schema.prisma",
+        "apps/payment-manager/src/app/api/refunds/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Each refund record stores the shop it belongs to, but there is no database rule or code check to confirm it matches the order's shop. A code bug or direct database write could silently assign a refund to the wrong shop.",
+      "next_scope_now": "Add a validation check in the refunds route to confirm the refund shopId matches its order shopId before writing. Document the constraint.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: post-build audit confirmed Refund.shopId has no FK to ShopPaymentConfig and no validation in refunds route",
+        "packages/platform-core/prisma/schema.prisma \u2014 Refund model has shopId but no constraint matching order.shopId",
+        "apps/payment-manager/src/app/api/refunds/route.ts \u2014 no shopId cross-check before Refund upsert"
+      ],
+      "why": "If a refund is written to the wrong shop, it appears in the wrong shop's analytics and order history. This kind of data integrity failure is hard to detect and embarrassing to explain to shop owners.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The refunds API validates that refund shopId matches the parent order shopId before writing. A mismatch returns a clear error. The constraint is documented in the schema.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120005-0006",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-pm-dead-createorupdateorder",
+      "root_event_id": "operator:PLAT:PRODUCTS:pm-dead-createorupdateorder:20260314",
+      "anchor_key": "payment-manager-dead-order-helper",
+      "cluster_key": "PLAT:PRODUCTS:payment-manager-dead-order-helper",
+      "cluster_fingerprint": "pm-createorupdateorder-never-imported",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 there are two copies of order-recording logic; one is unused and could cause confusion",
+      "location_anchors": [
+        "apps/payment-manager/src/lib/orders/createOrUpdateOrder.ts",
+        "apps/payment-manager/src/app/api/internal/orders/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "A helper file that records incoming orders was written but never connected to anything. The same logic was written again inline in the orders API route. Two copies of the same logic \u2014 one live, one unused \u2014 will confuse anyone who works on this code later.",
+      "next_scope_now": "Either wire the helper in as the single source of truth (replacing the inline duplicate), or delete it. Leave one clear path.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: post-build audit confirmed createOrUpdateOrder.ts is never imported from any route",
+        "apps/payment-manager/src/lib/orders/createOrUpdateOrder.ts \u2014 unreferenced helper file",
+        "apps/payment-manager/src/app/api/internal/orders/route.ts \u2014 contains inlined duplicate upsert logic"
+      ],
+      "why": "Dead code that duplicates live logic is a maintenance hazard. A future developer could update the unused copy thinking it's active, leaving a hidden divergence. Removing the confusion now keeps the codebase clean.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "One clear path for recording orders exists. Either the helper is wired in and the inline duplicate removed, or the helper is deleted. No duplicate logic remains.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120006-0007",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-caryina-dead-stripe-refund",
+      "root_event_id": "operator:PLAT:PRODUCTS:caryina-dead-stripe-refund:20260314",
+      "anchor_key": "caryina-dead-stripe-refund-path",
+      "cluster_key": "PLAT:PRODUCTS:caryina-dead-stripe-refund-path",
+      "cluster_fingerprint": "caryina-striperefund-superseded-by-pm-proxy",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 old Stripe refund code is still in the shop codebase after being replaced",
+      "location_anchors": [
+        "apps/caryina/src/lib/payments/stripeRefund.server.ts",
+        "apps/caryina/src/app/admin/api/refunds/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The old direct Stripe refund code in Caryina was superseded by the Payment Manager proxy. The old file is no longer called from anywhere but still exists. If accidentally re-imported, it would bypass Payment Manager entirely.",
+      "next_scope_now": "Delete stripeRefund.server.ts (or add a prominent DEPRECATED notice with date and reason if emergency fallback is needed). Confirm no remaining imports.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: post-build audit confirmed stripeRefund.server.ts is not imported after Phase 2 proxy migration",
+        "apps/caryina/src/app/admin/api/refunds/route.ts \u2014 now proxies to PM; does not call stripeRefund.server.ts",
+        "apps/caryina/src/lib/payments/stripeRefund.server.ts \u2014 superseded code still present"
+      ],
+      "why": "A file that does refunds but is no longer used is a regression risk. Someone could accidentally bring it back in, bypassing Payment Manager and losing the central audit trail.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "stripeRefund.server.ts is removed from Caryina (or clearly marked deprecated with date and reason). No active code path references it. All Stripe refunds go through Payment Manager.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120007-0008",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-pm-axerve-credential-test",
+      "root_event_id": "operator:PLAT:PRODUCTS:pm-axerve-credential-test:20260314",
+      "anchor_key": "payment-manager-axerve-credential-test",
+      "cluster_key": "PLAT:PRODUCTS:payment-manager-axerve-credential-test",
+      "cluster_fingerprint": "pm-axerve-test-format-only-no-live-call",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 Axerve payment credentials cannot be tested before going live",
+      "location_anchors": [
+        "apps/payment-manager/src/app/api/shops/[shopId]/credentials/[provider]/test/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The Test credentials button for Axerve only checks that credentials look like the right format \u2014 it makes no real connection to Axerve. The Stripe button does make a real connection. Axerve credentials are only confirmed working when a real customer refund is attempted.",
+      "next_scope_now": "Investigate whether Axerve has a lightweight API call that works within Cloudflare runtime constraints. If yes, implement it. If no, add a clear UI message explaining that Axerve credentials cannot be verified until a live transaction.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: post-build audit confirmed Axerve test route validates format only; no live API call made",
+        "apps/payment-manager/src/app/api/shops/[shopId]/credentials/[provider]/test/route.ts \u2014 Axerve branch: format validation only",
+        "coverage-hint: Cloudflare Workers blocks SOAP; any live Axerve test must use a REST endpoint if one exists"
+      ],
+      "why": "When setting up a new shop with Axerve, staff have no way to confirm credentials are correct before going live. The first sign of a problem would be a failed customer refund \u2014 something that could have been caught during setup.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The Axerve credential test either makes a real lightweight API call to confirm credentials work, or shows a clear message explaining that live verification is not possible for Axerve so operators know what to expect.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120008-0009",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-pm-schema-comment-typo",
+      "root_event_id": "operator:PLAT:PRODUCTS:pm-schema-comment-typo:20260314",
+      "anchor_key": "payment-manager-schema-comment-typo",
+      "cluster_key": "PLAT:PRODUCTS:payment-manager-schema-comment-typo",
+      "cluster_fingerprint": "pm-schema-lineitems-comment-single-slash",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 small typo in the database schema that may cause formatting tool errors",
+      "location_anchors": [
+        "packages/platform-core/prisma/schema.prisma"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "A comment in the database schema uses a single forward slash instead of two, which is invalid syntax. The schema formatting tool (prisma format) will flag or rewrite this line.",
+      "next_scope_now": "Fix the single slash to double slash on the lineItemsJson comment line (~line 412 in the Order model).",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "confidence": 0.99,
+      "evidence_refs": [
+        "operator-stated: post-build audit identified single / instead of // before lineItemsJson description in Order model",
+        "packages/platform-core/prisma/schema.prisma \u2014 Order model, lineItemsJson field comment line"
+      ],
+      "why": "A formatting tool error in the database schema is a minor but persistent annoyance. Fixing it keeps the schema clean and prevents prisma format from rewriting the line unexpectedly.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The comment on the lineItemsJson field uses correct // syntax. prisma format runs cleanly with no warnings on that line.",
+        "source": "operator"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260313213000-BOS-001",
@@ -30936,6 +31296,39 @@
           "risk_class": "low",
           "maturity": "unknown"
         }
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314070000-BRIK-REC-007",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "area_anchor": "Reception analytics screen \u2014 selected tab looks the same as other tabs",
+      "location_anchors": [
+        "apps/reception/src/components/analytics/AnalyticsHub.tsx:37"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "evidence_refs": [
+        "operator-stated: AnalyticsHub active tab uses 'border-primary text-primary' without bg-primary/10; CashHub/EodHub/StockHub were fixed in reception-dark-mode-ui-fixes but AnalyticsHub was missed",
+        "code-ref: apps/reception/src/components/analytics/AnalyticsHub.tsx:37"
+      ],
+      "current_truth": "AnalyticsHub active tab has border and text colour change only \u2014 no background fill. The other three hub components (CashHub, EodHub, StockHub) were updated to include bg-primary/10 in the recent build but AnalyticsHub was not touched.",
+      "next_scope_now": "Add bg-primary/10 to the active tab class string in AnalyticsHub.tsx line 37. One-line change, identical to the pattern applied to the other three hubs.",
+      "why": "On the analytics screen, the selected tab has no visible background highlight. Staff can\u2019t tell at a glance which analytics view they\u2019re looking at. The other four similar screens in reception were fixed but this one was missed.",
+      "intended_outcome": "Active tab on the analytics screen has a clear background highlight, matching all other tabs in reception.",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "completed",
+      "feature_slug": "reception-analytics-hub-tab-indicator",
+      "micro_build_path": null,
+      "created_at": "2026-03-14T07:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_path": "docs/plans/reception-analytics-hub-tab-indicator/micro-build.md",
+        "completed_at": "2026-03-14"
       }
     }
   ]

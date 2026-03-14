@@ -14,6 +14,8 @@ export default async function NewIdeasPage() {
   return (
     <main className="min-h-dvh bg-bg text-fg">
       <section className="relative overflow-hidden border-b border-border-2 bg-cmd-hero text-hero-foreground">
+        {/* Glass background layer — blurs hero gradient for glassmorphism effect */}
+        <div className="absolute inset-0 glass-panel" aria-hidden="true" />
         <div
           className="relative mx-auto w-full px-4 py-6 md:px-6 md:py-8"
           style={{ maxWidth: "88rem" }}

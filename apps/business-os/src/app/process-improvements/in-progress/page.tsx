@@ -20,6 +20,8 @@ export default async function InProgressPage() {
   return (
     <main className="min-h-dvh bg-bg text-fg">
       <section className="relative overflow-hidden border-b border-border-2 bg-cmd-hero text-hero-foreground">
+        {/* Glass background layer — blurs hero gradient for glassmorphism effect */}
+        <div className="absolute inset-0 glass-panel" aria-hidden="true" />
         <div
           className="relative mx-auto w-full px-4 py-6 md:px-6 md:py-8"
           style={{ maxWidth: "88rem" }}
@@ -38,7 +40,7 @@ export default async function InProgressPage() {
             </div>
 
             <div className="flex gap-3">
-              <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+              <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 glass-panel px-4 py-3">
                 <p className="text-2xl font-semibold tabular-nums">
                   <InProgressCountBadge initialActivePlans={activePlans} />
                 </p>
@@ -46,7 +48,7 @@ export default async function InProgressPage() {
               </div>
               <Link
                 href="/process-improvements/new-ideas"
-                className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3 transition-colors hover:bg-hero-foreground/16"
+                className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 glass-panel px-4 py-3 transition-colors hover:bg-hero-foreground/16"
               >
                 <p className="text-2xl font-semibold tabular-nums">
                   <LiveNewIdeasCount

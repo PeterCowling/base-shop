@@ -131,6 +131,14 @@
     );
 }
 
+/* Glassmorphism panel: semi-transparent surface + backdrop blur.
+   Applied at hero/section level only — not per-row cards (GPU performance). */
+@utility glass-panel {
+  background-color: hsl(var(--surface-1) / 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
 /* Light mode base: near-white with subtle indigo tint — restrained, on-brand.
    Dark mode: restrained purple-violet (lower saturation vs previous hsl(320 80% 62%)) */
 @utility bg-cmd-hero {

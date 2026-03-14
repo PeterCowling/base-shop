@@ -224,6 +224,97 @@ describe("MealOrderPage", () => {
     });
   });
 
+  it("TC-D01: existingOrders shows breakfastText (not breakfast txnId) when breakfastText is set", () => {
+    useGuestBookingSnapshotMock.mockReturnValue({
+      snapshot: {
+        checkInDate: "2099-02-10",
+        checkOutDate: "2099-02-12",
+        preorders: {
+          night1: {
+            night: "Night1",
+            breakfast: "PREPAID_MP_A",
+            drink1: "NA",
+            drink2: "NA",
+            serviceDate: "2099-02-10",
+          },
+          night2: {
+            night: "Night2",
+            breakfast: "txn_20990211091523042",
+            breakfastText: "Eggs (Scrambled) | Bacon, Ham | Americano | 09:00",
+            breakfastTxnId: "txn_20990211091523042",
+            drink1: "NA",
+            drink2: "NA",
+            serviceDate: "2099-02-11",
+          },
+        },
+      },
+      token: "token-1",
+      isLoading: false,
+      refetch: jest.fn(),
+    });
+
+    render(<MealOrderPage service="breakfast" title="Complimentary Breakfast" />);
+
+    // Should show the human-readable text, not the raw txnId
+    expect(screen.getByText("Eggs (Scrambled) | Bacon, Ham | Americano | 09:00")).toBeInTheDocument();
+    expect(screen.queryByText("txn_20990211091523042")).not.toBeInTheDocument();
+  });
+
+  it("TC-D02: existingOrders shows legacy breakfast value when no breakfastText", () => {
+    useGuestBookingSnapshotMock.mockReturnValue({
+      snapshot: {
+        checkInDate: "2099-02-10",
+        checkOutDate: "2099-02-12",
+        preorders: {
+          night1: {
+            night: "Night1",
+            breakfast: "Continental",
+            drink1: "NA",
+            drink2: "NA",
+            serviceDate: "2099-02-10",
+          },
+        },
+      },
+      token: "token-1",
+      isLoading: false,
+      refetch: jest.fn(),
+    });
+
+    render(<MealOrderPage service="breakfast" title="Complimentary Breakfast" />);
+
+    // Without breakfastText, falls back to breakfast value
+    expect(screen.getByText("Continental")).toBeInTheDocument();
+  });
+
+  it("TC-D06: existingOrders shows drink1Text for drink service when present", () => {
+    useGuestBookingSnapshotMock.mockReturnValue({
+      snapshot: {
+        checkInDate: "2099-02-10",
+        checkOutDate: "2099-02-12",
+        preorders: {
+          night1: {
+            night: "Night1",
+            breakfast: "NA",
+            drink1: "PREPAID MP B",
+            drink1Txn: "txn_20990210191530000",
+            drink1Text: "Aperol Spritz | 19:30",
+            drink2: "NA",
+            serviceDate: "2099-02-10",
+          },
+        },
+      },
+      token: "token-1",
+      isLoading: false,
+      refetch: jest.fn(),
+    });
+
+    render(<MealOrderPage service="drink" title="Evening Drinks" />);
+
+    // Should show human-readable drink text, not entitlement marker
+    expect(screen.getByText("Aperol Spritz | 19:30")).toBeInTheDocument();
+    expect(screen.queryByText("PREPAID MP B")).not.toBeInTheDocument();
+  });
+
   it("TC-04: ineligible booking renders no-order CTA state", () => {
     useGuestBookingSnapshotMock.mockReturnValue({
       snapshot: {

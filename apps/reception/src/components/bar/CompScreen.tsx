@@ -25,6 +25,8 @@ interface NightData {
   breakfast?: string;
   drink1?: string;
   drink2?: string;
+  /** txnId backref written by Prime bridge write (breakfast field is NOT overwritten) */
+  breakfastTxnId?: string;
 }
 
 type PreorderData = Record<string, NightData>;
@@ -87,6 +89,7 @@ const planColorMap: Record<string, string> = {
   NA: "bg-surface-3 text-foreground",
   continental: "bg-accent text-foreground",
   cooked: "bg-success-main text-success-fg",
+  preordered: "bg-primary-main text-primary-fg",
   // fallback style
   default: "bg-primary-main text-primary-fg",
 };
@@ -254,8 +257,13 @@ const CompScreen: React.FC = React.memo(() => {
       const tonightKey = occupantCheckIn
         ? getTonightNightKey(occupantCheckIn)
         : null;
-      const plan =
-        tonightKey && occPre ? occPre[tonightKey]?.breakfast ?? "NA" : "NA";
+      // If breakfastTxnId is present, the guest placed a Prime breakfast order.
+      // Show "preordered" instead of the raw txnId or entitlement value.
+      // Otherwise fall back to the existing breakfast value (plan name or entitlement marker).
+      const tonightPreorder = tonightKey && occPre ? occPre[tonightKey] : null;
+      const plan = tonightPreorder?.breakfastTxnId
+        ? "preordered"
+        : (tonightPreorder?.breakfast ?? "NA");
 
       return {
         bookingRef,

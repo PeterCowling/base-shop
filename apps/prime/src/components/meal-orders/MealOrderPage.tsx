@@ -88,7 +88,12 @@ export default function MealOrderPage({
     }
     return Object.entries(snapshot.preorders)
       .map(([nightKey, night]) => {
-        const orderValue = service === 'breakfast' ? night.breakfast : night.drink1;
+        // Prefer human-readable text fields (set by bridge write) over raw values.
+        // For breakfast: breakfastText (pipe-string) ?? breakfast (legacy or entitlement value)
+        // For drink: drink1Text (pipe-string) ?? drink1 (legacy or entitlement value)
+        const orderValue = service === 'breakfast'
+          ? (night.breakfastText ?? night.breakfast)
+          : (night.drink1Text ?? night.drink1);
         return {
           nightKey,
           serviceDate: night.serviceDate ?? night.night,

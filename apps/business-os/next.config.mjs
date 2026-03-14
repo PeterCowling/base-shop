@@ -1,7 +1,10 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 import sharedConfig from "@acme/next-config/next.config.mjs";
+
+initOpenNextCloudflareForDev();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

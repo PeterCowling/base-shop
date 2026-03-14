@@ -11,7 +11,7 @@ import type { InboxThreadSummary } from "@/services/useInbox";
 
 import ThreadList from "./ThreadList";
 
-const MAX_BROADCAST_LENGTH = 2000;
+const MAX_BROADCAST_LENGTH = 500;
 
 interface PrimeColumnProps {
   threads: InboxThreadSummary[];
@@ -19,6 +19,7 @@ interface PrimeColumnProps {
   loading: boolean;
   error: string | null;
   onSelect: (threadId: string) => void | Promise<void>;
+  onBroadcastSent?: () => void;
 }
 
 export default function PrimeColumn({
@@ -27,6 +28,7 @@ export default function PrimeColumn({
   loading,
   error,
   onSelect,
+  onBroadcastSent,
 }: PrimeColumnProps) {
   const primeThreads = threads.filter((t) => t.channel !== "email");
   const showEmptyState = !loading && !error && primeThreads.length === 0;
@@ -35,10 +37,12 @@ export default function PrimeColumn({
   const [composeText, setComposeText] = useState("");
   const [composeSending, setComposeSending] = useState(false);
   const [composeError, setComposeError] = useState<string | null>(null);
+  const [confirmPending, setConfirmPending] = useState(false);
 
   function openCompose() {
     setComposeText("");
     setComposeError(null);
+    setConfirmPending(false);
     setComposeOpen(true);
   }
 
@@ -46,9 +50,17 @@ export default function PrimeColumn({
     setComposeOpen(false);
     setComposeText("");
     setComposeError(null);
+    setConfirmPending(false);
   }
 
-  async function handleSend() {
+  function handleSendClick() {
+    if (!composeText.trim()) {
+      return;
+    }
+    setConfirmPending(true);
+  }
+
+  async function handleConfirmedSend() {
     const text = composeText.trim();
     if (!text) {
       return;
@@ -67,21 +79,24 @@ export default function PrimeColumn({
 
       if (response.ok) {
         closeCompose();
+        onBroadcastSent?.();
       } else {
-        let errorMessage = "Failed to send broadcast. Please try again."; // i18n-exempt -- INBOX-101 staff-facing UI [ttl=2026-12-31]
+        let errorMessage = "Failed to send — please try again."; // i18n-exempt -- INBOX-101 staff-facing UI [ttl=2026-12-31]
         try {
           const body = (await response.json()) as { error?: string };
           if (response.status === 503) {
             errorMessage = "Prime messaging is not available right now."; // i18n-exempt -- INBOX-101 staff-facing UI [ttl=2026-12-31]
           } else if (body.error) {
-            errorMessage = body.error;
+            console.error("[PrimeColumn] broadcast send error:", body.error);
           }
         } catch {
           // Keep default message
         }
+        setConfirmPending(false);
         setComposeError(errorMessage);
       }
     } catch {
+      setConfirmPending(false);
       setComposeError("Network error. Please check your connection and try again."); // i18n-exempt -- INBOX-101 staff-facing UI [ttl=2026-12-31]
     } finally {
       setComposeSending(false);
@@ -193,24 +208,50 @@ export default function PrimeColumn({
             )}
 
             {/* Actions */}
-            <div className="mt-4 flex justify-end gap-2">
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={closeCompose}
-                disabled={composeSending}
-              >
-                Cancel
-              </Button>
-              <Button
-                size="sm"
-                onClick={handleSend}
-                disabled={!composeText.trim() || composeSending}
-                aria-busy={composeSending}
-              >
-                {composeSending ? "Sending…" : "Send"}
-              </Button>
-            </div>
+            {confirmPending ? (
+              <div className="mt-4 space-y-3">
+                <p className="rounded-lg border border-warning/30 bg-warning/10 px-3 py-2 text-sm text-warning-main">
+                  {/* i18n-exempt -- INBOX-101 staff-facing UI [ttl=2026-12-31] */}
+                  Send to all {primeThreads.length} current guest{primeThreads.length === 1 ? "" : "s"}? This cannot be undone.
+                </p>
+                <div className="flex justify-end gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setConfirmPending(false)}
+                    disabled={composeSending}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => void handleConfirmedSend()}
+                    disabled={composeSending}
+                    aria-busy={composeSending}
+                  >
+                    {composeSending ? "Sending…" : "Confirm send"}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-4 flex justify-end gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={closeCompose}
+                  disabled={composeSending}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={handleSendClick}
+                  disabled={!composeText.trim() || composeSending}
+                >
+                  Send
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       )}

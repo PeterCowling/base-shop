@@ -350,6 +350,7 @@ export default function InboxWorkspace() {
                 loading={loadingList}
                 error={listError}
                 onSelect={handleSelectPrimeThread}
+                onBroadcastSent={() => void handleRefreshInbox()}
               />
             )}
           </div>
@@ -382,6 +383,7 @@ export default function InboxWorkspace() {
             loading={loadingList}
             error={listError}
             onSelect={handleSelectPrimeThread}
+            onBroadcastSent={() => void handleRefreshInbox()}
           />
         </div>
       </div>

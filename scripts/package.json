@@ -61,6 +61,7 @@
     "reception:blind-mode-variance-report": "node --import tsx src/reception/blind-mode-variance-report.ts",
     "prime:apply-zone-hardening": "node --import tsx src/ops/apply-prime-zone-hardening.ts",
     "brikette:generate-theme-tokens": "node --import tsx ../scripts/brikette/generate-theme-tokens.ts",
+    "caryina:generate-theme-tokens": "node --import tsx ../scripts/caryina/generate-theme-tokens.ts",
     "xa-uploader:generate-theme-tokens": "node --import tsx ../scripts/xa-uploader/generate-theme-tokens.ts",
     "reception:generate-theme-tokens": "node --import tsx ../scripts/reception/generate-theme-tokens.ts"
   },

@@ -4,7 +4,8 @@
    Strawberry Milk + Light Warm Sage palette */
 
 @import "@themes/base/tokens.css";
-@import "@themes/caryina/tokens.css";
+/* Auto-generated caryina theme tokens (source: packages/themes/caryina/src/) */
+@import "./theme-tokens.generated.css";
 
 @tailwind base;
 @tailwind components;
@@ -46,10 +47,36 @@
 }
 
 /*
+ * First-paint OS dark mode: applies caryina dark palette at CSS parse time,
+ * before JS hydrates and ThemeModeSwitch sets html.theme-dark.
+ * The html.theme-dark block in theme-tokens.generated.css handles post-hydration.
+ * This block must appear BEFORE the :not(.theme-dark) override below.
+ */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: 355 14% 10%;
+    --color-fg: 355 8% 92%;
+    --color-fg-muted: 355 6% 55%;
+    --color-primary: 355 55% 75%;
+    --color-primary-fg: 355 14% 10%;
+    --color-primary-soft: 355 30% 22%;
+    --color-primary-hover: 355 55% 82%;
+    --color-primary-active: 355 55% 85%;
+    --color-accent: 130 18% 62%;
+    --color-accent-fg: 130 20% 18%;
+    --color-accent-soft: 130 14% 18%;
+    --color-border: 355 10% 22%;
+    --color-border-muted: 355 8% 18%;
+    --color-border-strong: 355 12% 32%;
+    --color-surface: 355 12% 16%;
+  }
+}
+
+/*
  * Fix: When user explicitly selects light mode (no .theme-dark class),
- * override the @media (prefers-color-scheme: dark) blocks from both
- * base/tokens.css and caryina/tokens.css. Those blocks fire based on
- * OS dark-mode preference regardless of the user's in-app choice.
+ * override the @media (prefers-color-scheme: dark) blocks above and from
+ * base/tokens.css. Those blocks fire based on OS dark-mode preference
+ * regardless of the user's in-app choice.
  * :root:not(.theme-dark) has higher specificity than bare :root.
  */
 @media (prefers-color-scheme: dark) {

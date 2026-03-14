@@ -527,7 +527,7 @@ describe("inbox regenerate/send/resolve routes", () => {
     const payload = await response.json();
 
     expect(response.status).toBe(200);
-    expect(sendPrimeInboxThreadMock).toHaveBeenCalledWith("prime:broadcast_whole_hostel", "staff-1");
+    expect(sendPrimeInboxThreadMock).toHaveBeenCalledWith("prime:broadcast_whole_hostel", "staff-1", ["staff"]);
     expect(getThreadMock).not.toHaveBeenCalled();
     expect(createGmailDraftMock).not.toHaveBeenCalled();
     expect(sendGmailDraftMock).not.toHaveBeenCalled();

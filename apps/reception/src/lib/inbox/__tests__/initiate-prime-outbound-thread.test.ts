@@ -54,6 +54,8 @@ describe("initiatePrimeOutboundThread (TASK-06)", () => {
       ...originalEnv,
       RECEPTION_PRIME_API_BASE_URL: "https://prime.example.com",
       RECEPTION_PRIME_ACCESS_TOKEN: "test-token",
+      // Required for buildPrimeActorHeaders to sign actor claims (≥32 chars)
+      PRIME_ACTOR_CLAIMS_SECRET: "test-actor-claims-secret-32chars!!",
     };
   });
 
@@ -85,9 +87,12 @@ describe("initiatePrimeOutboundThread (TASK-06)", () => {
       expect(init.method).toBe("POST");
       expect(JSON.parse(init.body as string)).toEqual({ plainText: "Hello hostel!" });
 
-      // Verify actor UID header is passed
+      // Verify signed actor claims header is present (HMAC-SHA256 signed; not plain uid)
       const headers = init.headers as Record<string, string>;
-      expect(headers["x-prime-actor-uid"]).toBe("staff-uid-123");
+      expect(headers["x-prime-actor-claims"]).toBeDefined();
+      expect(typeof headers["x-prime-actor-claims"]).toBe("string");
+      // Header format: <b64url-payload>.<b64url-sig>
+      expect(headers["x-prime-actor-claims"]).toMatch(/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/);
     });
 
     it("omits x-prime-actor-uid header when actorUid is not provided", async () => {
@@ -103,7 +108,7 @@ describe("initiatePrimeOutboundThread (TASK-06)", () => {
       const [, init] = fetchMock.mock.calls[0] as [string, RequestInit];
       const headers = init.headers as Record<string, string> | undefined;
       // buildPrimeActorHeaders(undefined) returns undefined — no actor header merged
-      expect(headers?.["x-prime-actor-uid"]).toBeUndefined();
+      expect(headers?.["x-prime-actor-claims"]).toBeUndefined();
     });
   });
 

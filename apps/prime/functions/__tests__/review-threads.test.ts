@@ -18,6 +18,7 @@ import {
   createMockEnv,
   createPagesContext,
   normalizeD1Query,
+  signTestActorClaims,
 } from './helpers';
 
 describe('/api/review-threads and /api/review-thread', () => {
@@ -3534,5 +3535,266 @@ describe('/api/review-threads and /api/review-thread', () => {
         value: originalConsoleError,
       });
     }
+  });
+});
+
+/**
+ * prime-outbound-auth-hardening: TASK-05
+ * Actor-claims auth and role-gate coverage for mutation endpoints.
+ *
+ * Non-broadcast endpoints (draft, resolve, dismiss) use resolveActorClaimsWithCompat:
+ *   - Valid signed claims → proceeds
+ *   - Invalid sig → 401
+ *   - Missing claims + secret set → compat fallback (proceeds as prime-owner)
+ *   - Missing secret → 503
+ *
+ * Broadcast paths in review-thread-send use conditional gate:
+ *   - Whole-hostel broadcast thread + staff role → 403
+ *   - Whole-hostel broadcast thread + owner role → proceeds
+ *   - DM thread + staff role → proceeds (no role gate)
+ */
+describe('actor-claims auth coverage (prime-outbound-auth-hardening)', () => {
+  const fetchMock = jest.fn<typeof fetch>();
+
+  beforeEach(() => {
+    fetchMock.mockReset();
+    global.fetch = fetchMock;
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  // review-thread-draft (non-broadcast, compat)
+  describe('review-thread-draft auth', () => {
+    it('TC-A01: invalid x-prime-actor-claims → 401', async () => {
+      const { db } = createMockD1Database();
+      const response = await saveReviewThreadDraft(
+        createPagesContext({
+          url: 'https://prime.example.com/api/review-thread-draft?threadId=thread-1',
+          method: 'PUT',
+          headers: {
+            'x-prime-actor-claims': 'dGVzdA.aW52YWxpZA',
+            Authorization: 'Bearer test-token',
+          },
+          env: createMockEnv({
+            NODE_ENV: 'development',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+            PRIME_MESSAGING_DB: db,
+          }),
+          body: { plainText: 'Draft content' },
+        }),
+      );
+      expect(response.status).toBe(401);
+      const body = await response.json() as { error: string };
+      expect(body.error).toBe('invalid-sig');
+    });
+
+    it('TC-A02: PRIME_ACTOR_CLAIMS_SECRET absent → 503', async () => {
+      const { db } = createMockD1Database();
+      const response = await saveReviewThreadDraft(
+        createPagesContext({
+          url: 'https://prime.example.com/api/review-thread-draft?threadId=thread-1',
+          method: 'PUT',
+          headers: { Authorization: 'Bearer test-token' },
+          env: createMockEnv({
+            NODE_ENV: 'development',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+            PRIME_MESSAGING_DB: db,
+            PRIME_ACTOR_CLAIMS_SECRET: undefined,
+          }),
+          body: { plainText: 'Draft content' },
+        }),
+      );
+      expect(response.status).toBe(503);
+      const body = await response.json() as { error: string };
+      expect(body.error).toBe('claims-secret-not-configured');
+    });
+
+    it('TC-A03: missing claims with secret set → compat fallback (reaches business layer)', async () => {
+      const { db } = createMockD1Database();
+      const response = await saveReviewThreadDraft(
+        createPagesContext({
+          url: 'https://prime.example.com/api/review-thread-draft?threadId=thread-1',
+          method: 'PUT',
+          headers: { Authorization: 'Bearer test-token' },
+          env: createMockEnv({
+            NODE_ENV: 'development',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+            PRIME_MESSAGING_DB: db,
+          }),
+          body: { plainText: 'Draft content' },
+        }),
+      );
+      // Compat fallback → reaches D1 layer; 404 (thread not found) or 200
+      expect([200, 404, 409]).toContain(response.status);
+      expect(response.status).not.toBe(401);
+      expect(response.status).not.toBe(503);
+    });
+
+    it('TC-A04: valid signed claims → proceeds', async () => {
+      const { db } = createMockD1Database();
+      const claimsHeader = await signTestActorClaims('staff-uid', ['staff']);
+      const response = await saveReviewThreadDraft(
+        createPagesContext({
+          url: 'https://prime.example.com/api/review-thread-draft?threadId=thread-1',
+          method: 'PUT',
+          headers: { 'x-prime-actor-claims': claimsHeader, Authorization: 'Bearer test-token' },
+          env: createMockEnv({
+            NODE_ENV: 'development',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+            PRIME_MESSAGING_DB: db,
+          }),
+          body: { plainText: 'Draft content' },
+        }),
+      );
+      expect(response.status).not.toBe(401);
+      expect(response.status).not.toBe(503);
+    });
+  });
+
+  // review-thread-send: DM regression + broadcast role gate
+  describe('review-thread-send — DM regression and broadcast role gate', () => {
+    it('TC-B01: DM thread + staff role → 200 (no role gate on direct messages)', async () => {
+      // Set up a DM thread record in mock DB
+      const dmThreadId = 'dm_occ_aaa_occ_bbb';
+      const { db } = createMockD1Database({
+        firstByQuery: {
+          [normalizeD1Query('SELECT * FROM message_threads WHERE id = ?')]: {
+            id: dmThreadId,
+            booking_id: 'booking-1',
+            channel_type: 'direct',
+            audience: 'individual',
+            member_uids_json: '[]',
+            title: null,
+            latest_message_at: null,
+            latest_inbound_message_at: null,
+            last_staff_reply_at: null,
+            takeover_state: 'none',
+            review_status: 'pending',
+            suppression_reason: null,
+            metadata_json: '{}',
+            created_at: 1000,
+            updated_at: 1000,
+          },
+        },
+      });
+
+      const claimsHeader = await signTestActorClaims('staff-uid', ['staff']);
+      const response = await sendReviewThread(
+        createPagesContext({
+          url: `https://prime.example.com/api/review-thread-send?threadId=${dmThreadId}`,
+          method: 'POST',
+          headers: { 'x-prime-actor-claims': claimsHeader, Authorization: 'Bearer test-token' },
+          env: createMockEnv({
+            NODE_ENV: 'development',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+            PRIME_MESSAGING_DB: db,
+            CF_FIREBASE_DATABASE_URL: 'https://example.firebaseio.com',
+            CF_FIREBASE_API_KEY: 'test-api-key',
+          }),
+        }),
+      );
+
+      // Should NOT be 403 (DM sends bypass role gate)
+      expect(response.status).not.toBe(403);
+      // May be 409 (no draft) or other business logic response — not a role block
+    });
+
+    it('TC-B02: whole-hostel broadcast thread + staff role → 403', async () => {
+      const broadcastThreadId = 'broadcast_whole_hostel';
+      const { db } = createMockD1Database({
+        firstByQuery: {
+          [normalizeD1Query('SELECT * FROM message_threads WHERE id = ?')]: {
+            id: broadcastThreadId,
+            booking_id: '',
+            channel_type: 'broadcast',
+            audience: 'whole_hostel',
+            member_uids_json: '[]',
+            title: null,
+            latest_message_at: null,
+            latest_inbound_message_at: null,
+            last_staff_reply_at: null,
+            takeover_state: 'none',
+            review_status: 'pending',
+            suppression_reason: null,
+            metadata_json: '{}',
+            created_at: 1000,
+            updated_at: 1000,
+          },
+        },
+      });
+
+      const claimsHeader = await signTestActorClaims('staff-uid', ['staff']);
+      const response = await sendReviewThread(
+        createPagesContext({
+          url: `https://prime.example.com/api/review-thread-send?threadId=${broadcastThreadId}`,
+          method: 'POST',
+          headers: { 'x-prime-actor-claims': claimsHeader, Authorization: 'Bearer test-token' },
+          env: createMockEnv({
+            NODE_ENV: 'development',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+            PRIME_MESSAGING_DB: db,
+            CF_FIREBASE_DATABASE_URL: 'https://example.firebaseio.com',
+            CF_FIREBASE_API_KEY: 'test-api-key',
+          }),
+        }),
+      );
+
+      expect(response.status).toBe(403);
+      const body = await response.json() as { error: string };
+      expect(body.error).toMatch(/insufficient role/i);
+    });
+
+    it('TC-B03: whole-hostel broadcast thread + owner role → proceeds (not 403)', async () => {
+      const broadcastThreadId = 'broadcast_whole_hostel';
+      const { db } = createMockD1Database({
+        firstByQuery: {
+          [normalizeD1Query('SELECT * FROM message_threads WHERE id = ?')]: {
+            id: broadcastThreadId,
+            booking_id: '',
+            channel_type: 'broadcast',
+            audience: 'whole_hostel',
+            member_uids_json: '[]',
+            title: null,
+            latest_message_at: null,
+            latest_inbound_message_at: null,
+            last_staff_reply_at: null,
+            takeover_state: 'none',
+            review_status: 'pending',
+            suppression_reason: null,
+            metadata_json: '{}',
+            created_at: 1000,
+            updated_at: 1000,
+          },
+        },
+      });
+
+      const claimsHeader = await signTestActorClaims('owner-uid', ['owner']);
+      const response = await sendReviewThread(
+        createPagesContext({
+          url: `https://prime.example.com/api/review-thread-send?threadId=${broadcastThreadId}`,
+          method: 'POST',
+          headers: { 'x-prime-actor-claims': claimsHeader, Authorization: 'Bearer test-token' },
+          env: createMockEnv({
+            NODE_ENV: 'development',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'true',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
+            PRIME_MESSAGING_DB: db,
+            CF_FIREBASE_DATABASE_URL: 'https://example.firebaseio.com',
+            CF_FIREBASE_API_KEY: 'test-api-key',
+          }),
+        }),
+      );
+
+      // Role gate passes; may fail at business logic (409 no draft) — but NOT 403
+      expect(response.status).not.toBe(403);
+    });
   });
 });

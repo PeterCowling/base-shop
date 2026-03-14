@@ -33,7 +33,7 @@ function makeThread(overrides: Partial<InboxThreadSummary> = {}): InboxThreadSum
     subject: overrides.subject ?? "Test subject",
     snippet: overrides.snippet ?? "Test snippet",
     latestMessageAt: overrides.latestMessageAt ?? new Date().toISOString(),
-    lastSyncedAt: overrides.lastSyncedAt ?? new Date().toISOString(),
+    lastSyncedAt: "lastSyncedAt" in overrides ? overrides.lastSyncedAt ?? null : new Date().toISOString(),
     updatedAt: overrides.updatedAt ?? new Date().toISOString(),
     needsManualDraft: overrides.needsManualDraft ?? false,
     latestAdmissionDecision: overrides.latestAdmissionDecision ?? null,
@@ -230,6 +230,27 @@ describe("applyThreadFilters", () => {
     ]);
 
     const result = applyThreadFilters(threads, allFilters, NOW);
+    expect(result).toHaveLength(0);
+  });
+
+  it("TC-09: Prime thread with recent lastSyncedAt (from updatedAt) is not stale", () => {
+    // This test documents the post-fix behaviour: when mapPrimeSummaryToInboxThread
+    // populates lastSyncedAt from updatedAt, a recently-updated Prime thread
+    // no longer matches the stale-sync filter.
+    const recentTime = new Date(NOW - 1000).toISOString();
+
+    const primeThread = makeThread({
+      id: "prime-fresh",
+      channel: "prime_direct",
+      lastSyncedAt: recentTime,
+    });
+
+    const result = applyThreadFilters(
+      [primeThread],
+      new Set<ThreadFilterKey>(["stale-sync"]),
+      NOW,
+    );
+
     expect(result).toHaveLength(0);
   });
 

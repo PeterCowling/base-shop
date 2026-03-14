@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-prime-shadow-write-logging-2026-03-14",
+  "feature_slug": "reception-prime-shadow-write-logging",
+  "emitted_at": "2026-03-14T20:09:50.390Z",
+  "why": "Silent shadow-write failures cause activity thread messages to go missing from the reception inbox with no trace, making diagnosis impossible.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "When D1 is unavailable during an activity message shadow write, a structured error log is emitted with enough context (threadId, channelId, error message, timestamp) to diagnose the failure.",
+    "source": "auto"
+  }
+}

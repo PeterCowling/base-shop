@@ -32,6 +32,22 @@
     },
     {
       "type": "idea",
+      "business": "BOS",
+      "title": "Business OS operator dashboard — the process-improvements screens feel visually heavy; lighter glassmorphism-style cards, restrained colouring, and proper light and dark mode would make the tool more pleasant to use every day",
+      "body": "The process-improvements screens use flat, heavily coloured cards that feel visually dense. There is no proper light mode — the operator always works in a forced dark theme. A lighter glassmorphism treatment (semi-transparent card surfaces, subtle background depth, ambient colour gradients) combined with full light and dark mode support would make the tool noticeably more comfortable to use during the working day, particularly when reviewing and actioning a long list of plans.",
+      "source": "queue-state.json",
+      "date": "2026-03-13T21:30:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "ac9b769f44f25c36c117069f7871b1c8aa04bd0b",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
       "business": "BRIK",
       "title": "Prime guest app — the owner dashboard gives no warning when the data pipeline has stopped collecting figures",
       "body": "The owner dashboard shows occupancy and revenue figures. When there is no data, it shows a blank message. But the same blank message appears whether the period genuinely had no guests or whether the data collection process quietly stopped working. An owner could go weeks without noticing that their KPIs are broken.",

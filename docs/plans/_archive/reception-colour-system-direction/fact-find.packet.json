@@ -1,0 +1,182 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-colour-system-direction",
+  "source_artifact_path": "docs/plans/reception-colour-system-direction/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-colour-system-direction/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The green + blue combination in the current interface creates visual clutter. The operator has identified this as a product quality issue — the interface does not feel coherent or professional, which matters for a POS used daily by front-of-house staff.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The reception app's interface uses green and amber as its two active colour families, with blue removed from bar product categorisation, analytics chart-1 (hsl 240), and analytics chart-6 (hsl 199). The booking status system (hospitality-info, rvg awaiting/confirmed) is preserved. Visual competition is eliminated.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`tokens.ts` defines all shade and chart token values; Tailwind utilities wrap them; bar POS uses `bg-blueShades-rowN` classes; charts use `hsl(var(--chart-1))` and `hsl(var(--chart-6))` inline",
+      "gap_or_implication": "No visual regression tests; colour harmony is subjective and must be validated manually",
+      "carry_forward_or_notes": "Analysis must decide which replacement hue range and lightness steps to use for the new warmGreenShades (or renamed blueShades), and which warm tones replace both `--chart-1` (hsl 240) and `--chart-6` (hsl 199)"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "`statusColors.ts` maps booking states to `reception-signal-info-*` (blue) — these are out of scope but must not be disrupted. No UX impact on booking state colours if only blueShades and chart-1 change.",
+      "gap_or_implication": "Risk of accidentally touching hospitality-info tokens if a global rename is used",
+      "carry_forward_or_notes": "Analysis must confirm that hospitality-info / rvg booking colours are left unchanged"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth, no data exposure; pure visual CSS token change",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No observability hooks involved in CSS token changes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "One existing test (`theme-bridge.test.tsx`) checks globals.css structure but not token values. No tests assert shade colour values or chart colours.",
+      "gap_or_implication": "No automated coverage of new token values; manual visual review required post-deploy",
+      "carry_forward_or_notes": "Analysis should confirm whether a token-value snapshot test is worth adding"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`tokens.ts` → `tokens.css` pipeline via `build-tokens.ts`. Tailwind config maps token names to utility class names. `useProducts.ts` has hardcoded string class names.",
+      "gap_or_implication": "If token family is renamed (e.g. `blueShades` → `warmGreenShades`), three files must be updated in lockstep: `tokens.ts`, `tailwind.config.mjs`, `useProducts.ts`. Partial update would silently drop colour styling.",
+      "carry_forward_or_notes": "Analysis must choose: rename the token family (semantic clarity) vs. keep the name and change the values only (simpler, fewer files touched)"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "CSS custom property resolution; no hot path or caching concerns",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Pure CSS/token change with no database migration or feature flag. Rollback = revert the token values in `tokens.ts` and regenerate `tokens.css`.",
+      "gap_or_implication": "Fast rollback path; low risk",
+      "carry_forward_or_notes": "Analysis should confirm no feature flag is needed"
+    }
+  ],
+  "open_operator_questions": [
+    "Should `blueShades-rowN` be renamed (e.g. to `warmGreenShades-rowN`) or should the token name stay and only the HSL values change?",
+    "Should `--color-primary-dark` saturation be reduced (from 70% to ~55%) in the initial change, or deferred?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The reception app uses green as its primary colour but also carries blue throughout: as `--color-info` / `--hospitality-info` tokens (hsl 210), as `--chart-1` (hsl 240), and as five `blueShades-rowN` palette entries used in the bar's mixed-drinks category colouring. Green and blue are 68 degrees apart in hue with comparable saturation, creating visual competition. The accent token is already warm amber (hsl 36), which sits ~106 degrees from green — a strongly harmonious pairing — but is barely used in the bar product grid or charts. The proposed direction is to replace blue appearances in the ",
+    "goals": [
+      "Remove visual competition between blue and green in the bar product POS grid.",
+      "Redirect `blueShades-rowN` tokens to green-family hues so the mixed-drinks category is coded in green tones.",
+      "Evaluate replacing `--chart-1` (hsl 240, blue) and `--chart-6` (hsl 199, cyan-blue) with amber or warm tones to remove competing blue from analytics charts. Both tokens appear in chart components alongside green chart-2.",
+      "Reduce saturation of `--color-primary-dark` (142 70% 48%) to avoid the \"electric green\" feel in dark mode.",
+      "Preserve the `--hospitality-info` semantic blue where it signals booking states (awaiting/confirmed), as this has an existing UX meaning distinct from primary branding."
+    ],
+    "non_goals": [
+      "Redesigning the `--hospitality-info` booking-state colour system (status colours have a UX purpose and are not purely aesthetic).",
+      "Changes to any other app beyond the reception app.",
+      "Replacing primary green — it remains the primary colour.",
+      "Typography, layout, or spacing changes."
+    ],
+    "constraints": [
+      "`tokens.css` is generated from `tokens.ts` via `scripts/build-tokens.ts`. Editing the CSS directly is not durable; source of truth is `packages/themes/reception/src/tokens.ts`.",
+      "The `blueShades-rowN` token names are referenced by string literal in `useProducts.ts` (hardcoded as `\"bg-blueShades-rowN\"` Tailwind class names). Renaming the token without updating the class reference would break styling.",
+      "`tailwind.config.mjs` in the reception app registers `blueShades-rowN` as colour utilities via `receptionShadeColors`. Any rename must update the Tailwind config as well.",
+      "`--hospitality-info` and `--color-info` at hsl(210, 90%, 35/96%) are used for room-booking status colour coding in `statusColors.ts`, `rvg.css`, and the `statusColors` record. Changing these would affect booking state legibility — out of scope.",
+      "The `blueShades` family has 5 rows (row1–row5) each with light + dark variants. Any replacement family must also provide 5 rows."
+    ],
+    "assumptions": [
+      "A new token family (e.g. `warmGreenShades-rowN`) using hues in the 110–155 range at varying lightness would replace `blueShades-rowN` semantically for mixed-drinks categories.",
+      "Chart colours are set directly via `hsl(var(--chart-N))` inline in chart components; changing the token value changes all chart appearances.",
+      "Dark mode variants of new tokens follow the same lightness-reduction pattern used by existing `greenShades` (140 22% 22% at row1 dark)."
+    ],
+    "key_entry_points": [
+      "`packages/themes/reception/src/tokens.ts` — source of truth for all reception colour tokens; compiled to `tokens.css` by `scripts/build-tokens.ts`. This is the authoritative edit point.",
+      "`packages/themes/reception/tokens.css` — generated output; imported by `apps/reception/src/app/globals.css`. Must be regenerated after `tokens.ts` changes.",
+      "`apps/reception/src/hooks/data/bar/useProducts.ts` — hardcodes Tailwind class names like `\"bg-blueShades-row1\"` through `\"bg-blueShades-row5\"` for 28 products in category 8 (Mixed Drinks).",
+      "`apps/reception/tailwind.config.mjs` — registers `blueShades-rowN` colour utilities in `receptionShadeColors`; must be updated in lockstep with any token rename."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis reception-colour-system-direction`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Token source-of-truth identification",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`blueShades` consumer scan (all files)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed 2 consumers only",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`hospitality-info` / booking status separation",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed separate package, separate token chain",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Chart token consumers",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — 2 components; `--chart-1` (hsl 240) in both; `--chart-6` (hsl 199) in MenuPerformanceDashboard. Both are blue and within scope.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Token generation pipeline",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — build-tokens.ts confirmed, script path confirmed",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Minor: no token-value tests exist; visual validation must be manual",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Dark mode variant pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — existing greenShades dark variants provide a clear template",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Tailwind config coupling",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — receptionShadeColors confirmed as the utility registration point",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only. This is a CSS/token change with no multi-step workflow, CI/deploy/release lane, approval path, or operator runbook affected beyond normal deploy.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

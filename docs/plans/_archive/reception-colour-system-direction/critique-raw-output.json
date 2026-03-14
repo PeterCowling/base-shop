@@ -1,0 +1,35 @@
+{
+  "round": 3,
+  "artifact": "docs/plans/reception-colour-system-direction/analysis.md",
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-colour-system-direction/analysis.md",
+      "line": "113",
+      "message": "The chosen-approach summary is stale relative to the rest of the document. This line still says 'hue 120 values' and only mentions reducing --color-primary-dark, while the actual chosen scope later is hue 110 and saturation changes across --color-primary, --color-primary-hover, and --color-primary-active dark states. Planning should not inherit two different implementations."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-colour-system-direction/analysis.md",
+      "line": "95",
+      "message": "The option comparison misstates the implementation surface. Option A is described as '4 files instead of 1,' but Option B would still require changes to tokens.ts and regenerated tokens.css, so the real tradeoff is 4 files vs 2."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-colour-system-direction/analysis.md",
+      "line": "178",
+      "message": "The chart-6 = hsl 60 tradeoff is acknowledged but still under-evidenced. In MenuPerformanceDashboard.tsx:180, chart-6 is paired directly with chart-3, so this change turns the only two-series doughnut using that token from blue/orange into yellow/orange."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-colour-system-direction/analysis.md",
+      "line": "76",
+      "message": "The dark-state token handling is materially improved. This revision now correctly carries the live --color-primary-hover and --color-primary-active dark values from tokens.ts, avoiding the earlier mismatch."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ce23b-5fa8-7a40-9076-a49734c4292d"
+}

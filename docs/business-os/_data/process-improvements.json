@@ -1176,6 +1176,16 @@
     {
       "type": "pending-review",
       "business": "BOS",
+      "title": "Pending results review: caryina-runtime-state-workers-compat",
+      "body": "Results review exists but the \"expansion opportunities\" section is missing.",
+      "suggested_action": "Complete docs/plans/_archive/caryina-runtime-state-workers-compat/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-14T11:05:50.954Z",
+      "path": "docs/plans/_archive/caryina-runtime-state-workers-compat/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
       "title": "Pending results review: inventory-uploader-security-hardening",
       "body": "Build is complete but no results review has been written yet.",
       "suggested_action": "Write docs/plans/inventory-uploader-security-hardening/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",

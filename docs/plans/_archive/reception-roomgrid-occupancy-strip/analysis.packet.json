@@ -1,0 +1,171 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-roomgrid-occupancy-strip",
+  "source_artifact_path": "docs/plans/reception-roomgrid-occupancy-strip/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-roomgrid-occupancy-strip/fact-find.md",
+    "plan": "docs/plans/reception-roomgrid-occupancy-strip/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Staff using the rooms grid have no at-a-glance view of how many rooms are occupied tonight. They must count occupied cells manually when deciding whether to push discounts, adjust minimum stays, or block availability.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A compact occupancy count strip appears on the rooms-grid page showing the number of occupied rooms vs total rooms for the current date, derived from existing booking data without additional network requests.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "New leaf component `OccupancyStrip`, DS primitives, token-based colors",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Minimal: one new component using established DS patterns",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Strip shows count, zero-occupied, full-house, today-outside-window states; no new loading spinner needed",
+      "current_or_option_state": "Adds a second loading spinner for strip data independently",
+      "gap_or_implication": "Option A: no new loading state; strip defers to RoomsGrid loading gate",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — internal staff tool, no new data pathway",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — read-only derived UI",
+      "current_or_option_state": "N/A — same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Props-driven component: count logic in pure utility function; strip renders props directly — straightforward RTL test",
+      "current_or_option_state": "Requires mocking new Firebase hook; more test surface",
+      "gap_or_implication": "Option A is far simpler to test",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No schema or type changes; uses existing `GridReservationRow[]` and `TBookingPeriod`",
+      "current_or_option_state": "Would require new types/hook contract",
+      "gap_or_implication": "Option A: zero contract changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "`useMemo` for count derivation; O(rooms × bookings) — bounded; no new I/O",
+      "current_or_option_state": "Extra Firebase subscription; adds latency",
+      "gap_or_implication": "Option A is clearly superior",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive — revert commit to rollback",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Git revert is the rollback mechanism",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "How should the occupancy count for tonight be computed and displayed on the rooms-grid page? The fact-find confirmed that all required data is already available in `useGridData`. The core decision is: derive the count client-side from the existing hook, or introduce a new Firebase query. A secondary decision is the component shape: props-driven leaf vs hook-calling component.",
+    "goals": [
+      "Display occupied room count vs total rooms for the current date",
+      "Zero additional network requests beyond what already loads",
+      "Purely additive change — no existing behaviour modified",
+      "Clean test seam: computation logic is separately testable"
+    ],
+    "non_goals": [
+      "Per-day occupancy grid/heatmap (deferred to future iteration)",
+      "Colour-coded occupancy spectrum per date",
+      "New API endpoints or server routes"
+    ],
+    "constraints": [
+      "DS primitives only (`Cluster`, `Inline`, `Stack` from `@acme/design-system/primitives`). No raw flex or inline styles.",
+      "Typecheck + lint must pass locally before commit.",
+      "Tests written for CI; no local jest execution."
+    ],
+    "assumptions": [
+      "\"Tonight\" = today's date (client-side `new Date()` formatted to `yyyy-MM-dd`)",
+      "A room is \"occupied tonight\" if it has at least one `GridReservationRow` with a `TBookingPeriod` where `period.start <= today < period.end` AND `period.status` is not in `{\"free\", \"disabled\", \"16\"}`",
+      "Total room count = `knownRooms.length` (10)"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Zero new network requests",
+        "Why it matters": "Reception data loads slowly from Firebase; any new query degrades perceived performance",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Testability",
+        "Why it matters": "Props-driven components are trivially testable; hook-calling components require more mocking surface",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation simplicity",
+        "Why it matters": "P3 feature; should not introduce architectural complexity",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Accuracy",
+        "Why it matters": "The count should correctly reflect tonight's occupancy given the booking data already loaded",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Derive from existing hook data (client-side, zero new queries)",
+        "Description": "Compute occupancy count in `RoomsGrid` from already-loaded `getReservationDataForRoom` data; pass `occupiedCount` + `totalRooms` as props to a new `OccupancyStrip` leaf component",
+        "Upside": "Zero additional fetches; clean prop interface; easy to unit-test; additive only",
+        "Downside": "Count is only as current as the already-loaded data (same currency as the grid itself)",
+        "Key risks": "Today might fall outside the selected date window — handle with a null/absent state in the strip",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — New Firebase query for tonight's occupancy",
+        "Description": "Add a new `useOccupancyData` hook that queries Firebase independently for tonight's bookings",
+        "Upside": "Could be slightly more targeted",
+        "Downside": "Adds a new subscription, new loading state, new error path, new mocking surface in tests; all data is already available from Option A",
+        "Key risks": "Increased complexity, extra cost, and slower load time with no accuracy benefit",
+        "Viable?": "No — rejected"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — derive occupancy count client-side from `getReservationDataForRoom` data already loaded by `useGridData`.",
+      "Why this wins": "All data is already available. Zero new network requests. Props-driven component with a pure computation utility is trivially testable. The count is exactly as current as the rest of the grid (same data source), which is correct and expected. Option B adds complexity with no accuracy or performance benefit.",
+      "What it depends on": "`useGridData(startDate, endDate)` being called in `RoomsGrid` (it already is); `getReservationDataForRoom` returning `GridReservationRow[]` per room (confirmed); `knownRooms` from `useRoomConfigs` (already available in `RoomsGrid`)."
+    },
+    "rejected_approaches": [
+      "Option B (new Firebase query) — All required data is already loaded by `useGridData`. A second query adds latency, a new error/loading state, additional test mocking surface, and no accuracy benefit over the data already in memory."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "`pnpm --filter @apps/reception typecheck` — must pass",
+        "`pnpm --filter @apps/reception lint` — must pass (ds/enforce-layout-primitives, no raw flex)"
+      ],
+      "sequencing_constraints": [
+        "Single task or two tasks (component + wiring) — implementation is simple enough for one task"
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The strip is a read-only additive UI element on an existing page. No workflow, approval path, or runbook is affected.",
+      "areas": []
+    }
+  }
+}

@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-14T12:05:03.320Z",
+  "last_updated": "2026-03-14T13:12:14.089Z",
   "counts": {
-    "enqueued": 62,
+    "enqueued": 57,
     "processed": 33,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 387,
-    "fact_find_ready": 41,
+    "completed": 392,
+    "fact_find_ready": 37,
     "plan_ready": 0,
-    "micro_build_ready": 18,
+    "micro_build_ready": 17,
     "briefing_ready": 1,
     "total": 692
   },
@@ -433,10 +433,10 @@
       "current_truth": "Guests can place breakfast and evening drink orders through the Prime app. Those orders are saved in Firebase under preorder/{guestUuid}/{nightKey} as a pipe-delimited text string. The bar screen reads from a completely different Firebase path (barOrders/breakfastPreorders/) with a structured item-list format. Nothing in the codebase populates the bar path from the prime submissions. Staff see no preorder buttons, and the Comp screen modal can't show what was actually ordered.",
       "next_scope_now": "Investigate where the bridge should live (prime POST handler or separate function), how to parse the pipe-delimited order string into structured bar items, how to classify items as bar vs kitchen, and how to store a transaction ID in the preorder node so the Comp screen can look up placed orders.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.99,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "created_at": "2026-03-14T20:30:00.000Z",
       "evidence_refs": [
         "operator-stated: code audit confirmed no bridge between preorder/ and barOrders/breakfastPreorders/ — prime app never writes to the bar path",
@@ -458,7 +458,14 @@
       "processed_by": {
         "target_path": "docs/plans/brik-prime-breakfast-order-pipeline/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "brik-prime-breakfast-order-pipeline",
+        "fact_find_slug": "brik-prime-breakfast-order-pipeline"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-prime-breakfast-order-pipeline/plan.md",
+        "completed_at": "2026-03-14T12:45:43.378Z",
+        "outcome": "Four changes ship together to complete the bridge from the guest app to the bar screen: 1. **Type definitions** — Four optional fields added to `PreorderNight` (functions layer), `PreorderNightData` (client types), and the `GuestBookingSnap"
       }
     },
     {
@@ -33286,14 +33293,21 @@
         "apps/reception/src/lib/inbox/prime-review.server.ts:544-555 — immediate send after create"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
-      "queue_state": "enqueued",
+      "status": "completed",
+      "queue_state": "completed",
       "feature_slug": "prime-outbound-send-path-correctness",
       "created_at": "2026-03-14T16:00:00.000Z",
       "processed_by": {
         "target_path": "docs/plans/prime-outbound-send-path-correctness/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "prime-outbound-send-path-correctness",
+        "fact_find_slug": "prime-outbound-send-path-correctness"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/prime-outbound-send-path-correctness/plan.md",
+        "completed_at": "2026-03-14T12:55:02.686Z",
+        "outcome": "Completed via prime-outbound-send-path-correctness."
       }
     },
     {
@@ -33485,10 +33499,10 @@
         "/rooms-grid"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.87,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: bookings without guestByRoomData[occId].allocated are silently absent from the grid",
         "apps/reception/src/hooks/data/roomgrid/useGridData.ts — line 241 filters out any occupant where allocated !== room, dropping unallocated bookings entirely",
@@ -33499,7 +33513,14 @@
       "processed_by": {
         "target_path": "docs/plans/reception-roomgrid-unallocated-panel/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-roomgrid-unallocated-panel",
+        "fact_find_slug": "reception-roomgrid-unallocated-panel"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-roomgrid-unallocated-panel/plan.md",
+        "completed_at": "2026-03-14T12:56:37.059Z",
+        "outcome": "**TASK-01 — Type fixes** (`1f0fa08abe`): Fixed `IGuestByRoomData` interface in `useGuestByRoomData.ts` to mark `allocated` and `booked` as optional (`allocated?: string; booked?: string`), reflecting the actual raw Firebase shape. Exported "
       }
     },
     {
@@ -33530,17 +33551,28 @@
         "/rooms-grid"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.85,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: no daily occupancy % visible; must count cells manually across all room grids",
         "apps/reception/src/components/roomgrid/RoomsGrid.tsx — renders one RoomGrid per knownRoom, no property-level aggregation",
         "apps/reception/src/hooks/data/roomgrid/useGridData.ts — allRoomData computed per room; could be aggregated",
         "coverage-hint: UI, testing, performance-reliability"
       ],
-      "created_at": "2026-03-14T19:00:00.000Z"
+      "created_at": "2026-03-14T19:00:00.000Z",
+      "processed_by": {
+        "target_path": "docs/plans/reception-roomgrid-occupancy-strip/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-roomgrid-occupancy-strip"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-roomgrid-occupancy-strip/plan.md",
+        "completed_at": "2026-03-14T13:12:14.088Z",
+        "outcome": "Added OccupancyStrip component showing occupied/total rooms count on rooms-grid page"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -33707,10 +33739,10 @@
         "/email-automation"
       ],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.97,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: button labels say Send but no email is sent; success toast says Logged which reads as email-sent confirmation",
         "apps/reception/src/components/emailAutomation/EmailProgressLists.tsx — button label strings",
@@ -33721,7 +33753,14 @@
       "processed_by": {
         "target_path": "docs/plans/reception-email-automation-fixes/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-email-automation-fixes",
+        "fact_find_slug": "reception-email-automation-fixes"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-email-automation-fixes/plan.md",
+        "completed_at": "2026-03-14T12:05:46.111Z",
+        "outcome": "Completed via reception-email-automation-fixes."
       }
     },
     {

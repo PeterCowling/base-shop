@@ -97,10 +97,12 @@ export default function useEmailProgressActions() {
           continue;
         }
 
-        // Write activity
+        // Write activity — skip the email-draft side-effect because this page
+        // tracks manual staff actions; automated draft creation is not intended here.
         const addResult = (await addActivity(
           occupantId,
-          nextCode
+          nextCode,
+          { skipEmailSend: true }
         )) as ActivityResult;
 
         if (!addResult?.success) {
@@ -145,7 +147,8 @@ export default function useEmailProgressActions() {
 
         const addResult = (await addActivity(
           occupantId,
-          confirmCode
+          confirmCode,
+          { skipEmailSend: true }
         )) as ActivityResult;
 
         if (!addResult?.success) {

@@ -266,7 +266,7 @@ function ActivityCodeSection({
 
                     <div>
                       <span className="text-foreground">{item.occupantName}</span>
-                      {item.lastActionedBy && (
+                      {item.currentCode > 1 && item.lastActionedBy && (
                         <p className="text-xs text-muted-foreground mt-0.5">
                           Last actioned by: {item.lastActionedBy}
                           {item.lastActionedAt && (

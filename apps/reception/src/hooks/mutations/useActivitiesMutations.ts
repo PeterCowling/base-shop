@@ -26,8 +26,13 @@ function generateActivityId(): string {
   return `act_${Date.now()}`;
 }
 
+export interface AddActivityOptions {
+  /** When true, suppresses the automatic guest-email side-effect (e.g. draft creation). */
+  skipEmailSend?: boolean;
+}
+
 type UseActivitiesMutationsReturn = MutationState<void> & {
-  addActivity: (occupantId: string, code: number) => Promise<ActivityResult>;
+  addActivity: (occupantId: string, code: number, options?: AddActivityOptions) => Promise<ActivityResult>;
   removeLastActivity: (occupantId: string, code: number) => Promise<ActivityResult>;
   saveActivity: (occupantId: string, activityData: ActivityDataInput) => Promise<ActivityResult>;
   logActivity: (occupantId: string, code: number) => Promise<void>;
@@ -126,7 +131,7 @@ export default function useActivitiesMutations(): UseActivitiesMutationsReturn {
    * Adds an activity to the database and returns an ActivityResult.
    */
   const addActivity = useCallback(
-    async (occupantId: string, code: number): Promise<ActivityResult> => {
+    async (occupantId: string, code: number, options?: AddActivityOptions): Promise<ActivityResult> => {
       setLoading(true);
       setError(null);
 
@@ -199,7 +204,9 @@ export default function useActivitiesMutations(): UseActivitiesMutationsReturn {
         };
 
         await update(ref(database), updates);
-        await maybeSendEmailGuest(occupantId, code);
+        if (!options?.skipEmailSend) {
+          await maybeSendEmailGuest(occupantId, code);
+        }
 
         setLoading(false);
         return {

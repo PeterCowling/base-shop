@@ -242,10 +242,10 @@ export default function useBookingEmail() {
       } catch (err) {
         const error = err as Error;
         console.error("❌ sendBookingEmail failed", error);
-        setMessage(error.message || "Failed to create email draft");
+        setMessage(error.message || "Failed to send email");
         return {
           ...emptyResult,
-          error: error.message || "Failed to create email draft",
+          error: error.message || "Failed to send email",
         };
       } finally {
         setLoading(false);

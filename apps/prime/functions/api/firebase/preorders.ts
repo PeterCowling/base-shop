@@ -30,6 +30,14 @@ interface PreorderNight {
   drink1: string;
   drink2: string;
   serviceDate?: string;
+  /** txnId of the placed breakfast bar order (backref; breakfast field is NOT overwritten) */
+  breakfastTxnId?: string;
+  /** Original pipe-delimited breakfast order string for human-readable display */
+  breakfastText?: string;
+  /** txnId of the placed evening drink bar order (drink1 field is NOT overwritten) */
+  drink1Txn?: string;
+  /** Original pipe-delimited drink order string for human-readable display */
+  drink1Text?: string;
 }
 
 interface PreorderRequestBody {

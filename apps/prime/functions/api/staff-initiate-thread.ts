@@ -5,6 +5,7 @@ import {
   isActorClaimsResponse,
   resolveActorClaims,
 } from '../lib/actor-claims-resolver';
+import { enforceBroadcastRoleGate } from '../lib/broadcast-role-gate';
 import { errorResponse, type FirebaseEnv, jsonResponse } from '../lib/firebase-rest';
 import { getPrimeMessagingDb, hasPrimeMessagingDb } from '../lib/prime-messaging-db';
 import { upsertPrimeMessageThread } from '../lib/prime-messaging-repositories';
@@ -33,7 +34,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (isActorClaimsResponse(claimsResult)) {
     return claimsResult;
   }
-  const { uid: actorUid } = claimsResult;
+  const { uid: actorUid, roles } = claimsResult;
+
+  const roleGate = enforceBroadcastRoleGate(roles, actorUid);
+  if (roleGate) {
+    return roleGate;
+  }
 
   if (!hasPrimeMessagingDb(env)) {
     return errorResponse('PRIME_MESSAGING_DB binding is required for Prime review writes', 503); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]

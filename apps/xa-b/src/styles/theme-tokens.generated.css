@@ -1,0 +1,120 @@
+:root {
+  color-scheme: light;
+
+  /* Profile */
+  --theme-transition-duration: 180ms;
+
+  /* Fonts */
+  --font-sans: var(--font-atelier-sans, "Work Sans", "Helvetica Neue", Arial, sans-serif);
+  --font-mono: var(--font-atelier-mono, "IBM Plex Mono", ui-monospace, monospace);
+
+  /* Derived */
+  --xa-swatch-black: #0f0f0f;
+  --xa-swatch-ivory: #f3f0e8;
+  --xa-swatch-cream: #f4efe4;
+  --xa-swatch-camel: #b88963;
+  --xa-swatch-brown: #7c5a41;
+  --xa-swatch-navy: #1f2a44;
+  --xa-swatch-gold: #d3b26a;
+  --xa-swatch-graphite: #3b3f46;
+  --xa-swatch-tan: #c08a58;
+  --xa-swatch-charcoal: #2b2d31;
+  --xa-swatch-bone: #efe9dd;
+  --xa-swatch-silver: #c9c9c9;
+  --xa-swatch-indigo: #2d3c5a;
+  --xa-swatch-white: #ffffff;
+  --xa-swatch-fallback: #e5e5e5;
+  --xa-swatch-filter-fallback: #f5f5f5;
+  --xa-fab-bg: 158 18% 30%;
+  --xa-fab-fg: 0 0% 100%;
+  --xa-fab-hover: 158 18% 24%;
+  --color-bg: 0 0% 100%;
+  --color-fg: 0 0% 8%;
+  --color-fg-muted: 0 0% 42%;
+  --color-muted: 0 0% 96%;
+  --color-muted-fg: 0 0% 20%;
+  --color-muted-border: 0 0% 86%;
+  --color-panel: 0 0% 98%;
+  --color-border: 0 0% 88%;
+  --color-border-muted: 0 0% 92%;
+  --color-border-strong: 0 0% 75%;
+  --border-control: 0 0% 55%;
+  --surface-1: 0 0% 100%;
+  --surface-2: 0 0% 98%;
+  --surface-3: 0 0% 95%;
+  --surface-input: 0 0% 100%;
+  --color-primary: 0 0% 6%;
+  --color-primary-fg: 0 0% 100%;
+  --color-primary-soft: 0 0% 96%;
+  --color-primary-hover: 0 0% 10%;
+  --color-primary-active: 0 0% 0%;
+  --color-accent: 0 0% 12%;
+  --color-accent-fg: 0 0% 100%;
+  --color-accent-soft: 0 0% 96%;
+  --color-link: 0 0% 8%;
+  --border-1: 0 0% 0% / 0.08;
+  --border-2: 0 0% 0% / 0.12;
+  --border-3: 0 0% 0% / 0.18;
+  --color-focus-ring: 0 0% 0%;
+  --ring: 0 0% 0%;
+  --ring-offset: 0 0% 100%;
+  --color-selection: 0 0% 90%;
+  --color-highlight: 0 0% 96%;
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 10px;
+  --radius-3xl: 12px;
+  --radius-4xl: 16px;
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --elevation-2: 0 3px 8px rgba(0, 0, 0, 0.08);
+  --elevation-3: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --elevation-4: 0 10px 24px rgba(0, 0, 0, 0.12);
+  --elevation-5: 0 16px 32px rgba(0, 0, 0, 0.14);
+  --font-body: var(--font-sans);
+  --font-heading-1: var(--font-sans);
+  --font-heading-2: var(--font-sans);
+}
+
+html.theme-dark {
+  color-scheme: dark;
+
+  /* Derived */
+  --color-bg: 0 0% 6%;
+  --color-fg: 0 0% 92%;
+  --color-fg-muted: 0 0% 60%;
+  --color-muted: 0 0% 12%;
+  --color-muted-fg: 0 0% 88%;
+  --color-muted-border: 0 0% 22%;
+  --color-panel: 0 0% 10%;
+  --color-border: 0 0% 24%;
+  --color-border-muted: 0 0% 18%;
+  --color-border-strong: 0 0% 38%;
+  --border-control: 0 0% 50%;
+  --surface-1: 0 0% 8%;
+  --surface-2: 0 0% 10%;
+  --surface-3: 0 0% 12%;
+  --surface-input: 0 0% 14%;
+  --color-primary: 0 0% 96%;
+  --color-primary-fg: 0 0% 8%;
+  --color-primary-soft: 0 0% 16%;
+  --color-primary-hover: 0 0% 90%;
+  --color-primary-active: 0 0% 100%;
+  --color-accent: 0 0% 88%;
+  --color-accent-fg: 0 0% 10%;
+  --color-accent-soft: 0 0% 14%;
+  --color-link: 0 0% 92%;
+  --border-1: 0 0% 100% / 0.08;
+  --border-2: 0 0% 100% / 0.14;
+  --border-3: 0 0% 100% / 0.22;
+  --color-focus-ring: 0 0% 100%;
+  --ring: 0 0% 100%;
+  --ring-offset: 0 0% 8%;
+  --color-selection: 0 0% 24%;
+  --color-highlight: 0 0% 12%;
+  --xa-fab-bg: 158 14% 68%;
+  --xa-fab-fg: 0 0% 8%;
+  --xa-fab-hover: 158 14% 74%;
+}

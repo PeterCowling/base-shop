@@ -4,29 +4,11 @@
 @import "../../../../packages/ui/src/styles/builder.css";
 @import "../../../../packages/ui/src/styles/typography.css";
 @import "../../../../packages/ui/src/styles/forms.css";
+@import "../styles/theme-tokens.generated.css";
 @import "./xa-cyber-atelier.css";
 @import "tw-animate-css";
 
 @import "tailwindcss";
-
-:root {
-  --xa-swatch-black: #0f0f0f;
-  --xa-swatch-ivory: #f3f0e8;
-  --xa-swatch-cream: #f4efe4;
-  --xa-swatch-camel: #b88963;
-  --xa-swatch-brown: #7c5a41;
-  --xa-swatch-navy: #1f2a44;
-  --xa-swatch-gold: #d3b26a;
-  --xa-swatch-graphite: #3b3f46;
-  --xa-swatch-tan: #c08a58;
-  --xa-swatch-charcoal: #2b2d31;
-  --xa-swatch-bone: #efe9dd;
-  --xa-swatch-silver: #c9c9c9;
-  --xa-swatch-indigo: #2d3c5a;
-  --xa-swatch-white: #ffffff;
-  --xa-swatch-fallback: #e5e5e5;
-  --xa-swatch-filter-fallback: #f5f5f5;
-}
 
 .xa-gate-theme {
   --xa-gate-bg: #ffffff;

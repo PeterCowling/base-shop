@@ -2,11 +2,11 @@
   "name": "@apps/xa-b",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3013",
+    "dev": "bash ../../scripts/dev/run-next-app.sh --port 3013",
     "build": "node ./scripts/build-xa.mjs",
     "start": "next start -p 3013",
     "lint": "eslint --cache --cache-location .eslintcache --no-error-on-unmatched-pattern src scripts functions",
-    "typecheck": "tsc -p tsconfig.json --noEmit --incremental --tsBuildInfoFile .typecheck.tsbuildinfo",
+    "typecheck": "bash ../../scripts/dev/run-next-app.sh --mode typecheck --port 3013 -- pnpm exec tsc -p tsconfig.json --noEmit --incremental --tsBuildInfoFile .typecheck.tsbuildinfo",
     "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs",
     "build:worker": "opennextjs-cloudflare build"
   },
@@ -23,6 +23,7 @@
     "@acme/ui": "workspace:*",
     "@acme/zod-utils": "workspace:*",
     "@themes/base": "workspace:*",
+    "@themes/xa-b": "workspace:*",
     "idb": "^8.0.3",
     "minisearch": "^7.2.0",
     "react": "19.2.1",

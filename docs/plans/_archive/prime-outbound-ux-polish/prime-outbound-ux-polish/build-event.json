@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "prime-outbound-ux-polish-20260314",
+  "feature_slug": "prime-outbound-ux-polish",
+  "emitted_at": "2026-03-14T11:00:00.000Z",
+  "why": "Broadcast send had no confirmation guard (accidental sends to all guests), no post-send refresh (inbox appeared stale after a broadcast), wrong character limit (server enforces 500 but UI allowed 2000), and raw API errors were exposed to staff as confusing system messages.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Reception staff can safely send Prime broadcasts with a confirmation prompt, correct character limit enforced in the browser, visible post-send thread refresh, and friendly error messages on failure.",
+    "source": "operator"
+  }
+}

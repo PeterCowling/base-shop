@@ -1,0 +1,136 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "xa-uploader-theme-token-compiler",
+  "source_artifact_path": "docs/plans/xa-uploader-theme-token-compiler/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "xa-uploader previously hand-authored its CSS custom properties directly in globals.css with no structured source of truth or automated parity check. The brikette three-layer system provides a proven pattern for making tokens refactorable from TypeScript and preventing silent drift. Retrofitting xa-uploader closes the gap.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "xa-uploader tokens are declared in TypeScript source files under `packages/themes/xa-uploader/`, compiled into a committed CSS file, and Jest parity tests guard against future divergence between source and generated output.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — path string fix; no CSS output changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "All visual coverage already provided by existing tests and committed CSS",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — fix unblocks governed test runner for both parity tests",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Without this fix, tests cannot be invoked via governed runner path",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A — reversible single-field JSON fix",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Rollback = revert string to `../../` (leaves tests broken again)",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The xa-uploader theme token compiler retrofit is almost entirely complete. The full three-layer system is in place: - `packages/themes/xa-uploader/src/assets.ts` — 14 plain-color `brandColors` entries + 3 alpha-channel tokens in `theme-css-config.ts` - `packages/themes/xa-uploader/src/design-profile.ts` — design profile - `packages/themes/xa-uploader/src/theme-css-config.ts` — all 17 tokens via `derivedVars.light`; `buildGateVars()` derives the 14 plain entries from `assets.brandColors`; 3 alpha entries hardcoded - `packages/themes/xa-uploader/src/post-process.ts` — `postProcessGateCSS()` shar",
+    "goals": [
+      "Fix the broken `../../scripts/tests/run-governed-test.sh` path in `packages/themes/xa-uploader/package.json` to `../../../scripts/tests/run-governed-test.sh`."
+    ],
+    "non_goals": [
+      "Authoring `packages/themes/xa-uploader/src/` files — these already exist and are correct.",
+      "Writing the generator script — already exists at `scripts/xa-uploader/generate-theme-tokens.ts`.",
+      "Producing the committed CSS file — already committed at `apps/xa-uploader/src/app/theme-tokens.generated.css`.",
+      "Wiring `globals.css` — already done (line 4: `@import \"./theme-tokens.generated.css\"`).",
+      "Writing the parity or coverage tests — already present in `packages/themes/xa-uploader/__tests__/`.",
+      "Dark-mode token extraction (`[data-theme=\"dark\"]` stays hand-authored in `globals.css`).",
+      "Any visual change to the xa-uploader app."
+    ],
+    "constraints": [
+      "`packages/themes/xa-uploader/` is 3 directory levels deep from repo root → correct governed test script relative path is `../../../scripts/tests/run-governed-test.sh`.",
+      "Tests are CI-only per `docs/testing-policy.md`. The test script path fix must be verified at plan level; test execution is CI-only."
+    ],
+    "assumptions": [
+      "All existing source files compile without type errors (validated in prior rounds; no changes needed)."
+    ],
+    "selected_approach": [],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Fix governed test script path in package.json",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "XS",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Fixed `packages/themes/xa-uploader/package.json` — `test` script uses `../../../scripts/tests/run-governed-test.sh`",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. Token authoring is a file-level concern. No multi-step operator workflow, CI lane, approval path, or deployment orchestration changes. The generator script is a local CLI tool producing a committed file. ---",
+      "areas": []
+    }
+  }
+}

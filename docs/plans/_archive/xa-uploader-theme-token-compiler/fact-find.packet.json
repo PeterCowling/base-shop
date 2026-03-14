@@ -1,0 +1,179 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "xa-uploader-theme-token-compiler",
+  "source_artifact_path": "docs/plans/xa-uploader-theme-token-compiler/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "xa-uploader currently hand-authors its CSS custom properties directly in globals.css with no structured source of truth or automated parity check. The brikette three-layer system provides a proven pattern for making tokens refactorable from TypeScript and preventing silent drift. Retrofitting xa-uploader closes the gap.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "xa-uploader tokens are declared in TypeScript source files under `packages/themes/xa-uploader/`, compiled into a committed CSS file, and a Jest parity test guards against future divergence between source and generated output.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "17 `--gate-*` CSS vars in globals.css :root; 20 files consume them via @utility classes",
+      "gap_or_implication": "Risk of value mismatch between generated CSS and hand-authored expectation",
+      "carry_forward_or_notes": "Parity test eliminates this risk; no visual change"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No interactive state changes — pure token compilation",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Theme tokens are static CSS values; no auth/PII surface",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No runtime telemetry surface — build-time only",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "No existing theme parity test for xa-uploader; brikette has strong parity test template",
+      "gap_or_implication": "Gap: zero coverage on token correctness",
+      "carry_forward_or_notes": "New parity test required in `packages/themes/xa-uploader/__tests__/`"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`ThemeCSSConfig` interface must be satisfied; committed `.generated.css` is a new persisted artifact",
+      "gap_or_implication": "Risk: package exports map or tsconfig paths misconfigured",
+      "carry_forward_or_notes": "Validate tsconfig path resolution works without changes (alias covers it)"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Generator script is a one-off CLI tool; no hot path",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Generated CSS replaces inline :root block; must be equivalent",
+      "gap_or_implication": "Risk: missed token or value mismatch causes visual regression",
+      "carry_forward_or_notes": "Parity test + visual diff during review covers this"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "xa-uploader currently declares ~17 CSS custom properties (`--gate-*`) directly inside its `globals.css` `:root` block. The brikette app has already been retrofitted with a three-layer generated theme system (`assets.ts` → `design-profile.ts` → `theme-css-config.ts` → `generateThemeCSS()` → committed `.generated.css` file + parity test). This fact-find investigates what is required to give xa-uploader the same structure, with a new `packages/themes/xa-uploader/` package, a generator script, and matching tests.",
+    "goals": [
+      "Create `packages/themes/xa-uploader/` as a new `@themes/xa-uploader` workspace package.",
+      "Define `assets.ts`, `design-profile.ts`, and `theme-css-config.ts` covering all 17 `:root` tokens.",
+      "Author a generator script that writes `apps/xa-uploader/src/app/theme-tokens.generated.css`.",
+      "Update `globals.css` to `@import` the generated file and remove the inline `:root` block.",
+      "Add a parity test (modelled on `packages/themes/brikette/__tests__/generated-parity.test.ts`) that validates the compiled output matches the committed `.generated.css`.",
+      "Keep the `[data-theme=\"dark\"]` override block in `globals.css` as-is; it is application-level presentation logic, not brand tokens."
+    ],
+    "non_goals": [
+      "Dark-mode token extraction: the `[data-theme=\"dark\"]` block uses `--gate-*` overrides but xa-uploader is stated as light-mode only for the compiler layer. Dark overrides remain hand-authored in `globals.css`.",
+      "Changing any visual appearance of the xa-uploader app.",
+      "Migrating to Turbopack (app is on `--webpack`).",
+      "Changing the 20+ `@utility` classes or the `@keyframes pulse-slow` block in `globals.css`; those are application-layer CSS, not theme tokens."
+    ],
+    "constraints": [
+      "xa-uploader uses `--webpack` (not Turbopack), consistent with how other non-turbopack apps in the monorepo are configured."
+    ],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/xa-uploader/src/app/globals.css` — sole location of all `--gate-*` CSS custom properties; also contains `@utility` class definitions and `[data-theme=\"dark\"]` overrides",
+      "`packages/themes/brikette/src/theme-css-config.ts` — reference implementation for the compiler mapping layer",
+      "`packages/themes/base/src/build-theme-css.ts` — the `generateThemeCSS()` compiler; exported from `@themes/base`",
+      "`scripts/brikette/generate-theme-tokens.ts` — generator script pattern to replicate for xa-uploader",
+      "`packages/themes/brikette/__tests__/generated-parity.test.ts` — parity test pattern to replicate"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-planning"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Token surface (globals.css :root)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Naming mismatch (--gate-* vs --color-gate-*)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Correctness, Advisory]: `colorVarMap` would produce wrong var names; requires `derivedVars.light` approach",
+        "Resolution Required": "No — resolved in fact-find"
+      },
+      {
+        "Scope Area": "Generator script extras (color-scheme, profile vars, .dark block)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Correctness, Major]: compiler always emits `color-scheme` declarations and `--theme-transition-duration`; script must post-process to strip these",
+        "Resolution Required": "No — resolved: generator script post-processes output"
+      },
+      {
+        "Scope Area": "brandColors duplication risk",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Correctness, Major]: `derivedVars.light` must reference brandColors values (not duplicate as string literals) to preserve single source of truth",
+        "Resolution Required": "No — resolved: config uses `Object.entries(assets.brandColors)` to populate derivedVars"
+      },
+      {
+        "Scope Area": "Package test script",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Correctness, Advisory]: brikette has no \"test\" script; new package must add one explicitly",
+        "Resolution Required": "No — resolved: task seed updated"
+      },
+      {
+        "Scope Area": "Package creation prerequisites",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — alias, deps, pnpm workspace all already cover new package",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test pattern portability",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — brikette parity test is a direct template",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Dark-mode scope boundary",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — dark block is application-layer, correctly excluded",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Blast radius on 20 component files",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — derivedVars approach requires zero component changes",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "fonts: {} requirement",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Correctness, Minor]: ThemeAssets requires fonts field; `fonts: {}` must be explicit in assets.ts",
+        "Resolution Required": "No — resolved: task seed updated"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only. Token authoring is a file-level concern. There is no multi-step operator workflow, CI lane, approval path, or deployment orchestration change involved. The generator script will be invoked locally (like `pnpm --filter scripts brikette:generate-theme-tokens`) and the generated CSS is committed. No CI gate changes are required. ---",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

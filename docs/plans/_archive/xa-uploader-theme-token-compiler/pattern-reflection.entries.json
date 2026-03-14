@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-14T20:33:14.306Z",
+  "plan_slug": "xa-uploader-theme-token-compiler",
+  "review_cycle_key": "xa-uploader-theme-token-compiler",
+  "source_path": "docs/plans/xa-uploader-theme-token-compiler/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

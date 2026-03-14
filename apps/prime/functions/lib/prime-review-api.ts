@@ -1,3 +1,4 @@
+import { type PrimeReviewChannel } from '@acme/lib/prime';
 import type { D1Database } from '@acme/platform-core/d1';
 
 import type {
@@ -27,7 +28,7 @@ import {
   serializePrimeReviewCampaignSummary,
 } from './prime-review-campaigns';
 
-export type PrimeReviewChannel = 'prime_direct' | 'prime_broadcast';
+export type { PrimeReviewChannel };
 export type PrimeReviewLane = 'support' | 'promotion';
 
 export type PrimeReviewThreadSummary = {
@@ -145,7 +146,13 @@ function parseJsonArray<T>(raw: string | null): T[] | null {
 }
 
 function resolveChannel(thread: Pick<PrimeMessageThreadRow, 'channel_type'>): PrimeReviewChannel {
-  return thread.channel_type === 'broadcast' ? 'prime_broadcast' : 'prime_direct';
+  if (thread.channel_type === 'broadcast') {
+    return 'prime_broadcast';
+  }
+  if (thread.channel_type === 'activity') {
+    return 'prime_activity';
+  }
+  return 'prime_direct';
 }
 
 function resolveLane(channel: PrimeReviewChannel): PrimeReviewLane {
@@ -157,9 +164,13 @@ function defaultSubject(row: Pick<PrimeMessageThreadRow, 'channel_type' | 'booki
     return row.title.trim();
   }
 
-  return row.channel_type === 'broadcast'
-    ? `Prime broadcast ${row.booking_id}`
-    : `Prime guest chat ${row.booking_id}`;
+  if (row.channel_type === 'broadcast') {
+    return `Prime broadcast ${row.booking_id}`;
+  }
+  if (row.channel_type === 'activity') {
+    return 'Activity chat'; // i18n-exempt -- PRIME-101 [ttl=2026-12-31]
+  }
+  return `Prime guest chat ${row.booking_id}`;
 }
 
 function serializeSummary(row: PrimeReviewThreadListRow): PrimeReviewThreadSummary {

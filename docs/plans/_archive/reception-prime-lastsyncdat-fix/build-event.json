@@ -1,0 +1,14 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-prime-lastsyncdat-fix",
+  "business_unit": "BRIK",
+  "completed_date": "2026-03-14",
+  "outcome_contract": {
+    "why": "The stale-sync inbox filter is unreliable for Prime threads because lastSyncedAt is always null, causing every Prime thread to match the filter regardless of freshness. Fixing this makes the filter useful for its intended purpose: surfacing threads that genuinely need attention.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Stale-sync inbox filter correctly excludes Prime threads whose updatedAt is within the freshness window; the filter is only triggered for genuinely stale Prime threads.",
+    "source": "auto",
+    "why_source": "auto"
+  },
+  "emitted_at": "2026-03-14T20:32:01.842Z"
+}

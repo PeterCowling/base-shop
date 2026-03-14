@@ -64,7 +64,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     const result = await sendPrimeReviewCampaign(getPrimeMessagingDb(env), env, {
       campaignId,
       actorUid,
-      actorSource: 'reception_proxy',
+      actorSource: 'reception_staff',
     });
 
     if (result.outcome === 'not_found') {

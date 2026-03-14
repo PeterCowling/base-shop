@@ -63,7 +63,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     const result = await sendPrimeReviewThread(db, env, {
       threadId,
       actorUid,
-      actorSource: 'reception_proxy',
+      actorSource: 'reception_staff',
     });
 
     if (result.outcome === 'not_found') {

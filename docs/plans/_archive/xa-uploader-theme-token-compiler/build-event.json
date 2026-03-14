@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T20:29:31.604Z",
+  "why": "xa-uploader previously hand-authored its CSS custom properties directly in globals.css with no structured source of truth or automated parity check. The brikette three-layer system provides a proven pattern for making tokens refactorable from TypeScript and preventing silent drift. Retrofitting xa-uploader closes the gap."
+}

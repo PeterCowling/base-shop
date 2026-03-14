@@ -1,21 +1,77 @@
 {
-  "last_updated": "2026-03-14T20:09:18.645Z",
+  "last_updated": "2026-03-14T20:26:52.000Z",
   "counts": {
-    "enqueued": 76,
-    "processed": 34,
+    "enqueued": 74,
+    "processed": 35,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 419,
+    "completed": 421,
     "fact_find_ready": 46,
     "plan_ready": 0,
-    "micro_build_ready": 27,
+    "micro_build_ready": 25,
     "briefing_ready": 1,
-    "total": 739
+    "total": 740
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314202652-0001",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PLAT:STRATEGY:startup-loop-self-evolving-build-measurement-closure:20260314",
+      "anchor_key": "startup-loop-self-evolving-build-measurement-closure",
+      "cluster_key": "PLAT:STRATEGY:startup-loop-self-evolving-build-measurement-closure:operator:20260314",
+      "cluster_fingerprint": "startup-loop-self-evolving-build-measurement-closure-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT — Finished self-improving work still does not feed back measured proof, so promotions stall",
+      "location_anchors": [
+        "scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts",
+        "docs/plans/_templates/build-record.user.md",
+        "docs/business-os/startup-loop/contracts/loop-output-contracts.md",
+        ".claude/skills/lp-do-build/SKILL.md",
+        "scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "Queue completion can already write verified self-evolving measurements, but lp-do-build has no canonical build-record section or automatic extraction path to supply them. Completed self-evolving builds therefore usually mature as pending or missing measurement, and promotion gates keep holding on proof.",
+      "next_scope_now": "Define a canonical build-record self-evolving measurement section, auto-extract it during queue-state completion, and validate the bridge with focused tests so finished builds can close with verified proof when they have it.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: build workflow cannot yet hand canonical verified self-evolving proof into queue completion even though the closure writer already supports it",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts",
+        "docs/plans/_templates/build-record.user.md",
+        "docs/business-os/startup-loop/contracts/loop-output-contracts.md",
+        ".claude/skills/lp-do-build/SKILL.md",
+        "scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts",
+        "coverage-hint: observability",
+        "coverage-hint: testing",
+        "coverage-hint: data-contracts"
+      ],
+      "created_at": "2026-03-14T20:26:52.000Z",
+      "queue_state": "processed",
+      "why": "Finished self-improving work can already close with measured proof lower down in the stack, but the normal build workflow still has nowhere canonical to put that proof. The result is that completed work looks done to humans but still counts as unobserved to the loop. Fixing this lets real build outcomes become usable evidence instead of maturity debt.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Finished self-evolving builds can carry a canonical verified-measurement block in build-record.user.md, and queue-state completion automatically converts that block into verified self-evolving outcome closure.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-loop-self-evolving-build-measurement-closure",
+        "target_path": "docs/plans/startup-loop-self-evolving-build-measurement-closure/fact-find.md",
+        "processed_at": "2026-03-14T20:26:52.000Z",
+        "fact_find_slug": "startup-loop-self-evolving-build-measurement-closure",
+        "fact_find_path": "docs/plans/startup-loop-self-evolving-build-measurement-closure/fact-find.md"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260314161500-0001",
@@ -36263,6 +36319,11 @@
         "type": "operational",
         "statement": "The fake identity fallback is removed or replaced with a hard rejection. All message operations record a real staff UID in the audit trail. Broadcasts fail with a clear error rather than silently, and the compat path is removed once confirmed safe.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_path": "docs/plans/reception-prime-actor-claims-compat/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
       }
     },
     {
@@ -36367,7 +36428,7 @@
       "current_truth": "activity-message.ts uses ctx.waitUntil() for the D1 shadow write, making it fire-and-forget. Any D1 failure is swallowed silently — no log entry, no alerting. Staff may see activity threads missing from the reception inbox with no indication of why.",
       "next_scope_now": "Add a try/catch around the shadow write that emits a structured console.error log on failure. Do not throw — the guest must continue to receive 200. Log enough context to diagnose: thread ID, error message, timestamp.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -36376,7 +36437,7 @@
         "apps/prime/functions/lib/prime-messaging-shadow-write.ts"
       ],
       "created_at": "2026-03-14T20:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Guest activity messages are saved to the live database immediately, then saved to a second database (D1) as a background job so staff can see them in the inbox. If the D1 write fails, there is no error in the logs — staff can't tell whether a missing thread is a genuine gap or a known transient failure.",
       "intended_outcome": {
         "type": "operational",
@@ -36386,7 +36447,14 @@
       "processed_by": {
         "target_path": "docs/plans/reception-prime-shadow-write-logging/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-prime-shadow-write-logging",
+        "fact_find_slug": "reception-prime-shadow-write-logging"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-prime-shadow-write-logging/plan.md",
+        "completed_at": "2026-03-14T20:11:41.799Z",
+        "outcome": "**TASK-01** (S-effort): Replaced the bare `console.error(msg, rawError)` in the D1 shadow-write catch block of `apps/prime/functions/api/activity-message.ts` with a structured two-argument call: `console.error(msg, { threadId: channelId, ch"
       }
     },
     {
@@ -36502,7 +36570,7 @@
       "current_truth": "primeRequest() makes a single fetch call with no retry. Any transient error from the Prime Cloudflare deployment causes an immediate throw. The reception inbox Prime column shows an error state until the next page reload, with no automatic recovery.",
       "next_scope_now": "Add one retry with a short delay (e.g. 300ms) after an initial failure in primeRequest(). Preserve the existing error throw behaviour if the retry also fails.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.85,
       "evidence_refs": [
@@ -36510,7 +36578,7 @@
         "apps/reception/src/lib/inbox/prime-review.server.ts"
       ],
       "created_at": "2026-03-14T20:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Transient network errors between the reception server and the Prime messaging service are rare but inevitable. A single retry recovers from most of them automatically, without staff seeing an error state at all.",
       "intended_outcome": {
         "type": "operational",
@@ -36520,7 +36588,14 @@
       "processed_by": {
         "target_path": "docs/plans/reception-prime-request-retry/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-prime-request-retry",
+        "fact_find_slug": "reception-prime-request-retry"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-prime-request-retry/plan.md",
+        "completed_at": "2026-03-14T20:11:30.068Z",
+        "outcome": "**TASK-01** — Added a one-retry mechanism to `listPrimeInboxThreadSummaries()`, the function that populates the Prime inbox column in the reception app. `primeRequest<T>()` was refactored to accept an optional `opts: { retry?: boolean }` pa"
       }
     }
   ]

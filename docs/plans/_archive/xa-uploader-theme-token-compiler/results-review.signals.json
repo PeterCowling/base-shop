@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-14T20:32:55.597Z",
+  "plan_slug": "xa-uploader-theme-token-compiler",
+  "review_cycle_key": "xa-uploader-theme-token-compiler",
+  "source_path": "docs/plans/xa-uploader-theme-token-compiler/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

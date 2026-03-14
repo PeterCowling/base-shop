@@ -1,0 +1,35 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-theme-token-compiler/fact-find.md",
+      "line": "194",
+      "message": "The test invocation guidance is still off-contract for this repo. `pnpm exec jest --config ...` is not the governed root runner, and the prescribed package `\"test\": \"jest\"` script bypasses the CI-only/governed Jest path the policy requires. Planning should point at the governed invocation contract instead of raw Jest."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-theme-token-compiler/fact-find.md",
+      "line": "281",
+      "message": "The proposed `toGateVars(colors: Record<string, string>)` helper does not match the real type of `assets.brandColors`, which is `Record<string, BrandColor | string>`. As written, `toGateVars(assets.brandColors)` will not type-check; the helper needs to normalize `BrandColor | string` to light-mode strings first."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-theme-token-compiler/fact-find.md",
+      "line": "230",
+      "message": "The new `coverage-parity.test.ts` only guards the 14 `brandColors`-backed entries. The 3 alpha-only tokens (`gate-border`, `gate-header-border`, `gate-header-accent`) still have no independent coverage, and `generated-parity.test.ts` reuses the same post-process helper as the generator, so a helper bug that drops one of those vars could pass both tests. The coverage contract needs to include all 17 emitted vars, not just the brand-color bridge."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1",
+  "usage": {
+    "inputTokens": 22506423,
+    "outputTokens": 98056,
+    "totalTokens": 22604479,
+    "costUsd": 0
+  },
+  "durationMs": 148099
+}

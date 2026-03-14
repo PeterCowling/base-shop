@@ -1,19 +1,19 @@
 {
-  "last_updated": "2026-03-14T15:41:34.812Z",
+  "last_updated": "2026-03-14T15:51:09.703Z",
   "counts": {
-    "enqueued": 63,
+    "enqueued": 64,
     "processed": 33,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 396,
+    "completed": 397,
     "fact_find_ready": 37,
     "plan_ready": 0,
-    "micro_build_ready": 23,
+    "micro_build_ready": 24,
     "briefing_ready": 1,
-    "total": 702
+    "total": 704
   },
   "dispatches": [
     {
@@ -34709,7 +34709,7 @@
       "next_scope_now": "Pass the already-rounded nightly rate to the modal (roundDownTo50Cents applied at the call site in Extension.tsx) so the modal always works from the same figure staff see in the table.",
       "adjacent_later": [],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.95,
       "evidence_refs": [
@@ -34719,12 +34719,25 @@
         "coverage-hint: unit test for ExtensionPayModal with multi-night nightlyRate"
       ],
       "created_at": "2026-03-14T17:18:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Staff see one nightly rate in the table and a different total in the modal when extending for more than one night. They have to recalculate manually to decide how much to charge the guest, which slows them down and risks collecting the wrong amount.",
       "intended_outcome": {
         "type": "operational",
         "statement": "The Collect amount in the extension modal always equals the displayed nightly rate multiplied by the number of extension nights, with no rounding discrepancy.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-extension-collect-amount-mismatch",
+        "target_path": "docs/plans/reception-extension-collect-amount-mismatch/micro-build.md",
+        "processed_at": "2026-03-14T17:18:00.000Z",
+        "route": "dispatch-routed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-extension-collect-amount-mismatch/micro-build.md",
+        "completed_at": "2026-03-14T15:51:09.702Z",
+        "outcome": "Modal collect amount now matches table display: passes rounded nightlyRate to ExtensionPayModal"
       }
     },
     {
@@ -34764,6 +34777,87 @@
         "statement": "The N/A button shows a tooltip telling staff the room has no availability for the requested dates, so they can act immediately without confusion.",
         "source": "operator"
       }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180000-PLAT-DSE-001",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "proposal-v3-approved",
+      "root_event_id": "IDEA-DISPATCH-20260314180000-PLAT-DSE-001",
+      "anchor_key": "plat-theme-expression-schema",
+      "cluster_key": "plat-design-system-creative-expressiveness",
+      "cluster_fingerprint": "plat-dsce-schema-profiles",
+      "lineage_depth": 0,
+      "area_anchor": "Platform — Apps cannot express their brand identity because the design system has no way to store art-direction choices",
+      "location_anchors": [
+        "packages/themes/base/src/",
+        "packages/themes/caryina/src/",
+        "packages/themes/reception/src/"
+      ],
+      "provisional_deliverable_family": "design",
+      "current_truth": "Theme packages only contain raw token overrides (HSL triplets). No schema exists for brand assets, design profiles, or surface recipes.",
+      "next_scope_now": "Define ThemeAssets, DesignProfile, and ThemeRecipes TypeScript interfaces. Create assets.ts, design-profile.ts, and recipes.ts for base, caryina, and reception themes.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: no schema or data files exist for brand assets, design profiles, or recipes",
+        "docs/proposals/design-system-creative-expressiveness.md",
+        "docs/audits/2026-03-14-design-system-theming-audit.md"
+      ],
+      "why": "Every app looks the same because the theming system can only store colour values, not the broader creative choices that make a brand recognisable. Agents default to the same rounded cards and blue buttons regardless of the brand.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "ThemeAssets, DesignProfile, and ThemeRecipes interfaces exist with populated data files for base, caryina, and reception themes. Typecheck passes.",
+        "source": "operator"
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:45:12.345Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314180000-PLAT-DSE-002",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "proposal-v3-approved",
+      "root_event_id": "IDEA-DISPATCH-20260314180000-PLAT-DSE-001",
+      "anchor_key": "plat-agent-skill-design-expressiveness",
+      "cluster_key": "plat-design-system-creative-expressiveness",
+      "cluster_fingerprint": "plat-dsce-skill-updates",
+      "lineage_depth": 0,
+      "area_anchor": "Platform — Agents produce generic-looking UI because skills restrict every creative lever to token defaults",
+      "location_anchors": [
+        ".claude/skills/frontend-design/SKILL.md",
+        ".claude/skills/tools-design-system/SKILL.md",
+        ".claude/skills/lp-design-spec/SKILL.md"
+      ],
+      "provisional_deliverable_family": "design",
+      "current_truth": "Agent skills enforce generic token usage and explicitly discourage creative choices. Skills do not reference design profiles, theme assets, recipes, or surface modes.",
+      "next_scope_now": "Update frontend-design, tools-design-system, and lp-design-spec skills with profile/asset/recipe loading, surface mode selection, style movement translation table, and simplified two-rule precedence.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: skills enforce generic token usage",
+        "docs/proposals/design-system-creative-expressiveness.md"
+      ],
+      "why": "Agent skills actively discourage the creative choices that would make each brand distinctive. Requesting a specific style produces almost no visible change.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Agent skills reference design profiles, theme assets, and recipes as inputs. Style movement translation table and surface mode selection criteria documented.",
+        "source": "operator"
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:45:12.346Z"
     }
   ]
 }

@@ -16,6 +16,21 @@ import {
   upsertPrimeMessageThread,
 } from './prime-messaging-repositories';
 
+export interface ShadowWritePrimeInboundActivityMessageInput {
+  threadId: string;
+  activityId: string;
+  senderId: string;
+  senderName?: string | null;
+  content: string;
+  messageId: string;
+  createdAt: number;
+}
+
+export interface ShadowWritePrimeInboundActivityMessageResult {
+  persisted: boolean;
+  admissionDecision: PrimeMessageAdmissionDecision | null;
+}
+
 export interface ShadowWritePrimeInboundDirectMessageInput {
   threadId: string;
   bookingId: string;
@@ -162,6 +177,92 @@ export async function shadowWritePrimeInboundDirectMessage(
     threadId: input.threadId,
     entityType: 'message',
     entityId: input.messageId,
+    // Firebase was already written inline by the API handler before shadow-write
+    // is called. The job record is an audit entry, not a work item — use
+    // 'projected' to reflect that projection already completed.
+    status: 'projected',
+    createdAt: input.createdAt,
+  });
+
+  return {
+    persisted: true,
+    admissionDecision: admission.decision,
+  };
+}
+
+export async function shadowWritePrimeInboundActivityMessage(
+  env: PrimeMessagingEnv,
+  input: ShadowWritePrimeInboundActivityMessageInput,
+): Promise<ShadowWritePrimeInboundActivityMessageResult> {
+  if (!hasPrimeMessagingDb(env)) {
+    return {
+      persisted: false,
+      admissionDecision: null,
+    };
+  }
+
+  const db = getPrimeMessagingDb(env);
+  const existingThread = await getPrimeMessageThread(db, input.threadId);
+  const admission = resolveAdmissionDecision(existingThread);
+
+  await upsertPrimeMessageThread(db, {
+    id: input.threadId,
+    bookingId: 'activity',
+    channelType: 'activity',
+    audience: 'whole_hostel',
+    memberUids: [input.senderId],
+    title: existingThread?.title ?? null,
+    latestMessageAt: input.createdAt,
+    latestInboundMessageAt: input.createdAt,
+    lastStaffReplyAt: existingThread?.last_staff_reply_at ?? null,
+    takeoverState: existingThread?.takeover_state ?? 'automated',
+    reviewStatus: resolveReviewStatus(admission.decision),
+    suppressionReason: existingThread?.suppression_reason ?? null,
+    metadata: {
+      shadowWriteTransport: 'firebase',
+      activityChannelId: input.activityId,
+      lastSenderId: input.senderId,
+    },
+    createdAt: existingThread?.created_at ?? input.createdAt,
+    updatedAt: input.createdAt,
+  });
+
+  await createPrimeMessage(db, {
+    id: input.messageId,
+    threadId: input.threadId,
+    senderId: input.senderId,
+    senderRole: 'guest',
+    senderName: input.senderName ?? null,
+    content: input.content,
+    kind: 'support',
+    audience: 'whole_hostel',
+    createdAt: input.createdAt,
+  });
+
+  await recordPrimeMessageAdmission(db, {
+    threadId: input.threadId,
+    decision: admission.decision,
+    reason: admission.reason,
+    source: 'guest_activity_message',
+    sourceMetadata: {
+      messageId: input.messageId,
+      threadId: input.threadId,
+      activityId: input.activityId,
+      senderId: input.senderId,
+      transport: 'firebase_shadow_write',
+    },
+    createdAt: input.createdAt,
+  });
+
+  await enqueuePrimeProjectionJob(db, {
+    id: `proj_message_${input.messageId}`,
+    threadId: input.threadId,
+    entityType: 'message',
+    entityId: input.messageId,
+    // Firebase was already written inline by the API handler before shadow-write
+    // is called. The job record is an audit entry, not a work item — use
+    // 'projected' to reflect that projection already completed.
+    status: 'projected',
     createdAt: input.createdAt,
   });
 

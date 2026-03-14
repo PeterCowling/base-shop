@@ -562,6 +562,9 @@ describe('/api/direct-message', () => {
     expect(admissionInsert?.binds[4]).toBe('guest_direct_message');
     expect(projectionInsert?.binds[2]).toBe('message');
     expect(projectionInsert?.binds[3]).toBe(payload.messageId);
+    // Firebase is already written inline by the API handler before shadow-write —
+    // the projection job is an audit record, so status must be 'projected', not 'pending'.
+    expect(projectionInsert?.binds[5]).toBe('projected');
   });
 
   it('TC-09: existing staff-active takeover state records a manual_takeover admission in D1', async () => {

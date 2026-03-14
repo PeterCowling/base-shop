@@ -384,6 +384,9 @@ describe('/api/activity-message', () => {
 
     expect(projectionInsert?.binds[2]).toBe('message');
     expect(projectionInsert?.binds[3]).toBe(payload.messageId);
+    // Firebase is already written inline by the API handler before shadow-write —
+    // the projection job is an audit record, so status must be 'projected', not 'pending'.
+    expect(projectionInsert?.binds[5]).toBe('projected');
 
     // TC-EDGE-01: successful D1 shadow-write must NOT emit console.error
     expect(consoleSpy).not.toHaveBeenCalled();

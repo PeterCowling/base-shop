@@ -1,18 +1,17 @@
 /**
- * Tests for POST /api/mcp/inbox/prime-compose (TASK-07)
+ * Tests for POST /api/mcp/inbox/prime-compose (updated for single-hop staffBroadcastSend)
  *
- * TC-01: Valid auth + { text: "Hello" } + Prime returns OK → 200 { success: true }.
+ * TC-01: Valid auth + { text: "Hello" } + staffBroadcastSend returns OK → 200 { success: true }.
  * TC-02: No auth header → 401.
  * TC-03: Empty text → 400 "text is required".
- * TC-04: initiatePrimeOutboundThread returns null → 503 "Prime messaging not configured".
- * TC-05: sendPrimeInboxThread throws → 502 "Failed to send broadcast".
+ * TC-04: staffBroadcastSend returns null → 503 "Prime messaging not configured".
+ * TC-05: staffBroadcastSend throws → 502 "Failed to send broadcast".
  * TC-06: Success path → inbox event prime_broadcast_initiated recorded.
  */
 
 import {
   buildPrimeInboxThreadId,
-  initiatePrimeOutboundThread,
-  sendPrimeInboxThread,
+  staffBroadcastSend,
 } from "@/lib/inbox/prime-review.server";
 import { recordInboxEvent } from "@/lib/inbox/telemetry.server";
 
@@ -22,8 +21,7 @@ import { POST } from "./route";
 
 jest.mock("@/lib/inbox/prime-review.server", () => ({
   buildPrimeInboxThreadId: jest.fn(),
-  initiatePrimeOutboundThread: jest.fn(),
-  sendPrimeInboxThread: jest.fn(),
+  staffBroadcastSend: jest.fn(),
 }));
 
 jest.mock("@/lib/inbox/telemetry.server", () => ({
@@ -35,8 +33,7 @@ jest.mock("../../_shared/staff-auth", () => ({
 }));
 
 const mockRequireStaffAuth = jest.mocked(requireStaffAuth);
-const mockInitiatePrimeOutboundThread = jest.mocked(initiatePrimeOutboundThread);
-const mockSendPrimeInboxThread = jest.mocked(sendPrimeInboxThread);
+const mockStaffBroadcastSend = jest.mocked(staffBroadcastSend);
 const mockBuildPrimeInboxThreadId = jest.mocked(buildPrimeInboxThreadId);
 const mockRecordInboxEvent = jest.mocked(recordInboxEvent);
 
@@ -59,42 +56,17 @@ function mockAuthOk(uid = "staff-uid-123") {
   });
 }
 
-const mockThreadDetail = {
-  thread: {
-    id: "broadcast_whole_hostel",
-    channel: "prime_broadcast" as const,
-    lane: "promotion" as const,
-    reviewStatus: "pending" as const,
-    subject: null,
-    snippet: null,
-    latestMessageAt: null,
-    updatedAt: "2026-03-14T00:00:00.000Z",
-    latestAdmissionDecision: null,
-    latestAdmissionReason: null,
-    bookingId: "",
-    takeoverState: "none",
-    suppressionReason: null,
-    memberUids: [],
-  },
-  messages: [],
-  admissions: [],
-  currentDraft: null,
-  currentCampaign: null,
-  metadata: {},
-};
-
-describe("POST /api/mcp/inbox/prime-compose (TASK-07)", () => {
+describe("POST /api/mcp/inbox/prime-compose", () => {
   beforeEach(() => {
     jest.resetAllMocks();
     mockBuildPrimeInboxThreadId.mockReturnValue("prime:broadcast_whole_hostel");
   });
 
   describe("TC-01: Valid auth + text + Prime OK → 200 { success: true }", () => {
-    it("returns 200 with success: true when Prime initiate and send succeed", async () => {
+    it("returns 200 with success: true when staffBroadcastSend succeeds", async () => {
       mockAuthOk();
-      mockInitiatePrimeOutboundThread.mockResolvedValue({ detail: mockThreadDetail });
-      mockSendPrimeInboxThread.mockResolvedValue({ draft: null, sentMessageId: null });
-      mockRecordInboxEvent.mockResolvedValue(undefined as any);
+      mockStaffBroadcastSend.mockResolvedValue({ sentMessageId: "msg_123" });
+      mockRecordInboxEvent.mockResolvedValue(undefined as never);
 
       const response = await POST(buildRequest({ text: "Hello hostel!" }));
       const body = await response.json();
@@ -102,25 +74,21 @@ describe("POST /api/mcp/inbox/prime-compose (TASK-07)", () => {
       expect(response.status).toBe(200);
       expect(body).toEqual({ success: true });
 
-      expect(mockInitiatePrimeOutboundThread).toHaveBeenCalledWith({
+      expect(mockStaffBroadcastSend).toHaveBeenCalledWith({
         text: "Hello hostel!",
         actorUid: "staff-uid-123",
+        roles: ["owner"],
       });
-      expect(mockSendPrimeInboxThread).toHaveBeenCalledWith(
-        "prime:broadcast_whole_hostel",
-        "staff-uid-123",
-      );
     });
 
-    it("trims whitespace from text before passing to initiate", async () => {
+    it("trims whitespace from text before passing to staffBroadcastSend", async () => {
       mockAuthOk();
-      mockInitiatePrimeOutboundThread.mockResolvedValue({ detail: mockThreadDetail });
-      mockSendPrimeInboxThread.mockResolvedValue({ draft: null, sentMessageId: null });
-      mockRecordInboxEvent.mockResolvedValue(undefined as any);
+      mockStaffBroadcastSend.mockResolvedValue({ sentMessageId: null });
+      mockRecordInboxEvent.mockResolvedValue(undefined as never);
 
       await POST(buildRequest({ text: "  padded text  " }));
 
-      expect(mockInitiatePrimeOutboundThread).toHaveBeenCalledWith(
+      expect(mockStaffBroadcastSend).toHaveBeenCalledWith(
         expect.objectContaining({ text: "padded text" }),
       );
     });
@@ -139,7 +107,7 @@ describe("POST /api/mcp/inbox/prime-compose (TASK-07)", () => {
       const response = await POST(buildRequest({ text: "Hello" }));
 
       expect(response.status).toBe(401);
-      expect(mockInitiatePrimeOutboundThread).not.toHaveBeenCalled();
+      expect(mockStaffBroadcastSend).not.toHaveBeenCalled();
     });
   });
 
@@ -152,7 +120,7 @@ describe("POST /api/mcp/inbox/prime-compose (TASK-07)", () => {
 
       expect(response.status).toBe(400);
       expect(body.error).toBe("text is required");
-      expect(mockInitiatePrimeOutboundThread).not.toHaveBeenCalled();
+      expect(mockStaffBroadcastSend).not.toHaveBeenCalled();
     });
 
     it("returns 400 when text is whitespace-only", async () => {
@@ -176,36 +144,23 @@ describe("POST /api/mcp/inbox/prime-compose (TASK-07)", () => {
     });
   });
 
-  describe("TC-04: initiatePrimeOutboundThread returns null → 503", () => {
-    it("returns 503 when Prime config is absent (initiate returns null)", async () => {
+  describe("TC-04: staffBroadcastSend returns null → 503", () => {
+    it("returns 503 when Prime config is absent (staffBroadcastSend returns null)", async () => {
       mockAuthOk();
-      mockInitiatePrimeOutboundThread.mockResolvedValue(null);
+      mockStaffBroadcastSend.mockResolvedValue(null);
 
       const response = await POST(buildRequest({ text: "Hello" }));
       const body = await response.json();
 
       expect(response.status).toBe(503);
       expect(body.error).toBe("Prime messaging not configured");
-      expect(mockSendPrimeInboxThread).not.toHaveBeenCalled();
     });
   });
 
-  describe("TC-05: sendPrimeInboxThread throws → 502", () => {
-    it("returns 502 when send step throws", async () => {
+  describe("TC-05: staffBroadcastSend throws → 502", () => {
+    it("returns 502 when staffBroadcastSend throws", async () => {
       mockAuthOk();
-      mockInitiatePrimeOutboundThread.mockResolvedValue({ detail: mockThreadDetail });
-      mockSendPrimeInboxThread.mockRejectedValue(new Error("Failed to reach Prime messaging service"));
-
-      const response = await POST(buildRequest({ text: "Hello" }));
-      const body = await response.json();
-
-      expect(response.status).toBe(502);
-      expect(body.error).toBe("Failed to send broadcast");
-    });
-
-    it("returns 502 when initiate throws", async () => {
-      mockAuthOk();
-      mockInitiatePrimeOutboundThread.mockRejectedValue(new Error("Prime down"));
+      mockStaffBroadcastSend.mockRejectedValue(new Error("Failed to reach Prime messaging service"));
 
       const response = await POST(buildRequest({ text: "Hello" }));
       const body = await response.json();
@@ -216,15 +171,14 @@ describe("POST /api/mcp/inbox/prime-compose (TASK-07)", () => {
   });
 
   describe("TC-06: Success path → prime_broadcast_initiated event recorded", () => {
-    it("records prime_broadcast_initiated event with actor uid on success", async () => {
+    it("records prime_broadcast_initiated event with actor uid and correct threadId on success", async () => {
       mockAuthOk("staff-abc");
-      mockInitiatePrimeOutboundThread.mockResolvedValue({ detail: mockThreadDetail });
-      mockSendPrimeInboxThread.mockResolvedValue({ draft: null, sentMessageId: null });
-      mockRecordInboxEvent.mockResolvedValue(undefined as any);
+      mockStaffBroadcastSend.mockResolvedValue({ sentMessageId: "msg_xyz" });
+      mockRecordInboxEvent.mockResolvedValue(undefined as never);
 
       await POST(buildRequest({ text: "Hello hostel team!" }));
 
-      // Allow void promise to settle
+      // Allow fire-and-forget void promise to settle
       await Promise.resolve();
 
       expect(mockRecordInboxEvent).toHaveBeenCalledWith(
@@ -234,6 +188,16 @@ describe("POST /api/mcp/inbox/prime-compose (TASK-07)", () => {
           actorUid: "staff-abc",
         }),
       );
+    });
+
+    it("uses buildPrimeInboxThreadId with literal broadcast_whole_hostel for telemetry threadId", async () => {
+      mockAuthOk();
+      mockStaffBroadcastSend.mockResolvedValue({ sentMessageId: null });
+      mockRecordInboxEvent.mockResolvedValue(undefined as never);
+
+      await POST(buildRequest({ text: "Thread id test" }));
+
+      expect(mockBuildPrimeInboxThreadId).toHaveBeenCalledWith("broadcast_whole_hostel");
     });
   });
 });

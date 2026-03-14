@@ -7,6 +7,7 @@ export function SiteFooter({ lang }: { lang: string }) {
   const chrome = getChromeContent(lang as "en" | "de" | "it");
 
   const footerLinks: Array<{ href: string; label: string }> = [
+    { href: "about", label: chrome.footer.about },
     { href: "terms", label: chrome.footer.terms },
     { href: "privacy", label: chrome.footer.privacy },
     { href: "cookie-policy", label: chrome.footer.cookie },

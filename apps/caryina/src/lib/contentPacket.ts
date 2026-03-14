@@ -38,10 +38,12 @@ interface AboutContent {
 interface ChromeContent {
   header: {
     shop: LocalizedText;
+    about: LocalizedText;
     support: LocalizedText;
     navAriaLabel: LocalizedText;
   };
   footer: {
+    about: LocalizedText;
     terms: LocalizedText;
     privacy: LocalizedText;
     cookie: LocalizedText;
@@ -460,10 +462,12 @@ export function getPolicyContent(
 const CHROME_DEFAULTS: ChromeContent = {
   header: {
     shop: { en: "Shop", de: "Shop", it: "Shop" },
+    about: { en: "About", de: "Über uns", it: "Chi siamo" },
     support: { en: "Support", de: "Support", it: "Supporto" },
     navAriaLabel: { en: "Primary", de: "Hauptnavigation", it: "Navigazione principale" },
   },
   footer: {
+    about: { en: "About", de: "Über uns", it: "Chi siamo" },
     terms: { en: "Terms", de: "AGB", it: "Termini" },
     privacy: { en: "Privacy", de: "Datenschutz", it: "Privacy" },
     cookie: { en: "Cookies", de: "Cookies", it: "Cookie" },
@@ -544,10 +548,12 @@ export function getChromeContent(locale: Locale) {
   return {
     header: {
       shop: localizedText(chrome.header.shop, locale),
+      about: localizedText(chrome.header.about, locale),
       support: localizedText(chrome.header.support, locale),
       navAriaLabel: localizedText(chrome.header.navAriaLabel, locale),
     },
     footer: {
+      about: localizedText(chrome.footer.about, locale),
       terms: localizedText(chrome.footer.terms, locale),
       privacy: localizedText(chrome.footer.privacy, locale),
       cookie: localizedText(chrome.footer.cookie, locale),

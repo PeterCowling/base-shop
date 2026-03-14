@@ -1,0 +1,140 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-source-field-consistency",
+  "source_artifact_path": "docs/plans/reception-prime-source-field-consistency/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "TBD",
+    "intended_outcome_type": "TBD",
+    "intended_outcome_statement": "TBD",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no rendering changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Server-side API model only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — field addition does not change any visible state",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Source field not rendered in UI currently",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no auth, input handling, or sensitive data affected",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Thread source label is non-sensitive metadata",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no logging changes needed for this field",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No audit trail impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — new unit tests confirm `source: \"email\"` on both code paths",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Tests added to existing test file",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required — field was always typed but never populated; fix completes the contract",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No schema or persistence changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — single field assignment, negligible overhead",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A — no migration, no flag; rollback is a one-line revert",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Two functions that build email inbox thread summaries — `buildThreadSummary` and `buildThreadSummaryFromRow` in `apps/reception/src/lib/inbox/api-models.server.ts` — never set the `source` field on the returned `InboxThreadSummaryApiModel`. The field was added with type `\"email\" | \"prime\"` and is correctly set to `\"prime\"` in the Prime adapter (`mapPrimeSummaryToInboxThread`), but is silently undefined for all email threads. Any downstream code checking `source` to identify email threads receives `undefined` instead of `\"email\"`. This single-task plan adds `source: \"email\"` to both email-path ",
+    "goals": [
+      "Both `buildThreadSummary` and `buildThreadSummaryFromRow` emit `source: \"email\"` on the returned object.",
+      "A unit test in `apps/reception/src/lib/inbox/__tests__/api-models.server.test.ts` confirms both functions set `source: \"email\"`.",
+      "No downstream code relies on `undefined` as a meaningful distinct value for `source`."
+    ],
+    "non_goals": [
+      "Any change to the Prime path (`mapPrimeSummaryToInboxThread`) — already correct.",
+      "Changes to `InboxThreadSummaryApiModel` type definition.",
+      "Adding source filtering logic or new consumers.",
+      "Database schema changes."
+    ],
+    "constraints": [
+      "Tests run in CI only; no local `jest` or `pnpm test` invocations.",
+      "Pre-commit hooks must not be skipped."
+    ],
+    "assumptions": [
+      "No code in the current codebase uses `source === undefined` to mean \"this is an email thread\". Verified below via grep — only `options.source === \"prime\"` found in analytics.server.ts (unrelated to thread summary output)."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Add `source: \"email\"` in the return statement of `buildThreadSummary` (line ~332) and `buildThreadSummaryFromRow` (line ~397) in `apps/reception/src/lib/inbox/api-models.server.ts`.",
+      "Why planning is not reopening option selection:",
+      "The type already defines the field and intent; this is a gap-fill, not a design decision."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Set `source: \"email\"` in both email thread summary builder functions and add unit tests",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change to `apps/reception/src/lib/inbox/api-models.server.ts` and updated tests in `apps/reception/src/lib/inbox/__tests__/api-models.server.test.ts`",
+        "affects": "`apps/reception/src/lib/inbox/api-models.server.ts`, `apps/reception/src/lib/inbox/__tests__/api-models.server.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change",
+      "areas": []
+    }
+  }
+}

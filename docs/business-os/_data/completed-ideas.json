@@ -2632,6 +2632,702 @@
       "plan_slug": "caryina-button-strategy",
       "completed_at": "2026-03-13",
       "output_link": "docs/plans/_archive/caryina-button-strategy/plan.md"
+    },
+    {
+      "idea_key": "ff63c2a846e66293632577df22981aa223e591f8",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-ics-contact-data",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-ics-contact-data/micro-build.md"
+    },
+    {
+      "idea_key": "0e05c70d268f8ac54681ecd1454e645756d615a9",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-guest-booking-occupant-fallback",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-guest-booking-occupant-fallback/micro-build.md"
+    },
+    {
+      "idea_key": "9c4315e58e42c715bfdef2354a9574cb44d5f36a",
+      "title": "IDEA-DISPATCH-20260313170000-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-product-management",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-product-management/plan.md"
+    },
+    {
+      "idea_key": "71fa0c4026099b90322f9f975be3f9de4d897bf9",
+      "title": "IDEA-DISPATCH-20260313190000-0004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-duplicate-product-button",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-duplicate-product-button/micro-build.md"
+    },
+    {
+      "idea_key": "e9ab96d0bfcebbc6246d32aac8b7376ac3f0a88c",
+      "title": "IDEA-DISPATCH-20260313190000-0005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-product-search",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-product-search/micro-build.md"
+    },
+    {
+      "idea_key": "19ce1f582bbb317cddc792c44d0e01cc90d8c34e",
+      "title": "IDEA-DISPATCH-20260313190000-0007",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-clear-shop-on-logout",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-clear-shop-on-logout/micro-build.md"
+    },
+    {
+      "idea_key": "d98bb6339d8ac43b760d01b083ceaba338d7a3a1",
+      "title": "IDEA-DISPATCH-20260313190000-0006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-error-states",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-error-states/micro-build.md"
+    },
+    {
+      "idea_key": "956b89f8f2dbde89758f54b1dba8e8029f64b895",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-007",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-d1-messaging-db",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-d1-messaging-db/plan.md"
+    },
+    {
+      "idea_key": "41dac0b10cd9f2de77808453f3259cfed1e093fc",
+      "title": "IDEA-DISPATCH-20260313190000-0003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-low-stock-badge",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-low-stock-badge/micro-build.md"
+    },
+    {
+      "idea_key": "560a8f7a31f3592894740a097475f116f8366cc4",
+      "title": "IDEA-DISPATCH-20260313190000-0008",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-inflow-dry-run",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-inflow-dry-run/micro-build.md"
+    },
+    {
+      "idea_key": "089938729bff1c3ba8ded072e70d977f0e42b181",
+      "title": "IDEA-DISPATCH-20260313190000-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-user-attribution",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-user-attribution/plan.md"
+    },
+    {
+      "idea_key": "9a000f3b4beb6f8e8b37a3b9d9ac816442ba9bc7",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-008",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-activity-duration",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-activity-duration/plan.md"
+    },
+    {
+      "idea_key": "bc9a15daa313262b000fc8e99637fd07b2a4dadc",
+      "title": "IDEA-DISPATCH-20260313190000-0002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "inventory-uploader-batch-operations",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/inventory-uploader-batch-operations/plan.md"
+    },
+    {
+      "idea_key": "cdbef1573e691dcb4b237d7f91169c733c8e8bbd",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-checkin-code-resilience",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-checkin-code-resilience/micro-build.md"
+    },
+    {
+      "idea_key": "ad7c2bb19ca797a8efba7c07685cedc33857a881",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-firebase-env-guard",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-firebase-env-guard/micro-build.md"
+    },
+    {
+      "idea_key": "8d223c50d23df62e8f4a45318ae00867218c4659",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-refetch-error-logging",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-refetch-error-logging/micro-build.md"
+    },
+    {
+      "idea_key": "49b16695cd4805059ca03a30a1b8f27266fe02c7",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-value-framing-test",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-value-framing-test/micro-build.md"
+    },
+    {
+      "idea_key": "0167ceaecbc96d0ee67debd80015d656e558c759",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-009",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-ds-rules-deferred",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-ds-rules-deferred/plan.md"
+    },
+    {
+      "idea_key": "69ba4742bfd7e0bdeec908e3d089ac864e7c2e67",
+      "title": "IDEA-DISPATCH-20260313200000-PRIME-011",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-portal-personalization",
+      "completed_at": "2026-03-13",
+      "output_link": "docs/plans/_archive/prime-portal-personalization/plan.md"
+    },
+    {
+      "idea_key": "47a66a546749fa803bd283435b1cd122c4569593",
+      "title": "IDEA-DISPATCH-20260314153000-PLAT-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "plat-payment-integration-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/plat-payment-integration-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "452c62d1ec4c47edadab2777b941bb55bbad0558",
+      "title": "IDEA-DISPATCH-20260314153001-PLAT-002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "plat-payment-integration-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/plat-payment-integration-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "81207d97526b997be97eec33cd9c5b281f80c84a",
+      "title": "IDEA-DISPATCH-20260314153002-PLAT-003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "plat-payment-integration-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/plat-payment-integration-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "0e9e37bc122a0fddbad3eb5156c26a4d67d25e9f",
+      "title": "IDEA-DISPATCH-20260314153003-PLAT-004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "plat-payment-integration-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/plat-payment-integration-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "b0d428e92d63aadf59b6e5ef1c1634a2373c5eca",
+      "title": "IDEA-DISPATCH-20260314153004-PLAT-005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "plat-payment-integration-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/plat-payment-integration-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "57b736936df8d4242c4de54bd8f44fb7b8f659a5",
+      "title": "IDEA-DISPATCH-20260314153005-PLAT-006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "plat-payment-integration-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/plat-payment-integration-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "7311b3b13aa12202de8942b5169543a1ba6f28fd",
+      "title": "IDEA-DISPATCH-20260314153006-PLAT-007",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "plat-payment-integration-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/plat-payment-integration-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "dc9761ce7eadd821549ff2f3a14419b9418a173f",
+      "title": "IDEA-DISPATCH-20260314153007-PLAT-008",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "plat-payment-integration-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/plat-payment-integration-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "140e4bb371705f10a444ea0964868dd86a8fcf98",
+      "title": "IDEA-DISPATCH-20260314120000-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "b6a5851c53ed287618ee3d162447b146169b5209",
+      "title": "IDEA-DISPATCH-20260314120001-0002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "b67ad3f1d721a9f7038f1b9da23100fbea6b630d",
+      "title": "IDEA-DISPATCH-20260314120002-0003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "44d45c2d05584e84aa9e0371fc2bea796b59fc8c",
+      "title": "IDEA-DISPATCH-20260314120003-0004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "0ceb21c78df0b64e83d359c071a8cac5a345c52b",
+      "title": "IDEA-DISPATCH-20260314120004-0005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "2920f63734fd103e18bb0f2014dc0288a428df69",
+      "title": "IDEA-DISPATCH-20260314120005-0006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "1b380add4c7b4d95ec37bf85c5c1898374a8b7d9",
+      "title": "IDEA-DISPATCH-20260314120006-0007",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "18c0529bb5844d754683b6adf74493bab965c410",
+      "title": "IDEA-DISPATCH-20260314120007-0008",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "dcc36fbdb32bf799efc1a1c44d8ac566f8c411fc",
+      "title": "IDEA-DISPATCH-20260314120008-0009",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "payment-manager-post-build-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/payment-manager-post-build-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "ac9b769f44f25c36c117069f7871b1c8aa04bd0b",
+      "title": "IDEA-DISPATCH-20260313213000-BOS-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "bos-process-improvements-visual-redesign",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/bos-process-improvements-visual-redesign/plan.md"
+    },
+    {
+      "idea_key": "0f688d5645838c8067d05c0da34c6b59dddb95a4",
+      "title": "IDEA-DISPATCH-20260313192500-BRIK-REC-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-dark-mode-ui-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-dark-mode-ui-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "1ef22ca2f641d4defe178c92390cb711d2dadf5e",
+      "title": "IDEA-DISPATCH-20260313192500-BRIK-REC-002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-dark-mode-ui-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-dark-mode-ui-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "455321a2ea15af5bf76a6a65fdaf52b13bee62fd",
+      "title": "IDEA-DISPATCH-20260313192500-BRIK-REC-003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-dark-mode-ui-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-dark-mode-ui-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "9cdd020c256f1a6ad76ccc46c24400eccf9c6fab",
+      "title": "IDEA-DISPATCH-20260313192500-BRIK-REC-004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-dark-mode-ui-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-dark-mode-ui-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "e0878f6eca59c4d9ab058c0b87ac2b0e8b91e64f",
+      "title": "IDEA-DISPATCH-20260313192500-BRIK-REC-005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-dark-mode-ui-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-dark-mode-ui-fixes/micro-build.md"
+    },
+    {
+      "idea_key": "ec3483de12832304f474f7e8783181fa4117214a",
+      "title": "IDEA-DISPATCH-20260313192500-BRIK-REC-006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-colour-system-direction",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-colour-system-direction/plan.md"
+    },
+    {
+      "idea_key": "3d80b508c3b724e903476c34cedfd66dbc8d8427",
+      "title": "IDEA-DISPATCH-20260313192500-BRIK-BOS-007",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "startup-loop-ui-audit-integration",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/startup-loop-ui-audit-integration/plan.md"
+    },
+    {
+      "idea_key": "d8eb2a5a76c98532017296153a972822525cc8dc",
+      "title": "IDEA-DISPATCH-20260314070000-BRIK-REC-007",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-analytics-hub-tab-indicator",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-analytics-hub-tab-indicator/micro-build.md"
+    },
+    {
+      "idea_key": "c32bc3f9784a07140ba9d6978ad63361007d2db4",
+      "title": "IDEA-DISPATCH-20260314140000-BRIK-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-activity-inbox",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-activity-inbox/plan.md"
+    },
+    {
+      "idea_key": "cf4898a7c22810b16d8b62750e9645d866610906",
+      "title": "IDEA-DISPATCH-20260314160000-PLAT-010",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "caryina-cart-cookie-secret-env-docs",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/caryina-cart-cookie-secret-env-docs/micro-build.md"
+    },
+    {
+      "idea_key": "c6079f595dde87debace7c4d1b7a9adeef68c21b",
+      "title": "IDEA-DISPATCH-20260314140001-BRIK-002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-outbound-messaging",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-outbound-messaging/plan.md"
+    },
+    {
+      "idea_key": "972382231b05b84c308be58f24eef04ac9ba6777",
+      "title": "IDEA-DISPATCH-20260314160001-PLAT-011",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "caryina-site-content-build-resilience",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/caryina-site-content-build-resilience/plan.md"
+    },
+    {
+      "idea_key": "35d8de19b13461ece8c039a9d9b948c84c350ba2",
+      "title": "IDEA-DISPATCH-20260314160002-PLAT-012",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "caryina-runtime-state-workers-compat",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/caryina-runtime-state-workers-compat/plan.md"
+    },
+    {
+      "idea_key": "cc448b9b2f50f13954b13dc5fa59ca3df0ded22c",
+      "title": "IDEA-DISPATCH-20260314180000-HBAG-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "caryina-product-spec-content",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/caryina-product-spec-content/micro-build.md"
+    },
+    {
+      "idea_key": "3c54f09943540c81c52066830cd9f42aa7db2cd3",
+      "title": "IDEA-DISPATCH-20260314160002-BRIK-005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-outbound-resilience-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/prime-outbound-resilience-hardening/micro-build.md"
+    },
+    {
+      "idea_key": "a80d80e7790a49a3aa00d65b7ecf2650fea15f70",
+      "title": "IDEA-DISPATCH-20260314160003-BRIK-006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-outbound-ux-polish",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/prime-outbound-ux-polish/micro-build.md"
+    },
+    {
+      "idea_key": "d48d4fa76a88e2d4316b4bd6ec1c8efa9b055c8d",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-roomgrid-legend",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-roomgrid-legend/micro-build.md"
+    },
+    {
+      "idea_key": "2090d3c9a18b46ded144a1874eefe05ecb8962c4",
+      "title": "IDEA-DISPATCH-20260314113000-BRIK-EXT-002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-extension-city-tax-recording",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-extension-city-tax-recording/plan.md"
+    },
+    {
+      "idea_key": "57b70832a5d05c5fe0466a93776a515d9ae85ee2",
+      "title": "IDEA-DISPATCH-20260314180008-HBAG-009",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "caryina-about-page",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/caryina-about-page/plan.md"
+    },
+    {
+      "idea_key": "880e6d05b0a3965d9c5a8fce8f3b861baf22c003",
+      "title": "IDEA-DISPATCH-20260314203000-BRIK-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-prime-breakfast-order-pipeline",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/brik-prime-breakfast-order-pipeline/plan.md"
+    },
+    {
+      "idea_key": "0952dabb202f7b53bf55b7415c35ca2a0d405f90",
+      "title": "IDEA-DISPATCH-20260314160000-BRIK-003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-outbound-send-path-correctness",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/prime-outbound-send-path-correctness/plan.md"
+    },
+    {
+      "idea_key": "54f8061f99d79089589fcc0c28ab3bd21b4b1f30",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-roomgrid-unallocated-panel",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-roomgrid-unallocated-panel/plan.md"
+    },
+    {
+      "idea_key": "9ece51516eb2bc0acd147e776b553c925f39561e",
+      "title": "IDEA-DISPATCH-20260314200000-BRIK-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-email-automation-fixes",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-email-automation-fixes/plan.md"
+    },
+    {
+      "idea_key": "4729820107bc78fbdceef0a73f1049fe0cafc434",
+      "title": "IDEA-DISPATCH-20260314203001-BRIK-002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-bar-preorder-time-window",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/brik-bar-preorder-time-window/micro-build.md"
+    },
+    {
+      "idea_key": "e30d539f3b3382de50a7e9cd890bb0130393ee5f",
+      "title": "IDEA-DISPATCH-20260314203002-BRIK-003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-bar-preorder-single-click",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/brik-bar-preorder-single-click/micro-build.md"
+    },
+    {
+      "idea_key": "7638609fbafefdd5c71315876ff544c7f5b7ad89",
+      "title": "IDEA-DISPATCH-20260314160001-BRIK-004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-outbound-auth-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/prime-outbound-auth-hardening/plan.md"
+    },
+    {
+      "idea_key": "2702893be717dea5051f963da7d5bd2ceaa98bcc",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-roomgrid-occupancy-strip",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-roomgrid-occupancy-strip/plan.md"
+    },
+    {
+      "idea_key": "63d303f2e0b6def7745bc0e92d2cc815c3821e63",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-roomgrid-today-movements",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-roomgrid-today-movements/plan.md"
+    },
+    {
+      "idea_key": "9cb1c930b4dbb09aa335e674abf161426597dec8",
+      "title": "IDEA-DISPATCH-20260314161500-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-safe-withdrawal-float-rollback",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-safe-withdrawal-float-rollback/micro-build.md"
+    },
+    {
+      "idea_key": "f81f8340d2efc1f91a2bcbee2a5ef02ae52c8e54",
+      "title": "IDEA-DISPATCH-20260314161500-0002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-workbench-date-filter",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-workbench-date-filter/micro-build.md"
+    },
+    {
+      "idea_key": "d1e0d4b51bdde54cd34cc45d15dea26ebd04d97f",
+      "title": "IDEA-DISPATCH-20260314170000-BRIK-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-broadcast-endpoint-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/prime-broadcast-endpoint-hardening/micro-build.md"
+    },
+    {
+      "idea_key": "aede37832afe170a5f2e5ad26c0c8c9f8253083f",
+      "title": "IDEA-DISPATCH-20260314171800-BRIK-EXT-012",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-extension-collect-amount-mismatch",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-extension-collect-amount-mismatch/micro-build.md"
+    },
+    {
+      "idea_key": "5fae9de9e5e8b49f057b9d0c001868257318f2f2",
+      "title": "IDEA-DISPATCH-20260314171800-BRIK-EXT-013",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-extension-na-button-no-explanation",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-extension-na-button-no-explanation/micro-build.md"
+    },
+    {
+      "idea_key": "ef99084c824847c39a2b9e69cfe7ebfd4350c4dc",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-PREP-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-prepayments-ux-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
+    },
+    {
+      "idea_key": "eb5db2a5d5326b20302490d324540a7b0ceb1094",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-PREP-002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-prepayments-ux-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
+    },
+    {
+      "idea_key": "6cf1f606ce13d0b239f56d81ed087d9648e76894",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-PREP-003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-prepayments-ux-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
+    },
+    {
+      "idea_key": "aae0b118e30abf94cfcad46e1bc14eb7ea3ef0d5",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-PREP-004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-prepayments-ux-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
+    },
+    {
+      "idea_key": "dfa61ff28d0c238e5863a3554d0b37cab2cfe8ea",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-PREP-005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-prepayments-ux-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
+    },
+    {
+      "idea_key": "1d647f9e152b80237cf179f7ce36ad40f6411a45",
+      "title": "IDEA-DISPATCH-20260314190000-BRIK-PREP-006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-prepayments-ux-hardening",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/brik-prepayments-ux-hardening/micro-build.md"
+    },
+    {
+      "idea_key": "ab325e05f657f530e8598fd402ddceadc2573175",
+      "title": "IDEA-DISPATCH-20260314173000-BRIK-001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-guest-ghost-mode",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/prime-guest-ghost-mode/plan.md"
+    },
+    {
+      "idea_key": "0ae53576d740b846911c51ea9f7cb382f360621e",
+      "title": "IDEA-DISPATCH-20260314161500-0004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-safe-history-labels",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-safe-history-labels/micro-build.md"
+    },
+    {
+      "idea_key": "334b59b13cd1c2ae27dd98f47dc969f4a07ff7d0",
+      "title": "IDEA-DISPATCH-20260314161500-0005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-keycard-return-error",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-keycard-return-error/micro-build.md"
+    },
+    {
+      "idea_key": "2748f8333be3c0d473879bfa3be1b9c7993af729",
+      "title": "IDEA-DISPATCH-20260314161500-0006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-cashhub-tab-routing",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-cashhub-tab-routing/micro-build.md"
+    },
+    {
+      "idea_key": "2a8f2c9d6d283bc2fc7aa4e6808361d42a8d582a",
+      "title": "IDEA-DISPATCH-20260314161500-0007",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-dropdown-disabled-context",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-dropdown-disabled-context/micro-build.md"
+    },
+    {
+      "idea_key": "16659d9b80730cec1292acba75d15d50c5679a6f",
+      "title": "IDEA-DISPATCH-20260314161500-0008",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-workbench-pms-terminal-delta",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-workbench-pms-terminal-delta/micro-build.md"
+    },
+    {
+      "idea_key": "5a74cb5c31961388d0fce4ab2c4019788fc034f2",
+      "title": "IDEA-DISPATCH-20260314161500-0009",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-workbench-entry-delete",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-workbench-entry-delete/micro-build.md"
+    },
+    {
+      "idea_key": "f2e59ea9cb82fb8f55e67e3a47091b8a10058b34",
+      "title": "IDEA-DISPATCH-20260314161500-0010",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-float-banner-date-reactive",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-float-banner-date-reactive/micro-build.md"
+    },
+    {
+      "idea_key": "ec062cf07dd86a6dfbf3499e22f01c1ed60b9f5e",
+      "title": "IDEA-DISPATCH-20260314161500-0011",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-date-picker-a11y",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-date-picker-a11y/micro-build.md"
+    },
+    {
+      "idea_key": "030fb06ab7566b22bc33fb93e1b5cf5987db2164",
+      "title": "IDEA-DISPATCH-20260314155800-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-room-cleaning-status-pipeline",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-room-cleaning-status-pipeline/plan.md"
+    },
+    {
+      "idea_key": "59b12739adc71226b79f8320fb8b2cdc886fc7e0",
+      "title": "IDEA-DISPATCH-20260314183000-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "theme-token-compiler-dark-selector-tokenmap",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/theme-token-compiler-dark-selector-tokenmap/plan.md"
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "schema_version": "self-evolving-dependency-graph.v1",
   "business_id": "BRIK",
-  "snapshot_id": "3c5406375ffed3fd",
-  "generated_at": "2026-03-14T17:04:16.535Z",
+  "snapshot_id": "a5b7b731f123704c",
+  "generated_at": "2026-03-14T20:02:54.183Z",
   "node_count": 18,
   "edge_count": 28,
   "nodes": [

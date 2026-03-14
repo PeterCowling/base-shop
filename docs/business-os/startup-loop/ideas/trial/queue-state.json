@@ -1,19 +1,19 @@
 {
-  "last_updated": "2026-03-14T17:07:08.248Z",
+  "last_updated": "2026-03-14T20:02:18.749Z",
   "counts": {
-    "enqueued": 72,
-    "processed": 33,
+    "enqueued": 77,
+    "processed": 34,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 408,
-    "fact_find_ready": 38,
+    "completed": 418,
+    "fact_find_ready": 46,
     "plan_ready": 0,
-    "micro_build_ready": 31,
+    "micro_build_ready": 28,
     "briefing_ready": 1,
-    "total": 723
+    "total": 739
   },
   "dispatches": [
     {
@@ -167,7 +167,7 @@
       "current_truth": "SafeManagement renders s.type directly — staff see 'bankDeposit', 'pettyCash', 'opening' etc. The expand row uses array index (idx) as the key, so if transactions reload in a different order the expanded detail row shows the wrong breakdown.",
       "next_scope_now": "Add a type-label map ('bankDeposit' → 'Bank Deposit' etc). Switch expandedRows state to use s.id (or timestamp+idx stable key) instead of positional index.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.95,
       "evidence_refs": [
@@ -182,7 +182,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:03.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-safe-history-labels",
+        "micro_build_path": "docs/plans/_archive/reception-safe-history-labels/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-safe-history-labels/micro-build.md",
+        "completed_at": "2026-03-14T19:13:33.709Z",
+        "outcome": "Completed via reception-safe-history-labels."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -203,7 +214,7 @@
       "current_truth": "handleReturn catch block only shows a toast when error.message !== 'return failed'. Rollback failures from returnKeycardsToSafe(-count) returning false produce no feedback at all.",
       "next_scope_now": "Rework the error handling so any failure path — including rollback — shows a clear toast. Separate the 'no keycards to return' user error from internal failure paths.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.93,
       "evidence_refs": [
@@ -217,7 +228,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:04.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-keycard-return-error",
+        "micro_build_path": "docs/plans/_archive/reception-keycard-return-error/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-keycard-return-error/micro-build.md",
+        "completed_at": "2026-03-14T19:13:33.703Z",
+        "outcome": "Completed via reception-keycard-return-error."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -241,7 +263,7 @@
       "current_truth": "CashHub uses useState<Tab>('till') with no URL sync. All three sub-page routes redirect to /cash and always land on Till. Safe and Workbench tab state is lost on refresh.",
       "next_scope_now": "Sync the active tab to a URL search param (e.g. ?tab=safe) or use the existing sub-routes (/safe-reconciliation, /reconciliation-workbench) as the source of truth via useSearchParams or router.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.92,
       "evidence_refs": [
@@ -255,7 +277,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:05.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-cashhub-tab-routing",
+        "micro_build_path": "docs/plans/_archive/reception-cashhub-tab-routing/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-cashhub-tab-routing/micro-build.md",
+        "completed_at": "2026-03-14T19:13:33.699Z",
+        "outcome": "Completed via reception-cashhub-tab-routing."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -277,7 +310,7 @@
       "current_truth": "Cash and Keycards ActionDropdown triggers remain enabled when no shift is open, opening to show all 5/3 options disabled. No tooltip or message explains that 'Open Shift' is the prerequisite.",
       "next_scope_now": "When no shift is open, either disable the Cash and Keycards dropdown triggers themselves and add a title tooltip, or render a short inline message inside the dropdown explaining the prerequisite.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.91,
       "evidence_refs": [
@@ -291,7 +324,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:06.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-dropdown-disabled-context",
+        "micro_build_path": "docs/plans/_archive/reception-dropdown-disabled-context/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-dropdown-disabled-context/micro-build.md",
+        "completed_at": "2026-03-14T19:13:33.701Z",
+        "outcome": "Completed via reception-dropdown-disabled-context."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -312,7 +356,7 @@
       "current_truth": "Workbench shows PMS CC vs POS CC delta and Terminal vs POS CC delta, but never directly compares PMS CC total against Terminal batch total. A discrepancy between those two sources goes undetected.",
       "next_scope_now": "Add a row or column to the reconciliation table showing PMS CC − Terminal batch. Highlight it red when non-zero.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -326,7 +370,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:07.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-workbench-pms-terminal-delta",
+        "micro_build_path": "docs/plans/_archive/reception-workbench-pms-terminal-delta/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-workbench-pms-terminal-delta/micro-build.md",
+        "completed_at": "2026-03-14T19:13:33.713Z",
+        "outcome": "Completed via reception-workbench-pms-terminal-delta."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -349,7 +404,7 @@
       "current_truth": "PMS postings and terminal batch entries have no delete or edit action in the UI. Corrections require adding a compensating entry, leaving multiple entries in the history.",
       "next_scope_now": "Add a delete button (with confirmation) to each PMS posting row and to the terminal batch entries. Wire to a delete mutation in the respective hooks.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.92,
       "evidence_refs": [
@@ -363,7 +418,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:08.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-workbench-entry-delete",
+        "micro_build_path": "docs/plans/_archive/reception-workbench-entry-delete/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-workbench-entry-delete/micro-build.md",
+        "completed_at": "2026-03-14T19:13:33.710Z",
+        "outcome": "Completed via reception-workbench-entry-delete."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -384,7 +450,7 @@
       "current_truth": "startOfDayIso(new Date()) and endOfDayIso(new Date()) in useCashCountsData are computed once at component mount. Leaving the page open past midnight means the float check references the previous day's window.",
       "next_scope_now": "Move the date range to a state variable that refreshes at midnight (or use a useMemo with a live clock), so the float check always references today.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.88,
       "evidence_refs": [
@@ -398,7 +464,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:09.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-float-banner-date-reactive",
+        "micro_build_path": "docs/plans/_archive/reception-float-banner-date-reactive/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-float-banner-date-reactive/micro-build.md",
+        "completed_at": "2026-03-14T19:13:33.702Z",
+        "outcome": "Completed via reception-float-banner-date-reactive."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -419,7 +496,7 @@
       "current_truth": "DateSelector produces spinbutton accessible names 'Day Day', 'Month Month', 'Year Year' (label + aria-label concatenated). The two calendar icon buttons both have accessible name 'Show date picker' with no distinction between start and end date.",
       "next_scope_now": "Fix DateSelector to avoid doubling the label text. Add distinct aria-labels to the two calendar trigger buttons ('Show start date picker' / 'Show end date picker' or similar).",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.93,
       "evidence_refs": [
@@ -433,7 +510,18 @@
         "source": "auto"
       },
       "created_at": "2026-03-14T16:15:10.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-date-picker-a11y",
+        "micro_build_path": "docs/plans/_archive/reception-date-picker-a11y/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-date-picker-a11y/micro-build.md",
+        "completed_at": "2026-03-14T19:13:33.700Z",
+        "outcome": "Completed via reception-date-picker-a11y."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -478,16 +566,23 @@
         "coverage-hint: data-contracts",
         "coverage-hint: performance-reliability"
       ],
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
       "priority": "P2",
       "confidence": 0.92,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "enqueued_at": "2026-03-14T15:58:00.000Z",
       "processed_by": {
         "target_path": "docs/plans/reception-room-cleaning-status-pipeline/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-room-cleaning-status-pipeline",
+        "fact_find_slug": "reception-room-cleaning-status-pipeline"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-room-cleaning-status-pipeline/plan.md",
+        "completed_at": "2026-03-14T19:13:33.708Z",
+        "outcome": "**TASK-01 & TASK-02 — Hook return value and auto-sync guard fix.** The `usePrepareDashboard` hook already held a `roomStatusMap` internally but did not expose it. The return value was updated to include it, making it available to downstream"
       }
     },
     {
@@ -35747,6 +35842,678 @@
         "plan_path": "docs/plans/_archive/prime-guest-ghost-mode/plan.md",
         "completed_at": "2026-03-14T17:05:10.301Z",
         "outcome": "**TASK-01 — Type foundation:** Added `ghostMode: boolean` to the `GuestProfile` interface in `apps/prime/src/types/guestProfile.ts` and set it to `false` in `DEFAULT_GUEST_PROFILE`. Extended the `effectiveProfile` explicit per-field spread "
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314183000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-theme-token-compiler-retrofit-20260314",
+      "anchor_key": "brik-caryina-theme-token-compiler",
+      "cluster_key": "brik-theme-token-compiler-retrofit",
+      "cluster_fingerprint": "brik-theme-token-compiler-retrofit-caryina-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina shop — brand colours and dark mode are hand-written in CSS instead of generated from the design system, risking drift and making updates error-prone",
+      "location_anchors": [
+        "packages/themes/caryina/tokens.css",
+        "apps/caryina/src/app/globals.css",
+        "packages/themes/caryina/src/assets.ts",
+        "packages/themes/caryina/src/design-profile.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The caryina app uses hand-written CSS custom properties for its theme tokens. Brikette has been successfully migrated to a three-layer generated token system (assets + design profile + CSS config → generated CSS).",
+      "next_scope_now": "Fact-find: map the current token surface, identify testing approach (coverage-parity + generated-parity patterns), and document the compilation bridge mapping needed to generate caryina tokens.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Brikette theme token compiler deployed to staging and verified working — now retrofitting all other apps",
+        "packages/themes/caryina/src/",
+        "packages/themes/base/src/generateThemeCSS.ts",
+        "packages/themes/brikette/__tests__/generated-parity.test.ts",
+        "packages/themes/brikette/__tests__/coverage-parity.test.ts"
+      ],
+      "created_at": "2026-03-14T18:30:00.000Z",
+      "queue_state": "completed",
+      "why": "Brikette now generates its theme tokens from structured data (assets + design profile → CSS). Caryina still has ~105 lines of hand-written CSS variables. When the brand colours change, someone has to update multiple CSS files by hand and hope the dark mode values stay in sync. Generating the tokens automatically eliminates this drift risk and makes brand updates a single-source change.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Caryina theme tokens are generated by the same compiler that powers Brikette, with parity tests proving the generated output matches what was hand-authored. Hand-written :root/.dark blocks in globals.css are replaced by an @import of the generated file.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_path": "docs/plans/theme-token-compiler-dark-selector-tokenmap/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "theme-token-compiler-dark-selector-tokenmap",
+        "fact_find_slug": "theme-token-compiler-dark-selector-tokenmap"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/theme-token-compiler-dark-selector-tokenmap/plan.md",
+        "completed_at": "2026-03-14T19:55:34.636Z",
+        "outcome": "Two backward-compatible extensions to `generateThemeCSS()` in `packages/themes/base/src/build-theme-css.ts`: 1. **`darkSelector`** (optional string, defaults to `\".dark\"`) — replaces the hardcoded `.dark` CSS selector on the dark mode block"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314183000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-theme-token-compiler-retrofit-20260314",
+      "anchor_key": "brik-reception-theme-token-compiler",
+      "cluster_key": "brik-theme-token-compiler-retrofit",
+      "cluster_fingerprint": "brik-theme-token-compiler-retrofit-reception-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "Reception app — brand colours plus 35+ shade families are hand-written across multiple CSS files, making the most complex theme in the monorepo also the hardest to update safely",
+      "location_anchors": [
+        "packages/themes/reception/tokens.css",
+        "packages/themes/reception/src/tokens.ts",
+        "apps/reception/src/app/globals.css",
+        "apps/reception/tailwind.config.mjs"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The reception app uses hand-written CSS custom properties for its theme tokens. Brikette has been successfully migrated to a three-layer generated token system (assets + design profile + CSS config → generated CSS).",
+      "next_scope_now": "Fact-find: map the current token surface, identify testing approach (coverage-parity + generated-parity patterns), and document the compilation bridge mapping needed to generate reception tokens.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Brikette theme token compiler deployed to staging and verified working — now retrofitting all other apps",
+        "packages/themes/reception/src/",
+        "packages/themes/base/src/generateThemeCSS.ts",
+        "packages/themes/brikette/__tests__/generated-parity.test.ts",
+        "packages/themes/brikette/__tests__/coverage-parity.test.ts"
+      ],
+      "created_at": "2026-03-14T18:30:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Reception has the most complex theme in the monorepo — ~45 base token lines plus 35+ shade colour families with HSL triplets. These are spread across tokens.css, globals.css, and tailwind.config.mjs. Any brand update requires coordinated edits in three files. The shade tokens have an additional complication: they must be full hsl() values in tokens.css (not raw triplets) to survive the Tailwind v4 cascade. Generating everything from structured data removes this manual coordination burden.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Reception theme tokens (including all shade families) are generated by the theme compiler, with parity tests proving exact match. The three-file coordination problem is eliminated — a single source-of-truth change propagates automatically.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314183000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-theme-token-compiler-retrofit-20260314",
+      "anchor_key": "brik-xa-b-theme-token-compiler",
+      "cluster_key": "brik-theme-token-compiler-retrofit",
+      "cluster_fingerprint": "brik-theme-token-compiler-retrofit-xa-b-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "XA-B app — ~143 lines of gate-themed brand colours are hand-maintained in CSS with no structured source of truth",
+      "location_anchors": [
+        "apps/xa-b/src/app/globals.css",
+        "apps/xa-b/tailwind.config.mjs"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The xa-b app uses hand-written CSS custom properties for its theme tokens. Brikette has been successfully migrated to a three-layer generated token system (assets + design profile + CSS config → generated CSS).",
+      "next_scope_now": "Fact-find: map the current token surface, identify testing approach (coverage-parity + generated-parity patterns), and document the compilation bridge mapping needed to generate xa-b tokens.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Brikette theme token compiler deployed to staging and verified working — now retrofitting all other apps",
+        "packages/themes/base/src/",
+        "packages/themes/base/src/generateThemeCSS.ts",
+        "packages/themes/brikette/__tests__/generated-parity.test.ts",
+        "packages/themes/brikette/__tests__/coverage-parity.test.ts"
+      ],
+      "created_at": "2026-03-14T18:30:00.000Z",
+      "queue_state": "enqueued",
+      "why": "XA-B has ~143 lines of hand-written theme tokens including gate-specific brand swatches. There is no @themes/xa-b package yet — the colours live directly in the app. This is the largest inline token set among the remaining apps. Moving to generated tokens requires first creating the theme package (assets + design profile + config), which is a larger lift than apps that already have theme packages.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A new @themes/xa-b package is created with assets, design profile, and CSS config. Theme tokens are generated by the compiler with parity tests proving exact match. The 143 lines of hand-written CSS are replaced by a generated import.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314183000-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-theme-token-compiler-retrofit-20260314",
+      "anchor_key": "brik-cms-theme-token-compiler",
+      "cluster_key": "brik-theme-token-compiler-retrofit",
+      "cluster_fingerprint": "brik-theme-token-compiler-retrofit-cms-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "CMS app — ~177 lines of theme tokens support a multi-theme preview system that needs special handling during token generation",
+      "location_anchors": [
+        "apps/cms/src/styles/cms.tokens.css",
+        "apps/cms/src/app/globals.css",
+        "apps/cms/tailwind.config.mjs"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The cms app uses hand-written CSS custom properties for its theme tokens. Brikette has been successfully migrated to a three-layer generated token system (assets + design profile + CSS config → generated CSS).",
+      "next_scope_now": "Fact-find: map the current token surface, identify testing approach (coverage-parity + generated-parity patterns), and document the compilation bridge mapping needed to generate cms tokens.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Brikette theme token compiler deployed to staging and verified working — now retrofitting all other apps",
+        "packages/themes/cms/src/",
+        "packages/themes/base/src/generateThemeCSS.ts",
+        "packages/themes/brikette/__tests__/generated-parity.test.ts",
+        "packages/themes/brikette/__tests__/coverage-parity.test.ts"
+      ],
+      "created_at": "2026-03-14T18:30:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The CMS has the second-largest inline token set (~177 lines) and a unique complication: it uses a .theme-dark class (not prefers-color-scheme) and supports multi-theme preview where editors can switch between business themes. The token compiler needs to handle this non-standard dark mode selector and the preview system without breaking the editor experience.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "CMS theme tokens are generated by the compiler with support for the .theme-dark selector and multi-theme preview. Parity tests prove the generated output matches what was hand-authored. The 177 lines of manual CSS are replaced.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314183000-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-theme-token-compiler-retrofit-20260314",
+      "anchor_key": "brik-xa-uploader-theme-token-compiler",
+      "cluster_key": "brik-theme-token-compiler-retrofit",
+      "cluster_fingerprint": "brik-theme-token-compiler-retrofit-xa-uploader-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Uploader — ~34 lines of gate-specific brand variables are hand-maintained instead of generated",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/globals.css"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The xa-uploader app uses hand-written CSS custom properties for its theme tokens. Brikette has been successfully migrated to a three-layer generated token system (assets + design profile + CSS config → generated CSS).",
+      "next_scope_now": "Fact-find: map the current token surface, identify testing approach (coverage-parity + generated-parity patterns), and document the compilation bridge mapping needed to generate xa-uploader tokens.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Brikette theme token compiler deployed to staging and verified working — now retrofitting all other apps",
+        "packages/themes/base/src/",
+        "packages/themes/base/src/generateThemeCSS.ts",
+        "packages/themes/brikette/__tests__/generated-parity.test.ts",
+        "packages/themes/brikette/__tests__/coverage-parity.test.ts"
+      ],
+      "created_at": "2026-03-14T18:30:00.000Z",
+      "queue_state": "enqueued",
+      "why": "XA-Uploader has a small set (~34 lines) of gate-specific theme tokens. It is light-mode only with no dark mode support. This is one of the simpler retrofits — small token count, no dark mode, no shade families. Good candidate for early completion to validate the pattern on a minimal surface.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "XA-Uploader theme tokens are generated by the compiler with parity tests. The 34 lines of hand-written CSS are replaced by a generated import.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314183000-0006",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-theme-token-compiler-retrofit-20260314",
+      "anchor_key": "brik-cochlearfit-theme-token-compiler",
+      "cluster_key": "brik-theme-token-compiler-retrofit",
+      "cluster_fingerprint": "brik-theme-token-compiler-retrofit-cochlearfit-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "CochlearFit — ~33 lines of brand colours are hand-maintained instead of generated from structured design data",
+      "location_anchors": [
+        "apps/cochlearfit/src/app/globals.css"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The cochlearfit app uses hand-written CSS custom properties for its theme tokens. Brikette has been successfully migrated to a three-layer generated token system (assets + design profile + CSS config → generated CSS).",
+      "next_scope_now": "Fact-find: map the current token surface, identify testing approach (coverage-parity + generated-parity patterns), and document the compilation bridge mapping needed to generate cochlearfit tokens.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Brikette theme token compiler deployed to staging and verified working — now retrofitting all other apps",
+        "packages/themes/base/src/",
+        "packages/themes/base/src/generateThemeCSS.ts",
+        "packages/themes/brikette/__tests__/generated-parity.test.ts",
+        "packages/themes/brikette/__tests__/coverage-parity.test.ts"
+      ],
+      "created_at": "2026-03-14T18:30:00.000Z",
+      "queue_state": "enqueued",
+      "why": "CochlearFit has a minimal theme (~33 lines), light-mode only. Like xa-uploader, this is a straightforward retrofit with low risk. Completing it validates the compiler on another simple surface and moves the monorepo closer to 100% generated tokens.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "CochlearFit theme tokens are generated by the compiler with parity tests. The 33 lines of hand-written CSS are replaced by a generated import.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314183000-0007",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "brik-theme-token-compiler-retrofit-20260314",
+      "anchor_key": "brik-cover-me-pretty-theme-token-compiler",
+      "cluster_key": "brik-theme-token-compiler-retrofit",
+      "cluster_fingerprint": "brik-theme-token-compiler-retrofit-cover-me-pretty-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "Cover Me Pretty — ~37 lines of brand colours are hand-maintained instead of generated from structured design data",
+      "location_anchors": [
+        "apps/cover-me-pretty/src/app/globals.css"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The cover-me-pretty app uses hand-written CSS custom properties for its theme tokens. Brikette has been successfully migrated to a three-layer generated token system (assets + design profile + CSS config → generated CSS).",
+      "next_scope_now": "Fact-find: map the current token surface, identify testing approach (coverage-parity + generated-parity patterns), and document the compilation bridge mapping needed to generate cover-me-pretty tokens.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Brikette theme token compiler deployed to staging and verified working — now retrofitting all other apps",
+        "packages/themes/base/src/",
+        "packages/themes/base/src/generateThemeCSS.ts",
+        "packages/themes/brikette/__tests__/generated-parity.test.ts",
+        "packages/themes/brikette/__tests__/coverage-parity.test.ts"
+      ],
+      "created_at": "2026-03-14T18:30:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Cover Me Pretty has a small theme (~37 lines), light-mode only. Another simple retrofit that completes the monorepo-wide migration to generated theme tokens.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Cover Me Pretty theme tokens are generated by the compiler with parity tests. The 37 lines of hand-written CSS are replaced by a generated import.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-shared-contract-layer",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-shared-contract-layer",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-shared-contract-layer-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Reception and the guest messaging app share channel names, message shapes, and security tokens by copy-paste, meaning a change in one app can silently break the other",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/channels.ts",
+        "apps/reception/src/lib/inbox/prime-review.server.ts",
+        "apps/reception/src/lib/inbox/actor-claims.ts",
+        "apps/reception/src/app/api/mcp/inbox/prime-compose/route.ts",
+        "apps/prime/functions/lib/prime-review-api.ts",
+        "apps/prime/functions/lib/actor-claims.ts",
+        "packages/lib/src/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Channel names (prime_direct, prime_broadcast, prime_activity), review thread type shapes, actor claims sign/verify utilities, and the broadcast channel ID constant are all defined independently in both apps with no shared source. A mismatch compiles cleanly but causes silent runtime misrouting or failures.",
+      "next_scope_now": "Fact-find: identify the cleanest extraction point in packages/lib, map all cross-app coupling points, determine which types are safe to share without creating a cyclic dependency, and produce a plan for moving each piece.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: Reception and Prime define PrimeReviewThreadSummary, PrimeReviewThreadDetail, PrimeReviewCampaignDetail, channel names, and actor claims utilities identically in both apps — pure copy-paste coupling",
+        "apps/reception/src/lib/inbox/channels.ts",
+        "apps/prime/functions/lib/prime-review-api.ts",
+        "apps/reception/src/lib/inbox/actor-claims.ts",
+        "apps/prime/functions/lib/actor-claims.ts"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "processed",
+      "why": "Reception and the guest messaging app currently duplicate their shared language in two places. If either side adds a field, renames a channel, or changes the security token format, the other side silently fails at runtime — there is no compile-time safety net. Extracting these to a shared package turns silent divergence into a build error.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Channel names, review thread type definitions, actor claims utilities, and the broadcast channel identifier are defined once in a shared package and imported by both apps. A mismatch between the two apps becomes a compile error, not a silent runtime failure.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-prime-shared-contract-layer",
+        "target_path": "docs/plans/reception-prime-shared-contract-layer/fact-find.md",
+        "processed_at": "2026-03-14T19:56:15.400Z",
+        "fact_find_slug": "reception-prime-shared-contract-layer",
+        "fact_find_path": "docs/plans/reception-prime-shared-contract-layer/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-guest-name-lookup",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-guest-name-lookup",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-guest-name-lookup-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — The inbox shows a guest's name for email conversations but never for Prime messaging threads, even when a booking reference is available",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/prime-review.server.ts",
+        "apps/reception/src/lib/inbox/guest-matcher.server.ts",
+        "packages/lib/src/hospitality/index.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "mapPrimeSummaryToInboxThread() always sets guestFirstName and guestLastName to null, even though bookingId is available in the Prime thread summary. The Firebase guestsDetails path holds guest name data keyed by bookingRef/occupantId, but no reverse lookup from bookingId is performed for Prime threads.",
+      "next_scope_now": "Fact-find: map the Firebase guestsDetails data structure, determine how to look up name from bookingId efficiently at list time (bulk vs per-request vs cache), and assess whether the occupantId is derivable from the bookingId alone or requires an additional lookup step.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: mapPrimeSummaryToInboxThread() hardcodes guestFirstName: null and guestLastName: null — bookingId is available but name is never fetched for Prime threads",
+        "apps/reception/src/lib/inbox/prime-review.server.ts",
+        "apps/reception/src/lib/inbox/guest-matcher.server.ts",
+        "packages/lib/src/hospitality/index.ts"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Staff triaging the inbox always see a guest's name for email conversations but never for Prime messaging threads. They have to open the full thread to find out who they're speaking with, which slows down triage and creates an inconsistent experience across channel types.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Prime inbox threads show the guest's name in the thread list wherever a booking reference is available, matching the experience staff already get for email threads.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-actor-claims-compat",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-actor-claims-compat",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-actor-claims-compat-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — If the staff identity token is missing from a messaging request, the system records a fake name in the audit trail and silently blocks all broadcast messages",
+      "location_anchors": [
+        "apps/prime/functions/lib/actor-claims.ts",
+        "apps/reception/src/lib/inbox/actor-claims.ts",
+        "apps/reception/src/lib/inbox/prime-review.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "resolveActorClaimsWithCompat() in Prime falls back to uid: 'reception_proxy' with empty roles when x-prime-actor-claims header is absent. This fake UID is written to admission records (audit trail). The empty roles array also causes the broadcast role gate to block all broadcasts silently — old reception deployments without PRIME_ACTOR_CLAIMS_SECRET configured cannot initiate broadcasts.",
+      "next_scope_now": "Fact-find: confirm whether PRIME_ACTOR_CLAIMS_SECRET is now always set in all reception deployments (staging + production), determine whether the compat path is still needed for any live deployment, and decide whether to hard-reject or error clearly when the header is absent.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: resolveActorClaimsWithCompat() fallback sets uid: 'reception_proxy' with empty roles — blocks broadcasts and pollutes audit trail with fake staff identity",
+        "apps/prime/functions/lib/actor-claims.ts",
+        "apps/reception/src/lib/inbox/prime-review.server.ts"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "When the staff identity token is missing, instead of failing clearly, the system silently records a fake staff name ('reception_proxy') in the message audit trail and blocks all broadcast messages without explanation. This means broadcast failures are invisible and the audit trail is unreliable as an accountability record.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The fake identity fallback is removed or replaced with a hard rejection. All message operations record a real staff UID in the audit trail. Broadcasts fail with a clear error rather than silently, and the compat path is removed once confirmed safe.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-projection-job-status",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-projection-job-status",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-projection-job-status-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Message projection jobs may be written and then never picked up because the status they're saved with doesn't match what the background processor looks for",
+      "location_anchors": [
+        "apps/prime/functions/lib/prime-messaging-repositories.ts",
+        "apps/prime/functions/lib/prime-thread-projection.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "enqueuePrimeProjectionJob() inserts message_projection_jobs rows with status: 'projected' immediately on write. If the background processor queries for status: 'pending' rows, these records are never picked up and downstream data is never updated. The consumer code (prime-projection-replay.ts) exists but its query predicate has not been verified against this status value.",
+      "next_scope_now": "Fact-find: read the projection consumer to confirm what status value it queries for, determine whether jobs are currently being processed or silently stacking up, and align the written status with what the consumer expects.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: enqueuePrimeProjectionJob() writes status: 'projected' immediately — unclear whether consumer queries for 'pending' or 'projected'",
+        "apps/prime/functions/lib/prime-messaging-repositories.ts",
+        "apps/prime/functions/lib/prime-thread-projection.ts"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Every time a message is sent through the reception inbox, a background job is created to keep related data up to date. If the status code on that job doesn't match what the background processor looks for, the jobs quietly pile up and the downstream data is never refreshed — with no error visible to staff.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Projection jobs are created with the status value the processor expects, or the processor is updated to match. The full flow is verified with a test confirming jobs are picked up after being written.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-lastsyncdat-fix",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-lastsyncdat-fix",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-lastsyncdat-fix-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Every Prime messaging thread permanently appears as stale in the inbox filter because the sync timestamp is never set",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/prime-review.server.ts",
+        "apps/reception/src/components/inbox/filters.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "mapPrimeSummaryToInboxThread() hardcodes lastSyncedAt: null. The stale-sync filter in filters.ts treats null as 'stale', so every Prime thread permanently matches the stale-sync filter. This makes the filter unreliable and injects noise into the stale-sync inbox view.",
+      "next_scope_now": "Set lastSyncedAt from the thread's updatedAt timestamp in mapPrimeSummaryToInboxThread(). Prime manages its own sync freshness, so updatedAt is the correct proxy for last-synced time.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: mapPrimeSummaryToInboxThread() always sets lastSyncedAt: null — all Prime threads permanently match the stale-sync inbox filter",
+        "apps/reception/src/lib/inbox/prime-review.server.ts",
+        "apps/reception/src/components/inbox/filters.ts"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The stale-sync filter is supposed to highlight threads that haven't been checked recently. Because Prime threads always show as stale regardless of their actual state, the filter is polluted and staff can't rely on it to find genuinely lagging threads.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Prime threads are no longer permanently flagged as stale. lastSyncedAt is populated from updatedAt and the stale-sync filter only shows threads that are actually stale.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_path": "docs/plans/reception-prime-lastsyncdat-fix/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0006",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-shadow-write-logging",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-shadow-write-logging",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-shadow-write-logging-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — When a guest activity message fails to write to the secondary inbox database, the failure is completely silent",
+      "location_anchors": [
+        "apps/prime/functions/api/activity-message.ts",
+        "apps/prime/functions/lib/prime-messaging-shadow-write.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "activity-message.ts uses ctx.waitUntil() for the D1 shadow write, making it fire-and-forget. Any D1 failure is swallowed silently — no log entry, no alerting. Staff may see activity threads missing from the reception inbox with no indication of why.",
+      "next_scope_now": "Add a try/catch around the shadow write that emits a structured console.error log on failure. Do not throw — the guest must continue to receive 200. Log enough context to diagnose: thread ID, error message, timestamp.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: D1 shadow-write in activity-message.ts uses ctx.waitUntil() with no error handling — failures are completely invisible",
+        "apps/prime/functions/api/activity-message.ts",
+        "apps/prime/functions/lib/prime-messaging-shadow-write.ts"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Guest activity messages are saved to the live database immediately, then saved to a second database (D1) as a background job so staff can see them in the inbox. If the D1 write fails, there is no error in the logs — staff can't tell whether a missing thread is a genuine gap or a known transient failure.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "D1 shadow-write failures emit a structured error log entry with enough context to diagnose. Failures are visible in worker logs without disrupting the guest's experience.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_path": "docs/plans/reception-prime-shadow-write-logging/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0007",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-deprecated-endpoint-cleanup",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-deprecated-endpoint-cleanup",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-deprecated-endpoint-cleanup-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — A superseded way of starting a Prime conversation thread is still present in both apps alongside the new replacement",
+      "location_anchors": [
+        "apps/prime/functions/api/",
+        "apps/reception/src/lib/inbox/prime-review.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The deprecated /api/staff-initiate-thread endpoint (Prime) and initiatePrimeOutboundThread() function (Reception) still exist alongside the new staffBroadcastSend() / /api/staff-broadcast-send single-hop replacement. Both paths are marked @deprecated in code comments.",
+      "next_scope_now": "Delete /api/staff-initiate-thread from Prime functions and delete initiatePrimeOutboundThread() from prime-review.server.ts. Verify no remaining callers before deleting.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: initiatePrimeOutboundThread() and /api/staff-initiate-thread both marked @deprecated — new single-hop broadcast path is the replacement",
+        "apps/prime/functions/api/",
+        "apps/reception/src/lib/inbox/prime-review.server.ts"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Two code paths for the same operation create ongoing maintenance overhead and increase the risk of the old path being accidentally reused. Removing the deprecated path removes the ambiguity.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The deprecated endpoint and its caller are deleted from both apps. The new single-step broadcast path is the only available path.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_path": "docs/plans/reception-prime-deprecated-endpoint-cleanup/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0008",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-source-field-consistency",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-source-field-consistency",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-source-field-consistency-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Inbox thread summaries identify Prime threads by origin but leave the same field blank for email threads",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/prime-review.server.ts",
+        "apps/reception/src/app/api/mcp/inbox/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "mapPrimeSummaryToInboxThread() sets source: 'prime' on Prime threads. buildThreadSummaryFromRow() (email path) never sets source, leaving it undefined. Downstream code discriminates on isPrimeInboxThreadId() by id prefix rather than the source field — so the system works, but source is unreliable as an independent discriminator.",
+      "next_scope_now": "Set source: 'email' explicitly in buildThreadSummaryFromRow(). Confirm no downstream code reads undefined as a meaningful value.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: buildThreadSummaryFromRow() (email path) never sets the source field — email threads have source: undefined while Prime threads have source: 'prime'",
+        "apps/reception/src/lib/inbox/prime-review.server.ts",
+        "apps/reception/src/app/api/mcp/inbox/"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The source field on inbox threads is set for one channel but not the other, making it unreliable for anything that needs to distinguish between them. Filling in the missing value makes the field consistent and usable.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Email threads explicitly carry source: 'email'. The source field is reliable and consistent across both channels.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_path": "docs/plans/reception-prime-source-field-consistency/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314200000-0009",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "after_sha": "operator-idea-20260314-reception-prime-request-retry",
+      "root_event_id": "brik-reception-prime-integration-review-20260314",
+      "anchor_key": "brik-reception-prime-request-retry",
+      "cluster_key": "brik-reception-prime-integration-hardening",
+      "cluster_fingerprint": "brik-reception-prime-request-retry-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — A single failed network call to the messaging service takes down the entire Prime inbox column with no recovery attempt",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/prime-review.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "primeRequest() makes a single fetch call with no retry. Any transient error from the Prime Cloudflare deployment causes an immediate throw. The reception inbox Prime column shows an error state until the next page reload, with no automatic recovery.",
+      "next_scope_now": "Add one retry with a short delay (e.g. 300ms) after an initial failure in primeRequest(). Preserve the existing error throw behaviour if the retry also fails.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: primeRequest() has no retry — a single transient network error takes down the Prime inbox column until next page load",
+        "apps/reception/src/lib/inbox/prime-review.server.ts"
+      ],
+      "created_at": "2026-03-14T20:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Transient network errors between the reception server and the Prime messaging service are rare but inevitable. A single retry recovers from most of them automatically, without staff seeing an error state at all.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "primeRequest() retries once after a short delay on failure. Transient network glitches are transparent to staff in most cases. If both attempts fail, the existing error is surfaced as before.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_path": "docs/plans/reception-prime-request-retry/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
       }
     }
   ]

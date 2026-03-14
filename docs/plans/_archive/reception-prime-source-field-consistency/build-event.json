@@ -1,0 +1,15 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T20:01:43.959Z",
+  "feature_slug": "reception-prime-source-field-consistency",
+  "plan_path": "docs/plans/reception-prime-source-field-consistency/plan.md",
+  "build_date": "2026-03-14",
+  "outcome_contract": {
+    "why": "TBD",
+    "intended_outcome_type": "TBD",
+    "intended_outcome_statement": "TBD",
+    "source": "auto"
+  },
+  "tasks_completed": 1,
+  "tasks_total": 1
+}

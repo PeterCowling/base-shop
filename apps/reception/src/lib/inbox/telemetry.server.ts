@@ -26,6 +26,7 @@ export const inboxEventTypes = [
   "guest_match_not_found",
   "thread_sync_error",
   "prime_manual_reply",
+  "prime_broadcast_initiated",
 ] as const;
 
 export type InboxEventType = (typeof inboxEventTypes)[number];

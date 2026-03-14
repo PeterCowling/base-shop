@@ -1,0 +1,204 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "caryina-site-content-build-resilience",
+  "source_artifact_path": "docs/plans/caryina-site-content-build-resilience/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Fresh deployments and CI builds fail silently (500 on every page) when the content generation step is skipped. The materializer warning also means even manual re-runs are unsafe without the trustStrip fix.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The Caryina app builds and serves content on fresh checkout without a separate manual generation step; all pages fall back to hardcoded safe content rather than throwing a 500 when the file is absent or malformed.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No visual change; content is copy/text only",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Currently: 500 error page on missing file — no graceful state",
+      "gap_or_implication": "Missing file = entire shop offline; no empty state, no degraded mode, no helpful message",
+      "carry_forward_or_notes": "Yes — define fallback UX: which content sections get hardcoded defaults vs redirect to error page"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "File is static JSON with no secrets; no auth involved",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Currently: error thrown propagates as unhandled 500 with no structured log",
+      "gap_or_implication": "No logging when file is missing or malformed; operator has no visibility into which deployment is running stale content",
+      "carry_forward_or_notes": "Yes — add a warning log when falling back to defaults"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`contentPacket.test.ts` only covers chrome defaults path; no tests for missing/invalid file",
+      "gap_or_implication": "Zero coverage of error paths; fallback logic once added needs unit tests",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Two-copy divergence (root vs app-local); materializer schema missing `trustStrip`; schema drift between generator and consumer",
+      "gap_or_implication": "App-local copy is stale and diverged; regenerating from materializer would drop `trustStrip`; need to resolve before prebuild can be wired",
+      "carry_forward_or_notes": "Yes — resolve which path is canonical; port `trustStrip` to materializer or accept manual-only for that field"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Currently: if file is absent, every SSR request fails and throws; no cache or retry",
+      "gap_or_implication": "Single point of failure with no degraded mode",
+      "carry_forward_or_notes": "Yes — fallback ensures reliability; prebuild ensures freshness"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "File is committed; regeneration is manual; no prebuild guard",
+      "gap_or_implication": "If materializer run produces bad output, it breaks deployed app silently; no rollback mechanism other than reverting the JSON commit",
+      "carry_forward_or_notes": "Yes — prebuild should be idempotent; committed baseline is implicit rollback"
+    }
+  ],
+  "open_operator_questions": [
+    "Should the stale `apps/caryina/data/shops/caryina/site-content.generated.json` be deleted from git as part of this work?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The Caryina Next.js app requires `data/shops/caryina/site-content.generated.json` to be present at runtime. Every page in the shop calls `readPayload()` from `apps/caryina/src/lib/contentPacket.ts`, which throws a hard `Error` if the file is missing or structurally invalid. The file is manually generated using a `scripts/` CLI — there is no `prebuild` hook to regenerate it automatically. On a fresh checkout or a CI runner that has not run the generation step, every server-rendered page throws a 500. This work makes the app resilient: the file should be auto-generated before build, and the app ",
+    "goals": [
+      "Add a `prebuild` step to `apps/caryina/package.json` that regenerates `site-content.generated.json` from the committed content-packet before `next build` runs.",
+      "Ensure the app never throws an unhandled runtime error for a missing or malformed file — serve hardcoded fallbacks instead.",
+      "Resolve the two-copy divergence (root `data/` vs `apps/caryina/data/`) to a single authoritative path.",
+      "Add a test that verifies `readPayload()` falls back gracefully when the file is absent."
+    ],
+    "non_goals": [
+      "Changing the content-packet generation pipeline (`compile-website-content-packet`).",
+      "Migrating all content to a DB or CMS.",
+      "Internationalising the fallback copy (fallback can be EN-only).",
+      "Adding runtime content refresh/hot-reload."
+    ],
+    "constraints": [
+      "The file is committed to git (both paths tracked); the materializer has a manual warning not to re-run it yet (`productPage.trustStrip` not ported). The prebuild step must only run the materializer when a content-packet exists and the warning condition is resolved — or must use the committed file as the baseline.",
+      "The `apps/caryina` build uses `next build --webpack`; no Turbopack edge case concerns here.",
+      "CI does not run the materializer (`caryina.yml` `build-cmd` contains no generation step)."
+    ],
+    "assumptions": [
+      "The materializer warning (`productPage.trustStrip` not yet ported) means a blind prebuild run would strip content. The safest prebuild is one that **only regenerates if the source hash has changed** — or the plan must first resolve the trustStrip gap in the materializer before wiring up the prebuild.",
+      "The committed `data/shops/caryina/site-content.generated.json` (repo root) is the primary copy used by the app in production (it is resolved first by `GENERATED_PAYLOAD_CANDIDATES`).",
+      "The `apps/caryina/data/` copy is an older diverged copy still tracked in git — it differs by the presence of a stale `chrome` key that was removed from the main copy."
+    ],
+    "key_entry_points": [
+      "`apps/caryina/src/app/[lang]/layout.tsx` — calls `getChromeContent()` on every page render; first point of 500 failure",
+      "`apps/caryina/src/app/[lang]/page.tsx` — calls `getHomeContent()`",
+      "`apps/caryina/src/app/[lang]/shop/page.tsx` — calls `getShopContent()`",
+      "`apps/caryina/src/app/[lang]/product/[slug]/page.tsx` — calls `getProductPageContent()`, `getTrustStripContent()`",
+      "`apps/caryina/src/app/[lang]/checkout/page.tsx` — calls `getSeoKeywords()`"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none (the one open question about the stale copy deletion defaults to \"delete\" and is low-risk)",
+      "Recommended next step": "`/lp-do-analysis caryina-site-content-build-resilience`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "`contentPacket.ts` throw paths",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Materializer output schema vs consumer schema drift",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Data] [High]: `trustStrip` in consumer not emitted by generator — requires porting before prebuild can be wired",
+        "Resolution Required": "Yes — resolved in task seed 1"
+      },
+      {
+        "Scope Area": "Two-copy divergence",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Data] [Medium]: app-local copy is stale and tracked in git",
+        "Resolution Required": "Operator decision on deletion — defaulted to delete"
+      },
+      {
+        "Scope Area": "CI pipeline (no generation step)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Reliability] [High]: CI builds succeed but deployed app crashes on any page",
+        "Resolution Required": "No — addressed by prebuild task"
+      },
+      {
+        "Scope Area": "Test coverage for error paths",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Testing] [High]: zero tests for missing/invalid file",
+        "Resolution Required": "No — addressed by task seed 5"
+      },
+      {
+        "Scope Area": "Rollback path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Rollout] [Low]: committed file serves as implicit rollback",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Developer runs `pnpm --filter @apps/caryina build` (or CI triggers `caryina.yml`)",
+      "end_condition": "App is deployed to Cloudflare Worker",
+      "areas": [
+        {
+          "id": null,
+          "label": "Content generation",
+          "flow": "Operator manually runs `pnpm --filter scripts startup-loop:materialize-site-content-payload -- --business HBAG --shop caryina`. Result written to `data/shops/caryina/site-content.generated.json`. File is committed.",
+          "owners": null,
+          "evidence": "`scripts/src/startup-loop/website/materialize-site-content-payload.ts`",
+          "issues": "Warning in JSON: \"Do not run materializer without porting productPage.trustStrip first.\" Materializer does not emit trustStrip; file was extended manually post-generation."
+        },
+        {
+          "id": null,
+          "label": "Two-copy divergence",
+          "flow": "Two copies tracked in git: `data/shops/caryina/site-content.generated.json` (repo root, used by app in production) and `apps/caryina/data/shops/caryina/site-content.generated.json` (app-local, older, contains stale `chrome` key).",
+          "owners": null,
+          "evidence": "`contentPacket.ts` GENERATED_PAYLOAD_CANDIDATES lines 109–113; `git ls-files` output",
+          "issues": "Copies have diverged. App-local copy has stale `chrome` key that was removed from main copy and from `contentPacket.ts`."
+        },
+        {
+          "id": null,
+          "label": "App startup / runtime",
+          "flow": "On every server render, `readPayload()` in `contentPacket.ts` tries three candidate paths. If none exist: throws `Error(\"Missing generated site-content payload...\")`. If file exists but is invalid: throws `Error(\"Invalid generated site-content payload...\")`.",
+          "owners": null,
+          "evidence": "`contentPacket.ts` lines 142–164",
+          "issues": "Hard throw on both missing and invalid. No fallback. 500 propagates to every page that calls any `get*Content()` function."
+        },
+        {
+          "id": null,
+          "label": "CI build",
+          "flow": "`caryina.yml` calls `pnpm exec turbo run build --filter=@apps/caryina^...` then `opennextjs-cloudflare build`. No generation step before either. Relies entirely on committed file.",
+          "owners": null,
+          "evidence": "`.github/workflows/caryina.yml` lines 54–62",
+          "issues": "If committed file is stale or missing, build succeeds but deployed app serves 500 on every page."
+        },
+        {
+          "id": null,
+          "label": "No prebuild hook",
+          "flow": "`apps/caryina/package.json` has no `prebuild` script. `build` is `next build --webpack`.",
+          "owners": null,
+          "evidence": "`apps/caryina/package.json` line 6",
+          "issues": "Generation is entirely manual, undiscoverable from the build command."
+        }
+      ]
+    }
+  }
+}

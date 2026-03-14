@@ -1,0 +1,14 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "caryina-site-content-build-resilience",
+  "built_at": "2026-03-14T00:00:00.000Z",
+  "outcome_contract": {
+    "why": "Fresh deployments and CI builds fail silently (500 on every page) when the content generation step is skipped. The materializer warning also means even manual re-runs are unsafe without the trustStrip fix.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The Caryina app builds and serves content on fresh checkout without a separate manual generation step; all pages fall back to hardcoded safe content rather than throwing a 500 when the file is absent or malformed.",
+    "source": "operator"
+  },
+  "tasks_completed": ["TASK-01", "TASK-02", "TASK-03", "TASK-04", "TASK-05"],
+  "commits": ["f196dc70c5", "ecf44d675d"],
+  "build_record_path": "docs/plans/caryina-site-content-build-resilience/build-record.user.md"
+}

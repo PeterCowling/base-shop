@@ -9,12 +9,12 @@ interface LocalizedText {
   it?: string;
 }
 
-interface TrustStripCopy {
+type TrustStripCopy = {
   delivery: LocalizedText;
   exchange: LocalizedText;
   origin: LocalizedText;
   securePayment: LocalizedText;
-}
+};
 
 interface FaqItem {
   question: LocalizedText;
@@ -37,6 +37,7 @@ interface ChromeContent {
   footer: {
     terms: LocalizedText;
     privacy: LocalizedText;
+    cookie: LocalizedText;
     returnsRefunds: LocalizedText;
     shipping: LocalizedText;
     support: LocalizedText;
@@ -46,6 +47,7 @@ interface ChromeContent {
   consent: {
     message: LocalizedText;
     privacyLink: LocalizedText;
+    cookieLink: LocalizedText;
     decline: LocalizedText;
     accept: LocalizedText;
     ariaLabel: LocalizedText;
@@ -228,12 +230,20 @@ export function getProductPageContent(locale: Locale) {
   };
 }
 
+const TRUST_STRIP_DEFAULTS: TrustStripCopy = {
+  delivery: { en: "Delivery estimate shown at checkout" },
+  exchange: { en: "Unused-item exchange requests up to 30 days" },
+  origin: { en: "Designed in Positano, Italy" },
+  securePayment: { en: "Secure checkout" },
+};
+
 export function getTrustStripContent(
   locale: Locale,
-): { delivery: string; exchange: string; origin: string; securePayment: string } | undefined {
-  const productPage = readPayload().productPage;
-  if (!productPage.trustStrip) return undefined;
-  const ts = productPage.trustStrip;
+): { delivery: string; exchange: string; origin: string; securePayment: string } {
+  const ts = mergeLocalizedSection(
+    TRUST_STRIP_DEFAULTS,
+    readPayload().productPage.trustStrip,
+  );
   return {
     delivery: localizedText(ts.delivery, locale),
     exchange: localizedText(ts.exchange, locale),
@@ -278,6 +288,7 @@ const CHROME_DEFAULTS: ChromeContent = {
   footer: {
     terms: { en: "Terms", de: "AGB", it: "Termini" },
     privacy: { en: "Privacy", de: "Datenschutz", it: "Privacy" },
+    cookie: { en: "Cookies", de: "Cookies", it: "Cookie" },
     returnsRefunds: { en: "Returns & Refunds", de: "Rücksendungen & Erstattungen", it: "Resi e Rimborsi" },
     shipping: { en: "Shipping", de: "Versand", it: "Spedizione" },
     support: { en: "Support", de: "Support", it: "Supporto" },
@@ -291,15 +302,16 @@ const CHROME_DEFAULTS: ChromeContent = {
       it: "Utilizziamo cookie analitici per capire come i visitatori interagiscono con il nostro sito. Consulta la nostra",
     },
     privacyLink: { en: "privacy policy", de: "Datenschutzerklärung", it: "informativa sulla privacy" },
+    cookieLink: { en: "cookie policy", de: "Cookie-Richtlinie", it: "cookie policy" },
     decline: { en: "Decline", de: "Ablehnen", it: "Rifiuta" },
     accept: { en: "Accept", de: "Akzeptieren", it: "Accetta" },
     ariaLabel: { en: "Cookie consent", de: "Cookie-Einwilligung", it: "Consenso ai cookie" },
   },
   trust: {
     summary: {
-      en: "Free exchange within 30 days · Delivery estimated at checkout",
-      de: "Kostenloser Umtausch innerhalb von 30 Tagen · Lieferzeit wird beim Checkout angezeigt",
-      it: "Cambio gratuito entro 30 giorni · Consegna stimata al checkout",
+      en: "Delivery estimate shown at checkout · 14-day cancellation right on eligible online orders",
+      de: "Lieferzeit wird beim Checkout angezeigt · 14-tägiges Widerrufsrecht für berechtigte Online-Bestellungen",
+      it: "Consegna stimata mostrata al checkout · diritto di recesso di 14 giorni per gli ordini online idonei",
     },
     shippingLink: { en: "Shipping policy", de: "Versandrichtlinie", it: "Politica di spedizione" },
     returnsLink: { en: "Returns & exchanges", de: "Rücksendungen & Umtausch", it: "Resi e cambi" },
@@ -331,8 +343,26 @@ const CHROME_DEFAULTS: ChromeContent = {
   },
 };
 
+function mergeLocalizedSection<T extends Record<string, LocalizedText>>(
+  defaults: T,
+  overrides?: Partial<T>,
+): T {
+  const merged = { ...defaults };
+  for (const key of Object.keys(defaults) as Array<keyof T>) {
+    merged[key] = overrides?.[key] ?? defaults[key];
+  }
+  return merged;
+}
+
 export function getChromeContent(locale: Locale) {
-  const chrome = readPayload().chrome ?? CHROME_DEFAULTS;
+  const payloadChrome = readPayload().chrome;
+  const chrome: ChromeContent = {
+    header: mergeLocalizedSection(CHROME_DEFAULTS.header, payloadChrome?.header),
+    footer: mergeLocalizedSection(CHROME_DEFAULTS.footer, payloadChrome?.footer),
+    consent: mergeLocalizedSection(CHROME_DEFAULTS.consent, payloadChrome?.consent),
+    trust: mergeLocalizedSection(CHROME_DEFAULTS.trust, payloadChrome?.trust),
+    notifyMe: mergeLocalizedSection(CHROME_DEFAULTS.notifyMe, payloadChrome?.notifyMe),
+  };
   return {
     header: {
       shop: localizedText(chrome.header.shop, locale),
@@ -342,6 +372,7 @@ export function getChromeContent(locale: Locale) {
     footer: {
       terms: localizedText(chrome.footer.terms, locale),
       privacy: localizedText(chrome.footer.privacy, locale),
+      cookie: localizedText(chrome.footer.cookie, locale),
       returnsRefunds: localizedText(chrome.footer.returnsRefunds, locale),
       shipping: localizedText(chrome.footer.shipping, locale),
       support: localizedText(chrome.footer.support, locale),
@@ -351,6 +382,7 @@ export function getChromeContent(locale: Locale) {
     consent: {
       message: localizedText(chrome.consent.message, locale),
       privacyLink: localizedText(chrome.consent.privacyLink, locale),
+      cookieLink: localizedText(chrome.consent.cookieLink, locale),
       decline: localizedText(chrome.consent.decline, locale),
       accept: localizedText(chrome.consent.accept, locale),
       ariaLabel: localizedText(chrome.consent.ariaLabel, locale),

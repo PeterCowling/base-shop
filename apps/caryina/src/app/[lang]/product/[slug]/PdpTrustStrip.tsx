@@ -11,10 +11,6 @@ interface PdpTrustStripProps {
 export function PdpTrustStrip({ lang }: PdpTrustStripProps) {
   const trustStrip = getTrustStripContent(lang);
 
-  if (!trustStrip) {
-    return null;
-  }
-
   return (
     <ul
       data-cy="pdp-trust-strip"

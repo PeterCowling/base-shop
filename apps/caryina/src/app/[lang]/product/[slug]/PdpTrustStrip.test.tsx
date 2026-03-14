@@ -28,8 +28,8 @@ jest.mock("@/lib/contentPacket", () => ({
 const mockGetTrustStripContent = getTrustStripContent as jest.MockedFunction<typeof getTrustStripContent>;
 
 const MOCK_TRUST_STRIP = {
-  delivery: "Usually ships in 2-5 business days (EU)",
-  exchange: "30-day exchange",
+  delivery: "Delivery estimate shown at checkout",
+  exchange: "Unused-item exchange requests up to 30 days",
   origin: "Designed in Positano, Italy",
   securePayment: "Secure checkout",
 };
@@ -72,10 +72,4 @@ describe("PdpTrustStrip", () => {
     expect(exchangeLink).toHaveAttribute("href", expect.stringContaining("/en/returns"));
   });
 
-  it("renders nothing when getTrustStripContent returns undefined", () => {
-    mockGetTrustStripContent.mockReturnValue(undefined);
-
-    const { container } = render(<PdpTrustStrip lang="en" />);
-    expect(container.firstChild).toBeNull();
-  });
 });

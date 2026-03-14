@@ -11,7 +11,7 @@ import { Grid, Inline } from '@acme/design-system/primitives';
 import { useChat } from '@/contexts/messaging/ChatProvider';
 import { useGuestProfiles } from '@/hooks/data/useGuestProfiles';
 import { readGuestSession } from '@/lib/auth/guestSessionGuard';
-import { buildDirectMessageChannelId } from '@/lib/chat/directMessageChannel';
+import { buildDirectMessageChannelId, WHOLE_HOSTEL_BROADCAST_CHANNEL_ID } from '@/lib/chat/directMessageChannel';
 import { canSendDirectMessage } from '@/lib/chat/messagingPolicy';
 import { get, ref } from '@/services/firebase';
 import { useFirebaseDatabase } from '@/services/useFirebase';
@@ -19,7 +19,7 @@ import type { ActivityInstance } from '@/types/messenger/activity';
 import { MSG_ROOT } from '@/utils/messaging/dbRoot';
 
 type ActivityLifecycle = 'upcoming' | 'live' | 'ended';
-type ChannelMode = 'activity' | 'direct';
+type ChannelMode = 'activity' | 'broadcast' | 'direct';
 
 function formatAudienceLabel(audience: string): string {
   switch (audience) {
@@ -69,7 +69,12 @@ export default function ChannelPage() {
   const modeParam = searchParams.get('mode');
   const rawChannelId = searchParams.get('id');
   const peerUuid = searchParams.get('peer');
-  const channelMode: ChannelMode = modeParam === 'direct' ? 'direct' : 'activity';
+  const channelMode: ChannelMode =
+    modeParam === 'direct'
+      ? 'direct'
+      : modeParam === 'broadcast'
+        ? 'broadcast'
+        : 'activity';
   const db = useFirebaseDatabase();
   const { messages, activities, setCurrentChannelId, sendMessage } = useChat();
   const { profiles, isLoading: isProfilesLoading } = useGuestProfiles();
@@ -81,6 +86,10 @@ export default function ChannelPage() {
   const channelId = useMemo(() => {
     if (channelMode === 'activity') {
       return rawChannelId;
+    }
+
+    if (channelMode === 'broadcast') {
+      return WHOLE_HOSTEL_BROADCAST_CHANNEL_ID;
     }
 
     if (!currentGuestUuid || !peerUuid || currentGuestUuid === peerUuid) {
@@ -133,7 +142,7 @@ export default function ChannelPage() {
   const activity = channelId ? activities[channelId] : undefined;
   const channelMessages = useMemo(() => channelId ? messages[channelId] ?? [] : [], [channelId, messages]);
   const lifecycle =
-    channelMode === 'direct'
+    channelMode === 'direct' || channelMode === 'broadcast'
       ? 'live'
       : activity
         ? resolveLifecycle(activity, Date.now())
@@ -191,6 +200,7 @@ export default function ChannelPage() {
   const handleSendMessage = async (e: FormEvent) => {
     e.preventDefault();
 
+    if (channelMode === 'broadcast') return;
     if (!channelId || !messageInput.trim() || isSending) return;
 
     setIsSending(true);
@@ -279,14 +289,18 @@ export default function ChannelPage() {
   const headerTitle =
     channelMode === 'direct'
       ? t('chat.directory.guestLabel', { id: peerUuid?.substring(0, 8) ?? '...' })
-      : activity?.title || t('channelTitle', 'Activity Chat');
+      : channelMode === 'broadcast'
+        ? t('staffMessages', 'Staff messages')
+        : activity?.title || t('channelTitle', 'Activity Chat');
 
   const statusLabel =
     channelMode === 'direct'
       ? t('statusDirect', 'Direct chat')
-      : isLive
-        ? t('statusLive', 'Live now')
-        : t('statusUpcoming', 'Starts soon');
+      : channelMode === 'broadcast'
+        ? t('statusBroadcast', 'Whole hostel')
+        : isLive
+          ? t('statusLive', 'Live now')
+          : t('statusUpcoming', 'Starts soon');
 
   return (
     <main className="flex min-h-dvh flex-col bg-muted">
@@ -294,7 +308,7 @@ export default function ChannelPage() {
       <div className="bg-card border-b border-border px-4 py-3">
         <div className="mx-auto flex w-full items-center gap-3">
           <Link
-            href={channelMode === 'direct' ? '/chat' : '/activities'}
+            href={channelMode === 'broadcast' ? '/chat' : channelMode === 'direct' ? '/chat' : '/activities'}
             className="text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -507,7 +521,7 @@ export default function ChannelPage() {
       </div>
 
       {/* Composer */}
-      {isLive && (
+      {isLive && channelMode !== 'broadcast' && (
         <div className="border-t border-border bg-card px-4 py-3">
           <div className="mx-auto w-full">
             {channelMode === 'activity' && !isPresent ? (

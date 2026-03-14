@@ -10,6 +10,7 @@ import {
   type DurableObjectNamespace,
 } from "./cartStore/cloudflareDurableStore";
 import { MemoryCartStore } from "./cartStore/memoryStore";
+import { PrismaCartStore } from "./cartStore/prismaStore";
 import { RedisCartStore } from "./cartStore/redisStore";
 
 /** Abstraction for cart storage backends */
@@ -30,7 +31,7 @@ export interface CartStore {
 }
 
 export interface CartStoreOptions {
-  backend?: "memory" | "redis" | "cloudflare";
+  backend?: "memory" | "redis" | "cloudflare" | "prisma";
   ttlSeconds?: number;
   redis?: Redis;
   /** Optional Durable Object namespace binding when using Cloudflare */
@@ -116,6 +117,9 @@ export function createCartStore(options: CartStoreOptions = {}): CartStore {
     console.warn(
       "CART_STORE_PROVIDER=cloudflare but no Durable Object binding found; falling back to MemoryCartStore"
     );
+  }
+  if (backend === "prisma") {
+    return new PrismaCartStore(ttl);
   }
   return createMemoryCartStore(ttl);
 }

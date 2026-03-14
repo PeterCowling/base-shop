@@ -20,3 +20,4 @@ binding = "ASSETS"
 [vars]
 DB_MODE = "prisma"
 INVENTORY_BACKEND = "prisma"
+CART_STORE_PROVIDER = "prisma"

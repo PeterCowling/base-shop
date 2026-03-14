@@ -69,8 +69,8 @@ Load `modules/cmd-advance/sell-gates.md` for:
 ### QA and Security Family
 
 Load `modules/cmd-advance/s9b-gates.md` for:
-- `GATE-LAUNCH-SEC`
-- S9B→SIGNALS advance gate (hard block on security domain fail or stale/missing QA report)
+- `GATE-LAUNCH-SEC` — hard block on security domain fail or stale/missing QA report
+- `GATE-UI-SWEEP-01` — hard block when no recent business-scoped rendered UI contrast sweep artifact exists, or when artifact is stale/incomplete/has S1 blockers
 
 ### Gap-Fill Family
 

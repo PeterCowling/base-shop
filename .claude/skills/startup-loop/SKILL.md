@@ -54,7 +54,7 @@ Load the relevant module per command:
 | `modules/cmd-advance/market-product-website-gates.md` | `cmd-advance` submodule for MARKET / PRODUCT / WEBSITE gate family (`GATE-BD-03`, `GATE-PRODUCT-02-01`, `GATE-WEBSITE-DO-01`). |
 | `modules/cmd-advance/signals-gates.md` | `cmd-advance` submodule for SIGNALS weekly advance routing (`/lp-weekly`, `GATE-BD-08`). |
 | `modules/cmd-advance/sell-gates.md` | `cmd-advance` submodule for SELL strategy/activation gates and SELL-01 secondary dispatch. |
-| `modules/cmd-advance/s9b-gates.md` | `cmd-advance` submodule for S9B→SIGNALS advance gate (`GATE-LAUNCH-SEC`). Hard blocks when security domain fails or QA report is absent/stale (>30 days). |
+| `modules/cmd-advance/s9b-gates.md` | `cmd-advance` submodule for S9B→SIGNALS advance gates. `GATE-LAUNCH-SEC` (Hard): blocks when security domain fails or QA report is absent/stale (>30 days). `GATE-UI-SWEEP-01` (Hard): blocks when no recent business-scoped rendered UI contrast sweep artifact exists, or when artifact is stale/incomplete/has S1 blockers. |
 | `modules/cmd-advance/gap-fill-gates.md` | `cmd-advance` submodule for ongoing loop gap-fill dispatch gates (`GATE-LOOP-GAP-01/02/03`). |
 
 ## Required Output Contract
@@ -171,7 +171,7 @@ Stages (canonical IDs from loop-spec):
 | WEBSITE-01 | L1 first build framework | `/lp-site-upgrade` (auto-handover to DO sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-analysis` -> `/lp-do-plan` -> `/lp-do-build` once Active) | launch-surface=pre-website |
 | WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` (L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs) | launch-surface=website-live |
 | DO | Do | `/lp-do-fact-find`, `/lp-do-analysis`, `/lp-do-plan`, `/lp-do-build` | — |
-| S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa` | — |
+| S9B | QA gates | `/lp-launch-qa`, `/lp-design-qa`, `/tools-ui-contrast-sweep` | — |
 | SIGNALS | Weekly decision | `/lp-experiment` (Phase 0 fallback) / `/lp-weekly` (Phase 1 default) | — (legacy alias: `S10`) |
 
 ## Global Invariants

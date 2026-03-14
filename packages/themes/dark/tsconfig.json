@@ -1,17 +1,11 @@
 {
   "extends": "../../../tsconfig.base.json",
-
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "noEmit": false,
-    "outDir": "dist",
-
-
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ES2022",
     "types": ["node"]
   },
-
   "include": ["src/**/*"],
-  "exclude": ["dist", "__tests__", ".turbo", "node_modules", "src/assets.ts", "src/design-profile.ts", "src/recipes.ts"]
+  "exclude": ["dist", "**/__tests__/**"]
 }

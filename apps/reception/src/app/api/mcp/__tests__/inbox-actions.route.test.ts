@@ -44,6 +44,9 @@ jest.mock("@/lib/inbox/repositories.server", () => ({
   updateThreadStatus: jest.fn(),
 }));
 
+// prime-review.server is fully mocked — real resolvePrimeInboxThread / dismissPrimeInboxThread are never called.
+// guestFirstName: null in mock return values is a valid stub for the de-scoped mutation paths;
+// guest-name augmentation for detail/mutation paths is a follow-on (reception-prime-guest-name-lookup).
 jest.mock("@/lib/inbox/prime-review.server", () => ({
   dismissPrimeInboxThread: jest.fn(),
   isPrimeInboxThreadId: jest.fn(),

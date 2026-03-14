@@ -26,6 +26,9 @@ jest.mock("@/lib/inbox/telemetry.server", () => ({
   recordInboxEvent: jest.fn(),
 }));
 
+// prime-review.server is fully mocked — real getPrimeInboxThreadDetail is never called.
+// guestFirstName: null in mock return values is a valid stub for the de-scoped detail path;
+// guest-name augmentation for detail/mutation paths is a follow-on (reception-prime-guest-name-lookup).
 jest.mock("@/lib/inbox/prime-review.server", () => ({
   getPrimeInboxThreadDetail: jest.fn(),
   isPrimeInboxThreadId: jest.fn(),

@@ -7,12 +7,20 @@
  *
  * TC-01: lastSyncedAt is populated from updatedAt (not null).
  * TC-04: prime_activity thread with bookingId 'activity' produces guestBookingRef: null (regression guard).
+ *
+ * TC-08: Guest name augmentation via fetchPrimeGuestNames.
+ *   TC-08a: prime_direct thread → guestFirstName populated from Firebase.
+ *   TC-08b: prime_broadcast thread (bookingId:'') → Firebase not called; guestFirstName: null.
+ *   TC-08c: Firebase failure → guestFirstName: null; no throw.
+ *   TC-08d: prime_activity thread → guestFirstName: null; Firebase not called.
  */
 
 /* eslint-disable import/first */
 jest.mock("server-only", () => ({}));
 
 import { listPrimeInboxThreadSummaries } from "../prime-review.server";
+
+const FIREBASE_BASE = "https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app";
 
 const UPDATED_AT = "2026-03-14T10:00:00.000Z";
 
@@ -134,6 +142,146 @@ describe("mapPrimeSummaryToInboxThread (via listPrimeInboxThreadSummaries)", () 
       const threads = await listPrimeInboxThreadSummaries();
 
       expect(threads[0].guestBookingRef).toBe("booking-123");
+    });
+  });
+
+  describe("TC-08: guest name augmentation via fetchPrimeGuestNames", () => {
+    /**
+     * Builds a three-way URL-routing mock:
+     *   1. Prime API URL (/api/review-threads) → returns the given thread list
+     *   2. Firebase bookings URL (/bookings/<ref>) → returns bookings payload
+     *   3. Firebase guestsDetails URL (/guestsDetails/<ref>) → returns details payload
+     */
+    function makeTripleMock(
+      threads: ReturnType<typeof makeThreadPayload>[],
+      bookingRef: string,
+      bookingsPayload: object | null,
+      detailsPayload: object | null,
+    ) {
+      return jest.fn().mockImplementation((url: string) => {
+        // Prime API call
+        if (url.includes("/api/review-threads")) {
+          return Promise.resolve({
+            ok: true,
+            status: 200,
+            json: async () => ({ success: true, data: threads }),
+          });
+        }
+        // Firebase bookings leg
+        if (url.includes(`/bookings/${bookingRef}`)) {
+          return Promise.resolve({
+            ok: true,
+            status: 200,
+            json: async () => bookingsPayload,
+          });
+        }
+        // Firebase guestsDetails leg
+        if (url.includes(`/guestsDetails/${bookingRef}`)) {
+          return Promise.resolve({
+            ok: true,
+            status: 200,
+            json: async () => detailsPayload,
+          });
+        }
+        return Promise.reject(new Error(`Unexpected fetch URL: ${url}`));
+      });
+    }
+
+    beforeEach(() => {
+      process.env = {
+        ...process.env,
+        NEXT_PUBLIC_FIREBASE_DATABASE_URL: FIREBASE_BASE,
+        FIREBASE_DB_SECRET: "test-secret",
+      };
+    });
+
+    it("TC-08a: prime_direct thread → guestFirstName populated from Firebase lead guest", async () => {
+      const thread = makeThreadPayload({ channel: "prime_direct", bookingId: "booking-xyz" });
+      const bookingsPayload = {
+        "occ-1": { checkInDate: "2026-03-14", checkOutDate: "2026-03-16", leadGuest: true },
+      };
+      const detailsPayload = {
+        "occ-1": { email: "guest@example.com", firstName: "Ingrid", lastName: "Muller" },
+      };
+
+      global.fetch = makeTripleMock([thread], "booking-xyz", bookingsPayload, detailsPayload) as unknown as typeof fetch;
+
+      const threads = await listPrimeInboxThreadSummaries();
+
+      expect(threads).toHaveLength(1);
+      expect(threads[0].guestFirstName).toBe("Ingrid");
+      expect(threads[0].guestLastName).toBe("Muller");
+    });
+
+    it("TC-08b: prime_broadcast thread (bookingId:'') → Firebase not called for broadcast; guestFirstName: null", async () => {
+      const thread = makeThreadPayload({ channel: "prime_broadcast", bookingId: "" });
+
+      const fetchMock = jest.fn().mockImplementation((url: string) => {
+        // Only the Prime API call is expected; Firebase must not be called
+        if (url.includes("/api/review-threads")) {
+          return Promise.resolve({
+            ok: true,
+            status: 200,
+            json: async () => ({ success: true, data: [thread] }),
+          });
+        }
+        return Promise.reject(new Error(`Unexpected Firebase call for broadcast thread: ${url}`));
+      });
+      global.fetch = fetchMock as unknown as typeof fetch;
+
+      const threads = await listPrimeInboxThreadSummaries();
+
+      expect(threads).toHaveLength(1);
+      expect(threads[0].guestFirstName).toBeNull();
+      // Verify no Firebase URL was called (only Prime API URL)
+      const callUrls = (fetchMock.mock.calls as [string][]).map(([url]) => url);
+      expect(callUrls.every((url) => url.includes("/api/review-threads"))).toBe(true);
+    });
+
+    it("TC-08c: Firebase failure → guestFirstName: null; no throw from listPrimeInboxThreadSummaries", async () => {
+      const thread = makeThreadPayload({ channel: "prime_direct", bookingId: "booking-xyz" });
+
+      global.fetch = jest.fn().mockImplementation((url: string) => {
+        if (url.includes("/api/review-threads")) {
+          return Promise.resolve({
+            ok: true,
+            status: 200,
+            json: async () => ({ success: true, data: [thread] }),
+          });
+        }
+        // Firebase legs throw
+        return Promise.reject(new Error("Firebase unavailable"));
+      }) as unknown as typeof fetch;
+
+      // Must not throw
+      const threads = await listPrimeInboxThreadSummaries();
+
+      expect(threads).toHaveLength(1);
+      expect(threads[0].guestFirstName).toBeNull();
+    });
+
+    it("TC-08d: prime_activity thread → guestFirstName: null; Firebase not called", async () => {
+      const thread = makeThreadPayload({ channel: "prime_activity", bookingId: "activity" });
+
+      const fetchMock = jest.fn().mockImplementation((url: string) => {
+        if (url.includes("/api/review-threads")) {
+          return Promise.resolve({
+            ok: true,
+            status: 200,
+            json: async () => ({ success: true, data: [thread] }),
+          });
+        }
+        return Promise.reject(new Error(`Unexpected Firebase call for activity thread: ${url}`));
+      });
+      global.fetch = fetchMock as unknown as typeof fetch;
+
+      const threads = await listPrimeInboxThreadSummaries();
+
+      expect(threads).toHaveLength(1);
+      expect(threads[0].guestFirstName).toBeNull();
+      // Verify no Firebase URL was called
+      const callUrls = (fetchMock.mock.calls as [string][]).map(([url]) => url);
+      expect(callUrls.every((url) => url.includes("/api/review-threads"))).toBe(true);
     });
   });
 });

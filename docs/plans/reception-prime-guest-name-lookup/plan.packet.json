@@ -1,0 +1,276 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-guest-name-lookup",
+  "source_artifact_path": "docs/plans/reception-prime-guest-name-lookup/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-prime-guest-name-lookup/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Prime inbox threads have no guest names, making triage slower for staff. Email threads already resolve names. Closing this gap makes the Prime inbox parity-complete for the most operator-visible field.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Prime direct (`prime_direct`) inbox threads display a booking-level guest name (lead guest or first named occupant from `guestsDetails/{bookingRef}`) in the inbox list view; broadcast and activity threads remain name-free; Firebase unavailability degrades gracefully to null names with no throw",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — `ThreadList.tsx` already renders `guestFirstName` when non-null; no UI changes needed",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UI files touched",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Fail-open: Firebase unavailable → `guestFirstName: null` (no UX change); partial failure per-ref → other refs still succeed",
+      "current_or_option_state": "TASK-02, TASK-05",
+      "gap_or_implication": "`Promise.allSettled` handles partial failures",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "PII (first/last name) stays server-only; same server context as email thread path; no new client exposure; `FIREBASE_DB_SECRET` already required",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No new env vars needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Log rejected `Promise.allSettled` entries at `console.error` with bookingRef and error; no success-path logs (matches `buildGuestEmailMap` error-only posture)",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Same logging posture as `buildGuestEmailMap`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for helper (TASK-05); integration tests for augmented list function (TASK-07); existing API contract tests updated (TASK-06)",
+      "current_or_option_state": "TASK-05, TASK-06, TASK-07",
+      "gap_or_implication": "Dual-endpoint `global.fetch` mock required in TASK-07",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No type changes to `InboxThreadSummaryApiModel`; no schema migration; `guestFirstName`/`guestLastName` already `string \\",
+      "current_or_option_state": "null`",
+      "gap_or_implication": "TASK-03",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Per-ref bounded fetch (not root fetch); deduplicated unique refs; `Promise.allSettled` fail-open; concurrency cap 10 ref-pairs",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Typical 2–10 unique refs at list time",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive (null → populated); no DB migration; no feature flag; rollback = revert TASK-03 augmentation call",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Zero-risk rollback",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The reception inbox always returns `guestFirstName: null` / `guestLastName: null` for Prime messaging threads even though every `PrimeReviewThreadSummary` carries a `bookingId` that equals the Firebase `bookingRef` for direct (`prime_direct`) threads. This plan implements a new `fetchPrimeGuestNames` helper in `guest-matcher.server.ts` that performs deduplicated parallel dual-fetch (bookings + guestsDetails per ref) to retrieve lead-guest names, then augments `listPrimeInboxThreadSummaries()` to patch the names before returning to the caller. Sentinel `bookingId` values (`''` for broadcast, `'",
+    "goals": [
+      "Surface `guestFirstName` / `guestLastName` on `prime_direct` inbox list threads",
+      "Guard against `bookingId: ''` (broadcast) triggering a full `guestsDetails/` tree read",
+      "Guard against `bookingId: 'activity'` triggering any Firebase call",
+      "Fail open: Firebase unavailable → names stay null, no throw, no visible error",
+      "Audit existing API contract test stubs for Prime threads and confirm they remain valid (all are in fully-mocked test contexts; no assertion changes needed)"
+    ],
+    "non_goals": [
+      "Augmenting detail/mutation paths (`getPrimeInboxThreadDetail`, `resolvePrimeInboxThread`, `dismissPrimeInboxThread`) — de-scoped, TODO comment only",
+      "Changing how email thread guest names work",
+      "Occupant-level precision matching (booking-level lead guest is sufficient for inbox display)",
+      "Feature flags or DB migrations (change is additive)"
+    ],
+    "constraints": [
+      "`listPrimeInboxThreadSummaries` is async; augmentation happens after the Prime API call, before return",
+      "Firebase REST available via `fetchFirebaseJson` (`FIREBASE_BASE_URL` + `FIREBASE_DB_SECRET` — already in use)",
+      "`guestDetailsBookingPath('')` collapses to `guestsDetails` root via `joinFirebasePath` — empty string must never be passed to it",
+      "`mapPrimeSummaryToInboxThread` is NOT changed (de-scoped mutation paths use it; widening blast radius is prohibited)",
+      "Tests run in CI only — no local test execution",
+      "Both Prime API calls and Firebase calls flow through `global.fetch`; dual-endpoint mock routing required in new tests"
+    ],
+    "assumptions": [],
+    "selected_approach": [
+      "What was chosen:",
+      "`fetchPrimeGuestNames(bookingRefs: string[]): Promise<Map<string, { firstName: string; lastName: string }>>` in `guest-matcher.server.ts`",
+      "Per unique valid ref: `fetchFirebaseJson(bookingRootPath(ref))` + `fetchFirebaseJson(guestDetailsBookingPath(ref))` in parallel via `Promise.allSettled`",
+      "Identify `leadGuest: true` occupantId from bookings response, look up name in guestsDetails response; fall back to first-named occupant",
+      "`listPrimeInboxThreadSummaries()` calls helper after mapping, patches `guestFirstName`/`guestLastName` before return",
+      "Why planning is not reopening option selection:",
+      "Analysis resolved all architectural decisions (lead-guest strategy, concurrency cap, blast radius containment, sentinel guards)",
+      "No operator questions remain open"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add `guestDetailsBookingPath` and `bookingRootPath` imports to `guest-matcher.server.ts`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/reception/src/lib/inbox/guest-matcher.server.ts` — import line update only",
+        "affects": "`apps/reception/src/lib/inbox/guest-matcher.server.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Implement `fetchPrimeGuestNames` helper in `guest-matcher.server.ts`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/reception/src/lib/inbox/guest-matcher.server.ts` — new exported async function `fetchPrimeGuestNames`",
+        "affects": "`apps/reception/src/lib/inbox/guest-matcher.server.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Augment `listPrimeInboxThreadSummaries()` to call `fetchPrimeGuestNames` and patch names",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/reception/src/lib/inbox/prime-review.server.ts` — augmented `listPrimeInboxThreadSummaries()` function body",
+        "affects": "`apps/reception/src/lib/inbox/prime-review.server.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Add TODO comments in de-scoped detail/mutation paths",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/reception/src/lib/inbox/prime-review.server.ts` — TODO comments in `getPrimeInboxThreadDetail`, `resolvePrimeInboxThread`, `dismissPrimeInboxThread`",
+        "affects": "`apps/reception/src/lib/inbox/prime-review.server.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Unit tests for `fetchPrimeGuestNames`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New or modified test file: `apps/reception/src/lib/inbox/__tests__/prime-guest-names.test.ts`",
+        "affects": "`apps/reception/src/lib/inbox/__tests__/prime-guest-names.test.ts` (new file)"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Audit API contract test locations that hard-code `guestFirstName: null` for Prime threads",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Audited and potentially commented test files — no functional test changes expected in most cases",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Integration tests for augmented `listPrimeInboxThreadSummaries()`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New tests added to `apps/reception/src/lib/inbox/__tests__/prime-review-mapper.test.ts` or a companion file",
+        "affects": "`apps/reception/src/lib/inbox/__tests__/prime-review-mapper.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-04",
+      "TASK-06"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Prime thread list guest names",
+          "trigger": "`GET /api/mcp/inbox` request",
+          "flow": "(1) Prime API call returns `PrimeReviewThreadSummary[]`; (2) `listPrimeInboxThreadSummaries` maps each via `mapPrimeSummaryToInboxThread` → `InboxThreadSummaryApiModel[]` with null names; (3) unique non-sentinel bookingRefs extracted (skip `''` and `'activity'`); (4) `fetchPrimeGuestNames(refs)` fires parallel dual-fetch per ref; (5) names patched into summaries before return to caller",
+          "task_ids": [
+            "TASK-02",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Firebase unavailability: `Promise.allSettled` catches → names stay null, no throw"
+        },
+        {
+          "id": null,
+          "label": "Sentinel guard",
+          "trigger": "Any inbox list request including broadcast/activity threads",
+          "flow": "`fetchPrimeGuestNames` receives filtered refs — empty string and `'activity'` refs never reach `bookingRootPath` or `guestDetailsBookingPath` path builders",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "Empty-string guard is test-covered in TASK-05 — regression-guarded"
+        },
+        {
+          "id": null,
+          "label": "UI display (no change)",
+          "trigger": "List response received by `ThreadList.tsx`",
+          "flow": "`ThreadList.tsx:239` renders `guestFirstName` when non-null; prime_direct rows show guest name; broadcast/activity rows unchanged (null → nothing)",
+          "task_ids": [],
+          "dependency_note": "None (UI already wired)",
+          "seams": "None"
+        }
+      ]
+    }
+  }
+}

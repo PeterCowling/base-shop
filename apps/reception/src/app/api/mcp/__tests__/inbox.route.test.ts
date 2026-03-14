@@ -26,6 +26,10 @@ jest.mock("@/lib/inbox/repositories.server", () => ({
   listThreadsWithLatestDraft: jest.fn(),
 }));
 
+// prime-review.server is fully mocked — real listPrimeInboxThreadSummaries is never called.
+// guestFirstName: null in mock return values is a valid stub; Firebase name lookup is not
+// exercised in route tests. See apps/reception/src/lib/inbox/__tests__/prime-guest-names.test.ts
+// and prime-review-mapper.test.ts for guest-name augmentation coverage.
 jest.mock("@/lib/inbox/prime-review.server", () => ({
   getPrimeInboxThreadDetail: jest.fn(),
   isPrimeInboxThreadId: jest.fn(),

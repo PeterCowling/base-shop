@@ -6,6 +6,8 @@
  * per sync batch (buildGuestEmailMap) with per-thread lookups (matchSenderToGuest).
  */
 
+import { bookingRootPath, guestDetailsBookingPath, HOSPITALITY_RTDB_ROOTS } from "@acme/lib/hospitality";
+
 import { buildFirebaseUrl, fetchFirebaseJson } from "./firebase-rtdb.server";
 
 // ---------------------------------------------------------------------------
@@ -109,7 +111,7 @@ export async function buildGuestEmailMap(
 
   // Validate config before network calls
   try {
-    buildFirebaseUrl("/bookings"); // throws if FIREBASE_BASE_URL is not configured
+    buildFirebaseUrl(`/${HOSPITALITY_RTDB_ROOTS.bookings}`); // throws if FIREBASE_BASE_URL is not configured
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
     console.error("[guest-matcher] Config error:", errorMessage);
@@ -127,8 +129,8 @@ export async function buildGuestEmailMap(
 
   try {
     const [bookingsResp, guestDetailsResp] = await Promise.all([
-      fetchFirebaseJson("/bookings"),
-      fetchFirebaseJson("/guestsDetails"),
+      fetchFirebaseJson(`/${HOSPITALITY_RTDB_ROOTS.bookings}`),
+      fetchFirebaseJson(`/${HOSPITALITY_RTDB_ROOTS.guestDetails}`),
     ]);
     bookingsData = bookingsResp as typeof bookingsData;
     guestDetailsData = guestDetailsResp as typeof guestDetailsData;
@@ -215,4 +217,104 @@ export function matchSenderToGuest(
   if (!senderEmail) return null;
   const key = senderEmail.trim().toLowerCase();
   return map.get(key) ?? null;
+}
+
+// ---------------------------------------------------------------------------
+// Prime guest name lookup
+// ---------------------------------------------------------------------------
+
+const PRIME_GUEST_NAME_SENTINEL_IDS = new Set(["", "activity"]);
+const PRIME_GUEST_NAMES_CONCURRENCY = 10;
+
+/**
+ * Fetch lead-guest first and last names for a set of Prime booking refs from
+ * Firebase RTDB. Used to augment Prime inbox thread summaries with guest names.
+ *
+ * Fail-open: Firebase errors per ref are logged and that ref is absent from the
+ * returned Map (caller sees null names). Uses Promise.allSettled so a failure
+ * on one ref does not abort others.
+ *
+ * @param bookingRefs - Array of bookingRef strings (may contain duplicates or
+ *   sentinel values `''` and `'activity'` — both are filtered before any fetch).
+ * @returns Map from bookingRef → { firstName, lastName }. Empty Map when all
+ *   refs are filtered or when the input array is empty.
+ */
+export async function fetchPrimeGuestNames(
+  bookingRefs: string[],
+): Promise<Map<string, { firstName: string; lastName: string }>> {
+  const result = new Map<string, { firstName: string; lastName: string }>();
+
+  // Deduplicate and strip sentinel IDs before any path construction.
+  const uniqueRefs = [
+    ...new Set(bookingRefs.filter((ref) => !PRIME_GUEST_NAME_SENTINEL_IDS.has(ref))),
+  ];
+
+  if (uniqueRefs.length === 0) {
+    return result;
+  }
+
+  // Process in batches of PRIME_GUEST_NAMES_CONCURRENCY to bound concurrency.
+  for (let i = 0; i < uniqueRefs.length; i += PRIME_GUEST_NAMES_CONCURRENCY) {
+    const batch = uniqueRefs.slice(i, i + PRIME_GUEST_NAMES_CONCURRENCY);
+
+    const settled = await Promise.allSettled(
+      batch.map(async (ref) => {
+        const [bookingsRaw, detailsRaw] = await Promise.all([
+          fetchFirebaseJson(`/${bookingRootPath(ref)}`),
+          fetchFirebaseJson(`/${guestDetailsBookingPath(ref)}`),
+        ]);
+
+        const occupants = bookingsRaw as Record<string, FirebaseOccupantBooking> | null;
+        const details = detailsRaw as Record<string, FirebaseOccupantDetails> | null;
+
+        if (!occupants || !details) {
+          return null;
+        }
+
+        // Find lead guest occupantId from bookings data.
+        let leadOccupantId: string | null = null;
+        for (const [occupantId, booking] of Object.entries(occupants)) {
+          if (occupantId.startsWith("__")) continue;
+          if (booking.leadGuest === true) {
+            leadOccupantId = occupantId;
+            break;
+          }
+        }
+
+        // Try lead occupant first; fall back to first occupant with a firstName.
+        if (leadOccupantId) {
+          const d = details[leadOccupantId];
+          if (d?.firstName) {
+            return { ref, firstName: d.firstName, lastName: d.lastName ?? "" };
+          }
+        }
+
+        // Fallback: first occupant in guestsDetails with a non-empty firstName.
+        for (const [occupantId, d] of Object.entries(details)) {
+          if (occupantId.startsWith("__")) continue;
+          if (d?.firstName) {
+            return { ref, firstName: d.firstName, lastName: d.lastName ?? "" };
+          }
+        }
+
+        return null;
+      }),
+    );
+
+    for (let j = 0; j < settled.length; j++) {
+      const ref = batch[j];
+      const entry = settled[j];
+      if (entry.status === "rejected") {
+        const errMsg = entry.reason instanceof Error ? entry.reason.message : String(entry.reason);
+        console.error(`[prime-guest-names] Firebase error for bookingRef: ${ref} — ${errMsg}`);
+      } else if (entry.value !== null) {
+        result.set(entry.value.ref, {
+          firstName: entry.value.firstName,
+          lastName: entry.value.lastName,
+        });
+      }
+    }
+  }
+
+  return result;
 }

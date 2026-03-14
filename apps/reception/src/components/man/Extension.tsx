@@ -439,7 +439,7 @@ function Extension() {
       {selectedRow && (
         <ExtensionPayModal
           fullName={selectedRow.fullName}
-          nightlyRate={selectedRow.nightlyRate}
+          nightlyRate={roundDownTo50Cents(selectedRow.nightlyRate)}
           occupantCount={selectedRow.occupantCount}
           nights={selectedNights}
           bookingRef={selectedRow.bookingRef}

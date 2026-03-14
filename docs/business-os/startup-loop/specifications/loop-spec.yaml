@@ -4,7 +4,15 @@
 # Version bumps require downstream alignment check (VC-02).
 # See also: docs/business-os/startup-loop/specifications/two-layer-model.md (Layer A standing intelligence / Layer B implementation loop contract)
 
-spec_version: "3.15.0"
+spec_version: "3.16.0"
+# v3.16.0: Added GATE-UI-SWEEP-01 (Hard) to S9B stage.
+#          Rendered UI contrast sweep is now a required step before S9B→SIGNALS advance.
+#          /tools-ui-contrast-sweep added to S9B secondary_skills.
+#          Gate checks: Business field match (operator sets Business: <BIZ> in report frontmatter),
+#          Audit-Date within 30 days, Status: Complete, Routes-Tested > 0, Modes-Tested includes
+#          light and dark, S1-Blockers = 0. Missing Business field or legacy artifacts hard-block.
+#          Enforced by: .claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md
+#          Decision: 2026-03-14.
 # v3.15.0: Added GATE-LAUNCH-SEC (Hard) to S9B stage.
 #          Security baseline check (8 OWASP runtime checks: HTTPS enforcement, HTTP security headers,
 #          CSP, cookie security flags, repo secrets exposure, auth hardening, CORS policy, dependency CVEs)
@@ -1216,6 +1224,7 @@ stages:
     skill: /lp-launch-qa
     secondary_skills:
       - /lp-design-qa
+      - /tools-ui-contrast-sweep
     prompt_required: false
     conditional: false
     bos_sync: "Record QA results in build stage doc"
@@ -1224,6 +1233,11 @@ stages:
     # docs/business-os/site-upgrades/<BIZ>/ dated within 30 days, with
     # security domain status: pass (or warn; fail blocks advance).
     # Site unreachability at QA time counts as fail (unverified baseline = failure).
+    # Enforced by: .claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md
+    # GATE-UI-SWEEP-01 (Hard) — evaluated at S9B→SIGNALS advance.
+    # Pass condition: a contrast-uniformity-report.md exists under docs/audits/contrast-sweeps/*/
+    # with Business: <BIZ> (operator-set), Audit-Date within 30 days, Status: Complete,
+    # Routes-Tested > 0, Modes-Tested includes light and dark, S1-Blockers = 0.
     # Enforced by: .claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md
 
   - id: SIGNALS

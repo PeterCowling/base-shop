@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-03-14T15:51:09.703Z",
+  "last_updated": "2026-03-14T15:58:00.000Z",
   "counts": {
-    "enqueued": 64,
+    "enqueued": 65,
     "processed": 33,
     "declined": 2,
     "skipped": 1,
@@ -9,13 +9,63 @@
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 397,
-    "fact_find_ready": 37,
+    "fact_find_ready": 38,
     "plan_ready": 0,
     "micro_build_ready": 24,
     "briefing_ready": 1,
-    "total": 704
+    "total": 705
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314155800-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314155800-0001",
+      "anchor_key": "brik-reception-room-cleaning-status-pipeline",
+      "cluster_key": "brik-reception-prepare-checkins",
+      "cluster_fingerprint": "brik-prepare-dashboard-room-status-checkins-pipeline-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — Cleaning staff can't signal a room is ready, leaving reception guessing at check-in",
+      "location_anchors": [
+        "apps/reception/src/components/prepare/CleaningPriorityTable.tsx",
+        "apps/reception/src/hooks/orchestrations/prepare/usePrepareDashboard.ts",
+        "apps/reception/src/components/checkins/view/BookingRow.tsx",
+        "apps/reception/src/hooks/mutations/useRoomStatusMutations.ts",
+        "/prepare-dashboard",
+        "checkins screen"
+      ],
+      "domain": "LOGISTICS",
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The prepare dashboard shows room cleanliness computed from occupancy data only — cleaning staff have no interactive way to mark a room as done. The checkins screen has only a global 'Rooms Ready' toggle disconnected from per-room data, so reception cannot tell which specific room is actually clean when checking a guest in. The auto-sync logic also overwrites any manual clean signal if a room still has occupants, making stayover-clean marking impossible.",
+      "next_scope_now": "Add a 'Mark Clean' action to the prepare dashboard per room, guard the auto-sync so manual clean signals are preserved, and surface per-room cleanliness status in the checkins table.",
+      "why": "Right now, cleaning staff have no button or action to say a room is finished being cleaned. Front desk staff checking guests in can't see on their screen whether a guest's specific room is actually ready. This means reception either has to call out to cleaning staff or just hope the room is ready when a guest arrives — both cause delays and awkward moments for guests. Adding a simple 'mark as done' step for cleaners, and showing that status per-room on the check-in screen, means reception always knows exactly which rooms are ready before a guest reaches the desk.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Cleaning staff can mark individual rooms as cleaned on the prepare dashboard. The checkins screen shows a per-room cleanliness indicator next to each booking. Reception staff can see at a glance whether a room is ready before a guest reaches the desk.",
+        "source": "operator"
+      },
+      "evidence_refs": [
+        "operator-stated: cleaning staff cannot mark rooms done and reception has no per-room readiness signal",
+        "live browser audit: /prepare-dashboard 2026-03-14",
+        "apps/reception/src/components/prepare/CleaningPriorityTable.tsx",
+        "apps/reception/src/hooks/orchestrations/prepare/usePrepareDashboard.ts",
+        "apps/reception/src/components/checkins/view/BookingRow.tsx",
+        "apps/reception/src/hooks/mutations/useRoomStatusMutations.ts",
+        "coverage-hint: UI",
+        "coverage-hint: UX",
+        "coverage-hint: testing",
+        "coverage-hint: data-contracts",
+        "coverage-hint: performance-reliability"
+      ],
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "priority": "P2",
+      "confidence": 0.92,
+      "queue_state": "enqueued",
+      "enqueued_at": "2026-03-14T15:58:00.000Z"
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260314113000-BRIK-EXT-001",

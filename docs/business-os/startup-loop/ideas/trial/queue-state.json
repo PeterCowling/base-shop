@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-03-14T12:00:53.447Z",
+  "last_updated": "2026-03-14T12:05:03.320Z",
   "counts": {
-    "enqueued": 60,
+    "enqueued": 62,
     "processed": 33,
     "declined": 2,
     "skipped": 1,
@@ -9,11 +9,11 @@
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 387,
-    "fact_find_ready": 39,
+    "fact_find_ready": 41,
     "plan_ready": 0,
     "micro_build_ready": 18,
     "briefing_ready": 1,
-    "total": 690
+    "total": 692
   },
   "dispatches": [
     {
@@ -33844,6 +33844,249 @@
         "coverage-hint: observability, UI, testing"
       ],
       "created_at": "2026-03-14T20:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120503-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "a16b3a6004d6b2f5898f8f5bc29e747844bf6fc7",
+      "root_event_id": "build-origin:reception-email-automation-fixes:a16b3a6004d6b2f5898f8f5bc29e747844bf6fc7",
+      "anchor_key": "the-gmail-auth-expiry-fix-is-reactive-a-proactive-health-check-process-periodic-",
+      "cluster_key": "build-origin:bos:reception-email-automation-fixes:the-gmail-auth-expiry-fix-is-reactive-a-proactive-health-check-process-periodic-",
+      "cluster_fingerprint": "855f6f99e4cc4a4121f7bf799e40fde6689cc989f087559f93aa350bb00815d2",
+      "lineage_depth": 0,
+      "area_anchor": "The Gmail auth expiry fix is reactive. A proactive health-check process (periodic credential validity probe, alerting before expiry rather than after failure) would be a natural follow-on. Not actioned by this build — candidate for a future fact-find.",
+      "location_anchors": [
+        "docs/plans/reception-email-automation-fixes/results-review.user.md",
+        "docs/plans/reception-email-automation-fixes/results-review.signals.json",
+        "docs/plans/reception-email-automation-fixes/pattern-reflection.user.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "New loop process — The Gmail auth expiry fix is reactive. A proactive health-check process (periodic credential validity probe, alerting before expiry rather than after failure) would be a natural follow-on. Not actioned by this build — candidate for a future fact-find.",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"The Gmail auth expiry fix is reactive. A proactive health-check process (periodic credential validity probe, alerting before expiry rather than after failure) would be a natural follow-on. Not actioned by this build — candidate for a future fact-find.\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.55,
+      "evidence_refs": [
+        "docs/plans/reception-email-automation-fixes/results-review.user.md",
+        "docs/plans/reception-email-automation-fixes/results-review.signals.json",
+        "docs/plans/reception-email-automation-fixes/pattern-reflection.user.md"
+      ],
+      "created_at": "2026-03-14T12:05:03.312Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced \"The Gmail auth expiry fix is reactive. A proactive health-check process (periodic credential validity probe, alerting before expiry rather than after failure) would be a natural follow-on. Not actioned by this build — candidate for a future fact-find.\" with supporting narrative: New loop process — The Gmail auth expiry fix is reactive. A proactive health-check process (periodic credential validity probe, alerting before expiry rather than after failure) would be a natural follow-on. Not actioned by this build — candidate for a future fact-find.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for The Gmail auth expiry fix is reactive. A proactive health-check process (periodic credential validity probe, alerting before expiry rather than after failure) would be a natural follow-on. Not actioned by this build — candidate for a future fact-find..",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "a16b3a6004d6b2f5898f8f5bc29e747844bf6fc7",
+        "recurrence_key": "4ee7eca34f7fa1cf7876b0df3374c89a0d0d5983",
+        "review_cycle_key": "reception-email-automation-fixes",
+        "plan_slug": "reception-email-automation-fixes",
+        "canonical_title": "The Gmail auth expiry fix is reactive. A proactive health-check process (periodic credential validity probe, alerting before expiry rather than after failure) would be a natural follow-on. Not actioned by this build — candidate for a future fact-find.",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/reception-email-automation-fixes/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/reception-email-automation-fixes/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/reception-email-automation-fixes/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null,
+        "gap_case": {
+          "schema_version": "gap-case.v1",
+          "gap_case_id": "gap-10488d7b136de0e8",
+          "source_kind": "build_origin",
+          "business_id": "BOS",
+          "stage_id": null,
+          "capability_id": null,
+          "gap_type": "build_origin_rule_p4_process_quality",
+          "reason_code": "rule_p4_process_quality",
+          "severity": 0.5,
+          "evidence_refs": [
+            "docs/plans/reception-email-automation-fixes/results-review.user.md",
+            "docs/plans/reception-email-automation-fixes/results-review.signals.json",
+            "docs/plans/reception-email-automation-fixes/pattern-reflection.user.md"
+          ],
+          "recurrence_key": "4ee7eca34f7fa1cf7876b0df3374c89a0d0d5983",
+          "requirement_posture": "optional_improvement",
+          "blocking_scope": "degrades_quality",
+          "structural_context": {
+            "plan_slug": "reception-email-automation-fixes",
+            "review_cycle_key": "reception-email-automation-fixes",
+            "primary_source": "results-review.signals.json",
+            "merge_state": "single_source",
+            "source_presence": {
+              "results_review_signal": true,
+              "pattern_reflection_entry": false
+            },
+            "results_review_fields": {
+              "priority_tier": "P4",
+              "urgency": "U2",
+              "effort": "M",
+              "reason_code": "RULE_P4_PROCESS_QUALITY"
+            },
+            "reflection_fields": null
+          },
+          "runtime_binding": {
+            "binding_mode": "compiled_to_candidate",
+            "candidate_id": "cand-6afc8f8ee88fbc57"
+          }
+        },
+        "prescription": {
+          "schema_version": "prescription.v1",
+          "prescription_id": "rx-9f8b44526057ed0c",
+          "prescription_family": "build_origin_fact_find_candidate",
+          "source": "build_origin",
+          "gap_types_supported": [
+            "build_origin_rule_p4_process_quality"
+          ],
+          "required_route": "lp-do-fact-find",
+          "required_inputs": [
+            "docs/plans/reception-email-automation-fixes/results-review.signals.json"
+          ],
+          "expected_artifacts": [
+            "fact-find.md"
+          ],
+          "expected_signal_change": "Address build-origin signal \"The Gmail auth expiry fix is reactive. A proactive health-check process (periodic credential validity probe, alerting before expiry rather than after failure) would be a natural follow-on. Not actioned by this build — candidate for a future fact-find.\" through the canonical lp-do-fact-find queue path.",
+          "risk_class": "low",
+          "maturity": "unknown"
+        }
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314120503-0002",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "ee821983e7e3a2f76e9a45eaf13cac0306c9b694",
+      "root_event_id": "build-origin:reception-email-automation-fixes:ee821983e7e3a2f76e9a45eaf13cac0306c9b694",
+      "anchor_key": "gmail-credential-health-check-proactive-alert-before-auth-expiry",
+      "cluster_key": "build-origin:bos:reception-email-automation-fixes:gmail-credential-health-check-proactive-alert-before-auth-expiry",
+      "cluster_fingerprint": "c79dd2adc643447742a83d0b755051fbb6d6db92fde63b8654c3013dcedc36de",
+      "lineage_depth": 0,
+      "area_anchor": "Gmail credential health-check — proactive alert before auth expiry",
+      "location_anchors": [
+        "docs/plans/reception-email-automation-fixes/results-review.user.md",
+        "docs/plans/reception-email-automation-fixes/pattern-reflection.user.md",
+        "docs/plans/reception-email-automation-fixes/pattern-reflection.entries.json"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "Gmail credential health-check — proactive alert before auth expiry",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"Gmail credential health-check — proactive alert before auth expiry\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.5700000000000001,
+      "evidence_refs": [
+        "docs/plans/reception-email-automation-fixes/results-review.user.md",
+        "docs/plans/reception-email-automation-fixes/pattern-reflection.user.md",
+        "docs/plans/reception-email-automation-fixes/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-14T12:05:03.312Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced recurring follow-up work: Gmail credential health-check — proactive alert before auth expiry",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for Gmail credential health-check — proactive alert before auth expiry.",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "ee821983e7e3a2f76e9a45eaf13cac0306c9b694",
+        "recurrence_key": "3bd334930486eb8df8a2b988dd03c51f22274690",
+        "review_cycle_key": "reception-email-automation-fixes",
+        "plan_slug": "reception-email-automation-fixes",
+        "canonical_title": "Gmail credential health-check — proactive alert before auth expiry",
+        "primary_source": "pattern-reflection.entries.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": false,
+          "pattern_reflection_entry": true
+        },
+        "results_review_path": "docs/plans/reception-email-automation-fixes/results-review.user.md",
+        "results_review_sidecar_path": null,
+        "pattern_reflection_path": "docs/plans/reception-email-automation-fixes/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": "docs/plans/reception-email-automation-fixes/pattern-reflection.entries.json",
+        "reflection_fields": {
+          "category": "new-loop-process",
+          "routing_target": "fact_find_ready",
+          "occurrence_count": 1
+        },
+        "gap_case": {
+          "schema_version": "gap-case.v1",
+          "gap_case_id": "gap-4829146d32b2b9e4",
+          "source_kind": "build_origin",
+          "business_id": "BOS",
+          "stage_id": null,
+          "capability_id": null,
+          "gap_type": "build_origin_new_loop_process",
+          "reason_code": "fact_find_ready",
+          "severity": 0.5,
+          "evidence_refs": [
+            "docs/plans/reception-email-automation-fixes/results-review.user.md",
+            "docs/plans/reception-email-automation-fixes/pattern-reflection.user.md",
+            "docs/plans/reception-email-automation-fixes/pattern-reflection.entries.json"
+          ],
+          "recurrence_key": "3bd334930486eb8df8a2b988dd03c51f22274690",
+          "requirement_posture": "optional_improvement",
+          "blocking_scope": "degrades_quality",
+          "structural_context": {
+            "plan_slug": "reception-email-automation-fixes",
+            "review_cycle_key": "reception-email-automation-fixes",
+            "primary_source": "pattern-reflection.entries.json",
+            "merge_state": "single_source",
+            "source_presence": {
+              "results_review_signal": false,
+              "pattern_reflection_entry": true
+            },
+            "results_review_fields": null,
+            "reflection_fields": {
+              "category": "new-loop-process",
+              "routing_target": "fact_find_ready",
+              "occurrence_count": 1,
+              "evidence_refs": []
+            }
+          },
+          "runtime_binding": {
+            "binding_mode": "compiled_to_candidate",
+            "candidate_id": "cand-3aad2938c4c1bf10"
+          }
+        },
+        "prescription": {
+          "schema_version": "prescription.v1",
+          "prescription_id": "rx-1d29ed85a4a6e68e",
+          "prescription_family": "build_origin_fact_find_candidate",
+          "source": "build_origin",
+          "gap_types_supported": [
+            "build_origin_new_loop_process"
+          ],
+          "required_route": "lp-do-fact-find",
+          "required_inputs": [
+            "docs/plans/reception-email-automation-fixes/pattern-reflection.entries.json"
+          ],
+          "expected_artifacts": [
+            "fact-find.md"
+          ],
+          "expected_signal_change": "Address build-origin signal \"Gmail credential health-check — proactive alert before auth expiry\" through the canonical lp-do-fact-find queue path.",
+          "risk_class": "low",
+          "maturity": "unknown"
+        }
+      }
     }
   ]
 }

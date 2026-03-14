@@ -1,0 +1,219 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-email-automation-fixes",
+  "source_artifact_path": "docs/plans/reception-email-automation-fixes/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "Staff are misled by button labels that imply emails are sent, and by generic errors when Gmail auth expires. Booking emails silently go undelivered when staff forget to send the draft from Gmail. These are all operational reliability and usability gaps in a live production tool.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All four gaps are closed: button labels match reality, booking emails send immediately, attribution is visible in the UI, and auth failures surface actionable guidance.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Button label copy changes; new attribution text in list rows; error message display",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "No layout changes; copy-only or small text addition",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Success toast wording updated; auth error state now shows specific message; attribution row is omitted entirely when `who`/`timestamp` is absent (no placeholder text rendered)",
+      "current_or_option_state": "TASK-01, TASK-04, TASK-03",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no auth changes, no new data exposure",
+      "current_or_option_state": "-",
+      "gap_or_implication": "TASK-03 shows `who` (staff name) which is internal-only data visible to reception staff",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "TASK-02 updates telemetry event from `email_draft_created` to `email_sent`; TASK-04 adds specific error code `GMAIL_AUTH_EXPIRED` to response",
+      "current_or_option_state": "TASK-02, TASK-04",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Push to CI; governed test runner for changed components",
+      "current_or_option_state": "All",
+      "gap_or_implication": "No local test execution per policy",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`EmailProgressDataSchema` extended with optional `lastActionedBy` / `lastActionedAt` fields (TASK-03); `BookingEmailResult` type updated (TASK-02)",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "Zod schema changes are additive (optional fields)",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "TASK-02 adds one additional Gmail API call per booking email send; negligible overhead",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "All changes are stateless UI/logic; rollback is git revert",
+      "current_or_option_state": "All",
+      "gap_or_implication": "No migrations or feature flags required",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Four bounded fixes to the reception app's email automation page and email sending pipeline. The problems were identified through a walkthrough of the `/email-automation` page and its email infrastructure. Issues include: (1) button labels that say \"Send\" when they only log internal state; (2) booking emails that create Gmail drafts but never send them; (3) no UI display of who last actioned each guest reminder (data is captured but not shown); (4) Gmail auth expiry failures surfacing as generic errors rather than actionable guidance for staff. All tasks are independent and S-effort.",
+    "goals": [
+      "Buttons on `/email-automation` accurately describe what they do (log state, not send email).",
+      "Booking app-link emails are sent immediately when the button is pressed during check-in.",
+      "Staff can see who last actioned each reminder and when, directly on the email-automation page.",
+      "Gmail auth failures produce a specific, actionable error message instead of a generic one."
+    ],
+    "non_goals": [
+      "Adding actual email-sending capability to the `/email-automation` page itself (out of scope; may be a future feature).",
+      "Full audit log UI with history of all actions per guest.",
+      "Retry or re-send logic for booking emails.",
+      "Changes to the Gmail OAuth credential rotation process."
+    ],
+    "constraints": [
+      "Tests must not be run locally; push and use CI (`docs/testing-policy.md`).",
+      "The MCP server and reception app have separate Gmail client implementations; TASK-04 must update both error paths.",
+      "The `EmailProgressDataSchema` is a Zod schema — extending it requires adding optional fields to avoid breaking the `safeParse` calls in `useEmailProgressData`."
+    ],
+    "assumptions": [
+      "Gmail `drafts.send()` preserves the message ID so the existing `applyDraftOutcomeLabelsStrict` call can still reference the same message after sending.",
+      "The `Activity.who` field populated by `useActivitiesMutations.addActivity()` is already present in Firebase for existing records; new records also get it.",
+      "`findTimestampForCode` in `dateUtils.ts` iterates the `Activity[]` array from `allActivitiesMap` — the same list contains the `who` field for raw activities."
+    ],
+    "selected_approach": [
+      "What was chosen: Direct code changes at the identified call sites; no architectural changes.",
+      "Why planning is not reopening option selection: All four fixes are point changes. TASK-02 could have kept draft-only and updated UI to say \"draft created\", but the operator confirmed the fix is to actually send. TASK-04 could use a custom error class instead of message-pattern detection — message-pattern detection is chosen as simpler with no new dependencies."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Relabel email-automation action buttons and toast messages",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — updated button labels and toast strings in `EmailProgressLists.tsx`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Auto-send booking app-link emails via Gmail",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `sendBookingEmail` in `packages/mcp-server/src/tools/booking-email.ts` updated to send the draft; telemetry type extended; test updated; UI copy in `EmailBookingButton.tsx` updated",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Display last-actioned-by (who + when) attribution in email-automation rows",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `emailProgressDataSchema.ts` extended with `lastActionedBy` and `lastActionedAt`; `useEmailProgressData.ts` computes both; `EmailProgressLists.tsx` displays both",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Detect Gmail auth expiry and surface specific error to staff",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `api-route-helpers.ts` and `booking-email/route.ts` updated to detect auth-expired errors and return specific error code/message",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03",
+      "TASK-04"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Email automation page — reminder logging",
+          "trigger": "Staff presses action button on `/email-automation`",
+          "flow": "(1) Staff sees button \"Mark First Reminder Sent\"; (2) presses it; (3) Firebase activity code written with `who`+`timestamp`; (4) toast: \"Marked first reminder as sent for Booking Ref: [ref]\"; (5) row moves to code-2 section showing \"Last actioned by: [name]\"",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Booking app-link email send",
+          "trigger": "Staff presses booking email button during check-in",
+          "flow": "(1) Hook fetches guest emails from Firebase; (2) POSTs to `/api/mcp/booking-email`; (3) MCP tool creates Gmail draft + immediately sends it; (4) telemetry `email_sent` logged; (5) success toast shown",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "If `drafts.send()` fails, error is returned to client — no partial-send state since message never leaves Gmail's draft state until send succeeds"
+        },
+        {
+          "id": null,
+          "label": "Gmail auth expiry error",
+          "trigger": "Gmail 401 after retry on either inbox send or booking email",
+          "flow": "(1) `gmailApiRequest` / googleapis throws 401; (2) route handler detects auth-expired pattern; (3) returns `GMAIL_AUTH_EXPIRED` code with message \"Email sending failed — Gmail authorisation has expired. Contact your administrator.\"; (4) client displays specific message",
+          "task_ids": [
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Rolling back TASK-04 reverts to generic error; no data risk"
+        }
+      ]
+    }
+  }
+}

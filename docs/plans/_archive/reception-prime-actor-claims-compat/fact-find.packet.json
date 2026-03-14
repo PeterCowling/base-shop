@@ -1,0 +1,209 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-prime-actor-claims-compat",
+  "source_artifact_path": "docs/plans/reception-prime-actor-claims-compat/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "The `prime-outbound-auth-hardening` build removed the compat fallback but left two residual correctness issues: `actorSource: 'reception_proxy'` in audit records is misleading now that the UID is verified, and the `PRIME_ACTOR_CLAIMS_SECRET` is absent from all local `.env.local` files causing opaque 500/503 errors for any local dev trying to use Prime mutation endpoints.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "After this change, `actorSource` in D1 audit records accurately reflects a verified Reception staff origin (`'reception_staff'` or equivalent), existing tests that pin `'reception_proxy'` are updated to the new value, and the existing `PRIME_ACTOR_CLAIMS_SECRET` entries in both `.env.example` files are updated with clearer wording about the Reception-side 500 failure mode (thrown by `buildPrimeActorHeaders()` before Prime is called) so new contributors can diagnose misconfiguration without reading the source.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI changes involved in residual scope",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "Server-side only; no UI state paths affected",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "HMAC-SHA256 claims fully implemented and verified; compat fallback removed; broadcast role gate active; `actorSource` label mismatch is labelling only, not a security gap",
+      "gap_or_implication": "`actorSource: 'reception_proxy'` could confuse audit readers but does not affect auth correctness",
+      "carry_forward_or_notes": "Yes — analysis should confirm `actorSource` label change is audit-correctness, not security"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`resolveActorClaims` logs structured errors for all rejection cases; `validatePrimeActorClaimsConfig` warns/throws at startup",
+      "gap_or_implication": "Missing env var causes Reception-side 500 before Prime is called — not a Prime-side 503; `actorSource: 'reception_proxy'` in audit records is misleading now that UID is verified",
+      "carry_forward_or_notes": "Yes — env var DX and actorSource label"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Config validation tests: 8 TCs; mutation endpoint tests use `signTestActorClaims`; TASK-07 missing-claims→401 confirmed; `actorSource` pinned in `review-threads.test.ts:2742,3045` and `staff-broadcast-send.test.ts:244`; header omission for `actorUid=undefined` covered in `initiate-prime-outbound-thread.test.ts:98`",
+      "gap_or_implication": "Gap: test for downstream Reception route handling when Prime returns 401 (not the header omission itself, but the error surfacing path)",
+      "carry_forward_or_notes": "Yes — targeted gap fill"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`ActorClaims` type and payload format stable; field ordering canonicalized; sign/verify implementations are byte-identical",
+      "gap_or_implication": "`actorSource` value in D1 is stale string — not a schema gap but an audit data quality issue",
+      "carry_forward_or_notes": "Yes — actorSource label"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "HMAC-SHA256 via `crypto.subtle` is ~0.1ms per call; no performance concern",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Both `resolveActorClaims` and the alias `resolveActorClaimsWithCompat` are fully hardened; no compat window remains; deploy-order risk is documented but not gated",
+      "gap_or_implication": "Deploy-order risk (Reception TASK-02 confirmed before TASK-07 merged) has no automated enforcement; documented as spike in results-review",
+      "carry_forward_or_notes": "Yes — carry deploy-order gap to analysis as advisory"
+    }
+  ],
+  "open_operator_questions": [
+    "Should a health-check route be added to Prime that calls `validatePrimeActorClaimsConfig` and returns a degraded status when the secret is misconfigured, so that misconfiguration is visible at deploy time without waiting for the first real request?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The dispatch (`IDEA-DISPATCH-20260314200000-0003`) describes a state where `resolveActorClaimsWithCompat()` falls back to `uid: 'reception_proxy', roles: []` when the `x-prime-actor-claims` header is absent, causing audit trail pollution and silent broadcast blocking. Investigation reveals this compat fallback was **fully removed** by commit `02435507f2` (TASK-07 of `prime-outbound-auth-hardening`, 2026-03-14). The function now hard-rejects with 401 on missing or invalid claims. The residual scope — worth a targeted plan — consists of three distinct issues that survive the TASK-07 fix: 1. **`P",
+    "goals": [],
+    "non_goals": [
+      "Rebuilding the actor claims system — it is correct and complete.",
+      "Adding Firebase Admin SDK to Prime.",
+      "Changing guest-facing auth flows.",
+      "Retroactively correcting audit records with `reception_proxy` actorSource."
+    ],
+    "constraints": [
+      "Prime runs on Cloudflare Pages Functions; no traditional startup hook exists.",
+      "`PRIME_ACTOR_CLAIMS_SECRET` must be set in both Reception (signer) and Prime (verifier) CF environments with the same value.",
+      "The `actorSource` field is an internal string in the Prime D1 schema; changing it does not affect verifiability of the actor uid."
+    ],
+    "assumptions": [
+      "The compat window described in the dispatch no longer exists; the investigation confirmed removal.",
+      "Local dev failing with a Reception-side 500 (from `buildPrimeActorHeaders()` throwing when the secret is absent) is the primary DX issue remaining. The `.env.local` files are gitignored — the durable fix surface is the tracked `.env.example` files and/or project documentation, not the ignored local files themselves.",
+      "The `actorSource` label change is safe and does not require a schema migration (it is a free-form string column)."
+    ],
+    "key_entry_points": [
+      "`apps/prime/functions/lib/actor-claims-resolver.ts` — resolver that was previously `resolveActorClaimsWithCompat`; now a hard-gate; compat fallback removed in TASK-07 (commit `02435507f2`)",
+      "`apps/reception/src/lib/inbox/prime-review.server.ts:259-271` — `buildPrimeActorHeaders` signing point; throws if `PRIME_ACTOR_CLAIMS_SECRET` absent",
+      "`apps/prime/functions/api/staff-broadcast-send.ts` — broadcast endpoint; both `resolveActorClaims` and `enforceBroadcastRoleGate` applied"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis reception-prime-actor-claims-compat`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Compat fallback existence check",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — fallback confirmed removed by TASK-07",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "8 mutation endpoint coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all 8 files call resolveActorClaims",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Byte-identical serialization",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — both implementations confirmed identical field ordering",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`PRIME_ACTOR_CLAIMS_SECRET` deployment state",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Minor] Cannot confirm CF production secrets statically",
+        "Resolution Required": "No (runtime-only)"
+      },
+      {
+        "Scope Area": "`actorSource` label scope",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Minor] Misleading string value in 2 files; no functional impact",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Broadcast role gate",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — hard 403 confirmed; not silent",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Reception signing error path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Minor] `buildPrimeActorHeaders` returns undefined for `actorUid=undefined`; no claims header sent; Prime returns 401; callers must handle 401",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Deploy-order risk (historical)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Minor] No automated gate; risk is historical (both tasks deployed same day)",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Staff member in Reception app performs any of 8 Prime mutation operations (draft save, resolve, dismiss, send, broadcast send, campaign create, campaign update, campaign send replay).",
+      "end_condition": "Prime D1 record is written with a verified staff UID. Unauthorized or unsigned requests are rejected before any write occurs.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Reception auth",
+          "flow": "Staff request hits Reception Next.js API route → `requireStaffAuth` validates Firebase ID token → extracts `{ uid, roles }` from RTDB userProfiles",
+          "owners": "Reception Next.js, Firebase RTDB",
+          "evidence": "`apps/reception/src/app/api/mcp/_shared/staff-auth.ts`",
+          "issues": "None — this layer is correct"
+        },
+        {
+          "id": null,
+          "label": "Actor claims signing",
+          "flow": "`buildPrimeActorHeaders(actorUid, roles)` signs `{ uid, roles, iat }` with `PRIME_ACTOR_CLAIMS_SECRET` via HMAC-SHA256 (`crypto.subtle`) → produces `x-prime-actor-claims: <b64url-payload>.<b64url-sig>`",
+          "owners": "`apps/reception/src/lib/inbox/prime-review.server.ts:259-271`, `apps/reception/src/lib/inbox/actor-claims.ts`",
+          "evidence": "Missing env: `buildPrimeActorHeaders()` throws `Error: PRIME_ACTOR_CLAIMS_SECRET is required` → Reception returns 500 before Prime is called. This is the first failure mode for local dev (not Prime 503). Recovery: set secret in `.env.local`.",
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "Prime claims verification",
+          "flow": "`resolveActorClaims(request, env)` or `resolveActorClaimsWithCompat(request, env)` (alias) → checks secret length ≥32 → verifies HMAC → checks iat clock skew ±5min → returns `{ uid, roles }` or 401/503",
+          "owners": "`apps/prime/functions/lib/actor-claims-resolver.ts`",
+          "evidence": "Missing env: returns 503 `claims-secret-not-configured`; missing header: returns 401 `missing`; bad sig: returns 401 `invalid-sig`",
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "Broadcast role gate",
+          "flow": "After claims verified, `enforceBroadcastRoleGate(roles, uid)` checks roles ∈ `{owner, admin}` → returns 403 if not; applied on `staff-broadcast-send`, `review-campaign-send`, and conditionally on `review-thread-send` (broadcast threads only)",
+          "owners": "`apps/prime/functions/lib/broadcast-role-gate.ts`",
+          "evidence": "None — gate is correctly wired",
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "actorSource field",
+          "flow": "After uid extracted, actorSource `'reception_proxy'` is passed as a classification string into `sendPrimeReviewThread`/`sendPrimeReviewCampaign` — stored in D1 for audit",
+          "owners": "`apps/prime/functions/api/review-thread-send.ts:66`, `apps/prime/functions/api/review-campaign-send.ts:67`",
+          "evidence": "Misleading label: uid is now verified but actorSource still reads as anonymous proxy",
+          "issues": null
+        }
+      ]
+    }
+  }
+}

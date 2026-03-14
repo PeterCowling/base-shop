@@ -1,0 +1,35 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-actor-claims-compat/fact-find.md",
+      "line": "68",
+      "message": "`PRIME_ACTOR_CLAIMS_SECRET` is already present in both `.env.example` files, so the outcome statement is inaccurate as written. The planned change is a wording/diagnostics update to existing entries, not adding a new variable."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-actor-claims-compat/fact-find.md",
+      "line": "177",
+      "message": "The remaining test gap is still framed around a non-live path. The Reception mutation routes all call `requireStaffAuth()` and pass `auth.uid` into the Prime helper calls, so `actorUid` is not undefined on those route paths. If a route-level 401 surfacing test is wanted, it should target a real failure mode such as bad claims or secret mismatch, not `actorUid=undefined`."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-actor-claims-compat/fact-find.md",
+      "line": "238",
+      "message": "The default assumption is misleading. `validatePrimeActorClaimsConfig()` is defined but not invoked anywhere in `apps/prime`, so there is no startup `console.warn` path to rely on today. Until a health/preflight hook is added, the only guaranteed signal is request-time failure/logging."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1",
+  "usage": {
+    "inputTokens": 31779324,
+    "outputTokens": 114395,
+    "totalTokens": 31893719,
+    "costUsd": 0
+  },
+  "durationMs": 139543
+}

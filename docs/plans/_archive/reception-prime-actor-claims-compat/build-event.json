@@ -1,0 +1,22 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-prime-actor-claims-compat",
+  "business": "BRIK",
+  "completed_at": "2026-03-14",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "outcome_contract": {
+    "why": "The prime-outbound-auth-hardening build removed the compat fallback but left two residual issues: actorSource reception_proxy in audit records is misleading now that the UID is verified, and PRIME_ACTOR_CLAIMS_SECRET is absent from local dev env files, causing Reception-side failures (surfaced as 502 by most routes via inboxApiErrorResponse, thrown by buildPrimeActorHeaders() before Prime is called) with no clear diagnostic indicator in the .env.example wording.",
+    "why_source": "auto",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "After this change, actorSource in D1 audit records accurately reflects a verified Reception staff origin (reception_staff), existing tests that pin reception_proxy are updated to the new value, and the existing PRIME_ACTOR_CLAIMS_SECRET entries in both .env.example files are updated with clearer wording about the Reception-side failure mode (surfaced as 502 by inboxApiErrorResponse after buildPrimeActorHeaders() throws before Prime is called) so new contributors can diagnose misconfiguration without reading the source.",
+    "source": "auto"
+  },
+  "tasks_completed": [
+    "TASK-01",
+    "TASK-02",
+    "TASK-03"
+  ],
+  "plan_path": "docs/plans/reception-prime-actor-claims-compat/plan.md",
+  "build_record_path": "docs/plans/reception-prime-actor-claims-compat/build-record.user.md"
+}

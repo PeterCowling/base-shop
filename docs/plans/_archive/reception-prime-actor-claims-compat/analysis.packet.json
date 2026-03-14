@@ -1,0 +1,255 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-prime-actor-claims-compat",
+  "source_artifact_path": "docs/plans/reception-prime-actor-claims-compat/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-prime-actor-claims-compat/fact-find.md",
+    "plan": "docs/plans/reception-prime-actor-claims-compat/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The `prime-outbound-auth-hardening` build removed the compat fallback but left two residual issues: `actorSource: 'reception_proxy'` in audit records is misleading now that the UID is verified (audit clarity issue, not auth correctness), and `PRIME_ACTOR_CLAIMS_SECRET` is absent from local dev env files, causing Reception-side failures (surfaced as 502 by most routes via `inboxApiErrorResponse`, thrown by `buildPrimeActorHeaders()` before Prime is called) with no clear diagnostic indicator in the `.env.example` wording.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "After this change, `actorSource` in D1 audit records accurately reflects a verified Reception staff origin (`'reception_staff'` or equivalent), existing tests that pin `'reception_proxy'` are updated to the new value, and the existing `PRIME_ACTOR_CLAIMS_SECRET` entries in both `.env.example` files are updated with clearer wording about the Reception-side failure mode (surfaced as 502 by `inboxApiErrorResponse` after `buildPrimeActorHeaders()` throws before Prime is called) so new contributors can diagnose misconfiguration without reading the source.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — server-side only",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No UI impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — no UI state change",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No UX impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "`actorSource` is labelling only; renaming it does not affect auth correctness; HMAC verification path unchanged",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No security change; audit correctness improves",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`actorSource` in D1 records becomes `'reception_staff'` (accurate); `.env.example` wording improvement reduces time-to-diagnose misconfiguration",
+      "current_or_option_state": "Leaving as `'reception_proxy'` perpetuates misleading audit signal",
+      "gap_or_implication": "Both audit record accuracy and DX improved",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "2 test assertions in `review-threads.test.ts` must be updated from `'reception_proxy'` to `'reception_staff'` in `source_metadata_json`; test framework stays the same",
+      "current_or_option_state": "No test changes if label left alone",
+      "gap_or_implication": "Test update is predictable and low-risk; adds no new test complexity",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`actorSource` column is free-form `TEXT`; no schema migration; no breaking contract change",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "Zero schema impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "No performance impact",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No reliability change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single PR; no ordering requirement; rollback by reverting string value in 2 source files + 2 test files",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "Safe to rollback at any time",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "Should a Prime health-check route be added that calls `validatePrimeActorClaimsConfig()` to surface misconfiguration before the first real request?"
+  ],
+  "stage_payload": {
+    "decision_summary": "The `prime-outbound-auth-hardening` build (TASK-01–07, 2026-03-14) fully removed the `reception_proxy` UID fallback and hardened all 8 Prime mutation endpoints. Three residual issues survive that fix: (1) `actorSource: 'reception_proxy'` is a misleading audit label in two Prime API files (`review-campaign-send.ts:67`, `review-thread-send.ts:66`) now that the UID is verified; (2) `PRIME_ACTOR_CLAIMS_SECRET` is absent from local dev env files (gitignored workstation state) and the existing `.env.example` entries lack enough context to diagnose the first failure mode (a Reception-side failure sur",
+    "goals": [],
+    "non_goals": [
+      "Rebuilding the actor claims system.",
+      "Adding a Prime health-check endpoint (operator input required; out of scope for this plan).",
+      "Retroactively rewriting D1 records with the old `actorSource` value.",
+      "Deploy-order automation (documented spike; not blocked)."
+    ],
+    "constraints": [
+      "`actorSource` is a free-form string column in Prime D1; no schema migration required.",
+      "`.env.local` files are gitignored; only `.env.example` files are tracked.",
+      "`validatePrimeActorClaimsConfig()` is defined but not wired anywhere today — no startup hook exists on CF Pages Functions; request-time 503 is the only guaranteed signal."
+    ],
+    "assumptions": [],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Audit clarity",
+        "Why it matters": "`actorSource` in D1 is free-form audit context (not the identity field — `actorUid` is); misleading values reduce audit-trail readability without affecting auth correctness",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Consistency with existing patterns",
+        "Why it matters": "`staff-broadcast-send.ts` already uses `'reception_staff_compose'`; new values should be consistent",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test update burden",
+        "Why it matters": "The change requires updating existing test assertions; scope should be minimal and predictable",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Dev DX improvement",
+        "Why it matters": "`.env.example` updates should reduce time-to-diagnose for misconfigured local setups",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Scope creep avoidance",
+        "Why it matters": "Adding a health-check endpoint is operator-gated; analysis should not introduce it unilaterally",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Rename to `'reception_staff'`",
+        "Description": "Change both `review-campaign-send.ts:67` and `review-thread-send.ts:66` from `'reception_proxy'` to `'reception_staff'`",
+        "Upside": "Consistent with verified-UID state; matches the semantic of the calling path; reads clearly in audit records",
+        "Downside": "2 test assertions must be updated (predictable scope)",
+        "Key risks": "None — free-form string, no downstream branching",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Rename to `'reception_staff_compose'`",
+        "Description": "Use the same value already used by `staff-broadcast-send.ts:129`",
+        "Upside": "Maximum consistency — all Reception-originated actions share one label",
+        "Downside": "Loses the distinction between broadcast-send and review-send/campaign-send paths",
+        "Key risks": "Minor: slightly less auditable per-path",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: Leave as `'reception_proxy'`",
+        "Description": "No code change",
+        "Upside": "Zero test impact",
+        "Downside": "Perpetuates misleading label after auth hardening; future audit readers will see \"proxy\" and question whether auth is working",
+        "Key risks": "Ongoing confusion cost",
+        "Viable?": "No"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "A: Update `.env.example` wording only",
+        "Description": "Enhance the existing comment block for `PRIME_ACTOR_CLAIMS_SECRET` in both `apps/reception/.env.example` and `apps/prime/.env.example` to explicitly state: \"Missing → Reception throws before calling Prime; surfaced as 502 by most routes (not a Prime-side 503)\"",
+        "Upside": "Durable (tracked files); zero runtime impact; correct diagnostic starting point for contributors",
+        "Downside": "Does not fix `PRIME_ACTOR_CLAIMS_SECRET` being absent from the actual `.env.local` files (those are gitignored and each dev must set them)",
+        "Key risks": "None",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Add startup preflight call to `validatePrimeActorClaimsConfig` in Prime",
+        "Description": "Wire `validatePrimeActorClaimsConfig` to an existing or new CF Pages Function that runs on first request, logging a clear warning",
+        "Upside": "Faster runtime signal for misconfigured CF deploys",
+        "Downside": "Operator input required (health endpoint decision); CF Pages Functions have no startup hook so this requires a request-time trigger",
+        "Key risks": "Scope expansion beyond this fact-find's remit",
+        "Viable?": "No (operator-gated)"
+      },
+      {
+        "Option": "C: No documentation change",
+        "Description": "Leave current `.env.example` wording unchanged",
+        "Upside": "Zero effort",
+        "Downside": "Contributes to local-dev friction for new contributors",
+        "Key risks": "Ongoing confusion",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A for `actorSource` (rename to `'reception_staff'`) + Option A for env-var docs (update `.env.example` wording). These are independent changes that can land in a single PR.",
+      "**Why this wins": "**",
+      "**What it depends on": "**",
+      "`actorSource": "'reception_staff_compose'` (Option B) — reduces per-path distinguishability without meaningful benefit; `staff-broadcast-send` already uses this for the broadcast fast-path and conflating review-workflow paths with it loses audit granularity.",
+      "Q": "Should a Prime health-check route be added that calls `validatePrimeActorClaimsConfig()` to surface misconfiguration before the first real request?",
+      "Why operator input is required": "This requires a decision about whether Prime should expose an unauthenticated health/status endpoint — a product and security trade-off.",
+      "Planning impact": "If yes, adds one new CF Pages Function and expands scope. If no (default), plan proceeds with `.env.example` wording only."
+    },
+    "rejected_approaches": [
+      "`actorSource: 'reception_proxy'` (Option C) — perpetuates misleading label; no benefit; rejected.",
+      "`actorSource: 'reception_staff_compose'` (Option B) — reduces per-path distinguishability without meaningful benefit; `staff-broadcast-send` already uses this for the broadcast fast-path and conflating review-workflow paths with it loses audit granularity.",
+      "Startup preflight/health-check for env var (env Option B) — operator-gated (requires product decision on unauthenticated health endpoint); scope exceeds this plan's residual work; deferred."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "TASK-01 and TASK-02 must land in the same PR (TASK-02 is the test update required by TASK-01; they are not independently deployable without a transient CI failure)",
+        "TASK-03 is independent and can be included in the same PR or a separate one",
+        "No D1 schema migration required",
+        "CI test run will confirm the 2 updated `review-threads.test.ts` assertions pass"
+      ],
+      "sequencing_constraints": [
+        "TASK-02 must be done alongside TASK-01; merging TASK-01 without TASK-02 will break CI",
+        "TASK-03 has no sequencing requirement"
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "actorSource in D1 (review-thread-send, review-campaign-send)",
+          "current": "`actorSource: 'reception_proxy'` written to D1 audit records for thread sends (live path via Reception) and campaign sends (no current Reception caller — `replayPrimeInboxCampaignDelivery` calls `/api/review-campaign-replay`, not this endpoint)",
+          "trigger": "PR merged and deployed to Prime CF Pages",
+          "future": "`actorSource: 'reception_staff'` written to all new D1 audit records from these two paths; historical records with `'reception_proxy'` remain as-is",
+          "steady": "All other actorSource values unchanged (`'reception_staff_compose'` for broadcast fast-path, `'reception'` for resolve/dismiss)",
+          "seams": "Historical records remain stale — acceptable; `review-campaign-send` label fix is preemptive correctness for future direct callers"
+        },
+        {
+          "id": null,
+          "label": "Test assertions for actorSource",
+          "current": "`review-threads.test.ts:2742,3045` pin `'reception_proxy'` in `source_metadata_json`",
+          "trigger": "Source rename in previous step",
+          "future": "Test assertions updated to `'reception_staff'` and CI passes",
+          "steady": "`staff-broadcast-send.test.ts` assertion for `'reception_staff_compose'` unchanged",
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Local-dev env-var documentation",
+          "current": "`.env.example` comment for `PRIME_ACTOR_CLAIMS_SECRET` does not describe the Reception-side failure mode",
+          "trigger": "PR merged",
+          "future": "Both `.env.example` files updated with clear comment: \"Missing → Reception throws before calling Prime; surfaced as 502 by most routes (not a Prime-side 503)\"",
+          "steady": "All other env var entries and values unchanged",
+          "seams": "Does not fix the `.env.local` values (gitignored); dev must still set the secret manually"
+        }
+      ]
+    }
+  }
+}

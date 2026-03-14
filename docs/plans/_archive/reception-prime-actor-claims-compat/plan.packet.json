@@ -1,0 +1,174 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-actor-claims-compat",
+  "source_artifact_path": "docs/plans/reception-prime-actor-claims-compat/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-prime-actor-claims-compat/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The `prime-outbound-auth-hardening` build removed the compat fallback but left two residual issues: `actorSource: 'reception_proxy'` in audit records is misleading now that the UID is verified, and `PRIME_ACTOR_CLAIMS_SECRET` is absent from local dev env files, causing Reception-side failures (surfaced as 502 by most routes via `inboxApiErrorResponse`, thrown by `buildPrimeActorHeaders()` before Prime is called) with no clear diagnostic indicator in the `.env.example` wording.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "After this change, `actorSource` in D1 audit records accurately reflects a verified Reception staff origin (`'reception_staff'`), existing tests that pin `'reception_proxy'` are updated to the new value, and the existing `PRIME_ACTOR_CLAIMS_SECRET` entries in both `.env.example` files are updated with clearer wording about the Reception-side failure mode (surfaced as 502 by `inboxApiErrorResponse` after `buildPrimeActorHeaders()` throws before Prime is called) so new contributors can diagnose misconfiguration without reading the source.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — server-side only; no UI changes",
+      "current_or_option_state": "None",
+      "gap_or_implication": "No rendering path or visual design involved",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — no UI state paths affected",
+      "current_or_option_state": "None",
+      "gap_or_implication": "Server-side CF Pages Function changes only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — actorSource is labelling only; HMAC-SHA256 auth path unchanged",
+      "current_or_option_state": "None",
+      "gap_or_implication": "Renaming a free-form audit string does not affect auth correctness; `.env.example` update is documentation only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required — actorSource in D1 records becomes `'reception_staff'` (accurate); `.env.example` wording improvement reduces time-to-diagnose misconfiguration",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "Audit clarity improvement; no new logging infrastructure",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — 2 test fixture strings in `review-threads.test.ts` must be updated to match renamed actorSource",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Predictable scope: lines 2742 and 3045 only; no new test complexity",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — `actorSource` is free-form TEXT; no schema migration; no breaking contract change",
+      "current_or_option_state": "None",
+      "gap_or_implication": "D1 column type confirmed free-form; no API contract surface change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — no hot paths affected; string literal rename only",
+      "current_or_option_state": "None",
+      "gap_or_implication": "No performance change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required — TASK-01 and TASK-02 must land together; TASK-03 is independent; single PR rollback by reverting string values",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "No deploy-order constraint; CF Pages redeploy sufficient for rollback",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Three residual issues survived the `prime-outbound-auth-hardening` build (TASK-07, 2026-03-14): `actorSource: 'reception_proxy'` in two Prime API files is a misleading audit label now that UID is verified via HMAC-SHA256; two test assertions in `review-threads.test.ts` pin the old value; and the `PRIME_ACTOR_CLAIMS_SECRET` comment in both `.env.example` files describes the wrong failure mode. This plan fixes all three: rename `actorSource` to `'reception_staff'` in `review-campaign-send.ts` and `review-thread-send.ts`, update the two test fixtures that pin the old value, and enhance the `.env.",
+    "goals": [
+      "Replace misleading `actorSource: 'reception_proxy'` label with `'reception_staff'` in D1 audit records going forward.",
+      "Update the two test fixtures that pin the old value so CI passes after the source rename.",
+      "Improve `.env.example` wording to accurately describe the Reception-side 502 failure mode for local-dev diagnostics."
+    ],
+    "non_goals": [
+      "Rebuilding the actor claims system (already correct).",
+      "Adding a Prime health-check endpoint (operator-gated open question).",
+      "Retroactively rewriting historical D1 records with the old `actorSource` value.",
+      "Adding a new `actorSource` value beyond the rename — no enum gating exists."
+    ],
+    "constraints": [
+      "`actorSource` is a free-form `TEXT` column in Prime D1; no schema migration required.",
+      "`.env.local` files are gitignored; only `.env.example` files are tracked and can carry documentation improvements.",
+      "`validatePrimeActorClaimsConfig()` is defined but not wired anywhere in `apps/prime` today; no startup hook exists on CF Pages Functions.",
+      "TASK-02 must be committed in the same PR as TASK-01; merging TASK-01 alone will break CI."
+    ],
+    "assumptions": [],
+    "selected_approach": [
+      "What was chosen:",
+      "Rename `actorSource` to `'reception_staff'` in two Prime API files.",
+      "Update two test assertions in `review-threads.test.ts` to match.",
+      "Update `PRIME_ACTOR_CLAIMS_SECRET` comment in both `.env.example` files to describe the primary failure mode accurately (Reception-side 502, not Prime 503).",
+      "Why planning is not reopening option selection:",
+      "Analysis chose decisively; all three alternatives were rejected with explicit rationale.",
+      "No operator-only fork remains; the open question (health-check endpoint) is explicitly deferred."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Rename actorSource in review-campaign-send.ts and review-thread-send.ts",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 97,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/prime/functions/api/review-campaign-send.ts` and `apps/prime/functions/api/review-thread-send.ts`",
+        "affects": "`apps/prime/functions/api/review-campaign-send.ts`, `apps/prime/functions/api/review-thread-send.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Update actorSource assertions in review-threads.test.ts",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 97,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/prime/functions/__tests__/review-threads.test.ts`",
+        "affects": "`apps/prime/functions/__tests__/review-threads.test.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Update PRIME_ACTOR_CLAIMS_SECRET comment in both .env.example files",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/prime/.env.example` and `apps/reception/.env.example`",
+        "affects": "`apps/prime/.env.example`, `apps/reception/.env.example`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. This plan renames a free-form audit label in two Prime API files, updates two test fixture strings, and updates comment wording in two `.env.example` files. No workflow, lifecycle state, CI lane, deploy sequence, approval path, or operator runbook is altered.",
+      "areas": []
+    }
+  }
+}

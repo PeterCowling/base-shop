@@ -17,7 +17,7 @@
   "sideEffects": false,
   "scripts": {
     "lint": "eslint . --no-error-on-unmatched-pattern",
-    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs"
+    "test": "bash ../../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs"
   },
   "dependencies": {
     "@themes/base": "workspace:*"

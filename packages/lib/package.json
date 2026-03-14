@@ -50,6 +50,14 @@
       "types": "./dist/shop/index.d.ts",
       "import": "./dist/shop/index.js"
     },
+    "./hospitality": {
+      "types": "./dist/hospitality/index.d.ts",
+      "import": "./dist/hospitality/index.js"
+    },
+    "./prime": {
+      "types": "./dist/prime/index.d.ts",
+      "import": "./dist/prime/index.js"
+    },
     "./logger": {
       "types": "./dist/logger/index.server.d.ts",
       "import": "./dist/logger/index.server.js"

@@ -1,11 +1,12 @@
 /**
  * @jest-environment node
  *
- * prime-outbound-auth-hardening: TASK-05
+ * prime-outbound-auth-hardening: TASK-05 + TASK-07
  * Auth coverage for review-campaign POST and PUT endpoints.
  *
- * review-campaign is a non-broadcast endpoint using resolveActorClaimsWithCompat.
- * - Missing claims + PRIME_ACTOR_CLAIMS_SECRET set → compat fallback (uid: 'prime-owner', roles: [])
+ * review-campaign is a non-broadcast endpoint using resolveActorClaimsWithCompat
+ * (alias for resolveActorClaims after TASK-07 removed the compat fallback).
+ * - Missing claims → 401 (compat fallback removed in TASK-07)
  * - Present but invalid claims → 401
  * - Missing PRIME_ACTOR_CLAIMS_SECRET → 503
  * - Valid signed claims → proceeds to D1 layer
@@ -110,8 +111,8 @@ describe('review-campaign auth (prime-outbound-auth-hardening)', () => {
       expect(body.error).toBe('claims-secret-not-configured');
     });
 
-    // TC-04: Missing claims header + secret present → compat fallback (non-broadcast endpoint)
-    it('TC-04: missing claims header with secret set → compat fallback (reaches D1 layer)', async () => {
+    // TC-04: Missing claims header → 401 (compat fallback removed in TASK-07)
+    it('TC-04: missing claims header → 401 (compat fallback removed)', async () => {
       const { db } = createMockD1Database();
       const response = await createCampaign(
         createPagesContext({
@@ -124,13 +125,14 @@ describe('review-campaign auth (prime-outbound-auth-hardening)', () => {
             PRIME_STAFF_OWNER_GATE_TOKEN: 'test-token',
             PRIME_MESSAGING_DB: db,
           }),
-          body: {}, // missing threadId → 400 from business logic
+          body: {},
         }),
       );
 
-      // Compat fallback means auth passes; business validation fires → 400
-      expect([200, 400, 404, 409]).toContain(response.status);
-      expect(response.status).not.toBe(401);
+      // TASK-07: compat fallback removed — missing claims now returns 401
+      expect(response.status).toBe(401);
+      const body = await response.json() as { error: string };
+      expect(body.error).toBe('missing');
     });
   });
 

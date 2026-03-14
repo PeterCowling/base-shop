@@ -5,7 +5,7 @@ Domain: API
 Workstream: Engineering
 Created: 2026-03-14
 Last-reviewed: 2026-03-14
-Last-updated: 2026-03-14 (TASK-02, TASK-03, TASK-04, TASK-05 complete)
+Last-updated: 2026-03-14 (TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07 complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: prime-outbound-auth-hardening
 Dispatch-ID: IDEA-DISPATCH-20260314160001-BRIK-004
@@ -34,7 +34,7 @@ Eight Prime mutation endpoints trust caller-supplied `x-prime-actor-uid` to iden
 - [x] CHECKPOINT-A: Validate Prime deploy is stable (Prime-only gate; before Reception deploy)
 - [x] TASK-05: Tests — extend existing suites + add `review-campaign` POST/PUT + fix all breaking test assertions
 - [ ] TASK-06: Env validation at startup, wrangler/`.env.example` documentation
-- [ ] TASK-07: Hard-gate removal of non-broadcast compat fallback (blocking, within 1 sprint)
+- [x] TASK-07: Hard-gate removal of non-broadcast compat fallback (blocking, within 1 sprint)
 
 ## Goals
 - Actor UID stored in Prime D1 is cryptographically bound to a short-lived signed claims payload.
@@ -114,7 +114,7 @@ Eight Prime mutation endpoints trust caller-supplied `x-prime-actor-uid` to iden
 | CHECKPOINT-A | CHECKPOINT | Validate Prime deploy is stable (Prime-only; Reception deploy happens post-checkpoint) | - | - | Complete (2026-03-14) | TASK-03, TASK-04 | TASK-05, TASK-06 |
 | TASK-05 | IMPLEMENT | Tests — extend suites, fix all breaking assertions, add `review-campaign` POST/PUT + DM regression | 85% | M | Complete (2026-03-14) | TASK-02, TASK-03, TASK-04, CHECKPOINT-A | TASK-07 |
 | TASK-06 | IMPLEMENT | Env validation at startup + wrangler/`.env.example` + `reception/wrangler.toml` docs | 80% | S | Complete (2026-03-14) | TASK-02, TASK-03, CHECKPOINT-A | TASK-07 |
-| TASK-07 | IMPLEMENT | Hard-gate removal of non-broadcast compat fallback | 80% | S | Pending | TASK-05, TASK-06 | - |
+| TASK-07 | IMPLEMENT | Hard-gate removal of non-broadcast compat fallback | 80% | S | Complete (2026-03-14) | TASK-05, TASK-06 | - |
 
 ## Engineering Coverage
 | Coverage Area | Planned handling | Tasks covering it | Notes |
@@ -565,7 +565,7 @@ Eight Prime mutation endpoints trust caller-supplied `x-prime-actor-uid` to iden
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-14)
 - **Affects:** `apps/prime/functions/lib/actor-claims-resolver.ts`
 - **Depends on:** TASK-05, TASK-06
 - **Blocks:** -
@@ -607,6 +607,7 @@ Eight Prime mutation endpoints trust caller-supplied `x-prime-actor-uid` to iden
   - Update Prime API internal docs to note `x-prime-actor-uid` is no longer accepted.
 - **Notes / references:**
   - TASK-07 is a blocking scheduled delivery: must ship within 1 sprint of TASK-02 deployment. If it slips, the non-broadcast UID forgery vulnerability persists.
+- **Build evidence:** `resolveActorClaimsWithCompat` in `actor-claims-resolver.ts` now delegates to `resolveActorClaims` — compat fallback (plain `x-prime-actor-uid` header) removed. File-level doc comment updated to reflect TASK-07 completion. `review-threads.test.ts` TC-A03 updated: missing claims → 401 `{error:'missing'}` (was compat fallback → proceed). `review-campaign-auth.test.ts` TC-04 updated: missing claims → 401 `{error:'missing'}` (was compat fallback → proceed). Both test file comments updated to reference TASK-05+TASK-07. Prime typecheck (app + functions) and Reception typecheck both pass. Lint pass (0 errors).
 
 ---
 

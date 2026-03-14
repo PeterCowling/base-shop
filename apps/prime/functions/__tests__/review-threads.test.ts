@@ -3539,13 +3539,13 @@ describe('/api/review-threads and /api/review-thread', () => {
 });
 
 /**
- * prime-outbound-auth-hardening: TASK-05
+ * prime-outbound-auth-hardening: TASK-05 + TASK-07
  * Actor-claims auth and role-gate coverage for mutation endpoints.
  *
- * Non-broadcast endpoints (draft, resolve, dismiss) use resolveActorClaimsWithCompat:
+ * All mutation endpoints (broadcast and non-broadcast) require signed claims (TASK-07):
  *   - Valid signed claims → proceeds
  *   - Invalid sig → 401
- *   - Missing claims + secret set → compat fallback (proceeds as prime-owner)
+ *   - Missing claims → 401 (compat fallback removed in TASK-07)
  *   - Missing secret → 503
  *
  * Broadcast paths in review-thread-send use conditional gate:
@@ -3613,7 +3613,7 @@ describe('actor-claims auth coverage (prime-outbound-auth-hardening)', () => {
       expect(body.error).toBe('claims-secret-not-configured');
     });
 
-    it('TC-A03: missing claims with secret set → compat fallback (reaches business layer)', async () => {
+    it('TC-A03: missing claims header → 401 (compat fallback removed in TASK-07)', async () => {
       const { db } = createMockD1Database();
       const response = await saveReviewThreadDraft(
         createPagesContext({
@@ -3629,10 +3629,10 @@ describe('actor-claims auth coverage (prime-outbound-auth-hardening)', () => {
           body: { plainText: 'Draft content' },
         }),
       );
-      // Compat fallback → reaches D1 layer; 404 (thread not found) or 200
-      expect([200, 404, 409]).toContain(response.status);
-      expect(response.status).not.toBe(401);
-      expect(response.status).not.toBe(503);
+      // TASK-07: compat fallback removed — missing claims now returns 401
+      expect(response.status).toBe(401);
+      const body = await response.json() as { error: string };
+      expect(body.error).toBe('missing');
     });
 
     it('TC-A04: valid signed claims → proceeds', async () => {

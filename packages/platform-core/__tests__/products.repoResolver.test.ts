@@ -2,6 +2,7 @@
 import type { ProductsRepository } from "../src/repositories/products.types";
 
 const jsonRepo: ProductsRepository = {
+  create: jest.fn(),
   read: jest.fn(),
   write: jest.fn(),
   getById: jest.fn(),
@@ -11,6 +12,7 @@ const jsonRepo: ProductsRepository = {
 };
 
 const defaultRepo: ProductsRepository = {
+  create: jest.fn(),
   read: jest.fn(),
   write: jest.fn(),
   getById: jest.fn(),

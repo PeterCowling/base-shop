@@ -6,4 +6,5 @@ module.exports = {
   ...base,
   testEnvironment: "node",
   roots: ["<rootDir>/src"],
+  setupFiles: ["<rootDir>/jest.env.cjs"],
 };

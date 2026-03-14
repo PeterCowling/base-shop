@@ -131,8 +131,19 @@
     );
 }
 
+/* Light mode base: near-white with subtle indigo tint — restrained, on-brand.
+   Dark mode: restrained purple-violet (lower saturation vs previous hsl(320 80% 62%)) */
 @utility bg-cmd-hero {
-  background-image: linear-gradient(135deg, hsl(320 80% 62%) 0%, hsl(265 72% 56%) 100%);
+  background-image: linear-gradient(135deg, hsl(240 15% 96%) 0%, hsl(260 20% 92%) 100%);
+
+  @media (prefers-color-scheme: dark) {
+    background-image: linear-gradient(135deg, hsl(300 35% 45%) 0%, hsl(260 55% 38%) 100%);
+  }
+}
+
+/* Manual dark theme toggle support */
+html.theme-dark .bg-cmd-hero {
+  background-image: linear-gradient(135deg, hsl(300 35% 45%) 0%, hsl(260 55% 38%) 100%);
 }
 
 @utility cmd-glow-sm {

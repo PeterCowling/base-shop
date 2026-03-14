@@ -1,0 +1,28 @@
+/* ═══════════════════════════════════════════════════════════════════════
+ * AUTO-GENERATED — do not edit manually.
+ * Source: packages/themes/xa-uploader/src/ (assets.ts, design-profile.ts, theme-css-config.ts)
+ * Generator: scripts/xa-uploader/generate-theme-tokens.ts
+ * Regenerate: pnpm --filter scripts xa-uploader:generate-theme-tokens
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Profile */
+  /* Derived */
+  --gate-ink: hsl(0 0% 10%);
+  --gate-muted: hsl(0 0% 40%);
+  --gate-bg: hsl(0 0% 100%);
+  --gate-surface: hsl(0 0% 96%);
+  --gate-input-bg: hsl(0 0% 100%);
+  --gate-accent: hsl(190 70% 40%);
+  --gate-accent-soft: hsl(190 50% 95%);
+  --gate-on-accent: hsl(0 0% 100%);
+  --gate-header-bg: hsl(220 20% 10%);
+  --gate-header-fg: hsl(0 0% 92%);
+  --gate-header-muted: hsl(0 0% 60%);
+  --gate-status-ready: hsl(150 60% 40%);
+  --gate-status-draft: hsl(40 90% 50%);
+  --gate-status-incomplete: hsl(0 75% 55%);
+  --gate-border: hsl(0 0% 10% / 0.22);
+  --gate-header-border: hsl(0 0% 100% / 0.2);
+  --gate-header-accent: hsl(190 70% 40% / 0.35);
+}

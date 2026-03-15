@@ -33,19 +33,9 @@ const SocialHighlightsCard: FC<SocialHighlightsCardProps> = memo(
     const { activities } = useChat();
 
     // Intent-based CTA keys
-    const ctaKeys = useMemo(() => {
-      if (intent === 'quiet') {
-        return {
-          joinChat: 'social.seeWhatsHappening',
-          seeAll: 'social.browse',
-        };
-      }
-      // 'social' and 'mixed' use default enthusiastic CTAs
-      return {
-        joinChat: 'social.joinChat',
-        seeAll: 'social.seeAll',
-      };
-    }, [intent]);
+    const ctaKeys = intent === 'quiet'
+      ? { joinChat: 'social.seeWhatsHappening', seeAll: 'social.browse' }
+      : { joinChat: 'social.joinChat', seeAll: 'social.seeAll' };
 
     // Use softer icon for quiet intent
     const ActionIcon = intent === 'quiet' ? Eye : MessageCircle;

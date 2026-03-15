@@ -210,7 +210,7 @@ function GuestCard({
   };
 
   return (
-    <div className="flex items-center justify-between p-4 bg-card rounded-lg border border-border hover:border-border transition-colors">
+    <div className="flex items-center justify-between p-4 bg-card rounded-lg border border-border hover:border-primary transition-colors">
       <div className="flex items-center gap-3">
         <div className="h-10 w-10 rounded-full bg-primary-soft flex items-center justify-center">
           <span className="text-info-foreground font-medium text-sm">

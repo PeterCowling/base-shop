@@ -414,7 +414,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
           });
         } catch (error) {
           // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
-        logger.error('Failed to load direct messages', error);
+          logger.error('Failed to load direct messages', error);
         }
       };
 
@@ -554,7 +554,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
           }
         } catch (error) {
           // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
-        logger.error('Failed to load older direct messages', error);
+          logger.error('Failed to load older direct messages', error);
         }
 
         return;
@@ -658,7 +658,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
       }
 
       // Activity channels use raw UUIDs as channelId; direct channels use the dm_<uuid>_<uuid> format.
-      if (!channelId.startsWith('dm_')) {
+      if (!isDirectMessageChannelId(channelId)) {
         // Activity channel send: route through server function for session validation and D1 shadow-write.
         const activityResponse = await fetch('/api/activity-message', {
           method: 'POST',

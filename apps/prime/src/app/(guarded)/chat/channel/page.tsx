@@ -96,12 +96,7 @@ export default function ChannelPage() {
       return null;
     }
 
-    const expectedId = buildDirectMessageChannelId(currentGuestUuid, peerUuid);
-    if (rawChannelId && rawChannelId !== expectedId) {
-      return expectedId;
-    }
-
-    return expectedId;
+    return buildDirectMessageChannelId(currentGuestUuid, peerUuid);
   }, [channelMode, currentGuestUuid, peerUuid, rawChannelId]);
 
   const currentProfile = currentGuestUuid ? profiles[currentGuestUuid] : null;
@@ -206,21 +201,12 @@ export default function ChannelPage() {
     setIsSending(true);
     setSendError(null);
     try {
-      const directSendOptions =
+      const sendOptions =
         channelMode === 'direct' && peerUuid && currentBookingId
-          ? {
-              directMessage: {
-                bookingId: currentBookingId,
-                peerUuid,
-              },
-            }
-          : null;
+          ? { directMessage: { bookingId: currentBookingId, peerUuid } }
+          : undefined;
 
-      if (directSendOptions) {
-        await sendMessage(channelId, messageInput, directSendOptions);
-      } else {
-        await sendMessage(channelId, messageInput);
-      }
+      await sendMessage(channelId, messageInput, sendOptions);
       setMessageInput('');
     } catch (err) {
       console.error('Failed to send message:', err);
@@ -308,7 +294,7 @@ export default function ChannelPage() {
       <div className="bg-card border-b border-border px-4 py-3">
         <div className="mx-auto flex w-full items-center gap-3">
           <Link
-            href={channelMode === 'broadcast' ? '/chat' : channelMode === 'direct' ? '/chat' : '/activities'}
+            href={channelMode === 'activity' ? '/activities' : '/chat'}
             className="text-muted-foreground hover:text-foreground"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -337,8 +323,9 @@ export default function ChannelPage() {
           {channelMessages.map((msg) => {
             const isOwn = msg.senderId === currentGuestUuid;
             const textContent = msg.content.trim();
-            const imageAttachments = (msg.attachments ?? []).filter((attachment) => attachment.kind === 'image');
-            const fileAttachments = (msg.attachments ?? []).filter((attachment) => attachment.kind === 'file');
+            const attachments = msg.attachments ?? [];
+            const imageAttachments = attachments.filter((attachment) => attachment.kind === 'image');
+            const fileAttachments = attachments.filter((attachment) => attachment.kind === 'file');
             const imagePreviews = [
               ...(msg.imageUrl
                 ? [{

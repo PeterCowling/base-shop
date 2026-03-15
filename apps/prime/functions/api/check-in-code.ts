@@ -15,6 +15,7 @@
  * Rate limit: POST endpoint — 5 requests per 15 min per IP (RATE_LIMIT KV).
  */
 
+import { parseCookie } from '../lib/cookie-parser';
 import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { createFunctionTranslator } from '../lib/function-i18n';
 
@@ -67,16 +68,6 @@ function calculateExpiry(checkOutDate: string): number | null {
   }
 
   return checkOutTimestamp + CODE_EXPIRY_HOURS_AFTER_CHECKOUT * 60 * 60 * 1000;
-}
-
-function parseCookie(cookieHeader: string, name: string): string | null {
-  for (const part of cookieHeader.split(';')) {
-    const [key, ...rest] = part.trim().split('=');
-    if (key.trim() === name) {
-      return rest.join('=').trim() || null;
-    }
-  }
-  return null;
 }
 
 /**

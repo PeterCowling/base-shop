@@ -8,20 +8,11 @@
  * - dispatches a structured email payload to operations
  */
 
+import { parseCookie } from '../lib/cookie-parser';
 import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { createFunctionTranslator } from '../lib/function-i18n';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { createPrimeRequestRecord, createPrimeRequestWritePayload } from '../lib/prime-requests';
-
-function parseCookie(cookieHeader: string, name: string): string | null {
-  for (const part of cookieHeader.split(';')) {
-    const [key, ...rest] = part.trim().split('=');
-    if (key.trim() === name) {
-      return rest.join('=').trim() || null;
-    }
-  }
-  return null;
-}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;

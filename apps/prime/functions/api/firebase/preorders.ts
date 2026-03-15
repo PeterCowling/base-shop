@@ -5,22 +5,13 @@
  * Data path: preorder/{guestUuid}/{nightKey}
  */
 
+import { parseCookie } from '../../lib/cookie-parser';
 import { errorResponse, FirebaseRest, jsonResponse } from '../../lib/firebase-rest';
 import { validateGuestSessionToken } from '../../lib/guest-session';
 import { buildPrimeRequestId, createPrimeRequestRecord, createPrimeRequestWritePayload } from '../../lib/prime-requests';
 
 import { generatePreorderTxnId, serviceDateToBarPath } from './preorder-helpers';
 import { parseBreakfastOrderString, parseEvDrinkOrderString } from './preorder-parser';
-
-function parseCookie(cookieHeader: string, name: string): string | null {
-  for (const part of cookieHeader.split(';')) {
-    const [key, ...rest] = part.trim().split('=');
-    if (key.trim() === name) {
-      return rest.join('=').trim() || null;
-    }
-  }
-  return null;
-}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;

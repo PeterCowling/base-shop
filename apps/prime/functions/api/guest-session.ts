@@ -5,17 +5,8 @@
  * POST - Verifies guest last name for a token and returns minimal session data
  */
 
+import { parseCookie } from '../lib/cookie-parser';
 import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
-
-function parseCookie(cookieHeader: string, name: string): string | null {
-  for (const part of cookieHeader.split(';')) {
-    const [key, ...rest] = part.trim().split('=');
-    if (key.trim() === name) {
-      return rest.join('=').trim() || null;
-    }
-  }
-  return null;
-}
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;

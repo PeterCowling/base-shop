@@ -10,6 +10,7 @@
  * - returns a safe fallback on any OpenAI error
  */
 
+import { parseCookie } from '../lib/cookie-parser';
 import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { createFunctionTranslator } from '../lib/function-i18n';
 import { validateGuestSessionToken } from '../lib/guest-session';
@@ -103,16 +104,6 @@ function buildSystemPrompt(
     checkOutLine,
     entitlementLine,
   });
-}
-
-function parseCookie(cookieHeader: string, name: string): string | null {
-  for (const part of cookieHeader.split(';')) {
-    const [key, ...rest] = part.trim().split('=');
-    if (key.trim() === name) {
-      return rest.join('=').trim() || null;
-    }
-  }
-  return null;
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {

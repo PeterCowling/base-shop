@@ -11,22 +11,14 @@
  * check is required — any authenticated guest with a valid session may send.
  */
 
+import { parseCookie } from '../lib/cookie-parser';
 import { recordDirectTelemetry } from '../lib/direct-telemetry';
 import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
 import { enforceKvRateLimit } from '../lib/kv-rate-limit';
 import type { PrimeMessagingEnv } from '../lib/prime-messaging-db';
 import { shadowWritePrimeInboundActivityMessage } from '../lib/prime-messaging-shadow-write';
-
-function parseCookie(cookieHeader: string, name: string): string | null {
-  for (const part of cookieHeader.split(';')) {
-    const [key, ...rest] = part.trim().split('=');
-    if (key.trim() === name) {
-      return rest.join('=').trim() || null;
-    }
-  }
-  return null;
-}
+import { buildMessageId } from '../lib/prime-review-send-support';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
@@ -50,11 +42,6 @@ type ActivityChannelMeta = {
 const MAX_MESSAGE_CONTENT_LENGTH = 1000;
 const WRITE_RATE_LIMIT_MAX_REQUESTS = 40;
 const WRITE_RATE_LIMIT_WINDOW_SECONDS = 60;
-
-function buildMessageId(now: number): string {
-  const suffix = crypto.randomUUID().replace(/-/g, '').slice(0, 12);
-  return `msg_${now}_${suffix}`;
-}
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   let body: ActivityMessageRequestBody;

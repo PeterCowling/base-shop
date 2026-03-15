@@ -15,6 +15,7 @@ import type {
   MessageKind,
   MessageLink,
 } from '../../src/types/messenger/chat';
+import { parseCookie } from '../lib/cookie-parser';
 import { recordDirectTelemetry } from '../lib/direct-telemetry';
 import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
 import { validateGuestSessionToken } from '../lib/guest-session';
@@ -239,16 +240,6 @@ function normalizeDraft(value: unknown): MessageDraftMeta | undefined {
     source: candidate.source,
     createdAt: candidate.createdAt,
   };
-}
-
-function parseCookie(cookieHeader: string, name: string): string | null {
-  for (const part of cookieHeader.split(';')) {
-    const [key, ...rest] = part.trim().split('=');
-    if (key.trim() === name) {
-      return rest.join('=').trim() || null;
-    }
-  }
-  return null;
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {

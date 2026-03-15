@@ -15,6 +15,8 @@ export function buildReviewMessageId(now: number): string {
   return `msg_${now}_${suffix}`;
 }
 
+export { buildReviewMessageId as buildMessageId };
+
 export function parseJsonObject(raw: string | null): Record<string, unknown> | null {
   if (!raw) {
     return null;

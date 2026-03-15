@@ -15,6 +15,7 @@ import {
   recordPrimeMessageAdmission,
   upsertPrimeMessageThread,
 } from './prime-messaging-repositories';
+import { parseJsonObject } from './prime-review-send-support';
 
 export interface ShadowWritePrimeInboundActivityMessageInput {
   threadId: string;
@@ -46,21 +47,6 @@ export interface ShadowWritePrimeInboundDirectMessageInput {
 export interface ShadowWritePrimeInboundDirectMessageResult {
   persisted: boolean;
   admissionDecision: PrimeMessageAdmissionDecision | null;
-}
-
-function parseJsonObject(raw: string | null): Record<string, unknown> | null {
-  if (!raw) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
-      ? (parsed as Record<string, unknown>)
-      : null;
-  } catch {
-    return null;
-  }
 }
 
 function buildThreadMetadata(
@@ -144,45 +130,45 @@ export async function shadowWritePrimeInboundDirectMessage(
     updatedAt: input.createdAt,
   });
 
-  await createPrimeMessage(db, {
-    id: input.messageId,
-    threadId: input.threadId,
-    senderId: input.senderId,
-    senderRole: 'guest',
-    senderName: input.senderName ?? null,
-    content: input.content,
-    kind: 'support',
-    audience: input.audience ?? 'thread',
-    createdAt: input.createdAt,
-  });
-
-  await recordPrimeMessageAdmission(db, {
-    threadId: input.threadId,
-    decision: admission.decision,
-    reason: admission.reason,
-    source: 'guest_direct_message',
-    sourceMetadata: {
-      messageId: input.messageId,
+  await Promise.all([
+    createPrimeMessage(db, {
+      id: input.messageId,
       threadId: input.threadId,
-      bookingId: input.bookingId,
       senderId: input.senderId,
-      peerId: input.peerId,
-      transport: 'firebase_shadow_write',
-    },
-    createdAt: input.createdAt,
-  });
-
-  await enqueuePrimeProjectionJob(db, {
-    id: `proj_message_${input.messageId}`,
-    threadId: input.threadId,
-    entityType: 'message',
-    entityId: input.messageId,
-    // Firebase was already written inline by the API handler before shadow-write
-    // is called. The job record is an audit entry, not a work item — use
-    // 'projected' to reflect that projection already completed.
-    status: 'projected',
-    createdAt: input.createdAt,
-  });
+      senderRole: 'guest',
+      senderName: input.senderName ?? null,
+      content: input.content,
+      kind: 'support',
+      audience: input.audience ?? 'thread',
+      createdAt: input.createdAt,
+    }),
+    recordPrimeMessageAdmission(db, {
+      threadId: input.threadId,
+      decision: admission.decision,
+      reason: admission.reason,
+      source: 'guest_direct_message',
+      sourceMetadata: {
+        messageId: input.messageId,
+        threadId: input.threadId,
+        bookingId: input.bookingId,
+        senderId: input.senderId,
+        peerId: input.peerId,
+        transport: 'firebase_shadow_write',
+      },
+      createdAt: input.createdAt,
+    }),
+    enqueuePrimeProjectionJob(db, {
+      id: `proj_message_${input.messageId}`,
+      threadId: input.threadId,
+      entityType: 'message',
+      entityId: input.messageId,
+      // Firebase was already written inline by the API handler before shadow-write
+      // is called. The job record is an audit entry, not a work item — use
+      // 'projected' to reflect that projection already completed.
+      status: 'projected',
+      createdAt: input.createdAt,
+    }),
+  ]);
 
   return {
     persisted: true,
@@ -227,44 +213,44 @@ export async function shadowWritePrimeInboundActivityMessage(
     updatedAt: input.createdAt,
   });
 
-  await createPrimeMessage(db, {
-    id: input.messageId,
-    threadId: input.threadId,
-    senderId: input.senderId,
-    senderRole: 'guest',
-    senderName: input.senderName ?? null,
-    content: input.content,
-    kind: 'support',
-    audience: 'whole_hostel',
-    createdAt: input.createdAt,
-  });
-
-  await recordPrimeMessageAdmission(db, {
-    threadId: input.threadId,
-    decision: admission.decision,
-    reason: admission.reason,
-    source: 'guest_activity_message',
-    sourceMetadata: {
-      messageId: input.messageId,
+  await Promise.all([
+    createPrimeMessage(db, {
+      id: input.messageId,
       threadId: input.threadId,
-      activityId: input.activityId,
       senderId: input.senderId,
-      transport: 'firebase_shadow_write',
-    },
-    createdAt: input.createdAt,
-  });
-
-  await enqueuePrimeProjectionJob(db, {
-    id: `proj_message_${input.messageId}`,
-    threadId: input.threadId,
-    entityType: 'message',
-    entityId: input.messageId,
-    // Firebase was already written inline by the API handler before shadow-write
-    // is called. The job record is an audit entry, not a work item — use
-    // 'projected' to reflect that projection already completed.
-    status: 'projected',
-    createdAt: input.createdAt,
-  });
+      senderRole: 'guest',
+      senderName: input.senderName ?? null,
+      content: input.content,
+      kind: 'support',
+      audience: 'whole_hostel',
+      createdAt: input.createdAt,
+    }),
+    recordPrimeMessageAdmission(db, {
+      threadId: input.threadId,
+      decision: admission.decision,
+      reason: admission.reason,
+      source: 'guest_activity_message',
+      sourceMetadata: {
+        messageId: input.messageId,
+        threadId: input.threadId,
+        activityId: input.activityId,
+        senderId: input.senderId,
+        transport: 'firebase_shadow_write',
+      },
+      createdAt: input.createdAt,
+    }),
+    enqueuePrimeProjectionJob(db, {
+      id: `proj_message_${input.messageId}`,
+      threadId: input.threadId,
+      entityType: 'message',
+      entityId: input.messageId,
+      // Firebase was already written inline by the API handler before shadow-write
+      // is called. The job record is an audit entry, not a work item — use
+      // 'projected' to reflect that projection already completed.
+      status: 'projected',
+      createdAt: input.createdAt,
+    }),
+  ]);
 
   return {
     persisted: true,

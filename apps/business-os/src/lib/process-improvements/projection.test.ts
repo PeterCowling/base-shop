@@ -606,6 +606,7 @@ describe("process improvements operator-action projection", () => {
         owner: "Pete",
         stateLabel: "Open",
         isOverdue: false,
+        availableActions: expect.any(Array),
         decisionState: {
           decision: "snooze",
           decidedAt: "2026-03-11T12:00:00.000Z",

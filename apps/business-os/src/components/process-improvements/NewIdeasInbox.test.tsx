@@ -139,6 +139,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[baseItem, operatorActionItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -170,7 +171,7 @@ describe("NewIdeasInbox", () => {
       operatorHeading.compareDocumentPosition(queueHeading) &
         Node.DOCUMENT_POSITION_FOLLOWING
     ).toBeTruthy();
-    expect(screen.getByText("Business HEAD")).toBeInTheDocument();
+    expect(screen.getByText("HEAD")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Do" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Mark done" })).toBeInTheDocument();
   });
@@ -193,6 +194,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[baseItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -223,6 +225,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[baseItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -257,6 +260,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[operatorActionItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -277,6 +281,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[baseItem]}
         initialRecentActions={[recentOperatorAction]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -293,6 +298,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[deferredQueueItem, snoozedOperatorActionItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -338,6 +344,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[itemWithDecisionBrief]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -354,6 +361,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[itemWithDecisionBrief]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -373,6 +381,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[baseItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -404,6 +413,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[baseItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -439,6 +449,7 @@ describe("NewIdeasInbox", () => {
         initialItems={[baseItem]}
         initialRecentActions={[recentQueueAction]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -475,6 +486,7 @@ describe("formatPriorityLabel", () => {
         initialItems={[p2Item]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -503,6 +515,7 @@ describe("formatPriorityLabel", () => {
         initialItems={[activeItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -530,6 +543,7 @@ describe("formatPriorityLabel", () => {
         initialItems={[unknownItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -583,6 +597,7 @@ describe("TASK-07a swimlane categorization", () => {
         initialItems={[overdueItem, activeOperatorActionItem, queueItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -609,6 +624,7 @@ describe("TASK-07a swimlane categorization", () => {
         initialItems={[deferredItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -650,6 +666,7 @@ describe("B1/B2/B3 data accuracy", () => {
         initialItems={[inProgressItem, baseItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={["dispatch-ip-1", "dispatch-ip-2"]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -664,6 +681,7 @@ describe("B1/B2/B3 data accuracy", () => {
         initialItems={[baseItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={["dispatch-ip-1"]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -684,6 +702,7 @@ describe("B1/B2/B3 data accuracy", () => {
         initialItems={[baseItem, operatorActionItem]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 
@@ -700,6 +719,7 @@ describe("B1/B2/B3 data accuracy", () => {
         initialItems={[]}
         initialRecentActions={[]}
         initialInProgressDispatchIds={[]}
+        initialCompletedIdeasCount={0}
       />
     );
 

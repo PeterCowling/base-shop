@@ -12,6 +12,10 @@ import type { Business } from "@/lib/types";
 
 import { NavigationHeader } from "./NavigationHeader";
 
+jest.mock("./ThemeModeToggle", () => ({
+  ThemeModeToggle: () => null,
+}));
+
 // Mock Next.js router
 jest.mock("next/navigation", () => ({
   usePathname: () => "/boards",

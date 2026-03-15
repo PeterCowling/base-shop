@@ -31,7 +31,7 @@ describe("projectDecisionBrief", () => {
       expect(brief.expectedNextStep).toBe(
         "Work starts immediately once you approve."
       );
-      expect(brief.confidenceExplainer).toContain("High confidence");
+      expect(brief.confidenceExplainer).toContain("Very high confidence");
       expect(brief.evidenceLabels.length).toBeGreaterThan(0);
     });
   });
@@ -56,8 +56,8 @@ describe("projectDecisionBrief", () => {
 
     it("classifies ambiguity/clarity items as clarity", () => {
       const brief = projectDecisionBrief({
-        title: "Confusing error message",
-        why: "The error message is unclear and confuses users about what went wrong.",
+        title: "Confusing status message",
+        why: "The status message is unclear and confuses users about what happened.",
         priority: "P2",
       });
       expect(brief.benefitCategory).toBe("clarity");

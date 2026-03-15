@@ -37,8 +37,6 @@ function ProfileCompletionBannerComponent({
     return null;
   }
 
-  // Determine message based on state
-  const isReturningGuest = isStale;
   const wasSkipped = profileStatus === 'skipped';
 
   return (
@@ -49,12 +47,12 @@ function ProfileCompletionBannerComponent({
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-medium text-foreground">
-            {isReturningGuest
+            {isStale
               ? t('profileBanner.returningTitle', 'Welcome back!')
               : t('profileBanner.title', 'Complete your profile')}
           </h3>
           <p className="text-sm text-muted-foreground mt-1">
-            {isReturningGuest
+            {isStale
               ? t(
                   'profileBanner.returningDescription',
                   'Update your preferences for this stay to get personalized recommendations.',
@@ -71,7 +69,7 @@ function ProfileCompletionBannerComponent({
           </p>
           <Link href="/account/profile" className="inline-block mt-2">
             <Button variant="outline" size="sm">
-              {isReturningGuest
+              {isStale
                 ? t('profileBanner.updateButton', 'Update preferences')
                 : t('profileBanner.completeButton', 'Complete profile')}
             </Button>

@@ -75,7 +75,6 @@ export interface UseBreakfastWizardReturn {
   goBack: () => void;
   goToStep: (stepIndex: number) => void;
   canAdvance: boolean;
-  isAtConfirmation: boolean;
   activeStep: StepName;
   resetWizard: () => void;
 }
@@ -150,12 +149,6 @@ export function useBreakfastWizard(): UseBreakfastWizardReturn {
     formData.selectedMilk,
     formData.selectedTime,
   ]);
-
-  // -------------------------------------------------------------------------
-  // isAtConfirmation
-  // -------------------------------------------------------------------------
-
-  const isAtConfirmation = currentStepIndex === activeSteps.length - 1;
 
   // -------------------------------------------------------------------------
   // updateField — with stale-field clearing on food/drink changes
@@ -234,7 +227,6 @@ export function useBreakfastWizard(): UseBreakfastWizardReturn {
     goBack,
     goToStep,
     canAdvance,
-    isAtConfirmation,
     activeStep: activeSteps[currentStepIndex] ?? 'food',
     resetWizard,
   };

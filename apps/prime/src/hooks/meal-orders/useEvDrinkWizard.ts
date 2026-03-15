@@ -38,8 +38,6 @@ export interface UseEvDrinkWizardReturn {
   goToStep: (index: number) => void;
   /** Whether the wizard can advance from the current step */
   canAdvance: boolean;
-  /** Whether the wizard is showing the confirmation step */
-  isAtConfirmation: boolean;
   /** Reset the wizard back to step 0 with empty formData */
   resetWizard: () => void;
   /** Drinks filtered by the detected tier */
@@ -135,8 +133,6 @@ export function useEvDrinkWizard({
     }
   }, [activeStep, formData.selectedDrink, formData.selectedTime]);
 
-  const isAtConfirmation = activeStep === 'confirmation';
-
   // updateField — when selectedDrink changes, reset modifierState
   const updateField = useCallback(
     (field: keyof EvDrinkWizardState, value: unknown) => {
@@ -200,7 +196,6 @@ export function useEvDrinkWizard({
     goBack,
     goToStep,
     canAdvance,
-    isAtConfirmation,
     resetWizard,
     availableDrinks,
   };

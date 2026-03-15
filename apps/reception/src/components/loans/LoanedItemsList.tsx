@@ -1,6 +1,6 @@
 // File: /src/components/loans/LoanedItemsList.tsx
 
-import { memo, type ReactElement, useCallback, useMemo } from "react";
+import { memo, type ReactElement, useMemo } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 import { Cluster, Inline } from "@acme/design-system/primitives";
@@ -12,6 +12,23 @@ import {
 } from "../../types/hooks/data/loansData";
 
 import useOccupantLoans from "./useOccupantLoans";
+
+function getDepositLabel(type: LoanMethod): string {
+  switch (type) {
+    case "CASH":
+      return "Cash";
+    case "PASSPORT":
+      return "Passport";
+    case "LICENSE":
+      return "Driver License";
+    case "ID":
+      return "National ID";
+    case "NO_CARD":
+      return "No Card";
+    default:
+      return type;
+  }
+}
 
 interface LoanedItemsListProps {
   occupantId: string; // occupantId alone is not enough if we need bookingRef. We'll see the hook below.
@@ -44,23 +61,6 @@ function LoanedItemsListComponent({
     guest.bookingRef,
     occupantId
   );
-
-  const getDepositLabel = useCallback((type: LoanMethod): string => {
-    switch (type) {
-      case "CASH":
-        return "Cash";
-      case "PASSPORT":
-        return "Passport";
-      case "LICENSE":
-        return "Driver License";
-      case "ID":
-        return "National ID";
-      case "NO_CARD":
-        return "No Card";
-      default:
-        return type;
-    }
-  }, []);
 
   /**
    * Build a list of loaned items. Keycards are listed individually so each

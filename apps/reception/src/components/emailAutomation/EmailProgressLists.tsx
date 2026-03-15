@@ -22,6 +22,13 @@ import TimeElapsedChip from "./TimeElapsedChip";
 
 export type EmailProgressListItem = EmailProgressData & { arrivalDate?: string };
 
+const CODE_STYLES = {
+  1: { headerBg: "bg-surface-2", headerBorder: "border-border-strong", bar: "bg-primary-main", labelColor: "text-foreground" },
+  2: { headerBg: "bg-warning/10", headerBorder: "border-warning", bar: "bg-warning", labelColor: "text-foreground" },
+  3: { headerBg: "bg-warning/20", headerBorder: "border-warning", bar: "bg-warning", labelColor: "text-foreground" },
+  4: { headerBg: "bg-surface-2", headerBorder: "border-border-strong", bar: "bg-muted-foreground", labelColor: "text-muted-foreground" },
+} as const;
+
 export interface EmailProgressListsProps {
   emailData: EmailProgressListItem[];
   logNextActivity: (args: { bookingRef: string }) => Promise<void> | void;
@@ -110,22 +117,19 @@ export default function EmailProgressLists({
   );
 
   // Group localItems by currentCode so we can render separate sections
-  const code1List = useMemo(
-    () => localItems.filter((d) => d.currentCode === 1),
-    [localItems]
-  );
-  const code2List = useMemo(
-    () => localItems.filter((d) => d.currentCode === 2),
-    [localItems]
-  );
-  const code3List = useMemo(
-    () => localItems.filter((d) => d.currentCode === 3),
-    [localItems]
-  );
-  const code4List = useMemo(
-    () => localItems.filter((d) => d.currentCode === 4),
-    [localItems]
-  );
+  const { code1List, code2List, code3List, code4List } = useMemo(() => {
+    const c1: EmailProgressListItem[] = [];
+    const c2: EmailProgressListItem[] = [];
+    const c3: EmailProgressListItem[] = [];
+    const c4: EmailProgressListItem[] = [];
+    for (const d of localItems) {
+      if (d.currentCode === 1) c1.push(d);
+      else if (d.currentCode === 2) c2.push(d);
+      else if (d.currentCode === 3) c3.push(d);
+      else if (d.currentCode === 4) c4.push(d);
+    }
+    return { code1List: c1, code2List: c2, code3List: c3, code4List: c4 };
+  }, [localItems]);
 
   return (
     <Stack gap={0} className="font-body w-full">
@@ -201,13 +205,7 @@ function ActivityCodeSection({
     });
   }, [list]);
 
-  const codeStyles = {
-    1: { headerBg: "bg-surface-2", headerBorder: "border-border-strong", bar: "bg-primary-main", labelColor: "text-foreground" },
-    2: { headerBg: "bg-warning/10", headerBorder: "border-warning", bar: "bg-warning", labelColor: "text-foreground" },
-    3: { headerBg: "bg-warning/20", headerBorder: "border-warning", bar: "bg-warning", labelColor: "text-foreground" },
-    4: { headerBg: "bg-surface-2", headerBorder: "border-border-strong", bar: "bg-muted-foreground", labelColor: "text-muted-foreground" },
-  } as const;
-  const style = codeStyles[code as keyof typeof codeStyles] ?? codeStyles[1];
+  const style = CODE_STYLES[code as keyof typeof CODE_STYLES] ?? CODE_STYLES[1];
 
   return (
     <TransitionGroup component={React.Fragment}>

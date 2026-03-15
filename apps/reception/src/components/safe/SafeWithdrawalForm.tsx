@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from "react";
+import { memo, useRef } from "react";
 
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
@@ -18,7 +18,6 @@ export const SafeWithdrawalForm = memo(function SafeWithdrawalForm({
   onConfirm,
   onCancel,
 }: SafeWithdrawalFormProps) {
-  const [error, setError] = useState<string | null>(null);
   const submitRef = useRef<(() => void) | undefined>(undefined);
 
   const handleConfirm = async (
@@ -31,12 +30,7 @@ export const SafeWithdrawalForm = memo(function SafeWithdrawalForm({
       showToast("Please enter valid values", "error");
       return;
     }
-    setError(null);
-    try {
-      await onConfirm(cash, breakdown);
-    } catch (e) {
-      setError((e as Error).message);
-    }
+    await onConfirm(cash, breakdown);
   };
 
   return (
@@ -58,11 +52,6 @@ export const SafeWithdrawalForm = memo(function SafeWithdrawalForm({
           onSubmit={() => submitRef.current?.()}
           submitLabel="Confirm withdrawal"
         />
-        {error && (
-          <p className="mt-2 text-danger-fg" role="alert">
-            {error}
-          </p>
-        )}
       </div>
     </CashCountingForm>
   );

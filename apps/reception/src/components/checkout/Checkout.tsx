@@ -306,7 +306,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   // Toggle fridge-used flag for a single occupant
   const onToggleFridge = useCallback(
     async (guestId: string, _bookingRef: string, currentValue: boolean) => {
-      setPendingFridgeOccupantIds((prev) => new Set([...prev, guestId]));
+      setPendingFridgeOccupantIds((prev) => { const next = new Set(prev); next.add(guestId); return next; });
       try {
         await setFridgeUsed(guestId, !currentValue);
       } catch (err) {
@@ -326,7 +326,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   // Toggle bag-storage opted-in flag for a single occupant
   const onToggleBagStorage = useCallback(
     async (guestId: string, _bookingRef: string, currentValue: boolean) => {
-      setPendingBagStorageOccupantIds((prev) => new Set([...prev, guestId]));
+      setPendingBagStorageOccupantIds((prev) => { const next = new Set(prev); next.add(guestId); return next; });
       try {
         await setBagStorageOptedIn(guestId, !currentValue);
       } catch (err) {

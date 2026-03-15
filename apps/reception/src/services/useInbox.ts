@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type {
   InboxChannel,
@@ -717,8 +717,8 @@ export default function useInbox() {
   }, [online, refreshInboxView, tabVisible]);
 
   // Derived channel-filtered thread lists
-  const emailThreads = threads.filter((t) => t.channel === "email");
-  const primeThreads = threads.filter((t) => t.channel !== "email");
+  const emailThreads = useMemo(() => threads.filter((t) => t.channel === "email"), [threads]);
+  const primeThreads = useMemo(() => threads.filter((t) => t.channel !== "email"), [threads]);
 
   return {
     threads,

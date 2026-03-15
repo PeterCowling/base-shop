@@ -45,6 +45,14 @@ function computeOutstandingRoom(
 /** Minimum that row 0 can hold, in euros. */
 const MIN_BASE_ROW = 0.1;
 
+const DEFAULT_FINANCIALS: FinancialsRoomData = {
+  balance: 0,
+  totalDue: 0,
+  totalPaid: 0,
+  totalAdjust: 0,
+  transactions: {},
+};
+
 /**
  * Helper to round any numeric value to two decimal places. For instance:
  *   fixTwoDecimals(12.345) => 12.35
@@ -67,17 +75,6 @@ function coercePayType(pt: string): PaymentType {
  * then recomputes as occupant data changes.
  */
 function useLocalFinancials(occupantAsBookings: Bookings | null) {
-  const defaultFinancials: FinancialsRoomData = useMemo(
-    () => ({
-      balance: 0,
-      totalDue: 0,
-      totalPaid: 0,
-      totalAdjust: 0,
-      transactions: {},
-    }),
-    []
-  );
-
   const [localFinancials, setLocalFinancials] = useState<
     FinancialsRoomData | undefined
   >(
@@ -89,7 +86,7 @@ function useLocalFinancials(occupantAsBookings: Bookings | null) {
           totalAdjust: occupantAsBookings.financials.totalAdjust ?? 0,
           transactions: occupantAsBookings.financials.transactions || {},
         }
-      : defaultFinancials
+      : DEFAULT_FINANCIALS
   );
 
   // Sync if the underlying financials object changes.
@@ -116,12 +113,12 @@ function useLocalFinancials(occupantAsBookings: Bookings | null) {
           totalAdjust: occupantAsBookings.financials.totalAdjust ?? 0,
           transactions: occupantAsBookings.financials.transactions || {},
         }
-      : defaultFinancials;
+      : DEFAULT_FINANCIALS;
 
     setLocalFinancials((prev) =>
       financialsEqual(prev, updated) ? prev : updated
     );
-  }, [occupantAsBookings, defaultFinancials]);
+  }, [occupantAsBookings]);
 
   const outstanding = useMemo(
     () => computeOutstandingRoom(localFinancials),

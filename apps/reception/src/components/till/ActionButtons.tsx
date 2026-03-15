@@ -1,11 +1,12 @@
 "use client";
 
-import { type FC, useMemo, useState } from "react";
+import { type FC, useState } from "react";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 import { Inline, Stack } from "@acme/design-system/primitives";
 
+import type { TillRowMode } from "../../hooks/client/till/useTillReconciliationUI";
 import { canAccess, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
 import PasswordReauthModal from "../common/PasswordReauthModal";
@@ -28,8 +29,7 @@ interface ActionButtonsProps {
   handleAddKeycard: () => void;
   handleReturnKeycard: () => void;
   handleLiftClick: () => void;
-  setIsEditMode: (v: boolean) => void;
-  setIsDeleteMode: (v: boolean) => void;
+  setRowMode: (v: TillRowMode) => void;
 }
 
 const ActionButtons: FC<ActionButtonsProps> = ({
@@ -48,22 +48,15 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   handleAddKeycard,
   handleReturnKeycard,
   handleLiftClick,
-  setIsEditMode,
-  setIsDeleteMode,
+  setRowMode,
 }) => {
   const [openId, setOpenId] = useState<string | null>(null);
   const [showDrawerReauth, setShowDrawerReauth] = useState(false);
   const [pendingDrawerLimit, setPendingDrawerLimit] = useState<number | null>(
     null
   );
-  const canManageCash = useMemo(
-    () => canAccess(user, Permissions.TILL_ACCESS),
-    [user]
-  );
-  const canManageDrawerLimit = useMemo(
-    () => canAccess(user, Permissions.MANAGEMENT_ACCESS),
-    [user]
-  );
+  const canManageCash = canAccess(user, Permissions.TILL_ACCESS);
+  const canManageDrawerLimit = canAccess(user, Permissions.MANAGEMENT_ACCESS);
 
   const handleDrawerLimitSubmit = () => {
     const nextLimit = Number(drawerLimitInput) || 0;
@@ -136,13 +129,13 @@ const ActionButtons: FC<ActionButtonsProps> = ({
               },
               {
                 label: "Edit Transaction",
-                onClick: () => setIsEditMode(true),
+                onClick: () => setRowMode("edit"),
                 disabled: !shiftOpenTime,
                 disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Delete Transaction",
-                onClick: () => setIsDeleteMode(true),
+                onClick: () => setRowMode("delete"),
                 disabled: !shiftOpenTime,
                 disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },

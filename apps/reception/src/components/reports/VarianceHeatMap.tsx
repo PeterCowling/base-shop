@@ -39,20 +39,17 @@ export default function VarianceHeatMap() {
   const [showReauth, setShowReauth] = useState(false);
   const [pendingSave, setPendingSave] = useState(false);
 
-  const { userMap, shiftLabels } = useMemo(() => {
-      const closeRecords = cashCounts.filter((c) => c.type === "close");
-      const labels = closeRecords.map((c) =>
-        formatItalyDateFromIso(c.timestamp)
-      );
+  const { userMap, users, shiftLabels } = useMemo(() => {
+    const closeRecords = cashCounts.filter((c) => c.type === "close");
+    const labels = closeRecords.map((c) => formatItalyDateFromIso(c.timestamp));
     const map: UserShiftMap = {};
     closeRecords.forEach((rec, idx) => {
       if (!map[rec.user]) map[rec.user] = {};
       map[rec.user][idx + 1] = rec.difference;
     });
-    return { userMap: map, shiftLabels: labels };
+    return { userMap: map, users: Object.keys(map).sort(), shiftLabels: labels };
   }, [cashCounts]);
 
-  const users = Object.keys(userMap).sort();
   const currentCashThreshold =
     thresholds.cash !== undefined ? thresholds.cash.toFixed(2) : "";
   const currentKeycardThreshold =

@@ -9,6 +9,8 @@ import LoanableItemSelectorComp from "./LoanableItemSelector";
 import LoanedItemsListComp from "./LoanedItemsList";
 import useOccupantLoans from "./useOccupantLoans";
 
+const CELL_CLASS = "p-3 border-b border-border-2";
+
 /**
  * Simplified occupant interface for a single row.
  */
@@ -89,13 +91,13 @@ function GuestRowComponent({
 
   return (
     <TableRow className={rowBg} onDoubleClick={handleDoubleClick}>
-      <TableCell className="p-3 border-b border-border-2">{guest.bookingRef}</TableCell>
-      <TableCell className="p-3 border-b border-border-2">
+      <TableCell className={CELL_CLASS}>{guest.bookingRef}</TableCell>
+      <TableCell className={CELL_CLASS}>
         {guest.firstName} {guest.lastName}
       </TableCell>
 
       {/* "New Loan" Column */}
-      <TableCell className="p-3 border-b border-border-2">
+      <TableCell className={CELL_CLASS}>
         <LoanableItemSelectorComp
           guest={guest}
           guestSelectedItem={guestSelectedItem}
@@ -106,7 +108,7 @@ function GuestRowComponent({
       </TableCell>
 
       {/* "Change Existing Loan" Column */}
-      <TableCell className="p-3 border-b border-border-2">
+      <TableCell className={CELL_CLASS}>
         <LoanedItemsListComp
           occupantId={guest.guestId}
           guest={guest}

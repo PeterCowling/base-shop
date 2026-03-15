@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CheckCircle, RefreshCw, Save, Send, ShieldAlert, XCircle } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
@@ -105,13 +105,10 @@ export default function DraftReviewPanel({
   }, [isPrimeThread, threadDetail.messages]);
 
   // Template selection handler
-  const handleTemplateSelect = useCallback(
-    (formattedText: string, templateId: string) => {
-      setPlainText(formattedText);
-      setSelectedTemplateId(templateId);
-    },
-    [],
-  );
+  function handleTemplateSelect(formattedText: string, templateId: string) {
+    setPlainText(formattedText);
+    setSelectedTemplateId(templateId);
+  }
 
   useEffect(() => {
     setSubject(

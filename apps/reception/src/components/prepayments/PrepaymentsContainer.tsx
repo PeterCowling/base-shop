@@ -18,6 +18,16 @@ import { generateTransactionId } from "../../utils/generateTransactionId";
 import { type BookingPaymentItem } from "./BookingPaymentsLists";
 import PrepaymentsView, { type PaymentStatus } from "./PrepaymentsView";
 
+/**
+ * Returns the next payment failure activity code to log (5 → 6 → 7).
+ * Exported for reuse by MarkAsFailedButton.
+ */
+export function getNextPaymentFailureCode(existingCodes: number[]): number {
+  if (existingCodes.includes(6)) return 7;
+  if (existingCodes.includes(5)) return 6;
+  return 5;
+}
+
 interface PrepaymentsContainerProps {
   setMessage: (message: string) => void;
 }
@@ -93,6 +103,12 @@ function PrepaymentsContainer({
       }
     },
     [addToAllTransactions, saveFinancialsRoom, addActivity, user]
+  );
+
+  // Lookup map for O(1) access by occupantId+bookingRef key.
+  const relevantDataByKey = useMemo(
+    () => new Map(relevantData.map((d) => [`${d.occupantId}:${d.bookingRef}`, d])),
+    [relevantData],
   );
 
   // Filter data by bookingRef or occupantName
@@ -177,10 +193,7 @@ function PrepaymentsContainer({
   // Handlers
   const handleOpenBooking = useCallback(
     (item: BookingPaymentItem): void => {
-      const found = relevantData.find(
-        (d) =>
-          d.occupantId === item.occupantId && d.bookingRef === item.bookingRef
-      );
+      const found = relevantDataByKey.get(`${item.occupantId}:${item.bookingRef}`);
       if (!found) {
         console.error("Could not find full booking data for", item.bookingRef);
         setMessage(`Error: Could not load details for ${item.bookingRef}`);
@@ -190,7 +203,7 @@ function PrepaymentsContainer({
       setSelectedBooking(found);
       setShowEntryDialog(true);
     },
-    [relevantData, setMessage]
+    [relevantDataByKey, setMessage]
   );
 
   const handleCloseDialogs = useCallback((): void => {
@@ -213,16 +226,13 @@ function PrepaymentsContainer({
 
   const handleRowClickForDelete = useCallback(
     (item: BookingPaymentItem) => {
-      const found = relevantData.find(
-        (d) =>
-          d.bookingRef === item.bookingRef && d.occupantId === item.occupantId
-      );
+      const found = relevantDataByKey.get(`${item.occupantId}:${item.bookingRef}`);
       if (found) {
         setBookingToDelete(found);
       }
       setIsDeleteMode(false);
     },
-    [relevantData]
+    [relevantDataByKey]
   );
 
   const handleSaveOrUpdateCardData = useCallback(
@@ -240,9 +250,7 @@ function PrepaymentsContainer({
       }
 
       const { bookingRef, occupantId } = selectedBooking;
-      const hadExistingCard = !!relevantData.find(
-        (d) => d.bookingRef === bookingRef
-      )?.ccCardNumber;
+      const hadExistingCard = !!selectedBooking.ccCardNumber;
 
       try {
         await saveCCDetails(bookingRef, occupantId, {
@@ -265,7 +273,7 @@ function PrepaymentsContainer({
         );
       }
     },
-    [selectedBooking, saveCCDetails, setMessage, relevantData]
+    [selectedBooking, saveCCDetails, setMessage]
   );
 
   const handleProcessPaymentAttempt = useCallback(
@@ -285,12 +293,7 @@ function PrepaymentsContainer({
 
       try {
         if (status === "failed") {
-          let codeToLog = 5;
-          if (codes.includes(5) && !codes.includes(6)) {
-            codeToLog = 6;
-          } else if (codes.includes(6)) {
-            codeToLog = 7;
-          }
+          const codeToLog = getNextPaymentFailureCode(codes);
           const failedActivityResult = await addActivity(occupantId, codeToLog);
           if (!failedActivityResult.success) {
             throw new Error(
@@ -356,10 +359,7 @@ function PrepaymentsContainer({
           item.occupantId,
           item.amountToCharge
         );
-        const found = relevantData.find(
-          (d) =>
-            d.bookingRef === item.bookingRef && d.occupantId === item.occupantId
-        );
+        const found = relevantDataByKey.get(`${item.occupantId}:${item.bookingRef}`);
         if (found) {
           setLastCompletedBooking(found);
         }
@@ -375,7 +375,7 @@ function PrepaymentsContainer({
     },
     [
       createPaymentTransaction,
-      relevantData,
+      relevantDataByKey,
       setLastCompletedBooking,
       setMessage,
     ]

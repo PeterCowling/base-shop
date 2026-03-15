@@ -6,6 +6,9 @@ import type { InboxThreadSummary } from "@/services/useInbox";
  */
 export const STALE_SYNC_THRESHOLD_MS = 24 * 60 * 60 * 1000;
 
+/** Draft statuses that indicate a thread is ready to send. */
+const READY_TO_SEND_DRAFT_STATUSES = new Set(["generated", "edited", "suggested", "under_review"]);
+
 export type ThreadFilterKey =
   | "needs-draft"
   | "ready-to-send"
@@ -39,10 +42,8 @@ export function matchesFilter(
       return (
         thread.capabilities.supportsDraftSend
         && !thread.needsManualDraft
-        && (thread.currentDraft?.status === "generated"
-          || thread.currentDraft?.status === "edited"
-          || thread.currentDraft?.status === "suggested"
-          || thread.currentDraft?.status === "under_review")
+        && thread.currentDraft != null
+        && READY_TO_SEND_DRAFT_STATUSES.has(thread.currentDraft.status)
       );
 
     case "sent":

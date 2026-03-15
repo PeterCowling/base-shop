@@ -37,17 +37,9 @@ export default function ReceptionDashboard() {
     );
   }, [allFinancialTransactions]);
 
-  const arrivalsToday = useMemo(() => {
-    return Object.keys(checkins?.[today] ?? {}).length;
-  }, [checkins, today]);
-
-  const departuresToday = useMemo(() => {
-    return Object.keys(checkouts?.[today] ?? {}).length;
-  }, [checkouts, today]);
-
-  const departuresTomorrow = useMemo(() => {
-    return Object.keys(checkouts?.[tomorrow] ?? {}).length;
-  }, [checkouts, tomorrow]);
+  const arrivalsToday = Object.keys(checkins?.[today] ?? {}).length;
+  const departuresToday = Object.keys(checkouts?.[today] ?? {}).length;
+  const departuresTomorrow = Object.keys(checkouts?.[tomorrow] ?? {}).length;
 
   const summaryLoading = checkinsLoading || checkoutsLoading;
   const summaryError = checkinsError || checkoutsError;

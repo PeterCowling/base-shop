@@ -1,7 +1,7 @@
 // src/components/bar/orderTaking/CategoryHeader.tsx
  
 
-import React, { type FC, useCallback, useMemo } from "react";
+import React, { type FC } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
@@ -34,51 +34,35 @@ interface CategoryHeaderProps {
  * CategoryHeader
  * ──────────────────────────────────────────────────────────────────── */
 const CategoryHeader: FC<CategoryHeaderProps> = React.memo(
-  ({ categories, selectedCategory, onSelectCategory }) => {
-    /* ------------------------------ HANDLERS ------------------------------ */
-    const handleSelect = useCallback(
-      (cat: CategoryType) => () => onSelectCategory(cat),
-      [onSelectCategory]
-    );
-
-    /* ----------------------------- MEMO BTNS ------------------------------ */
-    const buttons = useMemo(
-      () =>
-        categories.map((cat) => {
-          const isSelected = selectedCategory === cat;
-          return (
-            <Button
-              key={cat}
-              role="tab"
-              aria-selected={isSelected}
-              onClick={handleSelect(cat)}
-              compatibilityMode="passthrough"
-              className={[
-                "relative flex-shrink-0 snap-start whitespace-nowrap rounded-lg px-4 py-2 min-h-11 text-sm font-semibold uppercase tracking-wide transition-all duration-150",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-main focus-visible:ring-offset-1 focus-visible:ring-offset-surface",
-                isSelected ? TAB_SELECTED : TAB_UNSELECTED,
-              ].join(" ")}
-            >
-              {cat}
-            </Button>
-          );
-        }),
-      [categories, selectedCategory, handleSelect]
-    );
-
-    /* ------------------------------ RENDER ------------------------------- */
-    return (
-      <Inline
-        wrap={false}
-        gap={2}
-        className="w-full overflow-x-auto overflow-y-hidden border-b border-border-1/50 bg-surface-3 px-2 py-2 scrollbar-none scroll-smooth snap-x snap-mandatory"
-        role="tablist"
-        aria-label="Menu categories"
-      >
-        {buttons}
-      </Inline>
-    );
-  }
+  ({ categories, selectedCategory, onSelectCategory }) => (
+    <Inline
+      wrap={false}
+      gap={2}
+      className="w-full overflow-x-auto overflow-y-hidden border-b border-border-1/50 bg-surface-3 px-2 py-2 scrollbar-none scroll-smooth snap-x snap-mandatory"
+      role="tablist"
+      aria-label="Menu categories"
+    >
+      {categories.map((cat) => {
+        const isSelected = selectedCategory === cat;
+        return (
+          <Button
+            key={cat}
+            role="tab"
+            aria-selected={isSelected}
+            onClick={() => onSelectCategory(cat)}
+            compatibilityMode="passthrough"
+            className={[
+              "relative flex-shrink-0 snap-start whitespace-nowrap rounded-lg px-4 py-2 min-h-11 text-sm font-semibold uppercase tracking-wide transition-all duration-150",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-main focus-visible:ring-offset-1 focus-visible:ring-offset-surface",
+              isSelected ? TAB_SELECTED : TAB_UNSELECTED,
+            ].join(" ")}
+          >
+            {cat}
+          </Button>
+        );
+      })}
+    </Inline>
+  )
 );
 
 CategoryHeader.displayName = "CategoryHeader";

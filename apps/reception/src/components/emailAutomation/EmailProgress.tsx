@@ -36,24 +36,18 @@ const EmailProgress: React.FC<EmailProgressProps> = ({
   const [filterText, setFilterText] = useState<string>("");
 
   /**
-   * Memoize the incoming email data array to prevent unnecessary recalculations.
-   */
-  const memoizedEmailData = useMemo<EmailProgressData[]>(() => {
-    return Array.isArray(emailData) ? emailData : [];
-  }, [emailData]);
-
-  /**
    * Filter the data by booking reference or occupant name, based on user input.
    */
   const filteredEmailData = useMemo<EmailProgressData[]>(() => {
-    if (!filterText) return memoizedEmailData;
+    const data = Array.isArray(emailData) ? emailData : [];
+    if (!filterText) return data;
     const lowerFilter = filterText.toLowerCase();
-    return memoizedEmailData.filter((item) => {
+    return data.filter((item) => {
       const refMatch = item.bookingRef.toLowerCase().includes(lowerFilter);
       const nameMatch = item.occupantName.toLowerCase().includes(lowerFilter);
       return refMatch || nameMatch;
     });
-  }, [memoizedEmailData, filterText]);
+  }, [emailData, filterText]);
 
   // Render
   return (

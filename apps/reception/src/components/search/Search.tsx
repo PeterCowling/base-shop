@@ -1,7 +1,7 @@
 // src/components/bookingSearch/Search.tsx
 "use client";
 
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -193,10 +193,7 @@ function Search(): JSX.Element {
     setActiveTab("audits");
   }, []);
 
-  const errorMessage = useMemo(() => {
-    if (!error) return null;
-    return error instanceof Error ? error.message : String(error);
-  }, [error]);
+  const errorMessage = error ? (error instanceof Error ? error.message : String(error)) : null;
 
   useEffect(() => {
     if (errorMessage) {

@@ -4,7 +4,6 @@ import {
   type MouseEvent,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
@@ -25,6 +24,10 @@ import SmallSpinner from "../../search/SmallSpinner";
 
 import useCityTaxAmount from "./useCityTaxAmount";
 import { useCityTaxPayment } from "./useCityTaxPayment";
+
+const CTB_ACTIVE = "bg-primary-main hover:opacity-90 text-primary-fg";
+const CTB_DISABLED = "bg-success-main text-success-fg cursor-not-allowed opacity-70";
+const CTB_BASE = "h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors text-xs font-medium";
 
 interface CityTaxPaymentButtonProps {
   booking: CheckInRow; // occupant-level type
@@ -105,18 +108,6 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
     }, 200);
   }, [setMenuPosition]);
 
-  const portalStyle = useMemo(
-    () =>
-      menuPosition
-        ? {
-            position: "absolute" as const,
-            top: menuPosition.top,
-            left: menuPosition.left,
-          }
-        : undefined,
-    [menuPosition]
-  );
-
   // Toggle dropdown
   const handleMenuToggle = useCallback(
     (e: MouseEvent<HTMLButtonElement>) => {
@@ -156,14 +147,6 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
     setMenuOpen(false);
     schedulePositionReset();
   }, [schedulePositionReset]);
-
-  const handleMenuItemClickCash = useCallback(() => {
-    handleMenuItemClick("CASH");
-  }, [handleMenuItemClick]);
-
-  const handleMenuItemClickCC = useCallback(() => {
-    handleMenuItemClick("CC");
-  }, [handleMenuItemClick]);
 
   // Process immediate payment
   const handleImmediatePayment = useCallback(
@@ -256,15 +239,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
     if (loading) return <SmallSpinner />;
     return amount > 0 ? formatEuro(amount) : "Paid";
   };
-  // Style classes
-  const activeClass = "bg-primary-main hover:opacity-90 text-primary-fg";
-  const disabledClass =
-    "bg-success-main text-success-fg cursor-not-allowed opacity-70";
-  const baseButtonClass =
-    "h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors text-xs font-medium";
-
-  const leftButtonClass = isDisabled ? disabledClass : activeClass;
-  const rightButtonClass = isDisabled ? disabledClass : activeClass;
+  const btnVariant = isDisabled ? CTB_DISABLED : CTB_ACTIVE;
 
   return (
     <div className="relative">
@@ -275,7 +250,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
           ref={buttonRef}
           onClick={handleMenuToggle}
           disabled={isDisabled}
-          className={`${baseButtonClass} rounded-none ${leftButtonClass}`}
+          className={`${CTB_BASE} rounded-none ${btnVariant}`}
           title={
             isDisabled
               ? "City tax is already paid or not applicable."
@@ -292,7 +267,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
           compatibilityMode="passthrough"
           onClick={handleImmediatePayment}
           disabled={isDisabled}
-          className={`${baseButtonClass} rounded-none ${rightButtonClass}`}
+          className={`${CTB_BASE} rounded-none ${btnVariant}`}
           title={
             isDisabled
               ? "City tax is already paid or not applicable."
@@ -309,21 +284,21 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
         menuPosition &&
         ReactDOM.createPortal(
           <div
-            style={portalStyle}
+            style={menuPosition ? { position: "absolute" as const, top: menuPosition.top, left: menuPosition.left } : undefined}
             className={`z-50 mt-1 w-32 border border-border-2 rounded-lg shadow-lg bg-surface p-3
               transition-opacity duration-200 transform-gpu
               ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
             onMouseLeave={handleMenuMouseLeave}
           >
             <Button
-              onClick={handleMenuItemClickCash}
+              onClick={() => handleMenuItemClick("CASH")}
               className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-surface-2"
             >
               <Banknote size={16} className="me-2" />
               CASH
             </Button>
             <Button
-              onClick={handleMenuItemClickCC}
+              onClick={() => handleMenuItemClick("CC")}
               className="w-full text-start px-3 py-1 focus:outline-none transition-colors hover:bg-surface-2"
             >
               <CreditCard size={16} className="me-2" />

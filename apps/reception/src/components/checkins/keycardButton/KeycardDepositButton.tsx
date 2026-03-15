@@ -36,6 +36,13 @@ import useOccupantLoans from "../../loans/useOccupantLoans";
 
 import KeycardDepositMenu from "./KeycardDepositMenu";
 
+const KDB_BASE = "h-9 px-2.5 flex items-center justify-center transition-colors focus:outline-none text-xs font-medium";
+const KDB_ACTIVE = "bg-primary-main hover:opacity-90 text-primary-fg";
+const KDB_SUCCESS_DISABLED = "bg-success-main text-success-fg cursor-not-allowed opacity-70";
+const KDB_GREY_DISABLED = "bg-surface-3 text-foreground cursor-not-allowed opacity-50";
+/** Each occupant is issued exactly one keycard (unless "No_card" was chosen). */
+const KEYCARD_COUNT = 1;
+
 interface KeycardDepositButtonProps {
   booking: CheckInRow;
 }
@@ -145,31 +152,11 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     }
   }, [payType]);
 
-  /* Issue only one keycard unless "No_card" was chosen. */
-  const cardCount = 1;
-
-  /* ──────────────── styling helpers ────────────────────────────────────── */
-  const baseButtonClass =
-    "h-9 px-2.5 flex items-center justify-center transition-colors focus:outline-none text-xs font-medium";
-
-  const activeClass =
-    "bg-primary-main hover:opacity-90 text-primary-fg";
-  const successDisabledClass =
-    "bg-success-main text-success-fg cursor-not-allowed opacity-70";
-  const greyDisabledClass =
-    "bg-surface-3 text-foreground cursor-not-allowed opacity-50";
-
-  const leftButtonClass = disabledDueToKeycard
-    ? successDisabledClass
+  const btnVariant = disabledDueToKeycard
+    ? KDB_SUCCESS_DISABLED
     : isDisabled
-    ? greyDisabledClass
-    : activeClass;
-
-  const rightButtonClass = disabledDueToKeycard
-    ? successDisabledClass
-    : isDisabled
-    ? greyDisabledClass
-    : activeClass;
+    ? KDB_GREY_DISABLED
+    : KDB_ACTIVE;
 
   /* ──────────────── handlers ───────────────────────────────────────────── */
 
@@ -195,7 +182,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
       const depositType: LoanMethod = selectionToLoanMethod(payType, docType);
 
       await saveLoan(bookingRef, occupantId, transactionId, {
-        count: cardCount,
+        count: KEYCARD_COUNT,
         createdAt,
         depositType,
         deposit: depositAmount,
@@ -208,7 +195,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
           occupantId,
           bookingRef,
           amount: depositAmount,
-          count: cardCount,
+          count: KEYCARD_COUNT,
           description: "Keycard loan",
           method: depositType,
           type: "Loan",
@@ -255,7 +242,6 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     occupantId,
     payType,
     docType,
-    cardCount,
     keycardNumber,
     saveLoan,
     addToAllTransactions,
@@ -275,7 +261,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
           ref={buttonRef}
           onClick={handleMenuToggle}
           disabled={isDisabled}
-          className={`${baseButtonClass} rounded-none ${leftButtonClass}`}
+          className={`${KDB_BASE} rounded-none ${btnVariant}`}
           title={
             disabledDueToKeycard
               ? "Guest already has a keycard."
@@ -295,7 +281,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
           ref={confirmButtonRef}
           onClick={handleConfirm}
           disabled={isDisabled}
-          className={`${baseButtonClass} rounded-none ${rightButtonClass}`}
+          className={`${KDB_BASE} rounded-none ${btnVariant}`}
           title={
             disabledDueToKeycard
               ? "Keycard already issued."

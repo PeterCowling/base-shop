@@ -1,6 +1,6 @@
 // File: /src/components/checkins/roomButton/PaymentSplitRow.tsx
 
-import { type ChangeEvent, memo, useCallback } from "react";
+import { memo } from "react";
 import { Banknote, CreditCard } from "lucide-react";
 
 import { Input } from "@acme/design-system";
@@ -24,17 +24,6 @@ function PaymentSplitRow({ index, sp }: PaymentSplitRowProps) {
   const { isDisabled, handleAmountChange, handleSetPayType } = usePaymentContext();
   const isRowZero = index === 0;
 
-  const handleAmountInput = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      handleAmountChange(index, e.target.value);
-    },
-    [handleAmountChange, index]
-  );
-
-  const togglePayType = useCallback(() => {
-    handleSetPayType(index, sp.payType === "CASH" ? "CC" : "CASH");
-  }, [handleSetPayType, index, sp.payType]);
-
   return (
     <>
       {/* Amount input */}
@@ -43,7 +32,7 @@ function PaymentSplitRow({ index, sp }: PaymentSplitRowProps) {
         className="border border-border-2 rounded-lg px-2 py-1 w-24 focus:outline-none"
         placeholder="Amount"
         value={sp.amount || ""}
-        onChange={handleAmountInput}
+        onChange={(e) => handleAmountChange(index, e.target.value)}
         disabled={isDisabled || isRowZero}
         // Row 0 is computed automatically; user cannot type directly.
       />
@@ -51,7 +40,7 @@ function PaymentSplitRow({ index, sp }: PaymentSplitRowProps) {
       {/* Toggle pay type */}
       <Button
         className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none min-h-11 min-w-11"
-        onClick={togglePayType}
+        onClick={() => handleSetPayType(index, sp.payType === "CASH" ? "CC" : "CASH")}
         disabled={isDisabled}
       >
         {sp.payType === "CASH" ? <Banknote size={16} className="me-1" /> : <CreditCard size={16} className="me-1" />}

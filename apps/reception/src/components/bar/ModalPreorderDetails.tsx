@@ -7,7 +7,6 @@ import { usePlacedPreorder } from "../../hooks/data/bar/usePlacedPreorder";
 import type { PlacedPreorder } from "../../types/bar/BarTypes";
 import {
   addDays,
-  formatDate,
   formatMonthNameDay,
   parseLocalDate,
 } from "../../utils/dateUtils";
@@ -21,7 +20,74 @@ function getNightIndex(nightKey: string): number {
   return parseInt(match[1], 10);
 }
 
-// no local helpers
+// ----------------------------------------------------------------
+// OrderItemDisplay — shared render for breakfast / drink slots
+// ----------------------------------------------------------------
+type CompletedOrderData = {
+  time: string;
+  items: { product: string; count?: number }[];
+};
+
+const OrderItemDisplay: React.FC<{
+  label: string;
+  dateMonth: string;
+  dateDay: string;
+  txnId: string | null;
+  completedData: CompletedOrderData | null;
+  completedLoading: boolean;
+  placedData: PlacedPreorder | null;
+  placedLoading: boolean;
+  fallback: string;
+  showItemCount?: boolean;
+}> = ({
+  label,
+  dateMonth,
+  dateDay,
+  txnId,
+  completedData,
+  completedLoading,
+  placedData,
+  placedLoading,
+  fallback,
+  showItemCount = false,
+}) => {
+  if (!txnId) return <p>{label}: {fallback}</p>;
+  if (completedLoading) return <p>Loading {label} Order...</p>;
+  if (completedData) {
+    return (
+      <div className="mt-2">
+        <p className="font-semibold">{label} ({dateMonth} {dateDay}):</p>
+        <p>Time: {completedData.time}</p>
+        {Array.isArray(completedData.items) &&
+          completedData.items.map((item) => (
+            <p key={item.product}>
+              • {showItemCount && item.count && item.count > 1
+                ? `${item.count} × ${item.product}`
+                : item.product}
+            </p>
+          ))}
+      </div>
+    );
+  }
+  if (placedLoading) return <p>Loading {label} Preorder...</p>;
+  if (placedData) {
+    return (
+      <div className="mt-2">
+        <p className="font-semibold">Pending {label} Preorder ({dateMonth} {dateDay}):</p>
+        <p>Time: {placedData.preorderTime}</p>
+        {Array.isArray(placedData.items) &&
+          placedData.items.map((item) => (
+            <p key={item.product}>
+              • {showItemCount && item.count && item.count > 1
+                ? `${item.count} × ${item.product}`
+                : item.product}
+            </p>
+          ))}
+      </div>
+    );
+  }
+  return <p>{label} transaction not found.</p>;
+};
 
 // ----------------------------------------------------------------
 // TYPES
@@ -35,14 +101,6 @@ type NightData = {
   /** txnId backref for evening drink — set by Prime bridge write; drink1 field keeps entitlement value */
   drink1Txn?: string;
 };
-
-interface CompletedOrderData {
-  time: string;
-  items: {
-    product: string;
-    count?: number;
-  }[];
-}
 
 type ModalPreorderDetailsProps = {
   occupantCheckIn: string; // e.g. "2025-03-20"
@@ -70,19 +128,14 @@ const PreorderNightDetails: React.FC<{
     checkInDateObj && nightIndex
       ? addDays(checkInDateObj, nightIndex - 1)
       : null;
-  const evDrinkIso = evDrinkDate ? formatDate(evDrinkDate) : "";
-
   const breakfastDate =
     checkInDateObj && nightIndex ? addDays(checkInDateObj, nightIndex) : null;
-  const breakfastIso = breakfastDate ? formatDate(breakfastDate) : "";
 
-  const evDrinkDateObj = parseLocalDate(evDrinkIso);
-  const { day: evDrinkDay, month: evDrinkMonth } = evDrinkDateObj
-    ? formatMonthNameDay(evDrinkDateObj)
+  const { day: evDrinkDay, month: evDrinkMonth } = evDrinkDate
+    ? formatMonthNameDay(evDrinkDate)
     : { day: "", month: "" };
-  const breakfastDateObj = parseLocalDate(breakfastIso);
-  const { day: breakfastDay, month: breakfastMonth } = breakfastDateObj
-    ? formatMonthNameDay(breakfastDateObj)
+  const { day: breakfastDay, month: breakfastMonth } = breakfastDate
+    ? formatMonthNameDay(breakfastDate)
     : { day: "", month: "" };
 
   // Prime bridge write stores txnIds in breakfastTxnId / drink1Txn (not in breakfast / drink1).
@@ -115,13 +168,6 @@ const PreorderNightDetails: React.FC<{
     drink2TxnId
   );
 
-  const breakfastPlacedData = breakfastPlaced.data as PlacedPreorder | null;
-  const drinkPlacedData1 = drink1Placed.data as PlacedPreorder | null;
-  const drinkPlacedData2 = drink2Placed.data as PlacedPreorder | null;
-  const breakfastPlacedLoading = breakfastPlaced.loading;
-  const drinkPlacedLoading1 = drink1Placed.loading;
-  const drinkPlacedLoading2 = drink2Placed.loading;
-
   // If invalid nightIndex or missing checkInDate, show a basic summary.
   if (!nightIndex || !checkInDateObj) {
     return (
@@ -129,148 +175,50 @@ const PreorderNightDetails: React.FC<{
         <p className="font-semibold">Night: {nightKey}</p>
         <p>Breakfast: {fallbackBreakfast}</p>
         <p>Drink1: {fallbackDrink1}</p>
-        <p>Drink2: {fallbackDrink2}</p>{" "}
+        <p>Drink2: {fallbackDrink2}</p>
       </div>
     );
   }
-
-  // Normal valid scenario
-  const breakfastData = breakfastRes.data as CompletedOrderData | null;
-  const drinkData1 = drink1Res.data as CompletedOrderData | null;
-  const drinkData2 = drink2Res.data as CompletedOrderData | null;
-
-  const breakfastLoading = breakfastRes.loading;
-  const drinkLoading1 = drink1Res.loading;
-  const drinkLoading2 = drink2Res.loading;
 
   return (
     <div className="border border-border-1 p-2 mb-3 rounded-lg">
       <p className="font-semibold">Night: {nightKey}</p>
 
-      {/* Breakfast */}
-      {breakfastTxnId ? (
-        breakfastLoading ? (
-          <p>Loading Breakfast Order...</p>
-        ) : breakfastData ? (
-          <div className="mt-2">
-            <p className="font-semibold">
-              Breakfast Preorder ({breakfastMonth} {breakfastDay}):
-            </p>
-            <p>Time: {breakfastData.time}</p>
-            {Array.isArray(breakfastData.items) &&
-              breakfastData.items.map((item) => (
-                <p key={item.product}>• {item.product}</p>
-              ))}
-          </div>
-        ) : breakfastPlacedLoading ? (
-          <p>Loading Breakfast Preorder...</p>
-        ) : breakfastPlacedData ? (
-          <div className="mt-2">
-            <p className="font-semibold">
-              Pending Breakfast Preorder ({breakfastMonth} {breakfastDay}):
-            </p>
-            <p>Time: {breakfastPlacedData.preorderTime}</p>
-            {Array.isArray(breakfastPlacedData.items) &&
-              breakfastPlacedData.items.map((item) => (
-                <p key={item.product}>• {item.product}</p>
-              ))}
-          </div>
-        ) : (
-          <p>Breakfast transaction not found.</p>
-        )
-      ) : (
-        <p>Breakfast: {fallbackBreakfast}</p>
-      )}
-
-      {/* Drink1 */}
-      {drink1TxnId ? (
-        drinkLoading1 ? (
-          <p>Loading Drink1 Order...</p>
-        ) : drinkData1 ? (
-          <div className="mt-2">
-            <p className="font-semibold">
-              Evening Drink #1 ({evDrinkMonth} {evDrinkDay}):
-            </p>
-            <p>Time: {drinkData1.time}</p>
-            {Array.isArray(drinkData1.items) &&
-              drinkData1.items.map((item) => (
-                <p key={item.product}>
-                  •{" "}
-                  {item.count && item.count > 1
-                    ? `${item.count} × ${item.product}`
-                    : item.product}
-                </p>
-              ))}
-          </div>
-        ) : drinkPlacedLoading1 ? (
-          <p>Loading Drink1 Preorder...</p>
-        ) : drinkPlacedData1 ? (
-          <div className="mt-2">
-            <p className="font-semibold">
-              Pending Drink #1 Preorder ({evDrinkMonth} {evDrinkDay}):
-            </p>
-            <p>Time: {drinkPlacedData1.preorderTime}</p>
-            {Array.isArray(drinkPlacedData1.items) &&
-              drinkPlacedData1.items.map((item) => (
-                <p key={item.product}>
-                  •{" "}
-                  {item.count && item.count > 1
-                    ? `${item.count} × ${item.product}`
-                    : item.product}
-                </p>
-              ))}
-          </div>
-        ) : (
-          <p>Drink1 transaction not found.</p>
-        )
-      ) : (
-        <p>Drink1: {fallbackDrink1}</p>
-      )}
-
-      {/* Drink2 */}
-      {drink2TxnId ? (
-        drinkLoading2 ? (
-          <p>Loading Drink2 Order...</p>
-        ) : drinkData2 ? (
-          <div className="mt-2">
-            <p className="font-semibold">
-              Evening Drink #2 ({evDrinkMonth} {evDrinkDay}):
-            </p>
-            <p>Time: {drinkData2.time}</p>
-            {Array.isArray(drinkData2.items) &&
-              drinkData2.items.map((item) => (
-                <p key={item.product}>
-                  •{" "}
-                  {item.count && item.count > 1
-                    ? `${item.count} × ${item.product}`
-                    : item.product}
-                </p>
-              ))}
-          </div>
-        ) : drinkPlacedLoading2 ? (
-          <p>Loading Drink2 Preorder...</p>
-        ) : drinkPlacedData2 ? (
-          <div className="mt-2">
-            <p className="font-semibold">
-              Pending Drink #2 Preorder ({evDrinkMonth} {evDrinkDay}):
-            </p>
-            <p>Time: {drinkPlacedData2.preorderTime}</p>
-            {Array.isArray(drinkPlacedData2.items) &&
-              drinkPlacedData2.items.map((item) => (
-                <p key={item.product}>
-                  •{" "}
-                  {item.count && item.count > 1
-                    ? `${item.count} × ${item.product}`
-                    : item.product}
-                </p>
-              ))}
-          </div>
-        ) : (
-          <p>Drink2 transaction not found.</p>
-        )
-      ) : (
-        <p>Drink2: {fallbackDrink2}</p>
-      )}
+      <OrderItemDisplay
+        label="Breakfast"
+        dateMonth={breakfastMonth}
+        dateDay={breakfastDay}
+        txnId={breakfastTxnId}
+        completedData={breakfastRes.data as CompletedOrderData | null}
+        completedLoading={breakfastRes.loading}
+        placedData={breakfastPlaced.data as PlacedPreorder | null}
+        placedLoading={breakfastPlaced.loading}
+        fallback={fallbackBreakfast}
+      />
+      <OrderItemDisplay
+        label="Evening Drink #1"
+        dateMonth={evDrinkMonth}
+        dateDay={evDrinkDay}
+        txnId={drink1TxnId}
+        completedData={drink1Res.data as CompletedOrderData | null}
+        completedLoading={drink1Res.loading}
+        placedData={drink1Placed.data as PlacedPreorder | null}
+        placedLoading={drink1Placed.loading}
+        fallback={fallbackDrink1}
+        showItemCount
+      />
+      <OrderItemDisplay
+        label="Evening Drink #2"
+        dateMonth={evDrinkMonth}
+        dateDay={evDrinkDay}
+        txnId={drink2TxnId}
+        completedData={drink2Res.data as CompletedOrderData | null}
+        completedLoading={drink2Res.loading}
+        placedData={drink2Placed.data as PlacedPreorder | null}
+        placedLoading={drink2Placed.loading}
+        fallback={fallbackDrink2}
+        showItemCount
+      />
     </div>
   );
 };

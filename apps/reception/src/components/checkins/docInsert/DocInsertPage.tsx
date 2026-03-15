@@ -15,6 +15,13 @@ import Row1 from "./row1";
 import Row2 from "./row2";
 import Row3 from "./row3";
 
+const SNACKBAR_BASE = "fixed bottom-4 right-4 p-4 rounded-lg shadow-md flex items-center justify-between w-72";
+const SNACKBAR_SEVERITY: Record<string, string> = {
+  success: "bg-success-light/50 text-primary-fg",
+  error: "bg-error-main/50 text-primary-fg",
+  warning: "bg-warning-main/50 text-foreground",
+};
+
 interface SnackbarState {
   open: boolean;
   message: string;
@@ -163,17 +170,7 @@ const DocInsertPage: React.FC = () => {
       {/* Snackbar-like feedback */}
       {snackbar.open && (
         <div
-          className={`fixed bottom-4 right-4 p-4 rounded-lg shadow-md
-            flex items-center justify-between w-72
-            ${
-              snackbar.severity === "success"
-                ? "bg-success-light/50 text-primary-fg"
-                : snackbar.severity === "error"
-                ? "bg-error-main/50 text-primary-fg"
-                : snackbar.severity === "warning"
-                ? "bg-warning-main/50 text-foreground"
-                : "bg-primary-main/50 text-primary-fg"
-            }`}
+          className={`${SNACKBAR_BASE} ${SNACKBAR_SEVERITY[snackbar.severity] ?? "bg-primary-main/50 text-primary-fg"}`}
         >
           <span>{snackbar.message}</span>
           <Button onClick={closeSnackbar} color="default" tone="ghost" className="ms-4">

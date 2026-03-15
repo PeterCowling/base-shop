@@ -19,6 +19,8 @@ const parseTimeString = (time: string): number =>
     .split(":")
     .reduce((acc, v, i) => acc + Number(v) * (i === 0 ? 60 : 1), 0);
 
+const FILTER_BUTTONS = ["ALL", "BDS", "KDS"] as const;
+
 /** Screen that shows all confirmed orders (BDS / KDS filters) */
 const SalesScreen: FC = React.memo(() => {
   /* ----- Data ----- */
@@ -34,8 +36,6 @@ const SalesScreen: FC = React.memo(() => {
   const [selectedFilter, setSelectedFilter] = useState<"ALL" | "BDS" | "KDS">(
     "ALL"
   );
-
-  const filterButtons = useMemo(() => ["ALL", "BDS", "KDS"] as const, []);
 
   /* ----- Derived orders ----- */
   const filteredOrders = useMemo<SalesOrder[]>(() => {
@@ -56,10 +56,15 @@ const SalesScreen: FC = React.memo(() => {
     );
   }, [orders, selectedFilter]);
 
-  /* ----- Handlers ----- */
-  const handleFilterChange = useCallback(
-    (filter: "ALL" | "BDS" | "KDS") => setSelectedFilter(filter),
-    []
+  /** Frees the bleeper slot if the whole order was removed. */
+  const freeBleeper = useCallback(
+    (order: SalesOrder) => {
+      if (order.bleepNumber !== "go") {
+        const num = Number(order.bleepNumber);
+        if (!Number.isNaN(num)) setBleeperAvailability(num, true);
+      }
+    },
+    [setBleeperAvailability]
   );
 
   /** Removes items & frees bleeper if whole order disappears */
@@ -68,13 +73,10 @@ const SalesScreen: FC = React.memo(() => {
       removeItems(order, filterVal).then((removedEntireOrder) => {
         if (!removedEntireOrder) return;
         setLastRemovedOrder(order);
-        if (order.bleepNumber !== "go") {
-          const num = Number(order.bleepNumber);
-          if (!Number.isNaN(num)) setBleeperAvailability(num, true);
-        }
+        freeBleeper(order);
       });
     },
-    [removeItems, setBleeperAvailability]
+    [removeItems, freeBleeper]
   );
 
   /** Removes a single line; same bleeper logic if order is emptied */
@@ -83,13 +85,10 @@ const SalesScreen: FC = React.memo(() => {
       removeSingleItem(order, i).then((removedEntireOrder) => {
         if (!removedEntireOrder) return;
         setLastRemovedOrder(order);
-        if (order.bleepNumber !== "go") {
-          const num = Number(order.bleepNumber);
-          if (!Number.isNaN(num)) setBleeperAvailability(num, true);
-        }
+        freeBleeper(order);
       });
     },
-    [removeSingleItem, setBleeperAvailability]
+    [removeSingleItem, freeBleeper]
   );
 
   const handleRecallLastOrder = useCallback(() => {
@@ -125,12 +124,12 @@ const SalesScreen: FC = React.memo(() => {
         >
           Recall
         </Button>
-        {filterButtons.map((btn) => {
+        {FILTER_BUTTONS.map((btn) => {
           const isActive = selectedFilter === btn;
           return (
             <Button
               key={btn}
-              onClick={() => handleFilterChange(btn)}
+              onClick={() => setSelectedFilter(btn)}
               compatibilityMode="passthrough"
               aria-pressed={isActive}
               className={

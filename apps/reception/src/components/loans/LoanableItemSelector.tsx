@@ -47,16 +47,6 @@ function LoanableItemSelectorComponent({
   openModal,
 }: LoanableItemSelectorProps): ReactElement {
   /**
-   * Handle item selection from a dropdown.
-   */
-  const handleSelect = useCallback(
-    (value: string) => {
-      onSelectItem(value as LoanItem);
-    },
-    [onSelectItem]
-  );
-
-  /**
    * Trigger the "loan" modal for the selected item.
    */
   const handleLoanClick = useCallback(() => {
@@ -65,7 +55,7 @@ function LoanableItemSelectorComponent({
 
   return (
     <Inline gap={2}>
-      <Select value={guestSelectedItem} onValueChange={handleSelect}>
+      <Select value={guestSelectedItem} onValueChange={(v) => onSelectItem(v as LoanItem)}>
         <SelectTrigger className="border px-2 py-1 rounded-lg">
           <SelectValue />
         </SelectTrigger>

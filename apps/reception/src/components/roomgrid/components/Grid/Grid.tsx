@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Table, TableBody, TableCell, TableRow } from "@acme/design-system";
 
@@ -48,22 +48,25 @@ function Grid<TCustomStatus extends string = never>(
   }, [theme]);
 
   // Add new props to context value
-  const contextValue: TMainContext<TCustomStatus> = {
-    start,
-    end,
-    highlightToday,
-    showInfo,
-    selectedColumns,
-    selectedRows,
-    theme: customTheme,
-    locale: locale || "en",
-    onClickTitle,
-    onClickCell,
-    // --- DND Props ---
-    roomNumber,
-    onReservationMove,
-    // --- End DND Props ---
-  };
+  const contextValue: TMainContext<TCustomStatus> = useMemo(
+    () => ({
+      start,
+      end,
+      highlightToday,
+      showInfo,
+      selectedColumns,
+      selectedRows,
+      theme: customTheme,
+      locale: locale || "en",
+      onClickTitle,
+      onClickCell,
+      // --- DND Props ---
+      roomNumber,
+      onReservationMove,
+      // --- End DND Props ---
+    }),
+    [start, end, highlightToday, showInfo, selectedColumns, selectedRows, customTheme, locale, onClickTitle, onClickCell, roomNumber, onReservationMove],
+  );
 
   const renderRow = (row: TRow<TCustomStatus>) => {
     const isSelected =

@@ -14,6 +14,14 @@ Chart.register(...registerables);
 
 const REFRESH_INTERVAL_MS = 60000; // 60 seconds
 
+const CHART_COLORS = [
+  "hsl(var(--chart-1))",
+  "hsl(var(--chart-2))",
+  "hsl(var(--chart-3))",
+  "hsl(var(--chart-4))",
+  "hsl(var(--chart-5))",
+];
+
 export default function RealTimeDashboard(): JSX.Element {
   const { allFinancialTransactions, loading, error } =
     useAllFinancialTransactionsData();
@@ -82,19 +90,12 @@ export default function RealTimeDashboard(): JSX.Element {
 
   const tenderChartData = useMemo(() => {
     const entries = Object.entries(tenderTotals);
-    const colors = [
-      "hsl(var(--chart-1))",
-      "hsl(var(--chart-2))",
-      "hsl(var(--chart-3))",
-      "hsl(var(--chart-4))",
-      "hsl(var(--chart-5))",
-    ];
     return {
       labels: entries.map(([m]) => m),
       datasets: [
         {
           data: entries.map(([, v]) => v),
-          backgroundColor: colors.slice(0, entries.length),
+          backgroundColor: CHART_COLORS.slice(0, entries.length),
         },
       ],
     };

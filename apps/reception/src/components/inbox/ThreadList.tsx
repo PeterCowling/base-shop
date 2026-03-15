@@ -16,6 +16,9 @@ import {
   formatInboxTimestamp,
 } from "./presentation";
 
+const NEW_THREAD_HIGHLIGHT_MS = 4_000;
+const THREAD_LIST_SKELETON_COUNT = 8;
+
 interface ThreadListProps {
   threads: InboxThreadSummary[];
   selectedThreadId: string | null;
@@ -49,9 +52,9 @@ export default function ThreadList({
     });
   }, []);
 
-  const handleClearFilters = useCallback(() => {
+  function handleClearFilters() {
     setActiveFilters(new Set());
-  }, []);
+  }
 
   const filteredThreads = useMemo(
     () => applyThreadFilters(threads, activeFilters),
@@ -97,11 +100,7 @@ export default function ThreadList({
       return;
     }
 
-    setNewThreadIds((prev) => {
-      const next = new Set(prev);
-      arrivals.forEach((id) => next.add(id));
-      return next;
-    });
+    setNewThreadIds((prev) => new Set([...prev, ...arrivals]));
 
     const timeoutId = window.setTimeout(() => {
       setNewThreadIds((prev) => {
@@ -109,7 +108,7 @@ export default function ThreadList({
         arrivals.forEach((id) => next.delete(id));
         return next;
       });
-    }, 4_000);
+    }, NEW_THREAD_HIGHLIGHT_MS);
 
     return () => window.clearTimeout(timeoutId);
   }, [threads]);
@@ -150,7 +149,7 @@ export default function ThreadList({
       {/* Loading skeleton */}
       {showInitialSkeleton && (
         <div className="divide-y divide-border-1">
-          {Array.from({ length: 8 }).map((_, index) => (
+          {Array.from({ length: THREAD_LIST_SKELETON_COUNT }).map((_, index) => (
             <div key={index} className="animate-pulse px-4 py-2.5">
               <div className="flex items-center justify-between gap-3">
                 <div className="h-3.5 w-3/5 rounded-lg bg-surface-3" />

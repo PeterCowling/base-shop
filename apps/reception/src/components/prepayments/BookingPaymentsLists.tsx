@@ -22,6 +22,18 @@ const SECTION_TITLES = [
   "Second Attempt Failed",
 ];
 
+const SECTION_STYLES = {
+  neutral: { bg: "bg-surface-2", border: "border-border-strong", bar: "bg-primary-main", text: "text-foreground" },
+  warning: { bg: "bg-warning/10", border: "border-warning", bar: "bg-warning", text: "text-foreground" },
+  danger: { bg: "bg-error-main/10", border: "border-error-main", bar: "bg-error-main", text: "text-foreground" },
+} as const;
+
+// Container refs are stable per-title and never change — allocate once at module level.
+const CONTAINER_REFS: Record<string, RefObject<HTMLDivElement | null>> = {};
+SECTION_TITLES.forEach((title) => {
+  CONTAINER_REFS[title] = createRef<HTMLDivElement>();
+});
+
 export interface BookingPaymentItem {
   bookingRef: string;
   amountToCharge: number;
@@ -68,14 +80,6 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
   logActivity,
   setMessage,
 }) => {
-  const containerRefs = useMemo(() => {
-    const refs: Record<string, RefObject<HTMLDivElement | null>> = {};
-    SECTION_TITLES.forEach((title) => {
-      refs[title] = createRef<HTMLDivElement>();
-    });
-    return refs;
-  }, []);
-
   const sections = useMemo(
     () => [
       { data: code21List, title: SECTION_TITLES[0], variant: "neutral" as const },
@@ -104,23 +108,17 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
    * Key point: We skip rendering the entire <TransitionGroup> if 'listData' is empty.
    * This ensures <TransitionGroup> always has valid children.
    */
-  const sectionStyles = {
-    neutral: { bg: "bg-surface-2", border: "border-border-strong", bar: "bg-primary-main", text: "text-foreground" },
-    warning: { bg: "bg-warning/10", border: "border-warning", bar: "bg-warning", text: "text-foreground" },
-    danger: { bg: "bg-error-main/10", border: "border-error-main", bar: "bg-error-main", text: "text-foreground" },
-  } as const;
-
   const renderListSection = (
     listData: BookingPaymentItem[],
     title: string,
-    variant: keyof typeof sectionStyles = "neutral"
+    variant: keyof typeof SECTION_STYLES = "neutral"
   ) => {
     if (listData.length === 0) {
       // No items => No <TransitionGroup> => No type conflict
       return null;
     }
 
-    const containerRef = containerRefs[title];
+    const containerRef = CONTAINER_REFS[title];
 
     return (
       <TransitionGroup component={React.Fragment}>
@@ -135,9 +133,9 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
             className="mb-8 w-full bg-surface border border-border-strong rounded-lg overflow-hidden"
           >
             {/* Subheader */}
-            <Inline gap={3} className={`p-4 ${sectionStyles[variant].bg} border-b ${sectionStyles[variant].border}`}>
-              <div className={`h-5 w-0.5 rounded-full ${sectionStyles[variant].bar} shrink-0`} aria-hidden="true" />
-              <h3 className={`font-heading font-bold text-sm uppercase tracking-wide ${sectionStyles[variant].text}`}>
+            <Inline gap={3} className={`p-4 ${SECTION_STYLES[variant].bg} border-b ${SECTION_STYLES[variant].border}`}>
+              <div className={`h-5 w-0.5 rounded-full ${SECTION_STYLES[variant].bar} shrink-0`} aria-hidden="true" />
+              <h3 className={`font-heading font-bold text-sm uppercase tracking-wide ${SECTION_STYLES[variant].text}`}>
                 {title}
               </h3>
             </Inline>

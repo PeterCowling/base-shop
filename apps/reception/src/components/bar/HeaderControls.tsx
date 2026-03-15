@@ -1,6 +1,6 @@
 // src/components/bar/HeaderControls.tsx
 
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 
 import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
@@ -42,6 +42,13 @@ const MENU_BTN =
 
 const ACTION_BTN = `${BTN_BASE} bg-primary-fg/10 text-primary-fg hover:bg-primary-fg/20 disabled:opacity-50`;
 
+const MENU_TYPES: { key: MenuType; label: string }[] = [
+  { key: "food", label: "Food" },
+  { key: "nonalcoholic", label: "Non-Alcoholic" },
+  { key: "alcoholic", label: "Alcoholic" },
+  { key: "other", label: "Other" },
+];
+
 /* -------------------------------------------------------------------------- *
  *                                COMPONENT                                   *
  * -------------------------------------------------------------------------- */
@@ -52,53 +59,6 @@ const HeaderControls: React.FC<HeaderControlsProps> = React.memo(
     menuType,
     onSelectMenuType,
   }) => {
-    /* ------------------------------ HANDLERS ------------------------------ */
-    const switchToOrderTaking = useCallback(
-      (menu: MenuType) => {
-        onScreenChange("orderTaking");
-        onSelectMenuType(menu);
-      },
-      [onScreenChange, onSelectMenuType]
-    );
-
-    const handleSales = useCallback(
-      () => onScreenChange("sales"),
-      [onScreenChange]
-    );
-    const handleComp = useCallback(
-      () => onScreenChange("comp"),
-      [onScreenChange]
-    );
-
-    /* --------------------------- MEMO MENU BTNS --------------------------- */
-    const menuButtons = useMemo<
-      { key: MenuType; label: string; onClick: () => void }[]
-    >(
-      () => [
-        {
-          key: "food",
-          label: "Food",
-          onClick: () => switchToOrderTaking("food"),
-        },
-        {
-          key: "nonalcoholic",
-          label: "Non-Alcoholic",
-          onClick: () => switchToOrderTaking("nonalcoholic"),
-        },
-        {
-          key: "alcoholic",
-          label: "Alcoholic",
-          onClick: () => switchToOrderTaking("alcoholic"),
-        },
-        {
-          key: "other",
-          label: "Other",
-          onClick: () => switchToOrderTaking("other"),
-        },
-      ],
-      [switchToOrderTaking]
-    );
-
     /* ------------------------------ RENDER -------------------------------- */
     return (
       <header className="sticky top-0 z-20 w-full bg-primary-main/95 backdrop-blur-md shadow-lg">
@@ -114,11 +74,11 @@ const HeaderControls: React.FC<HeaderControlsProps> = React.memo(
             role="tablist"
             aria-label="Menu categories"
           >
-            {menuButtons.map(({ key, label, onClick }) => (
+            {MENU_TYPES.map(({ key, label }) => (
               <Button
                 key={key}
                 type="button"
-                onClick={onClick}
+                onClick={() => { onScreenChange("orderTaking"); onSelectMenuType(key); }}
                 data-active={menuType === key}
                 aria-pressed={menuType === key}
                 aria-current={menuType === key ? "page" : undefined}
@@ -132,10 +92,10 @@ const HeaderControls: React.FC<HeaderControlsProps> = React.memo(
 
           {/* ────── Screen Actions ────── */}
           <div className="flex shrink-0 items-center gap-3">
-            <Button type="button" onClick={handleSales} compatibilityMode="passthrough" className={ACTION_BTN}>
+            <Button type="button" onClick={() => onScreenChange("sales")} compatibilityMode="passthrough" className={ACTION_BTN}>
               Sales
             </Button>
-            <Button type="button" onClick={handleComp} compatibilityMode="passthrough" className={ACTION_BTN}>
+            <Button type="button" onClick={() => onScreenChange("comp")} compatibilityMode="passthrough" className={ACTION_BTN}>
               Comp
             </Button>
           </div>

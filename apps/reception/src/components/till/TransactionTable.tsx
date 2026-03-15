@@ -9,6 +9,8 @@ import CopyBookingRefPill from "./CopyBookingRefPill";
 import CopyOccupantIdPill from "./CopyOccupantIdPill";
 import { formatItemCategory, summariseDescription } from "./helpers";
 
+const HEADER_CELL_CLASS = "sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground";
+
 export interface TransactionTableProps {
   transactions: Transaction[];
   shiftOwner?: string | null;
@@ -30,31 +32,31 @@ const TransactionTable = memo(function TransactionTable({
     <Table className="min-w-full border-collapse text-xs sm:text-sm md:text-base">
       <TableHeader className="bg-surface-2">
         <TableRow>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             TIMESTAMP
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             AMOUNT
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             METHOD
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             TYPE
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             STAFF
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             ITEM CATEGORY
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             OCCUPANT
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             BOOKING
           </TableHead>
-          <TableHead className="sticky top-0 z-10 text-start p-3 border-b border-border-2 text-muted-foreground">
+          <TableHead className={HEADER_CELL_CLASS}>
             DESCRIPTION
           </TableHead>
         </TableRow>

@@ -1,17 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import type { Transaction } from "../../../types/component/Till";
 import { useCashDrawerLimit } from "../../data/useCashDrawerLimit";
 
 export type TillCashForm = "none" | "float" | "exchange" | "tenderRemoval";
+export type TillRowMode = "none" | "edit" | "delete";
 
 export function useTillReconciliationUI() {
   const { limit: cashDrawerLimit } = useCashDrawerLimit();
 
   const [cashForm, setCashForm] = useState<TillCashForm>("none");
-  const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [rowMode, setRowMode] = useState<TillRowMode>("none");
   const [txnToDelete, setTxnToDelete] = useState<Transaction | null>(null);
-  const [isEditMode, setIsEditMode] = useState(false);
   const [txnToEdit, setTxnToEdit] = useState<Transaction | null>(null);
   const [drawerLimitInput, setDrawerLimitInput] = useState<string>("0");
 
@@ -23,43 +23,32 @@ export function useTillReconciliationUI() {
     }
   }, [cashDrawerLimit]);
 
-  const closeCashForms = useCallback(() => {
-    setCashForm("none");
-  }, []);
+  const closeCashForms = () => setCashForm("none");
+  const handleAddChangeClick = () => setCashForm("float");
+  const handleExchangeClick = () => setCashForm("exchange");
+  const handleLiftClick = () => setCashForm("tenderRemoval");
 
-  const handleAddChangeClick = useCallback(() => {
-    setCashForm("float");
-  }, []);
-
-  const handleExchangeClick = useCallback(() => {
-    setCashForm("exchange");
-  }, []);
-
-  const handleLiftClick = useCallback(() => {
-    setCashForm("tenderRemoval");
-  }, []);
-
-  const handleRowClickForEdit = useCallback((txn: Transaction) => {
+  const handleRowClickForEdit = (txn: Transaction) => {
     setTxnToEdit(txn);
-    setIsEditMode(false);
-  }, []);
+    setRowMode("none");
+  };
 
-  const handleRowClickForDelete = useCallback((txn: Transaction) => {
+  const handleRowClickForDelete = (txn: Transaction) => {
     setTxnToDelete(txn);
-    setIsDeleteMode(false);
-  }, []);
+    setRowMode("none");
+  };
 
   return {
     cashForm,
     setCashForm,
     drawerLimitInput,
     setDrawerLimitInput,
-    isDeleteMode,
-    setIsDeleteMode,
+    rowMode,
+    setRowMode,
+    isEditMode: rowMode === "edit",
+    isDeleteMode: rowMode === "delete",
     txnToDelete,
     setTxnToDelete,
-    isEditMode,
-    setIsEditMode,
     txnToEdit,
     setTxnToEdit,
     closeCashForms,

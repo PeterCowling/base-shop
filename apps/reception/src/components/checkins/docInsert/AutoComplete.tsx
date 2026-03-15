@@ -40,7 +40,6 @@ function AutoComplete({
 }): JSX.Element {
   const [localValue, setLocalValue] = useState<string>(value);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const blurTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -62,10 +61,8 @@ function AutoComplete({
           item.toLowerCase().startsWith(userInput.toLowerCase())
         );
         setFilteredSuggestions(filtered);
-        setIsOpen(filtered.length > 0);
       } else {
         setFilteredSuggestions([]);
-        setIsOpen(false);
       }
     },
     [onChange, suggestions]
@@ -75,7 +72,7 @@ function AutoComplete({
     (suggestion: string): void => {
       setLocalValue(suggestion);
       onChange(suggestion);
-      setIsOpen(false);
+      setFilteredSuggestions([]);
 
       if (onItemSelect) {
         onItemSelect(suggestion);
@@ -118,14 +115,14 @@ function AutoComplete({
           const first = filteredSuggestions[0];
           setLocalValue(first);
           onChange(first);
-          setIsOpen(false);
+          setFilteredSuggestions([]);
 
           if (onItemSelect) {
             onItemSelect(first);
           }
         } else if (localValue.trim() !== "") {
           onChange(localValue.trim());
-          setIsOpen(false);
+          setFilteredSuggestions([]);
 
           if (onItemSelect) {
             onItemSelect(localValue.trim());
@@ -150,7 +147,7 @@ function AutoComplete({
         clearTimeout(blurTimeoutRef.current);
       }
       blurTimeoutRef.current = setTimeout(() => {
-        setIsOpen(false);
+        setFilteredSuggestions([]);
       }, 200);
     },
     [onBlur]
@@ -189,7 +186,7 @@ function AutoComplete({
         }
       />
 
-      {isOpen && filteredSuggestions.length > 0 && (
+      {filteredSuggestions.length > 0 && (
         <ul
           className="absolute left-0 right-0 max-h-52 overflow-y-auto border border-border-2 bg-surface list-none p-0 m-0"
           style={dropdownStyle}

@@ -6,13 +6,18 @@
  * and intentionally does not depend on or mutate the in-memory TrialQueue class.
  */
 
-import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
+import {
+  emitSelfEvolvingMeasurementArtifact,
+  extractSelfEvolvingMeasurementFromBuildRecord,
+  getSelfEvolvingMeasurementPath,
+  readSelfEvolvingMeasurementArtifact,
+  type SelfEvolvingMeasurementInput,
+  writeSelfEvolvingMeasurementArtifact,
+} from "../build/lp-do-build-self-evolving-measurement.js";
 import type {
   ImprovementOutcome,
-  KpiAggregation,
-  KpiUnit,
   MetaObservation,
 } from "../self-evolving/self-evolving-contracts.js";
 import { stableHash } from "../self-evolving/self-evolving-contracts.js";
@@ -34,24 +39,6 @@ import {
 
 const DEFAULT_QUEUE_STATE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
 const BUILD_RECORD_FILENAME = "build-record.user.md";
-
-export interface SelfEvolvingMeasurementInput {
-  kpi_name: string;
-  kpi_value: number;
-  kpi_unit: KpiUnit;
-  aggregation_method: KpiAggregation;
-  sample_size: number;
-  baseline_ref: string;
-  measurement_window: string;
-  baseline_window: string;
-  post_window: string;
-  measured_impact: number;
-  impact_confidence: number;
-  regressions_detected: number;
-  data_quality_status: "ok" | "degraded";
-  traffic_segment?: string | null;
-  artifact_refs?: string[];
-}
 
 export interface MarkDispatchesCompletedOptions {
   queueStatePath: string;
@@ -93,161 +80,46 @@ function resolveBuildRecordPath(rootDir: string, planPath: string): string {
   return path.join(path.dirname(resolveRelativeToRoot(rootDir, planPath)), BUILD_RECORD_FILENAME);
 }
 
-function extractMarkdownSection(markdown: string, heading: string): string | null {
-  const lines = markdown.split(/\r?\n/);
-  const normalizedHeading = heading.trim().toLowerCase();
-  let startIndex = -1;
-
-  for (let index = 0; index < lines.length; index += 1) {
-    if (lines[index]?.trim().toLowerCase() === normalizedHeading) {
-      startIndex = index + 1;
-      break;
-    }
-  }
-
-  if (startIndex === -1) {
-    return null;
-  }
-
-  const sectionLines: string[] = [];
-  for (let index = startIndex; index < lines.length; index += 1) {
-    const line = lines[index] ?? "";
-    if (line.trim().startsWith("## ")) {
-      break;
-    }
-    sectionLines.push(line);
-  }
-
-  return sectionLines.join("\n").trim();
-}
-
-function extractBoldLabeledFields(section: string): Map<string, string> {
-  const fields = new Map<string, string>();
-  const regex = /^[-*]?\s*\*\*([^*]+)\*\*:?\s*(.+)$/gm;
-  for (let match = regex.exec(section); match; match = regex.exec(section)) {
-    const label = match[1]?.trim().toLowerCase();
-    const value = match[2]?.trim();
-    if (label && value) {
-      fields.set(label, value);
-    }
-  }
-  return fields;
-}
-
-function readRequiredField(fields: ReadonlyMap<string, string>, key: string): string {
-  const value = fields.get(key.toLowerCase());
-  if (!value || value.trim().length === 0) {
-    throw new Error(`missing_self_evolving_measurement_field:${key}`);
-  }
-  return value.trim();
-}
-
-function parseRequiredNumber(fields: ReadonlyMap<string, string>, key: string): number {
-  const raw = readRequiredField(fields, key);
-  const value = Number(raw);
-  if (!Number.isFinite(value)) {
-    throw new Error(`invalid_self_evolving_measurement_number:${key}:${raw}`);
-  }
-  return value;
-}
-
-function parseRequiredInteger(fields: ReadonlyMap<string, string>, key: string): number {
-  const value = parseRequiredNumber(fields, key);
-  if (!Number.isInteger(value)) {
-    throw new Error(`invalid_self_evolving_measurement_integer:${key}:${value}`);
-  }
-  return value;
-}
-
-function parseEnumValue<T extends string>(
-  fields: ReadonlyMap<string, string>,
-  key: string,
-  allowed: readonly T[],
-): T {
-  const value = readRequiredField(fields, key).toLowerCase() as T;
-  if (!allowed.includes(value)) {
-    throw new Error(`invalid_self_evolving_measurement_enum:${key}:${value}`);
-  }
-  return value;
-}
-
-function parseArtifactRefs(value: string | undefined): string[] | undefined {
-  if (!value) {
-    return undefined;
-  }
-  const normalized = value.trim();
-  if (normalized.length === 0 || normalized.toLowerCase() === "none") {
-    return undefined;
-  }
-  const refs = normalized
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter((entry) => entry.length > 0);
-  return refs.length > 0 ? refs : undefined;
-}
-
 function extractMeasurementFromBuildRecord(
   rootDir: string,
   planPath: string,
 ): MeasurementExtractionResult {
-  const buildRecordPath = resolveBuildRecordPath(rootDir, planPath);
-  if (!existsSync(buildRecordPath)) {
-    return { ok: true, measurement: null };
+  const planDir = path.dirname(resolveRelativeToRoot(rootDir, planPath));
+  const artifactResult = readSelfEvolvingMeasurementArtifact(planDir);
+  if (!artifactResult.ok) {
+    return { ok: false, error: artifactResult.error };
+  }
+  if (artifactResult.artifact) {
+    return {
+      ok: true,
+      measurement: artifactResult.artifact.measurement,
+    };
   }
 
-  const buildRecord = readFileSync(buildRecordPath, "utf-8");
-  const section = extractMarkdownSection(buildRecord, "## Self-Evolving Measurement");
-  if (!section) {
+  const buildRecordPath = resolveBuildRecordPath(rootDir, planPath);
+  const buildRecordResult = extractSelfEvolvingMeasurementFromBuildRecord(buildRecordPath);
+  if (!buildRecordResult.ok) {
+    return { ok: false, error: buildRecordResult.error };
+  }
+  if (buildRecordResult.source !== "verified" || buildRecordResult.measurement == null) {
     return { ok: true, measurement: null };
   }
 
   try {
-    const fields = extractBoldLabeledFields(section);
-    const status = readRequiredField(fields, "Status").toLowerCase();
-    if (status === "none") {
-      return { ok: true, measurement: null };
-    }
-    if (status !== "verified") {
-      throw new Error(`invalid_self_evolving_measurement_status:${status}`);
-    }
-
-    const measurement: SelfEvolvingMeasurementInput = {
-      kpi_name: readRequiredField(fields, "KPI Name"),
-      kpi_value: parseRequiredNumber(fields, "KPI Value"),
-      kpi_unit: parseEnumValue(fields, "KPI Unit", [
-        "ratio",
-        "count",
-        "currency",
-        "seconds",
-        "score",
-      ]),
-      aggregation_method: parseEnumValue(fields, "Aggregation Method", [
-        "mean",
-        "median",
-        "sum",
-        "rate",
-      ]),
-      sample_size: parseRequiredInteger(fields, "Sample Size"),
-      baseline_ref: readRequiredField(fields, "Baseline Ref"),
-      measurement_window: readRequiredField(fields, "Measurement Window"),
-      baseline_window: readRequiredField(fields, "Baseline Window"),
-      post_window: readRequiredField(fields, "Post Window"),
-      measured_impact: parseRequiredNumber(fields, "Measured Impact"),
-      impact_confidence: parseRequiredNumber(fields, "Impact Confidence"),
-      regressions_detected: parseRequiredInteger(fields, "Regressions Detected"),
-      data_quality_status: parseEnumValue(fields, "Data Quality Status", [
-        "ok",
-        "degraded",
-      ]),
-      traffic_segment: fields.get("traffic segment")?.trim() || null,
-      artifact_refs: parseArtifactRefs(fields.get("artifact refs")),
-    };
-
-    return { ok: true, measurement };
+    const featureSlug = path.basename(planDir);
+    writeSelfEvolvingMeasurementArtifact(
+      emitSelfEvolvingMeasurementArtifact({
+        feature_slug: featureSlug,
+        measurement: buildRecordResult.measurement,
+        source_artifact_path: path.relative(rootDir, buildRecordPath).split(path.sep).join("/"),
+      }),
+      planDir,
+    );
+    return { ok: true, measurement: buildRecordResult.measurement };
   } catch (error) {
     return {
       ok: false,
-      error: `build_record_self_evolving_measurement_parse_failed:${buildRecordPath}:${error instanceof Error ? error.message : String(error)}`,
+      error: `self_evolving_measurement_sidecar_write_failed:${getSelfEvolvingMeasurementPath(planDir)}:${error instanceof Error ? error.message : String(error)}`,
     };
   }
 }

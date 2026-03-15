@@ -2,6 +2,14 @@ import React, { type FC, useCallback, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
+import { getNextPaymentFailureCode } from "./PrepaymentsContainer";
+
+const FAILURE_DESCRIPTIONS: Record<number, string> = {
+  5: "Payment failed (first attempt)",
+  6: "Payment failed (second attempt)",
+  7: "Payment failed (final attempt)",
+};
+
 interface MarkAsFailedButtonProps {
   /**
    * Booking reference (not currently used in this component).
@@ -41,15 +49,8 @@ const MarkAsFailedButton: FC<MarkAsFailedButtonProps> = ({
   const handleConfirm = useCallback(
     async (e: React.MouseEvent) => {
       e.stopPropagation();
-      let codeToLog = 5;
-      let desc = "Payment failed (first attempt)";
-      if (existingCodes.includes(5) && !existingCodes.includes(6)) {
-        codeToLog = 6;
-        desc = "Payment failed (second attempt)";
-      } else if (existingCodes.includes(6)) {
-        codeToLog = 7;
-        desc = "Payment failed (final attempt)";
-      }
+      const codeToLog = getNextPaymentFailureCode(existingCodes);
+      const desc = FAILURE_DESCRIPTIONS[codeToLog] ?? "Payment failed";
       setIsLoading(true);
       setIsConfirming(false);
       try {

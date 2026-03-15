@@ -2,7 +2,6 @@
 
 import {
   memo,
-  useCallback,
   useState,
 } from "react";
 import { Banknote, CreditCard, Plus } from "lucide-react";
@@ -14,6 +13,9 @@ import { formatEuro } from "../../../utils/format";
 import { usePaymentContext } from "./PaymentContext";
 import SplitList from "./SplitList";
 
+const PF_ACTIVE = "bg-primary-main hover:opacity-90 text-primary-fg";
+const PF_DISABLED = "bg-success-main text-success-fg cursor-not-allowed opacity-70";
+
 function PaymentForm() {
   const {
     outstanding,
@@ -24,47 +26,27 @@ function PaymentForm() {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleOpenChange = useCallback(
-    (next: boolean) => {
-      if (isDisabled) return;
-      setMenuOpen(next);
-    },
-    [isDisabled]
-  );
+  const PayTypeIcon =
+    splitPayments.length === 1
+      ? splitPayments[0].payType === "CC" ? CreditCard : Banknote
+      : Plus;
 
-  const PayTypeIcon = (() => {
-    if (splitPayments.length === 1) {
-      return splitPayments[0].payType === "CC" ? CreditCard : Banknote;
-    }
-    return Plus;
-  })();
+  const buttonLabel =
+    outstanding > 0
+      ? splitPayments.length === 1 ? formatEuro(outstanding) : `Split ${formatEuro(outstanding)}`
+      : "Paid";
 
-  const getButtonLabel = useCallback(() => {
-    if (outstanding > 0) {
-      if (splitPayments.length === 1) {
-        return formatEuro(outstanding);
-      }
-      return `Split ${formatEuro(outstanding)}`;
-    }
-    return "Paid";
-  }, [outstanding, splitPayments]);
-
-  const activeClass = "bg-primary-main hover:opacity-90 text-primary-fg";
-  const disabledClass =
-    "bg-success-main text-success-fg cursor-not-allowed opacity-70";
-  const leftButtonClass = isDisabled ? disabledClass : activeClass;
-  const rightButtonClass = isDisabled ? disabledClass : activeClass;
+  const btnVariant = isDisabled ? PF_DISABLED : PF_ACTIVE;
 
   return (
-    <Popover open={menuOpen} onOpenChange={handleOpenChange}>
+    <Popover open={menuOpen} onOpenChange={(next) => { if (!isDisabled) setMenuOpen(next); }}>
       <div className="relative">
         <div className="flex items-stretch rounded-md overflow-hidden">
           <PopoverTrigger asChild>
             <Button
               compatibilityMode="passthrough"
               disabled={isDisabled}
-              className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none ${
-                leftButtonClass}`}
+              className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none ${btnVariant}`}
               title={
                 isDisabled
                   ? "Payment not possible (already paid)"
@@ -79,15 +61,14 @@ function PaymentForm() {
             compatibilityMode="passthrough"
             onClick={handleImmediatePayment}
             disabled={isDisabled}
-            className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none text-xs font-medium ${
-              rightButtonClass}`}
+            className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none text-xs font-medium ${btnVariant}`}
             title={
               isDisabled
                 ? "Payment not possible (already paid)"
                 : "Pay immediately with selected split"
             }
           >
-            {getButtonLabel()}
+            {buttonLabel}
           </Button>
         </div>
       </div>

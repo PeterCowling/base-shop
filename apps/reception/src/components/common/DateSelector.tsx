@@ -30,7 +30,9 @@ function formatCalendarLabel(dateStr: string): string {
   return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
 }
 
-export const DAY_PICKER_CLASS_NAMES_WARNING = {
+const CALENDAR_DROPDOWN_STYLE = { top: "100%" as const, right: 0 as const };
+
+const DAY_PICKER_CLASS_NAMES_BASE = {
   root: "bg-surface border border-border-strong rounded-lg shadow-lg p-4 text-foreground",
   months: "relative",
   month: "space-y-3",
@@ -51,37 +53,20 @@ export const DAY_PICKER_CLASS_NAMES_WARNING = {
   day: "p-0",
   day_button:
     "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-foreground hover:bg-surface-2 transition-colors cursor-pointer",
-  today: "font-bold text-warning",
-  selected: "bg-warning text-warning-fg hover:bg-warning",
   outside: "opacity-30",
   disabled: "opacity-25 cursor-not-allowed",
+};
+
+export const DAY_PICKER_CLASS_NAMES_WARNING = {
+  ...DAY_PICKER_CLASS_NAMES_BASE,
+  today: "font-bold text-warning",
+  selected: "bg-warning text-warning-fg hover:bg-warning",
 } as const;
 
 export const DAY_PICKER_CLASS_NAMES_PRIMARY = {
-  root: "bg-surface border border-border-strong rounded-lg shadow-lg p-4 text-foreground",
-  months: "relative",
-  month: "space-y-3",
-  month_caption: "flex items-center justify-center h-9",
-  caption_label: "text-sm font-semibold text-foreground",
-  nav: "absolute top-0 inset-x-0 flex justify-between",
-  button_previous:
-    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
-  button_next:
-    "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-surface-2 hover:text-foreground transition-colors",
-  chevron: "w-4 h-4 fill-current",
-  month_grid: "border-collapse",
-  weekdays: "flex",
-  weekday:
-    "flex h-9 w-9 items-center justify-center text-xs font-medium text-muted-foreground",
-  weeks: "space-y-1 mt-1",
-  week: "flex",
-  day: "p-0",
-  day_button:
-    "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-foreground hover:bg-surface-2 transition-colors cursor-pointer",
+  ...DAY_PICKER_CLASS_NAMES_BASE,
   today: "font-bold text-primary-main",
   selected: "bg-primary-main text-primary-fg hover:bg-primary-main",
-  outside: "opacity-30",
-  disabled: "opacity-25 cursor-not-allowed",
 } as const;
 
 export interface DateSelectorProps {
@@ -172,7 +157,6 @@ function DateSelector({
     [selectedDate],
   );
   const parsedToday = useMemo(() => parseLocalDate(today), [today]);
-  const calendarDropdownStyle = useMemo(() => ({ top: "100%", right: 0 }), []);
   const dayPickerClassNames =
     calendarColorVariant === "primary"
       ? DAY_PICKER_CLASS_NAMES_PRIMARY
@@ -215,13 +199,6 @@ function DateSelector({
     };
   }, [isCalendarOpen, isInlineCalendar]);
 
-  const handleQuickSelect = useCallback(
-    (day: string) => {
-      onDateChange(day);
-    },
-    [onDateChange],
-  );
-
   const handleToggleCalendar = useCallback(() => {
     setIsCalendarOpen((prev) => !prev);
   }, []);
@@ -239,13 +216,6 @@ function DateSelector({
     [onDateChange, selectedDate],
   );
 
-  const handleTestModeInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      onTestModeChange?.(event.target.checked);
-    },
-    [onTestModeChange],
-  );
-
   const renderQuickButton = useCallback(
     (label: string, day: string, showDateSub = false): ReactElement => {
       const isSelected = selectedDate === day;
@@ -260,7 +230,7 @@ function DateSelector({
                 ? "bg-primary-main text-primary-fg border-primary-main"
                 : "bg-surface text-foreground border-border-strong hover:bg-surface-2"
             }`}
-            onClick={() => handleQuickSelect(day)}
+            onClick={() => onDateChange(day)}
           >
             {dateSub ? (
               <span className="flex flex-col items-center leading-tight gap-0.5">
@@ -278,7 +248,7 @@ function DateSelector({
           color={isSelected ? "primary" : "default"}
           tone={isSelected ? "solid" : "outline"}
           size="sm"
-          onClick={() => handleQuickSelect(day)}
+          onClick={() => onDateChange(day)}
         >
           {dateSub ? (
             <span className="flex flex-col items-center leading-tight gap-0.5">
@@ -289,7 +259,7 @@ function DateSelector({
         </Button>
       );
     },
-    [handleQuickSelect, isInlineCalendar, selectedDate],
+    [onDateChange, isInlineCalendar, selectedDate],
   );
 
   const quickButtons = useMemo(
@@ -343,7 +313,7 @@ function DateSelector({
           <div
             ref={calendarRef}
             className="absolute z-10 mt-2"
-            style={calendarDropdownStyle}
+            style={CALENDAR_DROPDOWN_STYLE}
           >
             <DayPicker
               aria-label="Date picker"
@@ -358,7 +328,6 @@ function DateSelector({
       </div>
     );
   }, [
-    calendarDropdownStyle,
     calendarRangeProps,
     canUseCalendar,
     dayPickerClassNames,
@@ -397,23 +366,17 @@ function DateSelector({
     parsedSelectedDate,
   ]);
 
-  const testModeToggle = useMemo((): ReactElement | null => {
-    if (!showTestModeToggle) {
-      return null;
-    }
-
-    return (
-      <label className="inline-flex items-center space-x-2">
-        <Input
-          compatibilityMode="no-wrapper"
-          type="checkbox"
-          checked={testMode}
-          onChange={handleTestModeInputChange}
-        />
-        <span>Test Mode?</span>
-      </label>
-    );
-  }, [handleTestModeInputChange, showTestModeToggle, testMode]);
+  const testModeToggle = showTestModeToggle ? (
+    <label className="inline-flex items-center space-x-2">
+      <Input
+        compatibilityMode="no-wrapper"
+        type="checkbox"
+        checked={testMode}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => onTestModeChange?.(e.target.checked)}
+      />
+      <span>Test Mode?</span>
+    </label>
+  ) : null;
 
   if (isInlineCalendar) {
     return (

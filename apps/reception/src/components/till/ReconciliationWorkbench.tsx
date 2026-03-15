@@ -195,7 +195,7 @@ const ReconciliationWorkbenchContent = memo(
     );
 
     /* ----------------------------- Cash drawer ------------------------------ */
-    const todayStr = useMemo(() => getLocalToday(), []);
+    const todayStr = getLocalToday();
 
     const lastCashCount = useMemo<CashCount | null>(() => {
       const todayCounts = cashCounts.filter(

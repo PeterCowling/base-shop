@@ -15,6 +15,8 @@ import { showToast } from "../../utils/toastUtils";
 
 import CustomTooltip from "./tooltip/CustomTooltip";
 
+const EMAIL_CODES = [1, 26];
+
 interface EmailBookingButtonProps {
   bookingRef: string;
   isFirstForBooking: boolean;
@@ -37,10 +39,6 @@ function EmailBookingButton({
   const { sendBookingEmail, loading } = useBookingEmail();
   const { logActivity } = useActivitiesMutations();
 
-  // Only show timestamps for the initial booking creation (code=1)
-  // and when the booking email draft was created (code=26).
-  const EMAIL_CODES = useMemo<number[]>(() => [1, 26], []);
-
   const emailTimes = useMemo<string[]>(() => {
     const times = activities
       .filter((a) => EMAIL_CODES.includes(a.code) && Boolean(a.timestamp))
@@ -53,7 +51,7 @@ function EmailBookingButton({
 
     // Remove duplicate timestamps so each unique send time is displayed once
     return Array.from(new Set(times));
-  }, [activities, EMAIL_CODES]);
+  }, [activities]);
 
   const handleClick = useCallback(async () => {
     const details = guestsDetails[bookingRef];
@@ -83,7 +81,7 @@ function EmailBookingButton({
     }
   }, [bookingRef, guestsDetails, sendBookingEmail, logActivity]);
 
-  if (!isFirstForBooking) return <></>;
+  if (!isFirstForBooking) return null;
 
   const tooltipContent = (
     <div className="text-sm">

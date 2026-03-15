@@ -39,18 +39,20 @@ export default function PrimeColumn({
   const [composeError, setComposeError] = useState<string | null>(null);
   const [confirmPending, setConfirmPending] = useState(false);
 
-  function openCompose() {
+  function resetCompose() {
     setComposeText("");
     setComposeError(null);
     setConfirmPending(false);
+  }
+
+  function openCompose() {
+    resetCompose();
     setComposeOpen(true);
   }
 
   function closeCompose() {
     setComposeOpen(false);
-    setComposeText("");
-    setComposeError(null);
-    setConfirmPending(false);
+    resetCompose();
   }
 
   function handleSendClick() {

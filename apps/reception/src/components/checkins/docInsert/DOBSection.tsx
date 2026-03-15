@@ -16,6 +16,8 @@ import { occupantDetailsSchema } from "../../../schemas/occupantDetailsSchema";
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
 
+const DOB_INPUT_BASE = "border border-info-light rounded-lg px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary-main text-foreground";
+
 interface DOBSectionProps {
   occupantDetails: OccupantDetails;
   saveField: (fieldName: string, value: unknown) => Promise<void>;
@@ -36,7 +38,6 @@ function DOBSection({
   const [dd, setDd] = useState("");
   const [bgSuccess, setBgSuccess] = useState(false);
   const [dobError, setDobError] = useState("");
-  const [overrideDialogOpen, setOverrideDialogOpen] = useState(false);
   const [pendingOverrideDob, setPendingOverrideDob] = useState<{
     yyyy: string;
     mm: string;
@@ -138,7 +139,6 @@ function DOBSection({
 
   const handleOverrideOpenChange = useCallback(
     (open: boolean) => {
-      setOverrideDialogOpen(open);
       if (!open && pendingOverrideDob) {
         setPendingOverrideDob(null);
         revertDOB();
@@ -153,7 +153,6 @@ function DOBSection({
     }
     const overrideDob = pendingOverrideDob;
     setPendingOverrideDob(null);
-    setOverrideDialogOpen(false);
     saveDob(overrideDob.yyyy, overrideDob.mm, overrideDob.dd);
   }, [pendingOverrideDob, saveDob]);
 
@@ -179,7 +178,6 @@ function DOBSection({
             mm,
             dd,
           });
-          setOverrideDialogOpen(true);
           return;
         } else {
           revertDOB();
@@ -205,9 +203,7 @@ function DOBSection({
           type="text"
           placeholder="YYYY"
           maxLength={4}
-          className={`w-20 border border-info-light rounded-lg px-3 py-2
-            focus:outline-none focus:ring-1 focus:ring-primary-main
-            ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
+          className={`w-20 ${DOB_INPUT_BASE} ${bgSuccess ? "bg-success-light/50" : ""}`}
           value={yyyy}
           onChange={(e) => handleNumericChange(e, setYyyy, 4)}
           onBlur={handleBlur}
@@ -220,9 +216,7 @@ function DOBSection({
           type="text"
           placeholder="MM"
           maxLength={2}
-          className={`w-14 border border-info-light rounded-lg px-3 py-2
-            focus:outline-none focus:ring-1 focus:ring-primary-main
-            ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
+          className={`w-14 ${DOB_INPUT_BASE} ${bgSuccess ? "bg-success-light/50" : ""}`}
           value={mm}
           onChange={(e) => handleNumericChange(e, setMm, 2)}
           onBlur={handleBlur}
@@ -235,9 +229,7 @@ function DOBSection({
           type="text"
           placeholder="DD"
           maxLength={2}
-          className={`w-14 border border-info-light rounded-lg px-3 py-2
-            focus:outline-none focus:ring-1 focus:ring-primary-main
-            ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
+          className={`w-14 ${DOB_INPUT_BASE} ${bgSuccess ? "bg-success-light/50" : ""}`}
           value={dd}
           onChange={(e) => handleNumericChange(e, setDd, 2)}
           onBlur={handleBlur}
@@ -246,7 +238,7 @@ function DOBSection({
 
       {dobError && <p className="text-error-main text-sm mt-1">{dobError}</p>}
       <ConfirmDialog
-        open={overrideDialogOpen}
+        open={pendingOverrideDob !== null}
         onOpenChange={handleOverrideOpenChange}
         title="Override invalid date?"
         description={dobError}

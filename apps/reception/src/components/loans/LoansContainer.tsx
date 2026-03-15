@@ -32,9 +32,10 @@ function LoansContainer({ username }: { username: string }): ReactElement {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const filteredData = useMemo(() => {
     if (!guests?.length) return [];
+    const lowerFilter = guestFilter.toLowerCase();
     return guests.filter((g) => {
       const fullName = `${g.firstName} ${g.lastName}`.toLowerCase();
-      return fullName.includes(guestFilter.toLowerCase());
+      return fullName.includes(lowerFilter);
     });
   }, [guests, guestFilter]);
   const handleAddLoanTransaction = useCallback(

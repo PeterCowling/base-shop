@@ -32,43 +32,29 @@ export function parseJsonObject(raw: string | null): Record<string, unknown> | n
   }
 }
 
-export function parseLinks(raw: string | null): MessageLink[] | null {
+function parseJsonArray<T>(raw: string | null): T[] | null {
   if (!raw) {
     return null;
   }
 
   try {
     const parsed = JSON.parse(raw) as unknown;
-    return Array.isArray(parsed) ? (parsed as MessageLink[]) : null;
+    return Array.isArray(parsed) ? (parsed as T[]) : null;
   } catch {
     return null;
   }
+}
+
+export function parseLinks(raw: string | null): MessageLink[] | null {
+  return parseJsonArray<MessageLink>(raw);
 }
 
 export function parseAttachments(raw: string | null): MessageAttachment[] | null {
-  if (!raw) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    return Array.isArray(parsed) ? (parsed as MessageAttachment[]) : null;
-  } catch {
-    return null;
-  }
+  return parseJsonArray<MessageAttachment>(raw);
 }
 
 export function parseCards(raw: string | null): MessageCard[] | null {
-  if (!raw) {
-    return null;
-  }
-
-  try {
-    const parsed = JSON.parse(raw) as unknown;
-    return Array.isArray(parsed) ? (parsed as MessageCard[]) : null;
-  } catch {
-    return null;
-  }
+  return parseJsonArray<MessageCard>(raw);
 }
 
 export function parseStringArray(raw: string | null): string[] {

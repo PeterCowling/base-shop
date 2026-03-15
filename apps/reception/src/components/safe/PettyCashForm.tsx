@@ -1,5 +1,5 @@
 // src/components/forms/PettyCashForm.tsx
-import { memo, useCallback, useState } from "react";
+import { memo, useState } from "react";
 
 import { Input } from "@acme/design-system";
 import { Stack } from "@acme/design-system/primitives";
@@ -22,27 +22,21 @@ export const PettyCashForm = memo(function PettyCashForm({
   const [amount, setAmount] = useState<string>("");
 
   /** ---------- Handlers -------------------------------------------------- */
-  const handleCancel = useCallback(() => {
+  const handleCancel = () => {
     setAmount("");
     onCancel();
-  }, [onCancel]);
+  };
 
-  const handleAmountChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value),
-    []
-  );
-
-  const handleReauthSubmit = useCallback(async () => {
-      const amt = parseFloat(amount);
-      const result = safeTransactionFormSchema.safeParse({ amount: amt });
-      if (!result.success) {
-        showToast("Please enter valid values", "error");
-        return;
-      }
-
-      onConfirm(amt);
-      setAmount("");
-    }, [amount, onConfirm]);
+  const handleReauthSubmit = async () => {
+    const amt = parseFloat(amount);
+    const result = safeTransactionFormSchema.safeParse({ amount: amt });
+    if (!result.success) {
+      showToast("Please enter valid values", "error");
+      return;
+    }
+    onConfirm(amt);
+    setAmount("");
+  };
 
   /** ---------- UI -------------------------------------------------------- */
   return (
@@ -61,7 +55,7 @@ export const PettyCashForm = memo(function PettyCashForm({
           className="w-32 rounded-lg border border-border-strong px-3 py-2 text-sm"
           placeholder="Amount"
           value={amount}
-          onChange={handleAmountChange}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
         />
       </Stack>
 

@@ -45,9 +45,7 @@ const BookingRefChipPrepayComponent: FC<BookingRefChipPrepayProps> = ({
     <span
       role="button"
       tabIndex={0}
-      onClick={() => {
-        void handleCopy();
-      }}
+      onClick={() => void handleCopy()}
       onKeyDown={handleKeyDown}
       title="Click to copy booking reference"
       className={`inline-flex items-center gap-2 px-4 py-2 text-sm rounded-lg leading-none ${chipStyle} focus:outline-none min-w-48`}

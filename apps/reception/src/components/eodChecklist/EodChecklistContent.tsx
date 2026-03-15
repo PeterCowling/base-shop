@@ -33,16 +33,17 @@ function formatCashVariance(amount: number): string {
   return formatEuro(amount, { signDisplay: "always" });
 }
 
+const TILL_SHIFTS_LIMIT = 20;
+
 export default function EodChecklistContent() {
   const { user } = useAuth();
   const canView = canAccess(user, Permissions.MANAGEMENT_ACCESS);
-  const [showFloatModal, setShowFloatModal] = useState(false);
-  const [showOverrideModal, setShowOverrideModal] = useState(false);
+  const [activeModal, setActiveModal] = useState<"float" | "override" | null>(null);
 
   // All hooks must be called before any conditional return (React rules)
   // limitToLast raised from 10 to 20 to prevent silent undercount near midnight
   const { shifts, loading: tillLoading } = useTillShiftsData({
-    limitToLast: 20,
+    limitToLast: TILL_SHIFTS_LIMIT,
   });
   const { safeCounts, loading: safeLoading } = useSafeCountsData({
     orderByChild: "timestamp",
@@ -61,6 +62,7 @@ export default function EodChecklistContent() {
 
   if (!canView) return null;
 
+  const today = new Date();
   const openShifts = shifts.filter((s) => s.status !== "closed");
   const tillDone = openShifts.length === 0;
 
@@ -69,10 +71,10 @@ export default function EodChecklistContent() {
   );
 
   const stockDone = entries.some(
-    (e) => e.type === "count" && sameItalyDate(e.timestamp, new Date())
+    (e) => e.type === "count" && sameItalyDate(e.timestamp, today)
   );
   const floatDone = cashCounts.some(
-    (c) => c.type === "openingFloat" && sameItalyDate(c.timestamp, new Date())
+    (c) => c.type === "openingFloat" && sameItalyDate(c.timestamp, today)
   );
 
   const allDone = tillDone && safeDone && stockDone;
@@ -81,14 +83,14 @@ export default function EodChecklistContent() {
   // Filter to closed shifts with a closedAt timestamp on today's Italy date.
   const cashVariance = shifts
     .filter(
-      (s) => s.status === "closed" && s.closedAt && sameItalyDate(s.closedAt, new Date())
+      (s) => s.status === "closed" && s.closedAt && sameItalyDate(s.closedAt, today)
     )
     .reduce((sum, s) => sum + (s.closeDifference ?? 0), 0);
 
   // Count distinct itemId values from count-type ledger entries for today.
   const stockItemsCounted = new Set(
     entries
-      .filter((e) => e.type === "count" && sameItalyDate(e.timestamp, new Date()))
+      .filter((e) => e.type === "count" && sameItalyDate(e.timestamp, today))
       .map((e) => e.itemId)
   ).size;
 
@@ -244,10 +246,10 @@ export default function EodChecklistContent() {
               <Button
                 color="default"
                 tone="outline"
-                aria-expanded={showFloatModal}
+                aria-expanded={activeModal === "float"}
                 className="mt-3 rounded-lg border border-border-2 bg-surface px-3 py-2 text-sm font-semibold text-foreground hover:bg-surface-2 active:bg-surface-3"
                 data-cy="float-set-button"
-                onClick={() => setShowFloatModal(true)}
+                onClick={() => setActiveModal("float")}
                 type="button"
               >
                 Set Opening Float
@@ -290,27 +292,27 @@ export default function EodChecklistContent() {
           tone="outline"
           className="w-full rounded-lg border border-warning-border bg-warning-surface px-4 py-3 text-sm font-semibold text-warning-fg hover:opacity-80 active:opacity-70"
           data-cy="eod-override-button"
-          onClick={() => setShowOverrideModal(true)}
+          onClick={() => setActiveModal("override")}
           type="button"
         >
           Override &amp; close day
         </Button>
       )}
 
-      {showFloatModal && (
+      {activeModal === "float" && (
         <OpeningFloatModal
           onConfirm={addOpeningFloatEntry}
-          onClose={() => setShowFloatModal(false)}
+          onClose={() => setActiveModal(null)}
         />
       )}
 
-      {showOverrideModal && (
+      {activeModal === "override" && (
         <EodOverrideModal
           onConfirm={(signoff: EodOverrideSignoff) => {
             void confirmDayClosedWithOverride(signoff);
-            setShowOverrideModal(false);
+            setActiveModal(null);
           }}
-          onCancel={() => setShowOverrideModal(false)}
+          onCancel={() => setActiveModal(null)}
         />
       )}
     </div>

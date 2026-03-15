@@ -209,12 +209,6 @@ function StatusButton({ booking }: StatusButtonProps) {
   }, [occupantId, occupantCode, toggles, addActivity, removeLastActivity]);
 
   /**
-   * The button is never truly "disabled" in this new logic.
-   * If you wanted to prevent changes under certain conditions, you could adapt this.
-   */
-  const isDisabled = false;
-
-  /**
    * Combine dynamic and static classes for button styling.
    */
   const buttonClass = `
@@ -234,25 +228,22 @@ function StatusButton({ booking }: StatusButtonProps) {
    * Renders occupant's status toggling button.
    */
   return (
-    <>
-      <Button
-        compatibilityMode="passthrough"
-        onClick={handleStatusChange}
-        disabled={isDisabled}
-        className={buttonClass}
-        title={activityCodes[occupantCode] || "Pending"}
-        aria-label={`Status: ${activityCodes[occupantCode] || "Pending"}`}
-      >
-        {loading ? (
-          <Spinner size="sm" className="transition-opacity duration-300" />
-        ) : (
-          (() => {
-            const StatusIcon = getStatusIcon(occupantCode);
-            return <StatusIcon size={24} className="transition-opacity duration-300" />;
-          })()
-        )}
-      </Button>
-    </>
+    <Button
+      compatibilityMode="passthrough"
+      onClick={handleStatusChange}
+      className={buttonClass}
+      title={activityCodes[occupantCode] || "Pending"}
+      aria-label={`Status: ${activityCodes[occupantCode] || "Pending"}`}
+    >
+      {loading ? (
+        <Spinner size="sm" className="transition-opacity duration-300" />
+      ) : (
+        (() => {
+          const StatusIcon = getStatusIcon(occupantCode);
+          return <StatusIcon size={24} className="transition-opacity duration-300" />;
+        })()
+      )}
+    </Button>
   );
 }
 

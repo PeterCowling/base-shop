@@ -17,6 +17,7 @@ import useBatchCountProgress from "../../hooks/utilities/useBatchCountProgress";
 import { canAccess, Permissions } from "../../lib/roles";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import type { InventoryItem } from "../../types/hooks/data/inventoryItemData";
+import { getLocalToday } from "../../utils/dateUtils";
 import { buildInventorySnapshot } from "../../utils/inventoryLedger";
 import PasswordReauthModal from "../common/PasswordReauthModal";
 
@@ -174,7 +175,7 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
   const { entries, loading: ledgerLoading, error: ledgerError } = useInventoryLedger();
   const { addLedgerEntry } = useInventoryLedgerMutations();
 
-  const sessionDate = useMemo(() => new Date().toISOString().split("T")[0], []);
+  const sessionDate = getLocalToday();
   const userId = user?.uid ?? user?.user_name ?? "";
   const { progress, saveProgress, clearProgress } = useBatchCountProgress(userId, sessionDate);
 
@@ -462,10 +463,6 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
     submitCategoryWithReauthGate,
   ]);
 
-  const handleCancelReason = useCallback(() => {
-    setPendingReason(null);
-  }, []);
-
   const handleReasonChange = useCallback((reason: VarianceReasonCode | null) => {
     setPendingReason((current) => {
       if (!current) {
@@ -636,7 +633,7 @@ export default function BatchStockCount({ onComplete }: BatchStockCountProps) {
         <VarianceReasonPrompt
           disabled={isReasonConfirmDisabled}
           pendingReason={pendingReason}
-          onCancel={handleCancelReason}
+          onCancel={() => setPendingReason(null)}
           onConfirm={() => {
             void handleConfirmReason();
           }}

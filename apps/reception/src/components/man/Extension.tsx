@@ -254,6 +254,14 @@ function Extension() {
     });
   }, [rows, searchQuery]);
 
+  const firstRowPerBooking = useMemo(() => {
+    const map: Record<string, (typeof filteredRows)[0]> = {};
+    for (const row of filteredRows) {
+      if (!map[row.bookingRef]) map[row.bookingRef] = row;
+    }
+    return map;
+  }, [filteredRows]);
+
   const bookingColorMap = useMemo(() => {
     const map: Record<string, string> = {};
     let useGrey = false;
@@ -402,7 +410,7 @@ function Extension() {
                               >
                                 {availabilityMap[r.occupantId] ? "Guest" : "N/A"}
                               </Button>
-                              {filteredRows.find((row) => row.bookingRef === r.bookingRef) === r &&
+                              {firstRowPerBooking[r.bookingRef] === r &&
                                 r.occupantCount > 1 && (
                                   <Button
                                     color={availabilityMap[r.occupantId] ? "primary" : "default"}

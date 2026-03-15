@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ArrowLeft, Inbox, Mail, MessageSquare, RefreshCw } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
@@ -74,22 +74,24 @@ export default function InboxWorkspace() {
   const [mobileActiveTab, setMobileActiveTab] = useState<MobileTab>("email");
   const [analyticsRefreshKey, setAnalyticsRefreshKey] = useState(0);
 
-  async function handleSelectEmailThread(threadId: string) {
+  async function handleSelectThread(
+    selector: (id: string) => Promise<unknown>,
+    threadId: string,
+  ) {
     try {
-      await selectEmailThread(threadId);
+      await selector(threadId);
       setMobileShowDetail(true);
     } catch {
       showToast("Failed to load thread details", "error");
     }
   }
 
-  async function handleSelectPrimeThread(threadId: string) {
-    try {
-      await selectPrimeThread(threadId);
-      setMobileShowDetail(true);
-    } catch {
-      showToast("Failed to load thread details", "error");
-    }
+  function handleSelectEmailThread(threadId: string) {
+    return handleSelectThread(selectEmailThread, threadId);
+  }
+
+  function handleSelectPrimeThread(threadId: string) {
+    return handleSelectThread(selectPrimeThread, threadId);
   }
 
   async function handleSaveDraft(input: {
@@ -160,28 +162,30 @@ export default function InboxWorkspace() {
     }
   }
 
-  async function handleSyncInbox() {
+  async function handleInboxAction(
+    action: () => Promise<void>,
+    successMsg: string,
+    errorMsg: string,
+  ) {
     try {
-      await syncInbox();
+      await action();
       setAnalyticsRefreshKey((k) => k + 1);
-      showToast("Inbox synced", "success");
+      showToast(successMsg, "success");
     } catch {
-      showToast("Failed to sync inbox", "error");
+      showToast(errorMsg, "error");
     }
   }
 
-  async function handleRefreshInbox() {
-    try {
-      await refreshInboxView();
-      setAnalyticsRefreshKey((k) => k + 1);
-      showToast("Inbox refreshed", "success");
-    } catch {
-      showToast("Failed to refresh inbox", "error");
-    }
+  function handleSyncInbox() {
+    return handleInboxAction(syncInbox, "Inbox synced", "Failed to sync inbox");
   }
 
-  const manualDraftCount = countThreadsNeedingManualDraft(threads);
-  const readyToSendCount = countThreadsReadyToSend(threads);
+  function handleRefreshInbox() {
+    return handleInboxAction(refreshInboxView, "Inbox refreshed", "Failed to refresh inbox");
+  }
+
+  const manualDraftCount = useMemo(() => countThreadsNeedingManualDraft(threads), [threads]);
+  const readyToSendCount = useMemo(() => countThreadsReadyToSend(threads), [threads]);
 
   const detailPane = (
     <InboxErrorBoundary>

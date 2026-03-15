@@ -1,5 +1,5 @@
 // File: /src/components/loans/LoansTable.tsx
-import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
+import { memo, type ReactElement, useCallback, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 
@@ -8,6 +8,8 @@ import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData
 import { GuestRow } from "./GuestRow";
 import { KeycardsModal } from "./KeycardsModal";
 import { LoanModal } from "./LoanModal";
+
+const GUEST_ROW_BG = "hover:bg-surface-2 cursor-pointer";
 
 interface TableGuest {
   occupantId: string;
@@ -122,20 +124,19 @@ function LoansTableComponent({
   /**
    * Closes the modal (loan or return).
    */
-  const closeModal = useCallback(() => {
-    setModalState((prev) => ({
-      ...prev,
-      isOpen: false,
-    }));
-  }, []);
+  const closeModal = useCallback(
+    () => setModalState((prev) => ({ ...prev, isOpen: false })),
+    []
+  );
 
   const openKeycardsModal = useCallback((occupant: Occupant) => {
     setKeycardsState({ isOpen: true, occupant });
   }, []);
 
-  const closeKeycardsModal = useCallback(() => {
-    setKeycardsState((prev) => ({ ...prev, isOpen: false }));
-  }, []);
+  const closeKeycardsModal = useCallback(
+    () => setKeycardsState((prev) => ({ ...prev, isOpen: false })),
+    []
+  );
 
   /**
    * When user confirms in the modal, call the appropriate handler.
@@ -167,7 +168,7 @@ function LoansTableComponent({
     setSelectedItems((prev) => ({ ...prev, [guestId]: item }));
   }, []);
 
-  const hasGuests = useMemo(() => guests.length > 0, [guests]);
+  const hasGuests = guests.length > 0;
 
   return (
     <>
@@ -239,7 +240,7 @@ function LoansTableComponent({
                     buttonDisabled={buttonDisabled}
                     openModal={openModal}
                     openKeycardsModal={openKeycardsModal}
-                    rowBg="hover:bg-surface-2 cursor-pointer"
+                    rowBg={GUEST_ROW_BG}
                   />
                 );
               })}

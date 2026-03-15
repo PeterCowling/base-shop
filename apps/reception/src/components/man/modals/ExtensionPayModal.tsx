@@ -15,6 +15,10 @@ import { roundDownTo50Cents } from "../../../utils/moneyUtils";
 import { showToast } from "../../../utils/toastUtils";
 import ModalContainer from "../../bar/orderTaking/modal/ModalContainer";
 
+const CITY_TAX_RATE_PER_DAY = 2.5;
+const FORM_RADIO_CLASSES = "form-radio h-4 w-4 text-primary-main";
+const FORM_CHECKBOX_CLASSES = "form-checkbox h-4 w-4 text-primary-main";
+
 type ExtendType = "single" | "all";
 
 export interface ExtensionPayModalProps {
@@ -58,20 +62,11 @@ function ExtensionPayModalBase({
   const [isSaving, setIsSaving] = useState(false);
   const [markCityTaxPaid, setMarkCityTaxPaid] = useState(false);
   const [markKeyExtended, setMarkKeyExtended] = useState(false);
-  const handleClose = useCallback(() => onClose(), [onClose]);
   const pricePerGuest = roundDownTo50Cents(nightlyRate * nights);
   const showSingleOption = occupantCount === 1 || defaultExtendType !== "all";
   const showAllOption = occupantCount > 1 && defaultExtendType !== "single";
-
-  const cityTaxTargets = useMemo(
-    () => (extendType === "single" ? [occupantId] : occupantIds),
-    [extendType, occupantId, occupantIds]
-  );
-
-  const defaultCityTaxPerGuest = useMemo(
-    () => Number((nights * 2.5).toFixed(2)),
-    [nights]
-  );
+  const cityTaxTargets = extendType === "single" ? [occupantId] : occupantIds;
+  const defaultCityTaxPerGuest = Number((nights * CITY_TAX_RATE_PER_DAY).toFixed(2));
 
   const displayedCityTaxTotal = useMemo(() => {
     const total = cityTaxTargets.reduce((sum, id) => {
@@ -208,7 +203,7 @@ function ExtensionPayModalBase({
               value="single"
               checked={extendType === "single"}
               onChange={() => setExtendType("single")}
-              className="form-radio h-4 w-4 text-primary-main"
+              className={FORM_RADIO_CLASSES}
             />
             <span>Extend only this guest</span>
           </label>
@@ -221,7 +216,7 @@ function ExtensionPayModalBase({
               value="all"
               checked={extendType === "all"}
               onChange={() => setExtendType("all")}
-              className="form-radio h-4 w-4 text-primary-main"
+              className={FORM_RADIO_CLASSES}
             />
             <span>Extend all guests in booking ({occupantCount})</span>
           </label>
@@ -250,7 +245,7 @@ function ExtensionPayModalBase({
             type="checkbox"
             checked={markCityTaxPaid}
             onChange={(event) => setMarkCityTaxPaid(event.target.checked)}
-            className="form-checkbox h-4 w-4 text-primary-main"
+            className={FORM_CHECKBOX_CLASSES}
           />
           <span>Mark city tax as paid</span>
         </label>
@@ -260,7 +255,7 @@ function ExtensionPayModalBase({
             type="checkbox"
             checked={markKeyExtended}
             onChange={(event) => setMarkKeyExtended(event.target.checked)}
-            className="form-checkbox h-4 w-4 text-primary-main"
+            className={FORM_CHECKBOX_CLASSES}
           />
           <span>Confirm key has been extended</span>
         </label>
@@ -276,7 +271,7 @@ function ExtensionPayModalBase({
           {isSaving ? "Saving..." : "Extend"}
         </Button>{" "}
         <Button
-          onClick={handleClose}
+          onClick={onClose}
           color="default"
           tone="soft"
           disabled={isSaving}

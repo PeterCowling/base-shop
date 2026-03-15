@@ -147,23 +147,14 @@ const AlloggiatiComponent: FC = () => {
 
   // Toggle all occupant's checkboxes
   function handleToggleAll() {
-    const allSelected = occupantEntries.every((e) => {
-      const logEntry = alloggiatiLogs?.[e.occupantId];
-      // If occupant is "ok", there's no checkbox, so skip it from the "allSelected" logic
-      if (logEntry && logEntry.result === "ok") {
-        return true;
-      }
-      return !!selectedMap[e.occupantId];
-    });
-
+    const isLocked = (e: (typeof occupantEntries)[0]) =>
+      alloggiatiLogs?.[e.occupantId]?.result === "ok";
+    const allSelected = occupantEntries.every(
+      (e) => isLocked(e) || !!selectedMap[e.occupantId]
+    );
     const newMap: Record<string, boolean> = {};
     occupantEntries.forEach((e) => {
-      const logEntry = alloggiatiLogs?.[e.occupantId];
-      // If occupant is "ok", we do not include a checkbox
-      if (logEntry?.result === "ok") {
-        return; // do not modify
-      }
-      newMap[e.occupantId] = !allSelected;
+      if (!isLocked(e)) newMap[e.occupantId] = !allSelected;
     });
     setSelectedMap(newMap);
   }

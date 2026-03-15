@@ -124,6 +124,8 @@ export function getLoanTitle(
   return "Keycard";
 }
 
+const TH_CLASS = "text-center p-3 border-b border-border-2 text-muted-foreground";
+
 /**
  * The checkout table for displaying guests, their loans, etc.
  * Sorts guests with the same approach used in check-ins:
@@ -161,30 +163,14 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
         <Table className="w-full border-collapse" aria-label="checkout table">
           <TableHeader className="sticky top-0 z-10 backdrop-blur-sm bg-surface-2/80">
             <TableRow>
-              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
-                DATE
-              </TableHead>
-              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
-                REF
-              </TableHead>
-              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
-                NAME
-              </TableHead>
-              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
-                ROOM
-              </TableHead>
-              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground w-48">
-                LOANS
-              </TableHead>
-              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
-                BAG STORAGE
-              </TableHead>
-              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
-                FRIDGE
-              </TableHead>
-              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground w-32">
-                COMPLETE
-              </TableHead>
+              <TableHead className={TH_CLASS}>DATE</TableHead>
+              <TableHead className={TH_CLASS}>REF</TableHead>
+              <TableHead className={TH_CLASS}>NAME</TableHead>
+              <TableHead className={TH_CLASS}>ROOM</TableHead>
+              <TableHead className={`${TH_CLASS} w-48`}>LOANS</TableHead>
+              <TableHead className={TH_CLASS}>BAG STORAGE</TableHead>
+              <TableHead className={TH_CLASS}>FRIDGE</TableHead>
+              <TableHead className={`${TH_CLASS} w-32`}>COMPLETE</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

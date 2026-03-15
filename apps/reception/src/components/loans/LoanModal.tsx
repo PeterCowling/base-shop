@@ -15,6 +15,8 @@ import { SimpleModal } from "@acme/ui/molecules";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
+import { getDepositForItem } from "./LoanUtils";
+
 /**
  * Occupant shape for the modal.
  */
@@ -67,7 +69,7 @@ function LoanModalComponent({
       ? { icon: Banknote, className: "text-success-main" }
       : { icon: FileText, className: "text-warning-main" };
 
-  const itemPrice = item === "Hairdryer" || item === "Steamer" ? 20 : 10;
+  const itemPrice = item ? getDepositForItem(item) : 0;
 
   /**
    * When the modal opens:
@@ -85,27 +87,6 @@ function LoanModalComponent({
       }
     }
   }, [isOpen, item, method]);
-
-  /**
-   * Handle changes in the count field.
-   */
-  const handleCountChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setCountInput(e.target.value);
-    },
-    []
-  );
-
-  /**
-   * If the item is "Keycard," the user can pick from
-   * "CASH" | "PASSPORT" | "LICENSE" | "ID".
-   */
-  const handleDepositTypeChange = useCallback(
-    (value: string) => {
-      setDepositType(value as LoanMethod);
-    },
-    []
-  );
 
   /**
    * On confirm, pass count and depositType back to the parent, then close.
@@ -185,7 +166,7 @@ function LoanModalComponent({
               value={countInput}
               min={1}
               max={maxCount || 99}
-              onChange={handleCountChange}
+              onChange={(e) => setCountInput(e.target.value)}
               className="border rounded-lg px-2 py-1 w-20 me-2"
             />
             {maxCount !== undefined && mode === "return" && (
@@ -207,7 +188,7 @@ function LoanModalComponent({
                 className={depositIcon.className}
               />
             </label>
-            <Select value={depositType} onValueChange={handleDepositTypeChange}>
+            <Select value={depositType} onValueChange={(v) => setDepositType(v as LoanMethod)}>
               <SelectTrigger id="depositMethod" className="border rounded-lg px-2 py-1 w-full">
                 <SelectValue />
               </SelectTrigger>

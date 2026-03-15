@@ -14,6 +14,9 @@ import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData
 
 import DOBSection from "./DOBSection";
 
+const INPUT_BASE_CLASS =
+  "border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-2 focus:ring-primary-main";
+
 interface SnackbarState {
   open: boolean;
   message: string;
@@ -54,20 +57,6 @@ function Row3({
 
   const isDocNumberPopulated = occupantDetails?.document?.number?.trim() !== "";
   const isDocTypePopulated = occupantDetails?.document?.type?.trim() !== "";
-
-  /**
-   * Handle typing in the "Document Number" field:
-   * - Automatically uppercase letters
-   * - Update local state
-   */
-  const handleDocNumberChange = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      // Transform to uppercase
-      const uppercaseValue = e.target.value.toUpperCase();
-      setDocumentNumber(uppercaseValue);
-    },
-    []
-  );
 
   /**
    * The same "save" logic for blur or Enter press.
@@ -120,17 +109,6 @@ function Row3({
     [saveDocNumber]
   );
 
-  /**
-   * Handle dropdown selection change for document type.
-   */
-  const handleDocTypeChange = useCallback(
-    (value: string) => {
-      setDocumentType(value as DocType);
-    },
-    []
-  );
-
-
   return (
     <Inline gap={12} className="mb-75px">
       {/* Document Number */}
@@ -141,16 +119,17 @@ function Row3({
         >
           Document Number
         </label>
-        <Input compatibilityMode="no-wrapper"
+        <Input
+          compatibilityMode="no-wrapper"
           id="documentNumber"
           type="text"
           value={documentNumber}
-          onChange={handleDocNumberChange}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setDocumentNumber(e.target.value.toUpperCase())
+          }
           onBlur={saveDocNumber}
           onKeyDown={handleDocNumberKeyDown}
-          className={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-2 focus:ring-primary-main ${
-            isDocNumberPopulated ? "bg-success-light/50" : ""
-          } text-foreground`}
+          className={`${INPUT_BASE_CLASS} ${isDocNumberPopulated ? "bg-success-light/50" : ""} text-foreground`}
         />
       </div>
 
@@ -165,7 +144,7 @@ function Row3({
         <Select
           value={documentType || undefined}
           onValueChange={(value) => {
-            handleDocTypeChange(value);
+            setDocumentType(value as DocType);
             if (value !== occupantDetails?.document?.type) {
               void saveField("document/type", value).then(() => {
                 setSnackbar({ open: true, message: "Document type updated successfully!", severity: "success" });
@@ -181,10 +160,8 @@ function Row3({
         >
           <SelectTrigger
             id="documentType"
-            className={`border border-info-light rounded-lg px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-primary-main transition-shadow ${
-              isDocTypePopulated
-                ? "bg-success-light/50"
-                : "bg-surface"
+            className={`${INPUT_BASE_CLASS} w-full transition-shadow ${
+              isDocTypePopulated ? "bg-success-light/50" : "bg-surface"
             } text-foreground hover:border-primary-dark`}
           >
             <SelectValue placeholder="Select document type" />

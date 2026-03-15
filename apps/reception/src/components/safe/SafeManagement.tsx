@@ -32,6 +32,8 @@ import { SafeReconcileForm } from "./SafeReconcileForm";
 import { SafeResetForm } from "./SafeResetForm";
 import { SafeWithdrawalForm } from "./SafeWithdrawalForm";
 
+const ROW_CLASS = ["bg-surface", "bg-surface-2"] as const;
+
 const SAFE_TYPE_LABEL: Record<string, string> = {
   deposit: "Deposit",
   withdrawal: "Withdrawal",
@@ -150,37 +152,25 @@ function SafeManagement(): JSX.Element {
     direction: "drawerToSafe" | "safeToDrawer",
     total: number
   ) => {
-    try {
-      const steps = [
+    const reverseDir = direction === "drawerToSafe" ? "safeToDrawer" : "drawerToSafe";
+    await runSafeTransaction(
+      [
         {
           run: () => recordExchange(outgoing, incoming, direction, total),
-          rollback: () =>
-            recordExchange(
-              incoming,
-              outgoing,
-              direction === "drawerToSafe" ? "safeToDrawer" : "drawerToSafe",
-              total
-            ),
+          rollback: () => recordExchange(incoming, outgoing, reverseDir, total),
         },
-      ];
-
-      if (direction === "drawerToSafe") {
-        steps.push({
-          run: () => addCashCount("tenderRemoval", 0, 0, total),
-          rollback: () => addCashCount("tenderRemoval", 0, 0, -total),
-        });
-      } else {
-        steps.push({
-          run: () => recordFloatEntry(total),
-          rollback: () => recordFloatEntry(-total),
-        });
-      }
-
-      await runTransaction(steps);
-      setActiveModal(null);
-    } catch {
-      showToast("Failed to record exchange.", "error");
-    }
+        direction === "drawerToSafe"
+          ? {
+              run: () => addCashCount("tenderRemoval", 0, 0, total),
+              rollback: () => addCashCount("tenderRemoval", 0, 0, -total),
+            }
+          : {
+              run: () => recordFloatEntry(total),
+              rollback: () => recordFloatEntry(-total),
+            },
+      ],
+      "Failed to record exchange."
+    );
   };
 
   const handleOpen = async (count: number, keycards: number) => {
@@ -533,9 +523,7 @@ function SafeManagement(): JSX.Element {
                   <Fragment key={rowKey}>
                     <TableRow
                       className={
-                        idx % 2 === 0
-                          ? "bg-surface"
-                          : "bg-surface-2"
+                        ROW_CLASS[idx % 2]
                       }
                     >
                       <TableCell className="p-2">

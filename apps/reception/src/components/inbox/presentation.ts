@@ -108,6 +108,15 @@ export function inferReplySubject(subject: string | null | undefined): string {
   return /^re:/i.test(trimmed) ? trimmed : `Re: ${trimmed}`;
 }
 
+// Compiled once at module load — used in the line-by-line scan inside stripQuotedContent.
+const RE_QUOTED_GMAIL_EN = /^On .{10,80} wrote:\s*$/;
+const RE_QUOTED_GMAIL_IT = /^>?\s*Il giorno .{10,80} ha scritto:\s*$/;
+const RE_QUOTED_GMAIL_DE = /^Am .{10,80} schrieb .{1,80}:\s*$/;
+const RE_QUOTED_GMAIL_FR = /^Le .{10,80} a \u00e9crit\s*:\s*$/;
+const RE_QUOTED_GMAIL_ES = /^El .{10,80} escribi\u00f3\s*:\s*$/;
+const RE_QUOTED_MOBILE_SIG = /^(?:Inviato da|Sent from my) /i;
+const RE_QUOTED_OUTLOOK_SEP = /^-{2,}\s*(?:Original Message|Forwarded message|Messaggio originale)/i;
+
 /**
  * Strip quoted reply content from a plain-text email body so each message
  * in the conversation view shows only its own content.
@@ -139,25 +148,25 @@ export function stripQuotedContent(body: string): string {
     const line = lines[i];
 
     // Gmail / generic "On <date>, <name> wrote:" delimiter (EN)
-    if (/^On .{10,80} wrote:\s*$/.test(line)) break;
+    if (RE_QUOTED_GMAIL_EN.test(line)) break;
 
     // Italian: "Il giorno ... ha scritto:"
-    if (/^>?\s*Il giorno .{10,80} ha scritto:\s*$/.test(line)) break;
+    if (RE_QUOTED_GMAIL_IT.test(line)) break;
 
     // German: "Am ... schrieb ...:"
-    if (/^Am .{10,80} schrieb .{1,80}:\s*$/.test(line)) break;
+    if (RE_QUOTED_GMAIL_DE.test(line)) break;
 
     // French: "Le ... a écrit :"
-    if (/^Le .{10,80} a \u00e9crit\s*:\s*$/.test(line)) break;
+    if (RE_QUOTED_GMAIL_FR.test(line)) break;
 
     // Spanish: "El ... escribió:"
-    if (/^El .{10,80} escribi\u00f3\s*:\s*$/.test(line)) break;
+    if (RE_QUOTED_GMAIL_ES.test(line)) break;
 
     // Apple Mail / iOS: "Inviato da iPhone/iPad" or "Sent from my iPhone"
-    if (/^(?:Inviato da|Sent from my) /i.test(line)) break;
+    if (RE_QUOTED_MOBILE_SIG.test(line)) break;
 
     // Outlook-style separator
-    if (/^-{2,}\s*(?:Original Message|Forwarded message|Messaggio originale)/i.test(line)) break;
+    if (RE_QUOTED_OUTLOOK_SEP.test(line)) break;
 
     // Block of ">" quoted lines — break at the first `>` line in a
     // contiguous run (whether preceded by a blank line or not)

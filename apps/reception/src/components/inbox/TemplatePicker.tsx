@@ -89,7 +89,7 @@ export default function TemplatePicker({
     [locale, onSelect],
   );
 
-  const toggleCategory = useCallback((category: string) => {
+  function toggleCategory(category: string) {
     setExpandedCategories((prev) => {
       const next = new Set(prev);
       if (next.has(category)) {
@@ -99,12 +99,12 @@ export default function TemplatePicker({
       }
       return next;
     });
-  }, []);
+  }
 
-  const handleToggleBrowse = useCallback(() => {
+  function handleToggleBrowse() {
     setBrowsing((prev) => !prev);
     setSearchQuery("");
-  }, []);
+  }
 
   const grouped = useMemo(
     () => (browsing && !searchQuery.trim() ? groupByCategory(displayTemplates) : null),
@@ -130,7 +130,7 @@ export default function TemplatePicker({
               type="button"
               color={locale === "en" ? "primary" : "default"}
               tone={locale === "en" ? "solid" : "ghost"}
-              className={`px-2 py-0.5 text-xs font-medium rounded-l-md`}
+              className="px-2 py-0.5 text-xs font-medium rounded-l-md"
               onClick={() => setLocale("en")}
               role="radio"
               aria-checked={locale === "en"}
@@ -141,7 +141,7 @@ export default function TemplatePicker({
               type="button"
               color={locale === "it" ? "primary" : "default"}
               tone={locale === "it" ? "solid" : "ghost"}
-              className={`px-2 py-0.5 text-xs font-medium rounded-r-md`}
+              className="px-2 py-0.5 text-xs font-medium rounded-r-md"
               onClick={() => setLocale("it")}
               role="radio"
               aria-checked={locale === "it"}

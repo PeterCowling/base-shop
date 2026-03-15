@@ -149,7 +149,7 @@ function writeFixture(filePath: string, fixture: QueueStateFixture): void {
   writeFileSync(filePath, JSON.stringify(fixture, null, 2) + "\n", "utf-8");
 }
 
-function writeBuildRecord(rootDir: string, relativePath: string, content: string): void {
+function writeTestFile(rootDir: string, relativePath: string, content: string): void {
   const filePath = join(rootDir, relativePath);
   mkdirSync(join(filePath, ".."), { recursive: true });
   writeFileSync(filePath, content.trim() + "\n", "utf-8");
@@ -276,7 +276,7 @@ describe("markDispatchesCompleted", () => {
         }),
       ]),
     );
-    writeBuildRecord(
+    writeTestFile(
       dir,
       "docs/plans/_archive/my-slug/build-record.user.md",
       `
@@ -322,6 +322,12 @@ describe("markDispatchesCompleted", () => {
         measurement_status: "verified",
       }),
     );
+    expect(
+      readFileSync(
+        join(dir, "docs/plans/_archive/my-slug/self-evolving-measurement.json"),
+        "utf-8",
+      ),
+    ).toContain('"schema_version": "self-evolving-measurement.v1"');
   });
 
   it("TC-06C: malformed declared self-evolving measurement returns parse_error", () => {
@@ -343,7 +349,7 @@ describe("markDispatchesCompleted", () => {
         }),
       ]),
     );
-    writeBuildRecord(
+    writeTestFile(
       dir,
       "docs/plans/_archive/my-slug/build-record.user.md",
       `
@@ -373,6 +379,83 @@ describe("markDispatchesCompleted", () => {
 
     const updated = readFixture(queueStatePath);
     expect(updated.dispatches[0]?.queue_state).toBe("auto_executed");
+  });
+
+  it("TC-06D: prefers deterministic sidecar over markdown fallback", () => {
+    const dir = makeTmpDir();
+    const queueStatePath = join(dir, "queue-state.json");
+    const planPath = "docs/plans/_archive/my-slug/plan.md";
+    writeFixture(
+      queueStatePath,
+      makeQueueFixture([
+        makeDispatch({
+          self_evolving: {
+            candidate_id: "cand-sidecar",
+            decision_id: "decision-sidecar",
+            policy_version: "self-evolving-policy.v1",
+            recommended_route_origin: "lp-do-plan",
+            executor_path: "lp-do-build:container:feedback-intel-v1",
+            handoff_emitted_at: BASE_TIME,
+          },
+        }),
+      ]),
+    );
+    writeTestFile(
+      dir,
+      "docs/plans/_archive/my-slug/build-record.user.md",
+      `
+## Self-Evolving Measurement
+
+- **Status:** verified
+- **KPI Name:** broken
+      `,
+    );
+    writeTestFile(
+      dir,
+      "docs/plans/_archive/my-slug/self-evolving-measurement.json",
+      JSON.stringify(
+        {
+          schema_version: "self-evolving-measurement.v1",
+          feature_slug: "my-slug",
+          generated_at: "2026-02-26T12:00:00.000Z",
+          source_artifact_path: "docs/plans/_archive/my-slug/build-record.user.md",
+          measurement: {
+            kpi_name: "reply_rate",
+            kpi_value: 0.42,
+            kpi_unit: "ratio",
+            aggregation_method: "rate",
+            sample_size: 45,
+            baseline_ref: "docs/plans/my-slug/baseline.md",
+            measurement_window: "2026-02-20/2026-02-26",
+            baseline_window: "2026-02-13/2026-02-19",
+            post_window: "2026-02-20/2026-02-26",
+            measured_impact: 0.08,
+            impact_confidence: 0.74,
+            regressions_detected: 0,
+            data_quality_status: "ok",
+            traffic_segment: "all",
+            artifact_refs: ["docs/plans/_archive/my-slug/build-record.user.md"],
+          },
+        },
+        null,
+        2,
+      ),
+    );
+
+    const result = markDispatchesCompleted({
+      queueStatePath,
+      featureSlug: "my-slug",
+      planPath,
+      outcome: "Sidecar proof wins",
+      rootDir: dir,
+      clock: () => new Date("2026-02-26T12:34:56.000Z"),
+    });
+
+    expect(result).toEqual({ ok: true, mutated: 1, skipped: 0 });
+    const updated = readFixture(queueStatePath);
+    expect(updated.dispatches[0]?.completed_by?.self_evolving?.measurement_status).toBe(
+      "verified",
+    );
   });
 
   it("TC-02: idempotency preserves first completion timestamp", () => {

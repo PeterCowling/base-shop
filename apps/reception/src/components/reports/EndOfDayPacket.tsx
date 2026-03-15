@@ -40,6 +40,62 @@ import { type Column,SafeTable } from "./SafeTable";
 import SafeTableSection from "./SafeTableSection";
 import VarianceSummary from "./VarianceSummary";
 
+const KEYCARD_DIFF_ERROR_CLASS = "bg-error-light text-error-main font-semibold rounded px-0.5";
+
+function renderKeycardDiff(
+  c: SafeCount,
+  emptyFallback: string | number
+): React.ReactNode {
+  if (c.keycardDifference === undefined) return emptyFallback;
+  return (
+    <span
+      className={c.keycardDifference !== 0 ? KEYCARD_DIFF_ERROR_CLASS : undefined}
+    >{`${c.keycardDifference >= 0 ? "+" : ""}${c.keycardDifference}`}</span>
+  );
+}
+
+const AMOUNT_COLUMNS_ZERO: Column<SafeCount>[] = [
+  { header: "Time", render: (c) => formatEnGbDateTimeFromIso(c.timestamp) },
+  { header: "Amount", render: (c) => formatEuro(c.amount || 0) },
+  { header: "Keycards", render: (c) => c.keycardCount ?? 0 },
+  { header: "Keycard Diff", render: (c) => renderKeycardDiff(c, "0") },
+  { header: "User", render: (c) => c.user },
+];
+
+const AMOUNT_COLUMNS_DASH: Column<SafeCount>[] = [
+  { header: "Time", render: (c) => formatEnGbDateTimeFromIso(c.timestamp) },
+  { header: "Amount", render: (c) => formatEuro(c.amount || 0) },
+  { header: "Keycards", render: (c) => c.keycardCount ?? "-" },
+  { header: "Keycard Diff", render: (c) => renderKeycardDiff(c, "-") },
+  { header: "User", render: (c) => c.user },
+];
+
+const EXCHANGE_COLUMNS: Column<SafeCount>[] = [
+  { header: "Time", render: (c) => formatEnGbDateTimeFromIso(c.timestamp) },
+  { header: "Amount", render: (c) => formatEuro(c.amount || 0) },
+  { header: "User", render: (c) => c.user },
+];
+
+const RECONCILE_COLUMNS: Column<SafeCount>[] = [
+  { header: "Time", render: (c) => formatEnGbDateTimeFromIso(c.timestamp) },
+  { header: "Count", render: (c) => formatEuro(c.count || 0) },
+  { header: "Difference", render: (c) => formatEuro(c.difference || 0) },
+  { header: "Keycards", render: (c) => c.keycardCount ?? "-" },
+  { header: "Keycard Diff", render: (c) => renderKeycardDiff(c, "-") },
+  { header: "User", render: (c) => c.user },
+];
+
+type KeycardTransferRow = KeycardTransfer & { id: number };
+const KEYCARD_TRANSFER_COLUMNS: Column<KeycardTransferRow>[] = [
+  { header: "Time", render: (t) => formatEnGbDateTimeFromIso(t.timestamp) },
+  { header: "Count", render: (t) => t.count },
+  { header: "User", render: (t) => t.user },
+];
+
+function getSafeCountKey(c: SafeCount, idx: number): string | number {
+  return c.id ?? c.timestamp ?? idx;
+}
+
 interface EndOfDayPacketProps {
   /**
    * Date for which the report should be generated. If omitted, uses today's
@@ -120,18 +176,6 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
       correctionSummary,
     } = useEndOfDayReportData(date);
     const { activeAssignments } = useKeycardAssignments();
-    const unresolvedAssignments = useMemo(
-      () =>
-        activeAssignments.map((a) => ({
-          keycardNumber: a.keycardNumber,
-          roomNumber: a.roomNumber,
-          occupantId: a.occupantId,
-          bookingRef: a.bookingRef,
-          assignedToStaff: a.assignedToStaff,
-          isMasterKey: a.isMasterKey,
-        })),
-      [activeAssignments]
-    );
     const { thresholds } = useVarianceThresholds();
     const { shifts, loading: shiftsLoading, error: shiftsError } =
       useTillShiftsRange({
@@ -153,132 +197,6 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
     );
 
     const drawerInflows = safeInflowsTotal - bankWithdrawals.total;
-
-    const getSafeCountKey = (c: SafeCount, idx: number) =>
-      c.id ?? c.timestamp ?? idx;
-
-    const amountColumnsZero: Column<SafeCount>[] = [
-      {
-        header: "Time",
-        render: (c) => formatEnGbDateTimeFromIso(c.timestamp),
-      },
-      {
-        header: "Amount",
-        render: (c) => formatEuro(c.amount || 0),
-      },
-      {
-        header: "Keycards",
-        render: (c) => c.keycardCount ?? 0,
-      },
-      {
-        header: "Keycard Diff",
-        render: (c) =>
-          c.keycardDifference !== undefined ? (
-            <span
-              className={
-                c.keycardDifference !== 0
-                  ? "bg-error-light text-error-main font-semibold rounded px-0.5"
-                  : undefined
-              }
-            >{`${c.keycardDifference >= 0 ? "+" : ""}${c.keycardDifference}`}</span>
-          ) : (
-            "0"
-          ),
-      },
-      { header: "User", render: (c) => c.user },
-    ];
-
-    const amountColumnsDash: Column<SafeCount>[] = [
-      {
-        header: "Time",
-        render: (c) => formatEnGbDateTimeFromIso(c.timestamp),
-      },
-      {
-        header: "Amount",
-        render: (c) => formatEuro(c.amount || 0),
-      },
-      {
-        header: "Keycards",
-        render: (c) => c.keycardCount ?? "-",
-      },
-      {
-        header: "Keycard Diff",
-        render: (c) =>
-          c.keycardDifference !== undefined ? (
-            <span
-              className={
-                c.keycardDifference !== 0
-                  ? "bg-error-light text-error-main font-semibold rounded px-0.5"
-                  : undefined
-              }
-            >{`${c.keycardDifference >= 0 ? "+" : ""}${c.keycardDifference}`}</span>
-          ) : (
-            "-"
-          ),
-      },
-      { header: "User", render: (c) => c.user },
-    ];
-
-    const exchangeColumns: Column<SafeCount>[] = [
-      {
-        header: "Time",
-        render: (c) => formatEnGbDateTimeFromIso(c.timestamp),
-      },
-      {
-        header: "Amount",
-        render: (c) => formatEuro(c.amount || 0),
-      },
-      { header: "User", render: (c) => c.user },
-    ];
-
-    const reconcileColumns: Column<SafeCount>[] = [
-      {
-        header: "Time",
-        render: (c) => formatEnGbDateTimeFromIso(c.timestamp),
-      },
-      {
-        header: "Count",
-        render: (c) => formatEuro(c.count || 0),
-      },
-      {
-        header: "Difference",
-        render: (c) => formatEuro(c.difference || 0),
-      },
-      {
-        header: "Keycards",
-        render: (c) => c.keycardCount ?? "-",
-      },
-      {
-        header: "Keycard Diff",
-        render: (c) =>
-          c.keycardDifference !== undefined ? (
-            <span
-              className={
-                c.keycardDifference !== 0
-                  ? "bg-error-light text-error-main font-semibold rounded px-0.5"
-                  : undefined
-              }
-            >{`${c.keycardDifference >= 0 ? "+" : ""}${c.keycardDifference}`}</span>
-          ) : (
-            "-"
-          ),
-      },
-      { header: "User", render: (c) => c.user },
-    ];
-
-    type KeycardTransferRow = KeycardTransfer & { id: number };
-    const keycardTransferColumns: Column<KeycardTransferRow>[] = [
-      {
-        header: "Time",
-        render: (t) => formatEnGbDateTimeFromIso(t.timestamp),
-      },
-      { header: "Count", render: (t) => t.count },
-      { header: "User", render: (t) => t.user },
-    ];
-
-    const handlePrint = () => {
-      window.print();
-    };
     if (isLoading) {
       return (
         <div className="flex justify-center p-4">
@@ -377,7 +295,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title={`Bank Drops (Total: ${formatEuro(bankDrops.total)})`}
           rows={bankDrops.rows}
-          columns={amountColumnsZero}
+          columns={AMOUNT_COLUMNS_ZERO}
           emptyMessage="No bank drops recorded."
           getRowKey={getSafeCountKey}
         />
@@ -385,7 +303,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title={`Bank Withdrawals (Total: ${formatEuro(bankWithdrawals.total)})`}
           rows={bankWithdrawals.rows}
-          columns={amountColumnsDash}
+          columns={AMOUNT_COLUMNS_DASH}
           emptyMessage="No bank withdrawals recorded."
           getRowKey={getSafeCountKey}
         />
@@ -393,7 +311,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title={`Safe Deposits (Total: ${formatEuro(deposits.total)})`}
           rows={deposits.rows}
-          columns={amountColumnsZero}
+          columns={AMOUNT_COLUMNS_ZERO}
           emptyMessage="No deposits recorded."
           getRowKey={getSafeCountKey}
         />
@@ -401,7 +319,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title={`Safe Withdrawals (Total: ${formatEuro(withdrawals.total)})`}
           rows={withdrawals.rows}
-          columns={amountColumnsDash}
+          columns={AMOUNT_COLUMNS_DASH}
           emptyMessage="No withdrawals recorded."
           getRowKey={getSafeCountKey}
         />
@@ -409,7 +327,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title={`Petty Cash Withdrawals (Total: ${formatEuro(pettyWithdrawals.total)})`}
           rows={pettyWithdrawals.rows}
-          columns={amountColumnsDash}
+          columns={AMOUNT_COLUMNS_DASH}
           emptyMessage="No petty withdrawals recorded."
           getRowKey={getSafeCountKey}
         />
@@ -417,7 +335,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title={`Drawer to Safe Exchanges (Total: ${formatEuro(drawerToSafeExchanges.total)})`}
           rows={drawerToSafeExchanges.rows}
-          columns={exchangeColumns}
+          columns={EXCHANGE_COLUMNS}
           emptyMessage="No drawer to safe exchanges recorded."
           getRowKey={getSafeCountKey}
         />
@@ -425,7 +343,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title={`Safe to Drawer Exchanges (Total: ${formatEuro(safeToDrawerExchanges.total)})`}
           rows={safeToDrawerExchanges.rows}
-          columns={exchangeColumns}
+          columns={EXCHANGE_COLUMNS}
           emptyMessage="No safe to drawer exchanges recorded."
           getRowKey={getSafeCountKey}
         />
@@ -445,7 +363,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title={`Safe Reconciliations (Δ${formatEuro(reconcilesTotal)})`}
           rows={todaysSafeReconciles}
-          columns={reconcileColumns}
+          columns={RECONCILE_COLUMNS}
           emptyMessage="No safe reconciliations recorded."
           getRowKey={getSafeCountKey}
         />
@@ -453,7 +371,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <SafeTableSection
           title="Safe Resets"
           rows={todaysSafeResets}
-          columns={reconcileColumns}
+          columns={RECONCILE_COLUMNS}
           emptyMessage="No safe resets recorded."
           getRowKey={getSafeCountKey}
         />
@@ -468,7 +386,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             </p>
           ) : (
             <SafeTable
-              columns={keycardTransferColumns}
+              columns={KEYCARD_TRANSFER_COLUMNS}
               rows={keycardTransfersToSafe.rows.map((t, idx) => ({ ...t, id: idx }))}
             />
           )}
@@ -484,7 +402,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             </p>
           ) : (
             <SafeTable
-              columns={keycardTransferColumns}
+              columns={KEYCARD_TRANSFER_COLUMNS}
               rows={keycardTransfersFromSafe.rows.map((t, idx) => ({ ...t, id: idx }))}
             />
           )}
@@ -710,7 +628,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
           closingKeycards={closingKeycards}
           keycardVariance={keycardVariance}
           keycardVarianceMismatch={keycardVarianceMismatch}
-          unresolvedAssignments={unresolvedAssignments}
+          unresolvedAssignments={activeAssignments}
           beginningSafeBalance={beginningSafeBalance}
           endingSafeBalance={endingSafeBalance}
           expectedSafeVariance={expectedSafeVariance}
@@ -720,7 +638,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
 
         <Button
           type="button"
-          onClick={handlePrint}
+          onClick={() => window.print()}
           className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
         >
           Print Packet

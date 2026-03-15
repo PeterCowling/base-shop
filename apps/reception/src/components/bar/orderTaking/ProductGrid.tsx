@@ -63,11 +63,6 @@ const ProductGrid: FC<ProductGridProps> = React.memo(
       [columns]
     );
 
-    const handleAdd = useCallback(
-      (n: string, p: number) => onAddProduct(n, p),
-      [onAddProduct]
-    );
-
     return (
       <LayoutGrid
         cols={1}
@@ -76,7 +71,7 @@ const ProductGrid: FC<ProductGridProps> = React.memo(
         style={gridTemplate}
       >
         {products.map((p) => (
-          <ProductItem key={p.name} product={p} onAdd={handleAdd} />
+          <ProductItem key={p.name} product={p} onAdd={onAddProduct} />
         ))}
       </LayoutGrid>
     );

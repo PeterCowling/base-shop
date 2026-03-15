@@ -14,6 +14,8 @@ import { showToast } from "../../../utils/toastUtils";
 import AutoComplete from "./AutoComplete";
 import { useDocInsertData } from "./useDocInsertData";
 
+const ROW2_INPUT_BASE = "border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main";
+
 interface Row2Props {
   occupantDetails: OccupantDetails;
   saveField: (fieldName: string, value: unknown) => Promise<void>;
@@ -45,10 +47,12 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
   const [citizenship, setCitizenship] = useState("");
   const [municipality, setMunicipality] = useState("");
 
-  // "Saved" states to mark the field as green once saved
-  const [isPlaceOfBirthSaved, setIsPlaceOfBirthSaved] = useState(false);
-  const [isCitizenshipSaved, setIsCitizenshipSaved] = useState(false);
-  const [isMunicipalitySaved, setIsMunicipalitySaved] = useState(false);
+  // "Saved" states to mark each field as green once saved
+  const [savedFields, setSavedFields] = useState<Record<Row2FieldName, boolean>>({
+    placeOfBirth: false,
+    citizenship: false,
+    municipality: false,
+  });
 
   /**
    * Initialize from occupantDetails.
@@ -62,13 +66,13 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
     } = occupantDetails || {};
 
     setPlaceOfBirth(placeOfBirth);
-    setIsPlaceOfBirthSaved(!!placeOfBirth.trim());
-
     setCitizenship(citizenship);
-    setIsCitizenshipSaved(!!citizenship.trim());
-
     setMunicipality(municipality);
-    setIsMunicipalitySaved(!!municipality.trim());
+    setSavedFields({
+      placeOfBirth: !!placeOfBirth.trim(),
+      citizenship: !!citizenship.trim(),
+      municipality: !!municipality.trim(),
+    });
   }, [occupantDetails]);
 
   /**
@@ -85,9 +89,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
       saveField(fieldName, trimmedValue)
         .then(() => {
           showToast(`${fieldName} updated successfully!`, "success");
-          if (fieldName === "placeOfBirth") setIsPlaceOfBirthSaved(true);
-          if (fieldName === "citizenship") setIsCitizenshipSaved(true);
-          if (fieldName === "municipality") setIsMunicipalitySaved(true);
+          setSavedFields((prev) => ({ ...prev, [fieldName]: true }));
         })
         .catch((err: unknown) => {
           if (err instanceof Error) {
@@ -114,17 +116,17 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
   // Mark fields as "unsaved" when the user changes them
   const handlePlaceOfBirthChange = useCallback((val: string) => {
     setPlaceOfBirth(val);
-    setIsPlaceOfBirthSaved(false);
+    setSavedFields((prev) => ({ ...prev, placeOfBirth: false }));
   }, []);
 
   const handleCitizenshipChange = useCallback((val: string) => {
     setCitizenship(val);
-    setIsCitizenshipSaved(false);
+    setSavedFields((prev) => ({ ...prev, citizenship: false }));
   }, []);
 
   const handleMunicipalityChange = useCallback((val: string) => {
     setMunicipality(val);
-    setIsMunicipalitySaved(false);
+    setSavedFields((prev) => ({ ...prev, municipality: false }));
   }, []);
 
   /**
@@ -228,9 +230,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(placeOfBirth, finalizePlaceOfBirth)}
           suggestions={countries}
           placeholder="Enter place of birth"
-          inputClassName={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
-            isPlaceOfBirthSaved ? "bg-success-light/50" : ""
-          }`}
+          inputClassName={`${ROW2_INPUT_BASE} ${savedFields.placeOfBirth ? "bg-success-light/50" : ""}`}
         />
       </div>
 
@@ -246,9 +246,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(citizenship, finalizeCitizenship)}
           suggestions={countries}
           placeholder="Enter citizenship"
-          inputClassName={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
-            isCitizenshipSaved ? "bg-success-light/50" : ""
-          }`}
+          inputClassName={`${ROW2_INPUT_BASE} ${savedFields.citizenship ? "bg-success-light/50" : ""}`}
         />
       </div>
 
@@ -270,9 +268,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(municipality, finalizeMunicipality)}
           suggestions={municipalities}
           placeholder="Enter municipality"
-          inputClassName={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
-            isMunicipalitySaved ? "bg-success-light/50" : ""
-          }`}
+          inputClassName={`${ROW2_INPUT_BASE} ${savedFields.municipality ? "bg-success-light/50" : ""}`}
         />
       </div>
     </Inline>

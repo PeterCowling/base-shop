@@ -41,6 +41,9 @@ interface ActionState {
   note: string;
 }
 
+const BTN_PRIMARY = "inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark";
+const INPUT_BARE = "border px-2 py-1";
+
 type LedgerEntryForVariance = {
   itemId: string;
   quantity: number;
@@ -55,11 +58,15 @@ type VarianceRow = {
   unexplained: number;
 };
 
+function windowCutoffMs(days: number): number {
+  return Date.now() - days * 24 * 60 * 60 * 1000;
+}
+
 function buildExplainedShrinkageByItem(
   entries: LedgerEntryForVariance[],
   varianceWindowDays: number
 ): Record<string, number> {
-  const cutoff = Date.now() - varianceWindowDays * 24 * 60 * 60 * 1000;
+  const cutoff = windowCutoffMs(varianceWindowDays);
   const explainedTypes = new Set(["waste", "transfer"]);
   return entries.reduce<Record<string, number>>((acc, entry) => {
     if (
@@ -79,7 +86,7 @@ function buildUnexplainedVarianceByItem(
   varianceWindowDays: number,
   explainedShrinkageByItem: Record<string, number>
 ): Record<string, VarianceRow> {
-  const cutoff = Date.now() - varianceWindowDays * 24 * 60 * 60 * 1000;
+  const cutoff = windowCutoffMs(varianceWindowDays);
   const countNetByItem = entries.reduce<Record<string, number>>((acc, entry) => {
     if (
       entry.type !== "count" ||
@@ -110,7 +117,7 @@ function buildReasonBreakdown(
   windowDays: number,
   validReasons: ReadonlyArray<string>
 ): Record<string, number> {
-  const cutoff = Date.now() - windowDays * 24 * 60 * 60 * 1000;
+  const cutoff = windowCutoffMs(windowDays);
   const validReasonsSet = new Set(validReasons);
   return entries.reduce<Record<string, number>>((acc, entry) => {
     if (
@@ -720,7 +727,7 @@ function StockManagement() {
           <input
             type="text"
             placeholder="Name"
-            className="border px-2 py-1"
+            className={INPUT_BARE}
             value={newItem.name}
             onChange={(e) =>
               setNewItem((prev) => ({ ...prev, name: e.target.value }))
@@ -729,7 +736,7 @@ function StockManagement() {
           <input
             type="text"
             placeholder="Unit (e.g. kg)"
-            className="border px-2 py-1"
+            className={INPUT_BARE}
             value={newItem.unit}
             onChange={(e) =>
               setNewItem((prev) => ({ ...prev, unit: e.target.value }))
@@ -738,7 +745,7 @@ function StockManagement() {
           <input
             type="number"
             placeholder="Opening Count"
-            className="border px-2 py-1"
+            className={INPUT_BARE}
             value={newItem.openingCount}
             onChange={(e) =>
               setNewItem((prev) => ({
@@ -750,7 +757,7 @@ function StockManagement() {
           <input
             type="number"
             placeholder="Reorder Threshold"
-            className="border px-2 py-1"
+            className={INPUT_BARE}
             value={newItem.reorderThreshold}
             onChange={(e) =>
               setNewItem((prev) => ({
@@ -762,7 +769,7 @@ function StockManagement() {
           <input
             type="text"
             placeholder="Category"
-            className="border px-2 py-1"
+            className={INPUT_BARE}
             value={newItem.category}
             onChange={(e) =>
               setNewItem((prev) => ({ ...prev, category: e.target.value }))
@@ -772,7 +779,7 @@ function StockManagement() {
         <Button
           type="button"
           onClick={handleAddItem}
-          className="mt-3 inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+          className={`mt-3 ${BTN_PRIMARY}`}
         >
           Add Item
         </Button>
@@ -784,7 +791,7 @@ function StockManagement() {
           <Button
             type="button"
             onClick={() => setBatchCountMode(true)}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            className={BTN_PRIMARY}
           >
             Start batch count
           </Button>
@@ -836,7 +843,7 @@ function StockManagement() {
                       <TableCell className="p-2 border-b">{lastMovement}</TableCell>
                       <TableCell className="p-2 border-b">
                         <select
-                          className="border px-2 py-1"
+                          className={INPUT_BARE}
                           value={state.action}
                           onChange={(e) =>
                             handleActionChange(
@@ -858,7 +865,7 @@ function StockManagement() {
                         <input
                           type="number"
                           placeholder="Quantity"
-                          className="border px-2 py-1 w-24"
+                          className={`${INPUT_BARE} w-24`}
                           value={state.quantity}
                           onChange={(e) =>
                             handleActionChange(
@@ -873,7 +880,7 @@ function StockManagement() {
                         <input
                           type="text"
                           placeholder="Reason"
-                          className="border px-2 py-1 w-40"
+                          className={`${INPUT_BARE} w-40`}
                           value={state.reason}
                           onChange={(e) =>
                             handleActionChange(
@@ -888,7 +895,7 @@ function StockManagement() {
                         <input
                           type="text"
                           placeholder="Reference"
-                          className="border px-2 py-1 w-32"
+                          className={`${INPUT_BARE} w-32`}
                           value={state.reference}
                           onChange={(e) =>
                             handleActionChange(
@@ -903,7 +910,7 @@ function StockManagement() {
                         <input
                           type="text"
                           placeholder="Note"
-                          className="border px-2 py-1 w-32"
+                          className={`${INPUT_BARE} w-32`}
                           value={state.note}
                           onChange={(e) =>
                             handleActionChange(
@@ -972,14 +979,14 @@ function StockManagement() {
           <Button
             type="button"
             onClick={handleExportLedger}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            className={BTN_PRIMARY}
           >
             Export Ledger CSV
           </Button>
           <Button
             type="button"
             onClick={handleExportVariance}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center px-4 py-2 bg-primary-main text-primary-fg rounded-lg hover:bg-primary-dark"
+            className={BTN_PRIMARY}
           >
             Export Variance CSV
           </Button>

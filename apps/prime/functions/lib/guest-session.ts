@@ -1,11 +1,7 @@
 import { errorResponse,FirebaseRest } from './firebase-rest';
+import { type GuestSessionToken } from './guest-token';
 
-export interface GuestSessionToken {
-  bookingId: string;
-  guestUuid: string | null;
-  createdAt: string;
-  expiresAt: string;
-}
+export type { GuestSessionToken };
 
 export interface GuestSessionAuthResult {
   token: string;

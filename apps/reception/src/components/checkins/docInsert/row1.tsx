@@ -12,6 +12,10 @@ import { Inline } from "@acme/design-system/primitives";
 
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
+const ROW1_FIELDS = ["firstName", "lastName", "gender"] as const;
+const INPUT_BASE_CLASS =
+  "border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main";
+
 /**
  * Restrict occupantDetails to only the fields Row1 actually handles.
  * This ensures that occupantDetails[field] is always a string or undefined,
@@ -77,9 +81,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
    */
   useEffect(() => {
     // For each field that Row1 manages, if it's not dirty, sync from occupantDetails
-    (
-      ["firstName", "lastName", "gender"] as (keyof Row1OccupantDetails)[]
-    ).forEach((field) => {
+    ROW1_FIELDS.forEach((field) => {
       // If not dirty, and occupantDetails differs from local state, update local
       if (!dirtyFields.has(field)) {
         setLocalOccupant((prev) => {
@@ -96,20 +98,6 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
       }
     });
   }, [occupantDetails, dirtyFields]);
-
-  /**
-   * Show an error via the parent setSnackbar
-   */
-  const showError = useCallback(
-    (message: string): void => {
-      setSnackbar({
-        open: true,
-        message,
-        severity: "error",
-      });
-    },
-    [setSnackbar]
-  );
 
   /**
    * onBlur handler: if the field changed vs occupantDetails, call saveField.
@@ -135,56 +123,27 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         // triggering useEffect, which sees the new occupantDetails
         // and removes the field from dirty if they match.
       } catch (err) {
-        if (err instanceof Error) {
-          showError(`Failed to update ${fieldName}: ${err.message}`);
-        } else {
-          showError(`Failed to update ${fieldName} due to an unknown error.`);
-        }
+        setSnackbar({
+          open: true,
+          message:
+            err instanceof Error
+              ? `Failed to update ${fieldName}: ${err.message}`
+              : `Failed to update ${fieldName} due to an unknown error.`,
+          severity: "error",
+        });
       }
     },
-    [localOccupant, occupantDetails, saveField, setSnackbar, showError]
+    [localOccupant, occupantDetails, saveField, setSnackbar]
   );
 
   /**
-   * Handle changes to firstName
+   * Unified change handler for firstName and lastName (both apply transformName).
    */
-  const handleChangeFirstName = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeName = useCallback(
+    (field: "firstName" | "lastName", e: ChangeEvent<HTMLInputElement>) => {
       const value = transformName(e.target.value);
-      setLocalOccupant((prev) => ({
-        ...prev,
-        firstName: value,
-      }));
-      setDirtyFields((prev) => new Set([...prev, "firstName"]));
-    },
-    []
-  );
-
-  /**
-   * Handle changes to lastName
-   */
-  const handleChangeLastName = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const value = transformName(e.target.value);
-      setLocalOccupant((prev) => ({
-        ...prev,
-        lastName: value,
-      }));
-      setDirtyFields((prev) => new Set([...prev, "lastName"]));
-    },
-    []
-  );
-
-  /**
-   * Handle changes to gender
-   */
-  const handleChangeGender = useCallback(
-    (value: string) => {
-      setLocalOccupant((prev) => ({
-        ...prev,
-        gender: value,
-      }));
-      setDirtyFields((prev) => new Set([...prev, "gender"]));
+      setLocalOccupant((prev) => ({ ...prev, [field]: value }));
+      setDirtyFields((prev) => new Set([...prev, field]));
     },
     []
   );
@@ -211,9 +170,10 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           >
             First Name
           </label>
-          <Input compatibilityMode="no-wrapper"
+          <Input
+            compatibilityMode="no-wrapper"
             id="firstName"
-            className={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+            className={`${INPUT_BASE_CLASS} ${
               isFirstNamePlaceholder
                 ? "bg-warning-light/50"
                 : isFirstNamePopulated
@@ -221,7 +181,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
                 : ""
             }`}
             value={localOccupant.firstName ?? ""}
-            onChange={handleChangeFirstName}
+            onChange={(e) => handleChangeName("firstName", e)}
             onBlur={() => handleBlur("firstName")}
           />
         </div>
@@ -234,9 +194,10 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           >
             Last Name
           </label>
-          <Input compatibilityMode="no-wrapper"
+          <Input
+            compatibilityMode="no-wrapper"
             id="lastName"
-            className={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+            className={`${INPUT_BASE_CLASS} ${
               isLastNamePlaceholder
                 ? "bg-warning-light/50"
                 : isLastNamePopulated
@@ -244,7 +205,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
                 : ""
             }`}
             value={localOccupant.lastName ?? ""}
-            onChange={handleChangeLastName}
+            onChange={(e) => handleChangeName("lastName", e)}
             onBlur={() => handleBlur("lastName")}
           />
         </div>
@@ -260,22 +221,30 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
           <Select
             value={localOccupant.gender || undefined}
             onValueChange={(value) => {
-              handleChangeGender(value);
-              const remoteValue = occupantDetails.gender ?? "";
-              if (value !== remoteValue) {
-                void saveField("gender", value).then(() => {
-                  setSnackbar({ open: true, message: "gender updated successfully!", severity: "success" });
-                }).catch((err) => {
-                  showError(`Failed to update gender: ${err instanceof Error ? err.message : "unknown error"}`);
-                });
+              setLocalOccupant((prev) => ({ ...prev, gender: value }));
+              setDirtyFields((prev) => new Set([...prev, "gender"]));
+              if (value !== (occupantDetails.gender ?? "")) {
+                void saveField("gender", value)
+                  .then(() => {
+                    setSnackbar({
+                      open: true,
+                      message: "gender updated successfully!",
+                      severity: "success",
+                    });
+                  })
+                  .catch((err: unknown) => {
+                    setSnackbar({
+                      open: true,
+                      message: `Failed to update gender: ${err instanceof Error ? err.message : "unknown error"}`,
+                      severity: "error",
+                    });
+                  });
               }
             }}
           >
             <SelectTrigger
               id="gender"
-              className={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
-                isGenderPopulated ? "bg-success-light/50" : ""
-              }`}
+              className={`${INPUT_BASE_CLASS} ${isGenderPopulated ? "bg-success-light/50" : ""}`}
             >
               <SelectValue placeholder="(select one)" />
             </SelectTrigger>

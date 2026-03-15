@@ -29,15 +29,11 @@ export default function useOccupantLoans(
       null) as OccupantLoanData | null;
   }, [loans, bookingRef, occupantId]);
 
-  const memoizedReturn = useMemo(
-    () => ({
-      occupantLoans,
+  const hasArgs = !!(bookingRef && occupantId);
 
-      loading: bookingRef && occupantId ? loading : false,
-      error: bookingRef && occupantId ? error : null,
-    }),
-    [occupantLoans, bookingRef, occupantId, loading, error]
-  );
-
-  return memoizedReturn;
+  return {
+    occupantLoans,
+    loading: hasArgs ? loading : false,
+    error: hasArgs ? error : null,
+  };
 }

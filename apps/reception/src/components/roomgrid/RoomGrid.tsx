@@ -12,7 +12,7 @@
  */
 
 import type { FC } from "react";
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useState } from "react";
 
 import { Inline } from "@acme/design-system/primitives";
 
@@ -23,6 +23,8 @@ import BookingDetailsModal from "./BookingDetailsModal";
 import { statusColors } from "./constants/statusColors";
 import { ReservationGrid, type TClickCellEventData } from "./ReservationGrid";
 import styles from "./RoomGrid.module.css";
+
+const GRID_THEME = { "date.status": statusColors };
 
 export interface BookingDetailsModalData {
   roomNumber: string;
@@ -103,16 +105,6 @@ const RoomGrid: FC<RoomGridProps> = memo(
     const handleCloseModal = useCallback(() => setModalData(null), []);
 
     /* ------------------------------------------------------------------
-     * Theme
-     * ---------------------------------------------------------------- */
-    const theme = useMemo(
-      () => ({
-        "date.status": statusColors,
-      }),
-      []
-    );
-
-    /* ------------------------------------------------------------------
      * Render
      * ---------------------------------------------------------------- */
     return (
@@ -137,7 +129,7 @@ const RoomGrid: FC<RoomGridProps> = memo(
               end={endDate}
               title="Bed #"
               data={data}
-              theme={theme}
+              theme={GRID_THEME}
               onClickCell={onClickCell}
             />
           </div>
